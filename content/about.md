@@ -7,7 +7,7 @@ math = true
 
 ## rprp · wrp-wrp
 
-he/him — A student from Huazhong University of Science and Technology. I compete in ACM contests (ICPC regional Au) and currently focus on research for approximate nearest neighbor search (ANNS) algorithms.
+he/him — A student from Huazhong University of Science and Technology. I compete in ACM contests (ICPC regional Au) and currently focus on research for approximate nearest neighbor search (ANNS) algorithms and database systems.
 
 I use this space to document:
 

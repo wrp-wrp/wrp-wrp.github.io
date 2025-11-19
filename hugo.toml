@@ -1,6 +1,6 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My website'
+title = "rprp's blog"
 theme = 'typo'
 math = true
 
@@ -24,7 +24,7 @@ homeIntroTitle = 'rprp · wrp-wrp'
 homeIntroContent = """
 wrp-wrp · he/him — A student from Huazhong University of Science and Technology, ACM competitor, ICPC regional Au.
 
-Currently focused on approximate nearest neighbor search (ANNS) algorithms and sharing notes from contests, research, and system design.
+Currently focused on approximate nearest neighbor search (ANNS) algorithms, database systems research, and sharing notes from contests, research, and system design.
 """
 
 # Collection to display on home
