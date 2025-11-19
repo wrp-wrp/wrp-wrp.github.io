@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on My website</title>
-    <link>https://example.org/posts/</link>
-    <description>Recent content in Posts on My website</description>
+    <title>Home on My website</title>
+    <link>http://localhost:60604/</link>
+    <description>Recent content in Home on My website</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 19 Nov 2025 21:38:55 +0800</lastBuildDate>
-    <atom:link href="https://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:60604/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test</title>
-      <link>https://example.org/posts/test/</link>
+      <link>http://localhost:60604/posts/test/</link>
       <pubDate>Wed, 19 Nov 2025 21:38:55 +0800</pubDate>
-      <guid>https://example.org/posts/test/</guid>
+      <guid>http://localhost:60604/posts/test/</guid>
       <description>&lt;p&gt;$f(x) = \frac{x}{y}$&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}&#xA;$$&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;说画&#34;&gt;&#xA;  说画&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%af%b4%e7%94%bb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
     </item>
   </channel>

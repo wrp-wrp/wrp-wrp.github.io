@@ -2,18 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on My website</title>
-    <link>http://localhost:1313/</link>
+    <link>https://example.org/</link>
     <description>Recent content in Home on My website</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 19 Nov 2025 21:38:55 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test</title>
-      <link>http://localhost:1313/posts/test/</link>
+      <link>https://example.org/posts/test/</link>
       <pubDate>Wed, 19 Nov 2025 21:38:55 +0800</pubDate>
-      <guid>http://localhost:1313/posts/test/</guid>
+      <guid>https://example.org/posts/test/</guid>
       <description>&lt;p&gt;$f(x) = \frac{x}{y}$&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}&#xA;$$&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;说画&#34;&gt;&#xA;  说画&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%af%b4%e7%94%bb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
+    </item>
+    <item>
+      <title>About</title>
+      <link>https://example.org/about/</link>
+      <pubDate>Wed, 19 Nov 2025 00:00:00 +0800</pubDate>
+      <guid>https://example.org/about/</guid>
+      <description>&lt;h2 class=&#34;heading&#34; id=&#34;rprp--wrp-wrp&#34;&gt;&#xA;  rprp · wrp-wrp&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#rprp--wrp-wrp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;he/him — A student from Huazhong University of Science and Technology. I compete in ACM contests (ICPC regional Au) and currently focus on research for approximate nearest neighbor search (ANNS) algorithms.&lt;/p&gt;&#xA;&lt;p&gt;I use this space to document:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Ideas and notes from algorithm competitions&lt;/li&gt;&#xA;&lt;li&gt;Research progress on ANNS and related systems&lt;/li&gt;&#xA;&lt;li&gt;Personal experiments around performance engineering and infrastructure&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;If any of the posts spark questions or collaboration ideas, feel free to reach out via GitHub.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

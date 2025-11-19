@@ -20,10 +20,11 @@ colorPalette = 'default'
 hideHeader = false
 
 # Intro on main page, content is markdown
-homeIntroTitle = 'Hi!'
+homeIntroTitle = 'rprp · wrp-wrp'
 homeIntroContent = """
-I am an Italian Software Engineer with a strong foundation in computer science and a passion for solving complex problems.
-I am interested in a range of topics, including algorithms, distributed systems, databases, and information retrieval.
+wrp-wrp · he/him — A student from Huazhong University of Science and Technology, ACM competitor, ICPC regional Au.
+
+Currently focused on approximate nearest neighbor search (ANNS) algorithms and sharing notes from contests, research, and system design.
 """
 
 # Collection to display on home
@@ -32,7 +33,7 @@ homeCollection = 'posts'
 
 # Lists parameters
 paginationSize = 100
-listSummaries = true
+listSummaries = false
 listDateFormat = '2 Jan 2006'
 
 # Breadcrumbs
