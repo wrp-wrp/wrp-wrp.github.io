@@ -13,7 +13,7 @@
       <link>http://localhost:1313/posts/test/</link>
       <pubDate>Wed, 19 Nov 2025 21:38:55 +0800</pubDate>
       <guid>http://localhost:1313/posts/test/</guid>
-      <description></description>
+      <description>&lt;p&gt;$f(x) = \frac{x}{y}$&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}&#xA;$$&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;说画&#34;&gt;&#xA;  说画&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%af%b4%e7%94%bb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
     </item>
   </channel>
 </rss>

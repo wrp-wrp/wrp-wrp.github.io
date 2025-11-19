@@ -41,7 +41,9 @@
 <meta property="og:url" content="http://localhost:1313/posts/test/">
   <meta property="og:site_name" content="My website">
   <meta property="og:title" content="Test">
-  <meta property="og:description" content="A Tech Blog">
+  <meta property="og:description" content="$f(x) = \frac{x}{y}$
+$$ \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi} $$
+说画 #">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -165,7 +167,15 @@
     </header>
     
     <div class="single-content">
-      
+      <p>$f(x) = \frac{x}{y}$</p>
+<p>$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$</p>
+<h2 class="heading" id="说画">
+  说画
+  <a class="anchor" href="#%e8%af%b4%e7%94%bb">#</a>
+</h2>
+
     </div>
   </article>
 
@@ -234,6 +244,27 @@
 
   </footer>
 
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
   
 </body>
 

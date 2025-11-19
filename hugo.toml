@@ -2,6 +2,7 @@ baseURL = 'https://example.org/'
 languageCode = 'en-us'
 title = 'My website'
 theme = 'typo'
+math = true
 
 # Google analytics code
 googleAnalytics = "G-xxxxxxxxx"
