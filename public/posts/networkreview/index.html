@@ -41,7 +41,7 @@
 <meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络复习">
-  <meta property="og:description" content="模式与指标 # 分组交换/电路交换 时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数 比特宽度 = 距离 / 链路承载比特数 信号、线路的带宽 （HZ） 信道利用率 = 有数据通过的时间 / 时间 网络利用率 = 信道利用率的平均 RTT 发送端发送数据开始，到收到接收端的确认 七层 OSI 五层 TCP/IP 五层 TCP/IP 传输的内容 网络中的数据传输 # 编码 #">
+  <meta property="og:description" content="模式与指标 # 分组交换/电路交换 时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数 比特宽度 = 距离 / 链路承载比特数 信号、线路的带宽 （HZ） 信道利用率 = 有数据通过的时间 / 时间 网络利用率 = 信道利用率的平均 RTT 发送端发送数据开始，到收到接收端的确认 七层 OSI 五层 TCP/IP 五层 TCP/IP 传输的内容 网络层 # 编码 # 采样定理 采样频率大于信号最高频率的2倍，可以无失真还原模拟信号。 奈式准则 码元 码元速率（波特率） 奈式准则 无噪声情况下， $B = 2W$ B 波特率， W 信道带宽 $S = B \times \log_2 N = 2W\times \log_2 N$ 香农定理:噪声环境中有限带宽介质信道的最大传输速率C与信道带宽和信号噪声功率比之间的关系 $$C = W \times \log_2 (1 &#43; S/N) (bps)$$ W：信道带宽 S：平均信号功率 N：平均噪声功率 信噪比(分贝) $10\log_{10}(S/N) (db)$ 利用信噪比计算 S/N HTTP # HTTP 1.0（非持久连接、无连接复用、队头阻塞） HTTP 1.1（持久连接、流水线传输、响应阻塞） HTTP 2.0（并行并发传输，响应可乱序、流控） HTTP 3.0（UDP，解决TCP阻塞问题、流式、连接迁移） 集成了 QUIC， 利用可靠的 UDP 替代 TCP 报文特点 HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST） HTTP 2.0 消息推送（订阅发布）、二进制、命令（PUSH）、报头压缩 HTTP 3.0 QPACK压缩">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -245,14 +245,99 @@
 </ul>
 </li>
 </ul>
-<h1 class="heading" id="网络中的数据传输">
-  网络中的数据传输
-  <a class="anchor" href="#%e7%bd%91%e7%bb%9c%e4%b8%ad%e7%9a%84%e6%95%b0%e6%8d%ae%e4%bc%a0%e8%be%93">#</a>
+<h1 class="heading" id="网络层">
+  网络层
+  <a class="anchor" href="#%e7%bd%91%e7%bb%9c%e5%b1%82">#</a>
 </h1>
 <h2 class="heading" id="编码">
   编码
   <a class="anchor" href="#%e7%bc%96%e7%a0%81">#</a>
 </h2>
+<ul>
+<li>采样定理
+<ul>
+<li>采样频率大于信号最高频率的2倍，可以无失真还原模拟信号。</li>
+</ul>
+</li>
+<li>奈式准则
+<ul>
+<li>码元</li>
+<li>码元速率（波特率）</li>
+<li><strong>奈式准则</strong> 无噪声情况下， $B = 2W$
+<ul>
+<li>B 波特率， W 信道带宽</li>
+</ul>
+</li>
+<li>$S = B \times \log_2 N = 2W\times \log_2 N$</li>
+</ul>
+</li>
+<li>香农定理:噪声环境中有限带宽介质信道的最大传输速率C与信道带宽和信号噪声功率比之间的关系
+<ul>
+<li>$$C = W \times \log_2 (1 + S/N) (bps)$$</li>
+<li>W：信道带宽</li>
+<li>S：平均信号功率</li>
+<li>N：平均噪声功率</li>
+</ul>
+</li>
+<li>信噪比(分贝)
+<ul>
+<li>$10\log_{10}(S/N) (db)$</li>
+<li>利用信噪比计算 S/N</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="http">
+  HTTP
+  <a class="anchor" href="#http">#</a>
+</h2>
+<ul>
+<li>HTTP 1.0（非持久连接、无连接复用、队头阻塞）</li>
+<li>HTTP 1.1（持久连接、流水线传输、响应阻塞）</li>
+<li>HTTP 2.0（并行并发传输，响应可乱序、流控）</li>
+<li>HTTP 3.0（UDP，解决TCP阻塞问题、流式、连接迁移）
+<ul>
+<li>集成了 QUIC， 利用可靠的 UDP 替代 TCP</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>报文特点
+HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST）
+HTTP 2.0 消息推送（订阅发布）、二进制、命令（PUSH）、报头压缩
+HTTP 3.0 QPACK压缩</p>
+</blockquote>
+<h2 class="heading" id="邮件">
+  邮件
+  <a class="anchor" href="#%e9%82%ae%e4%bb%b6">#</a>
+</h2>
+<ul>
+<li>IMAP， POP</li>
+</ul>
+<h1 class="heading" id="传输层">
+  传输层
+  <a class="anchor" href="#%e4%bc%a0%e8%be%93%e5%b1%82">#</a>
+</h1>
+<h2 class="heading" id="rdt">
+  RDT
+  <a class="anchor" href="#rdt">#</a>
+</h2>
+<ul>
+<li>RDT1.0
+<ul>
+<li>easy</li>
+</ul>
+</li>
+<li>RDT2.0：接收方判断比特错误反馈ACK/NAK</li>
+<li>RDT2.1：ACK/NAK出现误码</li>
+<li>RDT2.2：只用ACK，减少状态，双向互控</li>
+<li>报文丢失
+<ul>
+<li>RDT3.0：状态与RDT2.1相同，增加超时等待</li>
+<li>GBN：超时重传</li>
+<li>SR：超时重传</li>
+</ul>
+</li>
+</ul>
 
     </div>
   </article>
