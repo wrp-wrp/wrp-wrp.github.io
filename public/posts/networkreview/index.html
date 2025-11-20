@@ -359,7 +359,20 @@ HTTP 3.0 QPACK压缩</p>
 <li>纯ALOHA
 <ul>
 <li>以 p 的概率重传， 否则等待，之后继续尝试这个 p 的概率</li>
-<li></li>
+<li>P(ok) = 0.18</li>
+</ul>
+</li>
+<li>时隙 ALOHA
+<ul>
+<li>时隙 ALOHA 把时间切成一块一块的小区间（slot），所有节点必须在时隙的起点才能开始发送。</li>
+<li>P(ok) = 0.37</li>
+</ul>
+</li>
+<li>CSMA
+<ul>
+<li>非坚持 CSMA</li>
+<li>时隙非坚持CSMA</li>
+<li>坚持</li>
 </ul>
 </li>
 </ul>
