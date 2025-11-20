@@ -2,24 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on rprp&#39;s blog</title>
-    <link>http://localhost:64286/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content in Home on rprp&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Nov 2025 21:38:55 +0800</lastBuildDate>
-    <atom:link href="http://localhost:64286/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 Nov 2025 12:01:45 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算机网络复习</title>
+      <link>http://localhost:1313/posts/networkreview/</link>
+      <pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate>
+      <guid>http://localhost:1313/posts/networkreview/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;模式与指标&#34;&gt;&#xA;  模式与指标&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e6%a8%a1%e5%bc%8f%e4%b8%8e%e6%8c%87%e6%a0%87&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;分组交换/电路交换&lt;/li&gt;&#xA;&lt;li&gt;时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数&lt;/li&gt;&#xA;&lt;li&gt;比特宽度 = 距离 / 链路承载比特数&lt;/li&gt;&#xA;&lt;li&gt;信号、线路的带宽 （HZ）&lt;/li&gt;&#xA;&lt;li&gt;信道利用率 = 有数据通过的时间 / 时间&#xA;&lt;ul&gt;&#xA;&lt;li&gt;网络利用率 = 信道利用率的平均&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;RTT&#xA;&lt;ul&gt;&#xA;&lt;li&gt;发送端发送数据开始，到收到接收端的确认&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;七层 OSI 五层 TCP/IP&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;figure class=&#34;&#34;&gt;&#xA;&#xA;    &#xA;    &#xA;      &#xA;        &lt;div class=&#34;img-container&#34; style=&#34;--w: 1840; --h: 914;&#34;&gt;&#xA;            &lt;img loading=&#34;lazy&#34; alt=&#34;image-20251120115750892&#34; src=&#34;http://localhost:1313/posts/networkreview/image1.png&#34; width=&#34;1840&#34; height=&#34;914&#34;&gt;&#xA;        &lt;/div&gt;&#xA;      &#xA;    &#xA;&#xA;    &#xA;&lt;/figure&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;五层 TCP/IP 传输的内容&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;figure class=&#34;&#34;&gt;&#xA;&#xA;    &#xA;    &#xA;      &#xA;        &lt;div class=&#34;img-container&#34; style=&#34;--w: 2192; --h: 796;&#34;&gt;&#xA;            &lt;img loading=&#34;lazy&#34; alt=&#34;image-20251120120042503&#34; src=&#34;http://localhost:1313/posts/networkreview/image2.png&#34; width=&#34;2192&#34; height=&#34;796&#34;&gt;&#xA;        &lt;/div&gt;&#xA;      &#xA;    &#xA;&#xA;    &#xA;&lt;/figure&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 class=&#34;heading&#34; id=&#34;网络中的数据传输&#34;&gt;&#xA;  网络中的数据传输&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e7%bd%91%e7%bb%9c%e4%b8%ad%e7%9a%84%e6%95%b0%e6%8d%ae%e4%bc%a0%e8%be%93&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;编码&#34;&gt;&#xA;  编码&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e7%bc%96%e7%a0%81&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
+    </item>
     <item>
       <title>Test</title>
-      <link>http://localhost:64286/posts/test/</link>
+      <link>http://localhost:1313/posts/test/</link>
       <pubDate>Wed, 19 Nov 2025 21:38:55 +0800</pubDate>
-      <guid>http://localhost:64286/posts/test/</guid>
+      <guid>http://localhost:1313/posts/test/</guid>
       <description>&lt;p&gt;$f(x) = \frac{x}{y}$&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}&#xA;$$&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;说画&#34;&gt;&#xA;  说画&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%af%b4%e7%94%bb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
     </item>
     <item>
       <title>About</title>
-      <link>http://localhost:64286/about/</link>
+      <link>http://localhost:1313/about/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:64286/about/</guid>
+      <guid>http://localhost:1313/about/</guid>
       <description>&lt;h2 class=&#34;heading&#34; id=&#34;rprp--wrp-wrp&#34;&gt;&#xA;  rprp · wrp-wrp&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#rprp--wrp-wrp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;he/him — A student from Huazhong University of Science and Technology. I compete in ACM contests (ICPC regional Au) and currently focus on research for approximate nearest neighbor search (ANNS) algorithms and database systems.&lt;/p&gt;&#xA;&lt;p&gt;I use this space to document:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Ideas and notes from algorithm competitions&lt;/li&gt;&#xA;&lt;li&gt;Research progress on ANNS and related systems&lt;/li&gt;&#xA;&lt;li&gt;Personal experiments around performance engineering and infrastructure&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;If any of the posts spark questions or collaboration ideas, feel free to reach out via GitHub.&lt;/p&gt;</description>
     </item>
   </channel>

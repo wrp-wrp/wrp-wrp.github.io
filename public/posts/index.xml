@@ -2,17 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on rprp&#39;s blog</title>
-    <link>http://localhost:64286/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on rprp&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Nov 2025 21:38:55 +0800</lastBuildDate>
-    <atom:link href="http://localhost:64286/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 Nov 2025 12:01:45 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NetWorkReview</title>
+      <link>http://localhost:1313/posts/networkreview/</link>
+      <pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate>
+      <guid>http://localhost:1313/posts/networkreview/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;计算机网络&#34;&gt;&#xA;  计算机网络&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;模式与指标&#34;&gt;&#xA;  模式与指标&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e6%a8%a1%e5%bc%8f%e4%b8%8e%e6%8c%87%e6%a0%87&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;分组交换/电路交换&#xA;+&lt;/li&gt;&#xA;&lt;li&gt;时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数&lt;/li&gt;&#xA;&lt;li&gt;比特宽度 = 距离 / 链路承载比特数&lt;/li&gt;&#xA;&lt;li&gt;信号、线路的带宽 （HZ）&lt;/li&gt;&#xA;&lt;li&gt;信道利用率 = 有数据通过的时间 / 时间&#xA;&lt;ul&gt;&#xA;&lt;li&gt;网络利用率 = 信道利用率的平均&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;RTT&#xA;&lt;ul&gt;&#xA;&lt;li&gt;发送端发送数据开始，到收到接收端的确认&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;![image-20251120115750892](/Users/rprp/Library/Application Support/typora-user-images/image-20251120115750892.png)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;![image-20251120120042503](/Users/rprp/Library/Application Support/typora-user-images/image-20251120120042503.png)&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Test</title>
-      <link>http://localhost:64286/posts/test/</link>
+      <link>http://localhost:1313/posts/test/</link>
       <pubDate>Wed, 19 Nov 2025 21:38:55 +0800</pubDate>
-      <guid>http://localhost:64286/posts/test/</guid>
+      <guid>http://localhost:1313/posts/test/</guid>
       <description>&lt;p&gt;$f(x) = \frac{x}{y}$&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}&#xA;$$&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;说画&#34;&gt;&#xA;  说画&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%af%b4%e7%94%bb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
     </item>
   </channel>
