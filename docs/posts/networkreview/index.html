@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://example.org/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://example.org/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://example.org/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    计算机网络复习 | rprp&#39;s blog
+    
+</title>
+
+<link rel="canonical" href="https://example.org/posts/networkreview/"/>
+
+<meta property="og:url" content="https://example.org/posts/networkreview/">
+  <meta property="og:site_name" content="rprp&#39;s blog">
+  <meta property="og:title" content="计算机网络复习">
+  <meta property="og:description" content="模式与指标 # 分组交换/电路交换 时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数 比特宽度 = 距离 / 链路承载比特数 信号、线路的带宽 （HZ） 信道利用率 = 有数据通过的时间 / 时间 网络利用率 = 信道利用率的平均 RTT 发送端发送数据开始，到收到接收端的确认 七层 OSI 五层 TCP/IP 五层 TCP/IP 传输的内容 网络层 # 编码 # 采样定理 采样频率大于信号最高频率的2倍，可以无失真还原模拟信号。 奈式准则 码元 码元速率（波特率） 奈式准则 无噪声情况下， $B = 2W$ B 波特率， W 信道带宽 $S = B \times \log_2 N = 2W\times \log_2 N$ 香农定理:噪声环境中有限带宽介质信道的最大传输速率C与信道带宽和信号噪声功率比之间的关系 $$C = W \times \log_2 (1 &#43; S/N) (bps)$$ W：信道带宽 S：平均信号功率 N：平均噪声功率 信噪比(分贝) $10\log_{10}(S/N) (db)$ 利用信噪比计算 S/N HTTP # HTTP 1.0（非持久连接、无连接复用、队头阻塞） HTTP 1.1（持久连接、流水线传输、响应阻塞） HTTP 2.0（并行并发传输，响应可乱序、流控） HTTP 3.0（UDP，解决TCP阻塞问题、流式、连接迁移） 集成了 QUIC， 利用可靠的 UDP 替代 TCP 报文特点 HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST） HTTP 2.0 消息推送（订阅发布）、二进制、命令（PUSH）、报头压缩 HTTP 3.0 QPACK压缩">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-11-20T12:01:45+08:00">
+    <meta property="article:modified_time" content="2025-11-20T12:01:45+08:00">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.56b1873d8852f8a5a109abda36c1bfcde55cb48e5bcbe0d8c934a196a7dc374a.css" media="all">
+
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-xxxxxxxxx');
+        }
+      </script>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://example.org/">rprp&#39;s blog</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/networkreview/">计算机网络复习</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">计算机网络复习</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-11-20T12:01:45&#43;08:00">November 20, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <h1 class="heading" id="模式与指标">
+  模式与指标
+  <a class="anchor" href="#%e6%a8%a1%e5%bc%8f%e4%b8%8e%e6%8c%87%e6%a0%87">#</a>
+</h1>
+<ul>
+<li>分组交换/电路交换</li>
+<li>时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数</li>
+<li>比特宽度 = 距离 / 链路承载比特数</li>
+<li>信号、线路的带宽 （HZ）</li>
+<li>信道利用率 = 有数据通过的时间 / 时间
+<ul>
+<li>网络利用率 = 信道利用率的平均</li>
+</ul>
+</li>
+<li>RTT
+<ul>
+<li>发送端发送数据开始，到收到接收端的确认</li>
+</ul>
+</li>
+<li>七层 OSI 五层 TCP/IP
+<ul>
+<li>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    
+    
+      
+        <div class="img-container" style="--w: 1840; --h: 914;">
+            <img loading="lazy" alt="image-20251120115750892" src="/posts/networkreview/image1.png" width="1840" height="914">
+        </div>
+      
+    
+
+    
+</figure>
+</li>
+</ul>
+</li>
+<li>五层 TCP/IP 传输的内容
+<ul>
+<li>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    
+    
+      
+        <div class="img-container" style="--w: 2192; --h: 796;">
+            <img loading="lazy" alt="image-20251120120042503" src="/posts/networkreview/image2.png" width="2192" height="796">
+        </div>
+      
+    
+
+    
+</figure>
+</li>
+</ul>
+</li>
+</ul>
+<h1 class="heading" id="网络层">
+  网络层
+  <a class="anchor" href="#%e7%bd%91%e7%bb%9c%e5%b1%82">#</a>
+</h1>
+<h2 class="heading" id="编码">
+  编码
+  <a class="anchor" href="#%e7%bc%96%e7%a0%81">#</a>
+</h2>
+<ul>
+<li>采样定理
+<ul>
+<li>采样频率大于信号最高频率的2倍，可以无失真还原模拟信号。</li>
+</ul>
+</li>
+<li>奈式准则
+<ul>
+<li>码元</li>
+<li>码元速率（波特率）</li>
+<li><strong>奈式准则</strong> 无噪声情况下， $B = 2W$
+<ul>
+<li>B 波特率， W 信道带宽</li>
+</ul>
+</li>
+<li>$S = B \times \log_2 N = 2W\times \log_2 N$</li>
+</ul>
+</li>
+<li>香农定理:噪声环境中有限带宽介质信道的最大传输速率C与信道带宽和信号噪声功率比之间的关系
+<ul>
+<li>$$C = W \times \log_2 (1 + S/N) (bps)$$</li>
+<li>W：信道带宽</li>
+<li>S：平均信号功率</li>
+<li>N：平均噪声功率</li>
+</ul>
+</li>
+<li>信噪比(分贝)
+<ul>
+<li>$10\log_{10}(S/N) (db)$</li>
+<li>利用信噪比计算 S/N</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="http">
+  HTTP
+  <a class="anchor" href="#http">#</a>
+</h2>
+<ul>
+<li>HTTP 1.0（非持久连接、无连接复用、队头阻塞）</li>
+<li>HTTP 1.1（持久连接、流水线传输、响应阻塞）</li>
+<li>HTTP 2.0（并行并发传输，响应可乱序、流控）</li>
+<li>HTTP 3.0（UDP，解决TCP阻塞问题、流式、连接迁移）
+<ul>
+<li>集成了 QUIC， 利用可靠的 UDP 替代 TCP</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>报文特点
+HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST）
+HTTP 2.0 消息推送（订阅发布）、二进制、命令（PUSH）、报头压缩
+HTTP 3.0 QPACK压缩</p>
+</blockquote>
+<h2 class="heading" id="邮件">
+  邮件
+  <a class="anchor" href="#%e9%82%ae%e4%bb%b6">#</a>
+</h2>
+<ul>
+<li>IMAP， POP</li>
+</ul>
+<h1 class="heading" id="传输层">
+  传输层
+  <a class="anchor" href="#%e4%bc%a0%e8%be%93%e5%b1%82">#</a>
+</h1>
+<h2 class="heading" id="rdt">
+  RDT
+  <a class="anchor" href="#rdt">#</a>
+</h2>
+<ul>
+<li>RDT1.0
+<ul>
+<li>easy</li>
+</ul>
+</li>
+<li>RDT2.0：接收方判断比特错误反馈ACK/NAK</li>
+<li>RDT2.1：ACK/NAK出现误码</li>
+<li>RDT2.2：只用ACK，减少状态，双向互控</li>
+<li>报文丢失
+<ul>
+<li>RDT3.0：状态与RDT2.1相同，增加超时等待</li>
+<li>GBN：超时重传</li>
+<li>SR：超时重传</li>
+</ul>
+</li>
+</ul>
+<h1 class="heading" id="链路层">
+  链路层
+  <a class="anchor" href="#%e9%93%be%e8%b7%af%e5%b1%82">#</a>
+</h1>
+<h2 class="heading" id="多址访问协议">
+  多址访问协议
+  <a class="anchor" href="#%e5%a4%9a%e5%9d%80%e8%ae%bf%e9%97%ae%e5%8d%8f%e8%ae%ae">#</a>
+</h2>
+<ul>
+<li>信道划分协议
+<ul>
+<li>TDMA 每个节点在每次循环得到固定长度的时隙</li>
+<li>FDMA 信道按频谱分</li>
+<li>CDMA 不分， 设计编码来区分不同节点信号</li>
+</ul>
+</li>
+<li>随机访问协议
+<ul>
+<li>纯ALOHA
+<ul>
+<li>以 p 的概率重传， 否则等待，之后继续尝试这个 p 的概率</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>轮流协议</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/test/">
+                        Test
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
