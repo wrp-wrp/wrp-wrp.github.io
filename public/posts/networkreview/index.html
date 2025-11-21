@@ -41,7 +41,7 @@
 <meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络复习">
-  <meta property="og:description" content="模式与指标 # 分组交换/电路交换 时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数 比特宽度 = 距离 / 链路承载比特数 信号、线路的带宽 （HZ） 信道利用率 = 有数据通过的时间 / 时间 网络利用率 = 信道利用率的平均 RTT 发送端发送数据开始，到收到接收端的确认 七层 OSI 五层 TCP/IP 五层 TCP/IP 传输的内容 网络层 # 编码 # 采样定理 采样频率大于信号最高频率的2倍，可以无失真还原模拟信号。 奈式准则 码元 码元速率（波特率） 奈式准则 无噪声情况下， $B = 2W$ B 波特率， W 信道带宽 $S = B \times \log_2 N = 2W\times \log_2 N$ 香农定理:噪声环境中有限带宽介质信道的最大传输速率C与信道带宽和信号噪声功率比之间的关系 $$C = W \times \log_2 (1 &#43; S/N) (bps)$$ W：信道带宽 S：平均信号功率 N：平均噪声功率 信噪比(分贝) $10\log_{10}(S/N) (db)$ 利用信噪比计算 S/N HTTP # HTTP 1.0（非持久连接、无连接复用、队头阻塞） HTTP 1.1（持久连接、流水线传输、响应阻塞） HTTP 2.0（并行并发传输，响应可乱序、流控） HTTP 3.0（UDP，解决TCP阻塞问题、流式、连接迁移） 集成了 QUIC， 利用可靠的 UDP 替代 TCP 报文特点 HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST） HTTP 2.0 消息推送（订阅发布）、二进制、命令（PUSH）、报头压缩 HTTP 3.0 QPACK压缩">
+  <meta property="og:description" content="模式与指标 # 分组交换/电路交换 时延带宽积 = 速率 $\times $ 传播时延 = 链路承载比特数 比特宽度 = 距离 / 链路承载比特数 信号、线路的带宽 （HZ） 信道利用率 = 有数据通过的时间 / 时间 网络利用率 = 信道利用率的平均 RTT 发送端发送数据开始，到收到接收端的确认 七层 OSI 五层 TCP/IP 五层 TCP/IP 传输的内容 编码 # 采样定理 采样频率大于信号最高频率的2倍，可以无失真还原模拟信号。 奈式准则 码元 码元速率（波特率） 奈式准则 无噪声情况下， $B = 2W$ B 波特率， W 信道带宽 $S = B \times \log_2 N = 2W\times \log_2 N$ 香农定理:噪声环境中有限带宽介质信道的最大传输速率C与信道带宽和信号噪声功率比之间的关系 $$C = W \times \log_2 (1 &#43; S/N) (bps)$$ W：信道带宽 S：平均信号功率 N：平均噪声功率 信噪比(分贝) $10\log_{10}(S/N) (db)$ 利用信噪比计算 S/N HTTP # HTTP 1.0（非持久连接、无连接复用、队头阻塞） HTTP 1.1（持久连接、流水线传输、响应阻塞） HTTP 2.0（并行并发传输，响应可乱序、流控） HTTP 3.0（UDP，解决TCP阻塞问题、流式、连接迁移） 集成了 QUIC， 利用可靠的 UDP 替代 TCP 报文特点">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -245,10 +245,6 @@
 </ul>
 </li>
 </ul>
-<h1 class="heading" id="网络层">
-  网络层
-  <a class="anchor" href="#%e7%bd%91%e7%bb%9c%e5%b1%82">#</a>
-</h1>
 <h2 class="heading" id="编码">
   编码
   <a class="anchor" href="#%e7%bc%96%e7%a0%81">#</a>
@@ -301,8 +297,8 @@
 </li>
 </ul>
 <blockquote>
-<p>报文特点
-HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST）
+<p>报文特点</p>
+<p>HTTP 1.0/1.1 请求响应、字符串、命令（GET、POST）
 HTTP 2.0 消息推送（订阅发布）、二进制、命令（PUSH）、报头压缩
 HTTP 3.0 QPACK压缩</p>
 </blockquote>
@@ -313,10 +309,6 @@ HTTP 3.0 QPACK压缩</p>
 <ul>
 <li>IMAP， POP</li>
 </ul>
-<h1 class="heading" id="传输层">
-  传输层
-  <a class="anchor" href="#%e4%bc%a0%e8%be%93%e5%b1%82">#</a>
-</h1>
 <h2 class="heading" id="rdt">
   RDT
   <a class="anchor" href="#rdt">#</a>
@@ -347,14 +339,14 @@ HTTP 3.0 QPACK压缩</p>
   <a class="anchor" href="#%e5%a4%9a%e5%9d%80%e8%ae%bf%e9%97%ae%e5%8d%8f%e8%ae%ae">#</a>
 </h2>
 <ul>
-<li>信道划分协议
+<li>信道划分协议 - <strong>重负载</strong>
 <ul>
 <li>TDMA 每个节点在每次循环得到固定长度的时隙</li>
 <li>FDMA 信道按频谱分</li>
 <li>CDMA 不分， 设计编码来区分不同节点信号</li>
 </ul>
 </li>
-<li>随机访问协议
+<li>随机访问协议 - <strong>轻负载</strong>
 <ul>
 <li>纯ALOHA
 <ul>
@@ -371,13 +363,67 @@ HTTP 3.0 QPACK压缩</p>
 <li>CSMA
 <ul>
 <li>非坚持 CSMA</li>
-<li>时隙非坚持CSMA</li>
-<li>坚持</li>
+<li>时隙非坚持 CSMA
+<ul>
+<li>随机等</li>
+</ul>
+</li>
+<li>1 坚持 CSMA
+<ul>
+<li>坚持 CSMA， 也就是死等</li>
+</ul>
+</li>
+<li>p 坚持 CSMA
+<ul>
+<li>死等，然后以一个概率发送，一个概率继续等</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>轮流协议</li>
+<li>CSMA/CD
+<ul>
+<li>CD：冲突检测技术，利用信号强度容易在有线局域网实现</li>
+<li>指数退避</li>
+<li><strong>争用期</strong>：$2 \tau$ (两倍端到端往返时间延迟)
+<ul>
+<li>$$T_f \geq 2\tau$$</li>
+<li>$T_f$ 为帧传输的时间， 因为<strong>必须在整个帧还没发完之前，就能“听到”潜在的冲突。</strong></li>
+</ul>
+</li>
+<li>$$ Efficiency = \frac{1}{1 + 5t_{prop}/t_{trans}}$$</li>
+<li>$t_{prop} $ 表示 LAN 上两个节点最大传播延迟</li>
+<li>$t_{trans}$ 表示传输最大帧时间</li>
+</ul>
+</li>
+<li>CSMA/CA
+<ul>
+<li>WIFI 使用的协议
+<ul>
+<li>先等待一个固定时间</li>
+<li>然后在竞争窗口随机选一段时间退避</li>
+<li>可选是否采用 RTS/CTS 用于避免隐藏节点冲突。</li>
+<li>收到 ACK 认为成功</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>轮流协议 - <strong>trade off</strong>
+<ul>
+<li>轮询</li>
+<li>令牌传递</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="如何阅读分组">
+  如何阅读分组
+  <a class="anchor" href="#%e5%a6%82%e4%bd%95%e9%98%85%e8%af%bb%e5%88%86%e7%bb%84">#</a>
+</h2>
+<ul>
+<li>一般是 16 进制</li>
+<li>两个数一个字节， 一个数代表四位</li>
+<li>判断通过以太网是否需要填充：判断总长度是不是大于等于 46B ， 46B 是以太网最小负载</li>
 </ul>
 
     </div>
