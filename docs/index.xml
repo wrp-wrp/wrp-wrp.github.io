@@ -9,11 +9,11 @@
     <lastBuildDate>Thu, 20 Nov 2025 12:01:45 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>计算机网络复习笔记</title>
+      <title>计算机网络按层复习（含编码）</title>
       <link>http://localhost:1313/posts/networkreview/</link>
       <pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate>
       <guid>http://localhost:1313/posts/networkreview/</guid>
-      <description>计算机网络核心概念复习，涵盖性能指标、物理层编码、HTTP协议演进、可靠传输原理(RDT)及链路层多址访问协议。</description>
+      <description>按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。</description>
     </item>
     <item>
       <title>Test</title>
