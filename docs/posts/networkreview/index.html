@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59764&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:59764/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59764/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59764/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:59764/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:59764/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:59764/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
 
-<meta property="og:url" content="http://localhost:59764/posts/networkreview/">
+<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -95,7 +95,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:59764/">rprp&#39;s blog</a>
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -819,6 +819,47 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
 </ul>
 </li>
 </ol>
+<h3 class="heading" id="nat-网络地址转换-network-address-translation">
+  NAT 网络地址转换 (Network Address Translation)
+  <a class="anchor" href="#nat-%e7%bd%91%e7%bb%9c%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2-network-address-translation">#</a>
+</h3>
+<p>NAT 技术主要用于解决 <strong>IPv4 地址短缺</strong> 问题，允许专用网络（Private Network）内部的主机通过共享少量的公网（Public）IP 地址访问互联网。</p>
+<h4 class="heading" id="1-基本原理">
+  1. 基本原理
+  <a class="anchor" href="#1-%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86">#</a>
+</h4>
+<p>当内网主机向外网发送数据报时，NAT 路由器（网关）将其 <strong>源 IP 地址</strong> 替换为 <strong>NAT 路由器的公网 IP 地址</strong>。当外网回复时，NAT 路由器再将 <strong>目的 IP 地址</strong> 替换回 <strong>内网主机的私有 IP</strong>。</p>
+<h4 class="heading" id="2-napt-network-address-port-translation">
+  2. NAPT (Network Address Port Translation)
+  <a class="anchor" href="#2-napt-network-address-port-translation">#</a>
+</h4>
+<p>最常见的 NAT 实现形式，也称为 <strong>PAT (Port Address Translation)</strong>。</p>
+<ul>
+<li><strong>问题</strong>：如果只有一个公网 IP，如何区分内网多个主机的流量？</li>
+<li><strong>解决</strong>：利用 <strong>传输层端口号</strong>。NAT 路由器维护一张 <strong>NAT 转换表</strong>：
+<code>{内网 IP : 内网 Port} &lt;---&gt; {公网 IP : 公网 Port}</code></li>
+<li><strong>流程示例</strong>：
+<ol>
+<li><strong>出站</strong>：内网主机 A (<code>192.168.1.2:12345</code>) 发送数据。NAT 路由器将其替换为 (<code>203.0.113.5:60001</code>) 发往外网。</li>
+<li><strong>记录</strong>：在 NAT 表中添加条目。</li>
+<li><strong>入站</strong>：外网回复给 (<code>203.0.113.5:60001</code>)。NAT 路由器查表，发现对应 (<code>192.168.1.2:12345</code>)，于是修改目的 IP 和端口并转发给 A。</li>
+</ol>
+</li>
+</ul>
+<h4 class="heading" id="3-nat-的优缺点">
+  3. NAT 的优缺点
+  <a class="anchor" href="#3-nat-%e7%9a%84%e4%bc%98%e7%bc%ba%e7%82%b9">#</a>
+</h4>
+<ul>
+<li><strong>优点</strong>：节省公网 IP；隐藏内网结构，增加安全性。</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>违反了 IP 的“端到端”通信原则。</li>
+<li>使得 P2P 应用（如 BitTorrent、VoIP）开发困难（需要 NAT 穿透技术，如 STUN/TURN）。</li>
+<li>消耗路由器性能（需修改 IP/TCP/UDP 头部校验和）。</li>
+</ul>
+</li>
+</ul>
 <h3 class="heading" id="ip-协议关键字段">
   IP 协议关键字段
   <a class="anchor" href="#ip-%e5%8d%8f%e8%ae%ae%e5%85%b3%e9%94%ae%e5%ad%97%e6%ae%b5">#</a>
