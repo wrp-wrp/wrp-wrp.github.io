@@ -14,6 +14,7 @@ tag = 'tags'
 [params]
 # Meta description
 description = "rprp's Blog"
+toc = true
 
 # Appearance settings
 theme = 'auto'
