@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59764&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:59764/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59764/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59764/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:59764/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:59764/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:59764/posts/networkreview/"/>
 
-<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
+<meta property="og:url" content="http://localhost:59764/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -95,7 +95,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+        <a href="http://localhost:59764/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -377,6 +377,34 @@
 <li><strong>随机访问</strong>：纯 ALOHA、时隙 ALOHA、CSMA、CSMA/CD（有线）、CSMA/CA（无线）。</li>
 <li><strong>轮流方法</strong>：轮询、令牌环（Token Ring）。</li>
 </ul>
+<h4 class="heading" id="csma-的三种监听策略">
+  CSMA 的三种监听策略
+  <a class="anchor" href="#csma-%e7%9a%84%e4%b8%89%e7%a7%8d%e7%9b%91%e5%90%ac%e7%ad%96%e7%95%a5">#</a>
+</h4>
+<p>CSMA 的核心是“先听后发”，根据监听结果的不同处理方式，分为：</p>
+<ol>
+<li><strong>1-坚持 (1-persistent)</strong>：
+<ul>
+<li>若信道空闲，<strong>立即发送</strong> (概率 1)。</li>
+<li>若信道忙，<strong>持续监听</strong>，直到空闲立即发送。</li>
+<li><em>缺点</em>：若两个站点同时监听到变为空闲，立即发送会导致冲突。</li>
+</ul>
+</li>
+<li><strong>非坚持 (Non-persistent)</strong>：
+<ul>
+<li>若信道空闲，立即发送。</li>
+<li>若信道忙，<strong>放弃监听</strong>，等待一个随机时间后再来监听。</li>
+<li><em>优点</em>：减少冲突；<em>缺点</em>：信道利用率低（可能信道空闲了但大家都在等）。</li>
+</ul>
+</li>
+<li><strong>p-坚持 (p-persistent)</strong>：
+<ul>
+<li>若信道空闲，以<strong>概率 p 发送</strong>，概率 1-p 推迟到下一个时隙。</li>
+<li>若信道忙，持续监听（类似 1-坚持）。</li>
+<li><em>平衡</em>：在冲突概率和信道利用率之间折中。</li>
+</ul>
+</li>
+</ol>
 <h3 class="heading" id="csmacd-carrier-sense-multiple-access-with-collision-detection">
   CSMA/CD (Carrier Sense Multiple Access with Collision Detection)
   <a class="anchor" href="#csmacd-carrier-sense-multiple-access-with-collision-detection">#</a>
@@ -420,6 +448,33 @@
 </ul>
 </li>
 <li><strong>效率</strong>：近似公式 $$\text{Efficiency} = \frac{1}{1+5t_{prop}/t_{trans}}$$。</li>
+</ul>
+<h3 class="heading" id="csmaca-carrier-sense-multiple-access-with-collision-avoidance">
+  CSMA/CA (Carrier Sense Multiple Access with Collision Avoidance)
+  <a class="anchor" href="#csmaca-carrier-sense-multiple-access-with-collision-avoidance">#</a>
+</h3>
+<p><em>用于无线局域网 (IEEE 802.11)</em></p>
+<ul>
+<li><strong>为什么不用 CD？</strong>
+<ol>
+<li><strong>检测困难</strong>：无线信号衰减剧烈，发送方本地信号强度远大于接收到的远端信号，难以在发送时检测到冲突。</li>
+<li><strong>隐蔽站问题 (Hidden Terminal)</strong>：A 和 C 都想发给 B，但 A 听不到 C，导致 A 以为信道空闲而发送，在 B 处发生冲突。</li>
+</ol>
+</li>
+<li><strong>核心机制 (MACA 思想)</strong>：
+<ol>
+<li><strong>帧间间隔 (IFS)</strong>：发送前必须等待一段空闲时间（DIFS/SIFS 等），优先级高的帧等待时间短。</li>
+<li><strong>随机退避</strong>：即使信道空闲，也先退避一段随机时间，避免多个站点同时检测到空闲而冲突。</li>
+<li><strong>链路层确认 (ACK)</strong>：接收方收到数据后回复 ACK。若发送方未收到 ACK，则重传。</li>
+<li><strong>RTS/CTS (可选，解决隐蔽站)</strong>：
+<ul>
+<li><strong>RTS (Request To Send)</strong>：发送方广播“我要发数据，需占用时间 T”。</li>
+<li><strong>CTS (Clear To Send)</strong>：接收方广播“允许发送，需占用时间 T”。</li>
+<li><strong>NAV (Network Allocation Vector)</strong>：周围站点收到 RTS 或 CTS 后，在时间 T 内保持静默（虚拟载波监听）。</li>
+</ul>
+</li>
+</ol>
+</li>
 </ul>
 <h3 class="heading" id="信道利用率-channel-utilization">
   信道利用率 (Channel Utilization)
