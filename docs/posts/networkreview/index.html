@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59764&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:59764/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59764/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59764/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:59764/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:59764/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:59764/posts/networkreview/"/>
 
-<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
+<meta property="og:url" content="http://localhost:59764/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -95,7 +95,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+        <a href="http://localhost:59764/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -177,6 +177,11 @@
         <nav id="TableOfContents">
   <ul>
     <li><a href="#体系结构与参考模型">体系结构与参考模型</a></li>
+    <li><a href="#计算机网络性能指标">计算机网络性能指标</a>
+      <ul>
+        <li><a href="#分组经历的四种时延-packet-delay">分组经历的四种时延 (Packet Delay)</a></li>
+      </ul>
+    </li>
     <li><a href="#物理层physical-layer--编码与调制">物理层（Physical Layer） — 编码与调制</a>
       <ul>
         <li><a href="#采样与信道极限">采样与信道极限</a></li>
@@ -297,6 +302,60 @@
 </p>
 </li>
 </ul>
+<hr>
+<h2 class="heading" id="计算机网络性能指标">
+  计算机网络性能指标
+  <a class="anchor" href="#%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%bd%91%e7%bb%9c%e6%80%a7%e8%83%bd%e6%8c%87%e6%a0%87">#</a>
+</h2>
+<h3 class="heading" id="分组经历的四种时延-packet-delay">
+  分组经历的四种时延 (Packet Delay)
+  <a class="anchor" href="#%e5%88%86%e7%bb%84%e7%bb%8f%e5%8e%86%e7%9a%84%e5%9b%9b%e7%a7%8d%e6%97%b6%e5%bb%b6-packet-delay">#</a>
+</h3>
+<p>一个分组从一台主机（或路由器）传输到另一台主机（或路由器）的过程中，总时延 ($d_{nodal}$) 主要由四部分组成：</p>
+<p>$$ d_{nodal} = d_{proc} + d_{queue} + d_{trans} + d_{prop} $$</p>
+<ol>
+<li><strong>处理时延 (Processing Delay, $d_{proc}$)</strong>
+<ul>
+<li><strong>定义</strong>：检查分组首部和决定将该分组导向何处所需要的时间。包括检查比特级差错。</li>
+<li><strong>量级</strong>：通常是微秒级。</li>
+</ul>
+</li>
+<li><strong>排队时延 (Queueing Delay, $d_{queue}$)</strong>
+<ul>
+<li><strong>定义</strong>：分组在链路上等待传输时，在路由器缓冲队列中排队等待的时间。</li>
+<li><strong>特点</strong>：取决于网络的拥塞程度，是<strong>最不确定</strong>、变化最大的时延分量。</li>
+</ul>
+</li>
+<li><strong>传输时延 (Transmission Delay, $d_{trans}$)</strong>
+<ul>
+<li><strong>定义</strong>：将分组的所有比特推向链路所需要的时间。也叫发送时延。</li>
+<li><strong>公式</strong>：$d_{trans} = L / R$
+<ul>
+<li>$L$：分组长度 (bits)</li>
+<li>$R$：链路带宽 (bps)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>传播时延 (Propagation Delay, $d_{prop}$)</strong>
+<ul>
+<li><strong>定义</strong>：比特在物理链路（介质）中从一端传播到另一端所需要的时间。</li>
+<li><strong>公式</strong>：$d_{prop} = d / s$
+<ul>
+<li>$d$：链路长度 (m)</li>
+<li>$s$：信号传播速度 (m/s, 光纤中约为 $2 \times 10^8$ m/s)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>易混淆点</strong>：</p>
+<ul>
+<li><strong>传输时延</strong>取决于<strong>带宽</strong>和<strong>包长</strong>（车队过收费站的时间）。</li>
+<li><strong>传播时延</strong>取决于<strong>距离</strong>和<strong>介质速度</strong>（车在高速公路上开的时间）。</li>
+</ul>
+</blockquote>
 <hr>
 <h2 class="heading" id="物理层physical-layer--编码与调制">
   物理层（Physical Layer） — 编码与调制
@@ -574,6 +633,27 @@
 </ol>
 </li>
 </ul>
+<h4 class="heading" id="无线局域网的差错控制">
+  无线局域网的差错控制
+  <a class="anchor" href="#%e6%97%a0%e7%ba%bf%e5%b1%80%e5%9f%9f%e7%bd%91%e7%9a%84%e5%b7%ae%e9%94%99%e6%8e%a7%e5%88%b6">#</a>
+</h4>
+<p>由于无线信道误码率较高，802.11 在链路层引入了严格的差错控制机制，不同于有线以太网（有线通常只检错不重传，靠高层 TCP 保证可靠性）。</p>
+<ol>
+<li><strong>帧校验 (Frame Validation)</strong>：
+<ul>
+<li>采用 <strong>CRC-32</strong> (32位循环冗余校验) 生成 <strong>FCS (Frame Check Sequence)</strong> 字段。</li>
+<li>接收方计算 CRC，若不匹配则直接丢弃帧（不发 NAK，也不发 ACK）。</li>
+</ul>
+</li>
+<li><strong>重传机制 (Retransmission)</strong>：
+<ul>
+<li>采用 <strong>停止-等待协议 (Stop-and-Wait ARQ)</strong>。</li>
+<li>发送方发完一帧后，必须等待接收方回复 <strong>ACK</strong>。</li>
+<li>若在规定时间内未收到 ACK（例如因为帧丢失或 ACK 丢失），发送方会自动重传。</li>
+<li><em>注</em>：这是链路层的重传，比传输层 TCP 重传更快，能掩盖无线链路的高误码率。</li>
+</ul>
+</li>
+</ol>
 <h3 class="heading" id="信道利用率-channel-utilization">
   信道利用率 (Channel Utilization)
   <a class="anchor" href="#%e4%bf%a1%e9%81%93%e5%88%a9%e7%94%a8%e7%8e%87-channel-utilization">#</a>
