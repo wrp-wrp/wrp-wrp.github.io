@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on rprp&#39;s blog</title>
-    <link>http://localhost:1313/</link>
+    <link>https://example.org/</link>
     <description>Recent content in Home on rprp&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Nov 2025 10:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resume</title>
+      <link>https://example.org/resume/</link>
+      <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://example.org/resume/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;wrp-wrp&#34;&gt;&#xA;  wrp-wrp&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#wrp-wrp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Undergraduate Student, CS (Turing Class) @ HUST&lt;/strong&gt;&lt;br&gt;&#xA;&lt;a href=&#34;https://github.com/wrp-wrp&#34;&gt;GitHub&lt;/a&gt; | &lt;a href=&#34;mailto:rprp@hust.edu.cn&#34;&gt;Email&lt;/a&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;education&#34;&gt;&#xA;  Education&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#education&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Huazhong University of Science and Technology (HUST)&lt;/strong&gt;&lt;br&gt;&#xA;&lt;em&gt;B.Eng. in Computer Science and Technology (Turing Class)&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;Sept. 2023 – Present&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;research-interests&#34;&gt;&#xA;  Research Interests&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#research-interests&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Database Systems, Approximate Nearest Neighbor Search (ANNS), Streaming Algorithms, Vector Indexes.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;research-experience&#34;&gt;&#xA;  Research Experience&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#research-experience&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Research Assistant&lt;/strong&gt; | &lt;em&gt;Database Group (Prof. Shuhao Zhang), HUST&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;Nov. 2024 – Present&lt;/em&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Investigating &lt;strong&gt;ANNS in streaming scenarios&lt;/strong&gt;; identified recall degradation caused by data distribution shifts.&lt;/li&gt;&#xA;&lt;li&gt;Contributed to a benchmark paper on streaming vector search (4th Author, under review at &lt;strong&gt;SIGMOD&lt;/strong&gt;).&lt;/li&gt;&#xA;&lt;li&gt;Proposed a novel optimization for graph-based ANNS to address high update overhead and connectivity issues; currently drafting the paper and conducting experiments.&lt;/li&gt;&#xA;&lt;li&gt;Developed high-performance C++ systems for vector stream processing.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;Research Intern&lt;/strong&gt; | &lt;em&gt;Prof. Yao Wan&amp;rsquo;s Lab, HUST&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;Jan. 2024 – Mar. 2024&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>计算理论学习笔记</title>
-      <link>http://localhost:1313/posts/theoryofcomputation/</link>
+      <link>https://example.org/posts/theoryofcomputation/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/posts/theoryofcomputation/</guid>
+      <guid>https://example.org/posts/theoryofcomputation/</guid>
       <description>计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</description>
     </item>
     <item>
       <title>计算机网络按层复习</title>
-      <link>http://localhost:1313/posts/networkreview/</link>
+      <link>https://example.org/posts/networkreview/</link>
       <pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate>
-      <guid>http://localhost:1313/posts/networkreview/</guid>
+      <guid>https://example.org/posts/networkreview/</guid>
       <description>按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。</description>
     </item>
     <item>
-      <title>Test</title>
-      <link>http://localhost:1313/posts/test/</link>
-      <pubDate>Wed, 19 Nov 2025 21:38:55 +0800</pubDate>
-      <guid>http://localhost:1313/posts/test/</guid>
-      <description>&lt;p&gt;$f(x) = \frac{x}{y}$&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}&#xA;$$&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;说画&#34;&gt;&#xA;  说画&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%af%b4%e7%94%bb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;</description>
-    </item>
-    <item>
       <title>About</title>
-      <link>http://localhost:1313/about/</link>
+      <link>https://example.org/about/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/about/</guid>
+      <guid>https://example.org/about/</guid>
       <description>&lt;h2 class=&#34;heading&#34; id=&#34;rprp--wrp-wrp&#34;&gt;&#xA;  rprp · wrp-wrp&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#rprp--wrp-wrp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;he/him — A student from Huazhong University of Science and Technology. I compete in ACM contests (ICPC regional Au) and currently focus on research for approximate nearest neighbor search (ANNS) algorithms and database systems.&lt;/p&gt;&#xA;&lt;p&gt;I use this space to document:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Ideas and notes from algorithm competitions&lt;/li&gt;&#xA;&lt;li&gt;Research progress on ANNS and related systems&lt;/li&gt;&#xA;&lt;li&gt;Personal experiments around performance engineering and infrastructure&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;If any of the posts spark questions or collaboration ideas, feel free to reach out via GitHub.&lt;/p&gt;</description>
     </item>
   </channel>
