@@ -525,10 +525,53 @@ IPv4 数据报由 **首部 (Header)** 和 **数据 (Data)** 两部分组成。�
  | HTTP/2 | 多路复用 | 二进制分帧、HPACK | 降低头部开销、单连接多流 |
  | HTTP/3 | QUIC/UDP | 0-RTT、连接迁移 | 解决 TCP 层面队头阻塞 |
 
-### 邮件与其他服务
- - **SMTP**：发送。
- - **POP3 / IMAP**：接收（POP3 单端，IMAP 多端同步）。
- - **DNS**：域名解析，UDP/TCP 混合使用。
+### DNS 域名系统 (Domain Name System)
+DNS 是互联网的电话簿，负责将人类可读的主机名 (如 `www.example.com`) 转换为机器可读的 IP 地址。
+
+#### 1. 层次化命名空间
+DNS 采用分层树状结构：
+*   **根域名服务器 (Root)**：最高层，知道所有 TLD 服务器的地址。
+*   **顶级域名服务器 (TLD)**：负责 `.com`, `.org`, `.cn` 等顶级域。
+*   **权威域名服务器 (Authoritative)**：负责特定组织（如 `example.com`）的 DNS 记录，提供最终的解析结果。
+*   **本地域名服务器 (Local DNS)**：ISP 或企业提供的 DNS，负责代理用户进行查询（通常有缓存）。
+
+#### 2. 查询过程：递归 vs 迭代
+*   **递归查询 (Recursive Query)**：
+    *   **含义**：“我只要最终结果”。如果被询问的服务器不知道，它必须替询问者去问别人，直到查到结果返回。
+    *   **发生场景**：**主机 (Client) $\rightarrow$ 本地 DNS 服务器 (Local DNS)**。
+    *   *原因*：客户端（如你的电脑）通常只配置了 DNS 服务器地址，不具备自己去遍历全球 DNS 树的能力，所以全权委托给本地 DNS。
+
+*   **迭代查询 (Iterative Query)**：
+    *   **含义**：“告诉我下一步找谁”。如果被询问的服务器不知道，它会返回一个“能回答你问题的服务器”的 IP，让你自己去问。
+    *   **发生场景**：**本地 DNS 服务器 $\rightarrow$ 根/TLD/权威 DNS 服务器**。
+    *   *原因*：根服务器和顶级域服务器负载极高，如果它们都要负责帮别人“跑腿”查到底，很快就会瘫痪。所以它们只负责“指路”。
+
+*   **典型流程总结**：
+    1.  **主机 $\rightarrow$ 本地 DNS**：**递归**（帮我查 `www.example.com`）。
+    2.  **本地 DNS $\rightarrow$ 根 DNS**：**迭代**（根说：找 `.com` 服务器，IP 是 x.x.x.x）。
+    3.  **本地 DNS $\rightarrow$ .com DNS**：**迭代**（.com 说：找 `example.com` 服务器，IP 是 y.y.y.y）。
+    4.  **本地 DNS $\rightarrow$ example.com DNS**：**迭代**（权威说：IP 是 z.z.z.z）。
+    5.  **本地 DNS $\rightarrow$ 主机**：返回最终 IP z.z.z.z。
+
+#### 3. 常见 DNS 记录类型
+| 类型 | 描述 | 示例 |
+| :--- | :--- | :--- |
+| **A** | 主机名 -> IPv4 地址 | `example.com` -> `93.184.216.34` |
+| **AAAA** | 主机名 -> IPv6 地址 | `example.com` -> `2606:2800:220:1:248:1893:25c8:1946` |
+| **CNAME** | 别名 -> 规范主机名 | `www.example.com` -> `example.com` |
+| **MX** | 邮件交换记录 | `example.com` -> `mail.example.com` (优先级 10) |
+| **NS** | 域名服务器记录 | `example.com` -> `ns1.example.com` |
+
+#### 4. 协议细节
+*   **端口**：53。
+*   **传输层**：
+    *   **UDP**：绝大多数查询使用 UDP（效率高，头部开销小）。限制 512 字节（EDNS 可扩展）。
+    *   **TCP**：用于**区域传送 (Zone Transfer)**（主从服务器同步）或响应超过 512 字节时。
+
+### 电子邮件 (Email)
+ - **SMTP (Simple Mail Transfer Protocol)**：**推 (Push)** 协议。用于用户代理向邮件服务器发送邮件，以及邮件服务器之间的转发。TCP 25。
+ - **POP3 (Post Office Protocol v3)**：**拉 (Pull)** 协议。用户从服务器下载邮件，默认下载后删除（虽可配置保留）。TCP 110。
+ - **IMAP (Internet Message Access Protocol)**：**拉 (Pull)** 协议。用户在服务器上管理邮件（文件夹、状态同步），适合多端访问。TCP 143。
 
 ### P2P 文件分发 (Peer-to-Peer)
 *   **C/S 架构 vs P2P 架构分发时间对比**：
