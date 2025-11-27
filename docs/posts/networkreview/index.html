@@ -203,6 +203,7 @@
         <li><a href="#nat-网络地址转换-network-address-translation">NAT 网络地址转换 (Network Address Translation)</a></li>
         <li><a href="#ip-数据报格式-ipv4">IP 数据报格式 (IPv4)</a></li>
         <li><a href="#icmp-internet-control-message-protocol">ICMP (Internet Control Message Protocol)</a></li>
+        <li><a href="#路由协议详解-routing-protocols">路由协议详解 (Routing Protocols)</a></li>
       </ul>
     </li>
     <li><a href="#传输层transport-layer--可靠性与拥塞控制">传输层（Transport Layer） — 可靠性与拥塞控制</a>
@@ -993,6 +994,78 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
 </ul>
 </li>
 <li><strong>注意</strong>：ICMP 差错报文不再产生 ICMP 差错报文（防止无限循环）。</li>
+</ul>
+<h3 class="heading" id="路由协议详解-routing-protocols">
+  路由协议详解 (Routing Protocols)
+  <a class="anchor" href="#%e8%b7%af%e7%94%b1%e5%8d%8f%e8%ae%ae%e8%af%a6%e8%a7%a3-routing-protocols">#</a>
+</h3>
+<p>路由协议的核心任务是更新路由表，决定数据包的最佳路径。</p>
+<h4 class="heading" id="1-协议分类">
+  1. 协议分类
+  <a class="anchor" href="#1-%e5%8d%8f%e8%ae%ae%e5%88%86%e7%b1%bb">#</a>
+</h4>
+<ul>
+<li><strong>内部网关协议 (IGP)</strong>：在自治系统 (AS) <strong>内部</strong>使用。
+<ul>
+<li><strong>RIP</strong> (基于距离向量)</li>
+<li><strong>OSPF</strong> (基于链路状态)</li>
+</ul>
+</li>
+<li><strong>外部网关协议 (EGP)</strong>：在自治系统 <strong>之间</strong>使用。
+<ul>
+<li><strong>BGP</strong> (基于路径向量)</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="2-rip-routing-information-protocol">
+  2. RIP (Routing Information Protocol)
+  <a class="anchor" href="#2-rip-routing-information-protocol">#</a>
+</h4>
+<ul>
+<li><strong>核心</strong>：<strong>距离向量 (Distance Vector)</strong> 算法 (Bellman-Ford)。</li>
+<li><strong>度量</strong>：<strong>跳数 (Hop Count)</strong>。
+<ul>
+<li>直连网络跳数为 1（或 0）。</li>
+<li>每经过一个路由器跳数 +1。</li>
+<li><strong>最大跳数 15</strong>，16 表示不可达（限制了网络规模）。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>仅和相邻路由器交换信息</strong>。</li>
+<li>交换的是<strong>当前本路由器知道的全部路由表</strong>。</li>
+<li><strong>周期性更新</strong>（默认 30s）。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li><strong>“坏消息传得慢”</strong>：收敛慢，可能导致路由环路（需配合水平分割、毒性逆转等机制）。</li>
+<li>不适合大型网络。</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="3-ospf-open-shortest-path-first">
+  3. OSPF (Open Shortest Path First)
+  <a class="anchor" href="#3-ospf-open-shortest-path-first">#</a>
+</h4>
+<ul>
+<li><strong>核心</strong>：<strong>链路状态 (Link State)</strong> 算法 (Dijkstra SPF)。</li>
+<li><strong>度量</strong>：<strong>开销 (Cost)</strong>，通常与带宽成反比 ($10^8 / \text{Bandwidth}$)。</li>
+<li><strong>工作原理</strong>：
+<ol>
+<li><strong>Hello 包</strong>：发现并维护邻居关系。</li>
+<li><strong>LSA 泛洪</strong>：向本 AS 内<strong>所有</strong>路由器发送链路状态通告 (LSA)，告知“我与哪些邻居相连，链路质量如何”。</li>
+<li><strong>LSDB 同步</strong>：所有路由器最终建立一个全网一致的<strong>链路状态数据库 (LSDB)</strong>（即网络拓扑图）。</li>
+<li><strong>SPF 计算</strong>：每个路由器以自己为根，运行 Dijkstra 算法计算到达各目的地的最短路径。</li>
+</ol>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li><strong>收敛快</strong>：拓扑变化时立即更新。</li>
+<li><strong>无环路</strong>：基于全局拓扑计算。</li>
+<li><strong>支持区域划分 (Area)</strong>：利用主干区域 (Area 0) 和非主干区域分层管理，减少 LSA 泛洪范围，适用于大规模网络。</li>
+</ul>
+</li>
 </ul>
 <hr>
 <h2 class="heading" id="传输层transport-layer--可靠性与拥塞控制">
