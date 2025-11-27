@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on rprp&#39;s blog</title>
-    <link>https://example.org/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on rprp&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 26 Nov 2025 10:00:00 +0800</lastBuildDate>
-    <atom:link href="https://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>计算理论学习笔记</title>
-      <link>https://example.org/posts/theoryofcomputation/</link>
+      <link>http://localhost:1313/posts/theoryofcomputation/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
-      <guid>https://example.org/posts/theoryofcomputation/</guid>
+      <guid>http://localhost:1313/posts/theoryofcomputation/</guid>
       <description>计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</description>
     </item>
     <item>
       <title>计算机网络按层复习</title>
-      <link>https://example.org/posts/networkreview/</link>
+      <link>http://localhost:1313/posts/networkreview/</link>
       <pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate>
-      <guid>https://example.org/posts/networkreview/</guid>
+      <guid>http://localhost:1313/posts/networkreview/</guid>
       <description>按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。</description>
     </item>
   </channel>
