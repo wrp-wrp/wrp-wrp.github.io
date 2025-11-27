@@ -62,10 +62,31 @@ $$ d_{nodal} = d_{proc} + d_{queue} + d_{trans} + d_{prop} $$
 
 ### 线路编码详解（基带传输）
 
+以下示意图使用数据序列：**0 1 0 0 1 1**
+
 #### 1. 不归零编码 (NRZ - Non-Return to Zero)
 *   **NRZ-L (Level)**：高电平代表 1，低电平代表 0。
 *   **NRZI (Inverted)**：电平翻转代表 1，电平保持代表 0。
 *   **缺点**：存在直流分量；缺乏同步能力（连续的 0 或 1 会导致时钟漂移）。
+
+<svg width="320" height="80" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
+  <!-- Grid -->
+  <line x1="10" y1="40" x2="310" y2="40" stroke="#ccc" stroke-dasharray="4" />
+  <line x1="60" y1="10" x2="60" y2="70" stroke="#eee" />
+  <line x1="110" y1="10" x2="110" y2="70" stroke="#eee" />
+  <line x1="160" y1="10" x2="160" y2="70" stroke="#eee" />
+  <line x1="210" y1="10" x2="210" y2="70" stroke="#eee" />
+  <line x1="260" y1="10" x2="260" y2="70" stroke="#eee" />
+  <!-- Labels -->
+  <text x="35" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="85" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="135" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="185" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="235" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="285" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <!-- Signal NRZ-L: 0(L) 1(H) 0(L) 0(L) 1(H) 1(H) -->
+  <path d="M 10,60 H 60 V 20 H 110 V 60 H 210 V 20 H 310" stroke="#007acc" stroke-width="2" fill="none" />
+</svg>
 
 #### 2. 曼彻斯特编码 (Manchester Encoding)
 *   **原理**：将每个比特周期分为两半，**在周期中间进行电平跳变**。
@@ -73,13 +94,31 @@ $$ d_{nodal} = d_{proc} + d_{queue} + d_{trans} + d_{prop} $$
     *   **编码规则** (IEEE 802.3 标准)：
         *   **1**：从低电平跳变到高电平 ($\uparrow$)。
         *   **0**：从高电平跳变到低电平 ($\downarrow$)。
-        *   *(注：G.E. Thomas 标准与之相反)*
 *   **优点**：
     *   **自带时钟同步**：接收端容易提取时钟信号。
     *   **无直流分量**：正负电平相互抵消。
 *   **缺点**：
-    *   **频带利用率低**：信号频率是数据率的 2 倍（因为每个比特至少跳变一次），需要双倍带宽。
+    *   **频带利用率低**：信号频率是数据率的 2 倍。
 *   **应用**：10BASE-T 以太网。
+
+<svg width="320" height="80" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
+  <!-- Grid -->
+  <line x1="10" y1="40" x2="310" y2="40" stroke="#ccc" stroke-dasharray="4" />
+  <line x1="60" y1="10" x2="60" y2="70" stroke="#eee" />
+  <line x1="110" y1="10" x2="110" y2="70" stroke="#eee" />
+  <line x1="160" y1="10" x2="160" y2="70" stroke="#eee" />
+  <line x1="210" y1="10" x2="210" y2="70" stroke="#eee" />
+  <line x1="260" y1="10" x2="260" y2="70" stroke="#eee" />
+  <!-- Labels -->
+  <text x="35" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="85" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="135" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="185" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="235" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="285" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <!-- Signal Manchester: 0(HL) 1(LH) 0(HL) 0(HL) 1(LH) 1(LH) -->
+  <path d="M 10,20 H 35 V 60 H 60 H 85 V 20 H 110 H 135 V 60 H 160 V 20 H 185 V 60 H 210 H 235 V 20 H 260 V 60 H 285 V 20 H 310" stroke="#d32f2f" stroke-width="2" fill="none" />
+</svg>
 
 #### 3. 差分曼彻斯特编码 (Differential Manchester)
 *   **原理**：
@@ -89,12 +128,60 @@ $$ d_{nodal} = d_{proc} + d_{queue} + d_{trans} + d_{prop} $$
         *   **无跳变** $\rightarrow$ 表示 **1**。
 *   **优点**：
     *   继承了曼彻斯特编码的优点（自同步、无直流）。
-    *   **抗干扰性更强**：利用电平跳变的相对关系而非绝对极性来表示数据，对噪声更不敏感。
+    *   **抗干扰性更强**：利用电平跳变的相对关系而非绝对极性来表示数据。
 *   **应用**：令牌环网 (Token Ring)。
+
+<svg width="320" height="80" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
+  <!-- Grid -->
+  <line x1="10" y1="40" x2="310" y2="40" stroke="#ccc" stroke-dasharray="4" />
+  <line x1="60" y1="10" x2="60" y2="70" stroke="#eee" />
+  <line x1="110" y1="10" x2="110" y2="70" stroke="#eee" />
+  <line x1="160" y1="10" x2="160" y2="70" stroke="#eee" />
+  <line x1="210" y1="10" x2="210" y2="70" stroke="#eee" />
+  <line x1="260" y1="10" x2="260" y2="70" stroke="#eee" />
+  <!-- Labels -->
+  <text x="35" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="85" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="135" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="185" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="235" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="285" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <!-- Signal Diff Man: Start L. 0(Trans->HL) 1(No->LH) 0(Trans->HL) 0(Trans->HL) 1(No->LH) 1(No->LH) -->
+  <!-- Wait, my previous trace was: 0(HL) 1(LH) 0(HL) 0(HL) 1(LH) 1(LH) if start L? No. -->
+  <!-- Let's re-verify trace for SVG path:
+       Start L.
+       Bit 0 (0): Trans -> H. Mid -> L. End L. (Path: M 10,60 V 20 H 35 V 60 H 60)
+       Bit 1 (1): No Trans -> L. Mid -> H. End H. (Path: H 85 V 20 H 110)
+       Bit 2 (0): Trans -> L. Mid -> H. End H. (Path: V 60 H 135 V 20 H 160)
+       Bit 3 (0): Trans -> L. Mid -> H. End H. (Path: V 60 H 185 V 20 H 210)
+       Bit 4 (1): No Trans -> H. Mid -> L. End L. (Path: H 235 V 60 H 260)
+       Bit 5 (1): No Trans -> L. Mid -> H. End H. (Path: H 285 V 20 H 310)
+  -->
+  <path d="M 10,60 V 20 H 35 V 60 H 60 H 85 V 20 H 110 V 60 H 135 V 20 H 160 V 60 H 185 V 20 H 210 H 235 V 60 H 260 H 285 V 20 H 310" stroke="#388e3c" stroke-width="2" fill="none" />
+</svg>
 
 #### 4. AMI (Alternate Mark Inversion)
 *   **规则**：**0** 为零电平；**1** 为正负电平交替（例如：+V, -V, +V...）。
 *   **特点**：无直流分量，但连续的 0 仍可能导致同步丢失（需配合扰码技术如 HDB3）。
+
+<svg width="320" height="80" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
+  <!-- Grid -->
+  <line x1="10" y1="40" x2="310" y2="40" stroke="#ccc" stroke-dasharray="4" />
+  <line x1="60" y1="10" x2="60" y2="70" stroke="#eee" />
+  <line x1="110" y1="10" x2="110" y2="70" stroke="#eee" />
+  <line x1="160" y1="10" x2="160" y2="70" stroke="#eee" />
+  <line x1="210" y1="10" x2="210" y2="70" stroke="#eee" />
+  <line x1="260" y1="10" x2="260" y2="70" stroke="#eee" />
+  <!-- Labels -->
+  <text x="35" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="85" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="135" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="185" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">0</text>
+  <text x="235" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <text x="285" y="75" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">1</text>
+  <!-- Signal AMI: 0(Z) 1(+V) 0(Z) 0(Z) 1(-V) 1(+V) -->
+  <path d="M 10,40 H 60 V 20 H 110 V 40 H 210 V 60 H 260 V 20 H 310" stroke="#f57c00" stroke-width="2" fill="none" />
+</svg>
 
 ### 线码与块编码（用于时钟、直流平衡与效率提升）
  - **4B/5B**：将 4 比特映射为 5 比特代码（保证足够的转换以恢复时钟），常与 MLT-3 配合用于 100BASE-TX。
@@ -415,7 +502,18 @@ IPv4 数据报由 **首部 (Header)** 和 **数据 (Data)** 两部分组成。�
 *   **源 IP 地址** [32 bits]
 *   **目的 IP 地址** [32 bits]
 
-#### 2. 可变部分 (Options)
+#### 2. IP 分片机制与关键字段
+当 IP 数据报长度超过链路 MTU 时，需要进行分片。涉及的四个关键字段如下：
+1.  **标识 (Identification)**：同一原始数据报的所有分片拥有相同的标识，用于接收端重组。
+2.  **标志 (Flags)**：
+    *   **DF (Don't Fragment)**：若为 1，禁止分片（超限则丢弃并报错）。
+    *   **MF (More Fragments)**：若为 1，表示后续还有分片；若为 0，表示这是最后一个分片。
+3.  **片偏移 (Fragment Offset)**：表示当前分片在原始数据报中的位置（单位：**8 字节**）。
+4.  **总长度 (Total Length)**：分片后，每个分片的首部该字段会被修改为当前分片的总长度（首部+数据）。
+
+> **重组四元组**：接收端通过 **源 IP**、**目的 IP**、**协议** 和 **标识** 来唯一确定一个分片属于哪个原始数据报。
+
+#### 3. 可变部分 (Options)
 *   长度可变，0 到 40 字节。用于排错、测量、安全等（如记录路由 Record Route、时间戳 Timestamp）。
 *   **填充 (Padding)**：确保首部长度是 4 字节的整数倍。
 
@@ -492,6 +590,34 @@ IPv4 数据报由 **首部 (Header)** 和 **数据 (Data)** 两部分组成。�
 ### TCP / UDP
  - **TCP**：面向连接，可靠传输，拥塞控制（慢启动、拥塞避免、快速重传/恢复）、流量控制（滑动窗口）。
  - **UDP**：无连接、无保证，适合实时/简单请求场景（如 DNS、实时媒体）。
+
+### TCP 超时与 RTT 估算
+TCP 使用超时重传机制来处理丢包。超时时间间隔 ($TimeoutInterval$) 的设置至关重要：太短会导致不必要的重传，太长会导致对丢包反应迟钝。TCP 通过估算 $RTT$ (Round Trip Time) 来动态调整超时时间。
+
+#### 1. SampleRTT
+*   **定义**：从某报文段被发出（交给 IP）到收到相应确认（ACK）的时间间隔。
+*   **特点**：$SampleRTT$ 会随网络负载波动，单次测量值不稳定。
+*   **注意**：TCP 仅在某时刻测量一次 $SampleRTT$，且**不为重传的报文段测量**（Karn 算法），以避免二义性。
+
+#### 2. EstimatedRTT (加权平均往返时间)
+为了平滑 $SampleRTT$ 的波动，TCP 计算加权移动平均值 (EWMA)。
+$$ EstimatedRTT = (1 - \\alpha) \\times EstimatedRTT + \\alpha \\times SampleRTT $$
+*   **$\alpha$ (推荐值)**：$0.125$ ($1/8$)。
+*   **意义**：$EstimatedRTT$ 更平滑，反映了 RTT 的长期趋势。
+*   **初始化**：在获得第一个 $SampleRTT$ 时，$EstimatedRTT$ 直接取该值。
+
+#### 3. DevRTT (RTT 偏差)
+除了均值，还需要估算 RTT 的波动幅度（方差），用于设置安全裕度。
+$$ DevRTT = (1 - \\beta) \\times DevRTT + \\beta \\times |SampleRTT - EstimatedRTT| $$
+*   **$\beta$ (推荐值)**：$0.25$ ($1/4$)。
+*   **意义**：反映了 $SampleRTT$ 偏离 $EstimatedRTT$ 的程度。
+*   **初始化**：在获得第一个 $SampleRTT$ 时，$DevRTT$ 通常设为 $SampleRTT / 2$。
+
+#### 4. TimeoutInterval (超时时间间隔)
+超时时间应设置为 $EstimatedRTT$ 加上一定的安全裕度（通常为 4 倍的偏差）。
+$$ TimeoutInterval = EstimatedRTT + 4 \\times DevRTT $$
+*   **初始值**：通常为 1 秒。
+*   **超时后**：若出现超时，$TimeoutInterval$ 通常**加倍**（指数退避），而不是重新计算，直到收到新的非重传报文段的 ACK。
 
 ### TCP 拥塞控制算法变体
 | 算法 | 核心机制 | 特点 |

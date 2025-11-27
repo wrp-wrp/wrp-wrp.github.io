@@ -72,8 +72,11 @@ url = "/resume"
 
 # Syntax highlight on code blocks
 [markup]
-[markup.highlight]
-style = 'algol'
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = 'algol'
 
 # Giscus comments
 [params.giscus]
