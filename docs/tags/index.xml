@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on rprp&#39;s blog</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>http://localhost:59764/tags/</link>
     <description>Recent content in Tags on rprp&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 26 Nov 2025 10:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:59764/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>图灵机</title>
-      <link>http://localhost:1313/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA/</link>
+      <link>http://localhost:59764/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA/</guid>
+      <guid>http://localhost:59764/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA/</guid>
       <description></description>
     </item>
     <item>
       <title>复杂性</title>
-      <link>http://localhost:1313/tags/%E5%A4%8D%E6%9D%82%E6%80%A7/</link>
+      <link>http://localhost:59764/tags/%E5%A4%8D%E6%9D%82%E6%80%A7/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/tags/%E5%A4%8D%E6%9D%82%E6%80%A7/</guid>
+      <guid>http://localhost:59764/tags/%E5%A4%8D%E6%9D%82%E6%80%A7/</guid>
       <description></description>
     </item>
     <item>
       <title>自动机</title>
-      <link>http://localhost:1313/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/</link>
+      <link>http://localhost:59764/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/</guid>
+      <guid>http://localhost:59764/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/</guid>
       <description></description>
     </item>
     <item>
       <title>计算理论</title>
-      <link>http://localhost:1313/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</link>
+      <link>http://localhost:59764/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</guid>
+      <guid>http://localhost:59764/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</guid>
       <description></description>
     </item>
   </channel>
