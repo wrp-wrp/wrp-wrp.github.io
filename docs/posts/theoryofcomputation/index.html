@@ -264,18 +264,34 @@
 </li>
 </ul>
 </li>
-<li><strong>PDA $\to$ CFG (构造思路)</strong>:
-<ul>
-<li>目标：构造文法 $G$，使得 $L(G) = L(M)$。</li>
-<li>变量：引入非终结符 $A_{pq}$，表示 PDA 从状态 $p$ 读入字符串并到达状态 $q$，且栈在过程结束时回到与开始时相同的高度（净变化为 0）。</li>
-<li>产生式规则：
+<li><strong>PDA $\to$ CFG (构造算法详解)</strong>:
 <ol>
-<li>$\forall p \in Q, A_{pp} \to \epsilon$。</li>
-<li>$\forall p, q, r \in Q, A_{pq} \to A_{pr} A_{rq}$。</li>
-<li>若 PDA 存在转移 $(r, x) \in \delta(p, a, \epsilon)$ (推入 x) 和 $(q, \epsilon) \in \delta(s, b, x)$ (弹出 x)，则添加规则 $A_{pq} \to a A_{rs} b$。</li>
-</ol>
+<li><strong>预处理 PDA</strong>:
+<ul>
+<li>修改 PDA 使其满足：只有一个接受状态 $q_{accept}$；接受前清空栈；每次转移仅推入或弹出一个符号（或都不做）。</li>
+</ul>
+</li>
+<li><strong>变量定义</strong>:
+<ul>
+<li>引入非终结符 $A_{pq}$ ($\forall p, q \in Q$)。</li>
+<li>$A_{pq}$ 生成所有能将 PDA 从状态 $p$ 带到 $q$ 且<strong>栈净变化为 0</strong> 的字符串（即开始和结束时栈高度相同，且中间过程栈不低于该高度）。</li>
+</ul>
+</li>
+<li><strong>产生式规则构造</strong>:
+<ul>
+<li><strong>简化情形</strong>: $\forall p \in Q, A_{pp} \to \epsilon$。</li>
+<li><strong>路径拆分</strong>: $\forall p, q, r \in Q, A_{pq} \to A_{pr} A_{rq}$。</li>
+<li><strong>栈操作匹配</strong>:
+<ul>
+<li>若存在转移 $(r, u) \in \delta(p, a, \epsilon)$ (读 $a$, 推 $u$) 和 $(q, \epsilon) \in \delta(s, b, u)$ (读 $b$, 弹 $u$)。</li>
+<li>则添加规则 $A_{pq} \to a A_{rs} b$。</li>
+<li>含义：$p \xrightarrow{a, +u} r \rightsquigarrow s \xrightarrow{b, -u} q$，中间 $r \to s$ 由 $A_{rs}$ 完成。</li>
+</ul>
 </li>
 </ul>
+</li>
+<li><strong>起始符号</strong>: $S = A_{q_{start}q_{accept}}$。</li>
+</ol>
 </li>
 </ul>
 </li>

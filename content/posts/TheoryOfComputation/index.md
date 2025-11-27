@@ -53,13 +53,20 @@ categories = ["学习笔记"]
         - 扩展规则：
             1. **展开**: 若栈顶是**非终结符** $A$，非确定性地选择产生式 $A \to \alpha$，弹出 $A$ 并将 $\alpha$ (逆序) 压栈。
             2. **匹配**: 若栈顶是**终结符** $a$，读取输入字符 $a$，若匹配则弹出栈顶，否则拒绝。
-    - **PDA $\to$ CFG (构造思路)**:
-        - 目标：构造文法 $G$，使得 $L(G) = L(M)$。
-        - 变量：引入非终结符 $A_{pq}$，表示 PDA 从状态 $p$ 读入字符串并到达状态 $q$，且栈在过程结束时回到与开始时相同的高度（净变化为 0）。
-        - 产生式规则：
-            1. $\forall p \in Q, A_{pp} \to \epsilon$。
-            2. $\forall p, q, r \in Q, A_{pq} \to A_{pr} A_{rq}$。
-            3. 若 PDA 存在转移 $(r, x) \in \delta(p, a, \epsilon)$ (推入 x) 和 $(q, \epsilon) \in \delta(s, b, x)$ (弹出 x)，则添加规则 $A_{pq} \to a A_{rs} b$。
+    - **PDA $\to$ CFG (构造算法详解)**:
+        1.  **预处理 PDA**:
+            - 修改 PDA 使其满足：只有一个接受状态 $q_{accept}$；接受前清空栈；每次转移仅推入或弹出一个符号（或都不做）。
+        2.  **变量定义**:
+            - 引入非终结符 $A_{pq}$ ($\forall p, q \in Q$)。
+            - $A_{pq}$ 生成所有能将 PDA 从状态 $p$ 带到 $q$ 且**栈净变化为 0** 的字符串（即开始和结束时栈高度相同，且中间过程栈不低于该高度）。
+        3.  **产生式规则构造**:
+            - **简化情形**: $\forall p \in Q, A_{pp} \to \epsilon$。
+            - **路径拆分**: $\forall p, q, r \in Q, A_{pq} \to A_{pr} A_{rq}$。
+            - **栈操作匹配**: 
+                - 若存在转移 $(r, u) \in \delta(p, a, \epsilon)$ (读 $a$, 推 $u$) 和 $(q, \epsilon) \in \delta(s, b, u)$ (读 $b$, 弹 $u$)。
+                - 则添加规则 $A_{pq} \to a A_{rs} b$。
+                - 含义：$p \xrightarrow{a, +u} r \rightsquigarrow s \xrightarrow{b, -u} q$，中间 $r \to s$ 由 $A_{rs}$ 完成。
+        4.  **起始符号**: $S = A_{q_{start}q_{accept}}$。
 - **确定性下推自动机 (DPDA)**:
     - 确定性的 PDA（每一步转移是唯一的，且 $\epsilon$ 转移有限制）。
     - **能力差异**: DPDA 识别的语言类（确定性上下文无关语言, DCFL）是 CFL 的真子集 ($DCFL \subsetneq CFL$)。
