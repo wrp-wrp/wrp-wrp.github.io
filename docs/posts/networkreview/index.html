@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59764&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:59764/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59764/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59764/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:59764/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:59764/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:59764/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
 
-<meta property="og:url" content="http://localhost:59764/posts/networkreview/">
+<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -95,7 +95,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:59764/">rprp&#39;s blog</a>
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -454,6 +454,80 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
 <li><strong>路由</strong>：静态/动态（RIP、OSPF、BGP 概念）。</li>
 <li><strong>子网与掩码</strong>：CIDR 表示法，注意网络/主机位划分。</li>
 </ul>
+<h3 class="heading" id="ip-地址分类与特殊地址">
+  IP 地址分类与特殊地址
+  <a class="anchor" href="#ip-%e5%9c%b0%e5%9d%80%e5%88%86%e7%b1%bb%e4%b8%8e%e7%89%b9%e6%ae%8a%e5%9c%b0%e5%9d%80">#</a>
+</h3>
+<h4 class="heading" id="1-分类编址-classful-addressing">
+  1. 分类编址 (Classful Addressing)
+  <a class="anchor" href="#1-%e5%88%86%e7%b1%bb%e7%bc%96%e5%9d%80-classful-addressing">#</a>
+</h4>
+<p>虽然现在普遍使用 CIDR (无类别域间路由)，但理解分类编址仍是基础。</p>
+<ul>
+<li><strong>A 类</strong>：<code>0</code> 开头 (1.0.0.0 - 126.0.0.0)，默认掩码 /8。</li>
+<li><strong>B 类</strong>：<code>10</code> 开头 (128.0.0.0 - 191.255.0.0)，默认掩码 /16。</li>
+<li><strong>C 类</strong>：<code>110</code> 开头 (192.0.0.0 - 223.255.255.0)，默认掩码 /24。</li>
+<li><strong>D 类</strong>：<code>1110</code> 开头 (224.0.0.0 - 239.255.255.255)，用于<strong>多播 (Multicast)</strong>。</li>
+<li><strong>E 类</strong>：<code>1111</code> 开头 (240.0.0.0 - 255.255.255.255)，保留。</li>
+</ul>
+<h4 class="heading" id="2-特殊-ip-地址">
+  2. 特殊 IP 地址
+  <a class="anchor" href="#2-%e7%89%b9%e6%ae%8a-ip-%e5%9c%b0%e5%9d%80">#</a>
+</h4>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">地址类型</th>
+                <th style="text-align: left">IP 地址形式</th>
+                <th style="text-align: left">源/目</th>
+                <th style="text-align: left">用途</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>网络地址</strong></td>
+                <td style="text-align: left">主机号全 0</td>
+                <td style="text-align: left">-</td>
+                <td style="text-align: left">标识一个网络，不可分配给主机。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>直接广播</strong></td>
+                <td style="text-align: left">主机号全 1</td>
+                <td style="text-align: left">目</td>
+                <td style="text-align: left">在特定网络内广播（例如 192.168.1.255）。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>受限广播</strong></td>
+                <td style="text-align: left">255.255.255.255</td>
+                <td style="text-align: left">目</td>
+                <td style="text-align: left">在<strong>本网络</strong>内广播，路由器不转发。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>本主机</strong></td>
+                <td style="text-align: left">0.0.0.0</td>
+                <td style="text-align: left">源</td>
+                <td style="text-align: left">DHCP 启动时标识本机；路由表中表示默认路由。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>环回地址</strong></td>
+                <td style="text-align: left">127.x.x.x</td>
+                <td style="text-align: left">源/目</td>
+                <td style="text-align: left">环回测试 (Loopback)，数据不离开本机。常见 127.0.0.1。</td>
+            </tr>
+        </tbody>
+    </table>
+</div><h4 class="heading" id="3-私有地址-private-ip">
+  3. 私有地址 (Private IP)
+  <a class="anchor" href="#3-%e7%a7%81%e6%9c%89%e5%9c%b0%e5%9d%80-private-ip">#</a>
+</h4>
+<p>用于局域网内部，不可在公网路由（需 NAT 转换）。</p>
+<ul>
+<li><strong>A 类私有</strong>：<code>10.0.0.0/8</code> (10.0.0.0 - 10.255.255.255)</li>
+<li><strong>B 类私有</strong>：<code>172.16.0.0/12</code> (172.16.0.0 - 172.31.255.255)</li>
+<li><strong>C 类私有</strong>：<code>192.168.0.0/16</code> (192.168.0.0 - 192.168.255.255)</li>
+</ul>
 <h3 class="heading" id="ip-协议关键字段">
   IP 协议关键字段
   <a class="anchor" href="#ip-%e5%8d%8f%e8%ae%ae%e5%85%b3%e9%94%ae%e5%ad%97%e6%ae%b5">#</a>
@@ -468,7 +542,39 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
   <a class="anchor" href="#icmp-internet-control-message-protocol">#</a>
 </h3>
 <ul>
-<li>用于差错报告（如目的不可达、TTL 超时）和网络探测（Ping, Traceroute）。</li>
+<li><strong>定义</strong>：网络层协议，用于在 IP 主机、路由器之间传递控制消息。ICMP 报文封装在 IP 数据报中（Protocol 字段为 1）。</li>
+<li><strong>功能</strong>：
+<ol>
+<li><strong>差错报告</strong>：当 IP 数据报处理出错时，向源主机发送错误报告。
+<ul>
+<li><strong>终点不可达 (Destination Unreachable)</strong>：Type 3。路由器无法转发或主机无法交付（如端口不可达）。</li>
+<li><strong>时间超过 (Time Exceeded)</strong>：Type 11。TTL 减为 0（用于 Traceroute）或分片重组超时。</li>
+<li><strong>参数问题 (Parameter Problem)</strong>：Type 12。首部字段不正确。</li>
+<li><strong>重定向 (Redirect)</strong>：Type 5。告知主机有更好的路由路径。</li>
+</ul>
+</li>
+<li><strong>网络探测（查询）</strong>：
+<ul>
+<li><strong>回送请求/回答 (Echo Request/Reply)</strong>：Type 8 / 0。用于 <code>ping</code> 测试连通性。</li>
+<li><strong>时间戳请求/回答</strong>：用于时钟同步和测量时间。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>应用原理</strong>：
+<ul>
+<li><strong>Ping</strong>：发送 ICMP Echo Request，接收 Echo Reply，计算 RTT。</li>
+<li><strong>Traceroute (Windows: tracert)</strong>：
+<ul>
+<li>发送 UDP（或 ICMP）数据包，TTL 从 1 开始递增。</li>
+<li>第 $n$ 个路由器收到 TTL=$n$ 的包，TTL 减为 0，丢弃并回送 <strong>ICMP Time Exceeded</strong>。</li>
+<li>源主机收到该 ICMP 报文，记录路由器 IP 和 RTT。</li>
+<li>到达目的主机时，端口不可达（UDP）或回送应答（ICMP），结束探测。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>注意</strong>：ICMP 差错报文不再产生 ICMP 差错报文（防止无限循环）。</li>
 </ul>
 <hr>
 <h2 class="heading" id="传输层transport-layer--可靠性与拥塞控制">
