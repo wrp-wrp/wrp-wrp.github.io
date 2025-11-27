@@ -531,9 +531,14 @@ IPv4 数据报由 **首部 (Header)** 和 **数据 (Data)** 两部分组成。�
  - **DNS**：域名解析，UDP/TCP 混合使用。
 
 ### P2P 文件分发 (Peer-to-Peer)
-*   **C/S 架构 vs P2P 架构**：
-    *   **C/S**：服务器分发时间随用户数 $N$ 线性增长。
-    *   **P2P**：具有**自扩展性 (Self-scalability)**，每个 Peer 既是下载者也是上传者，分发时间趋于常数（理想情况下）。
+*   **C/S 架构 vs P2P 架构分发时间对比**：
+    设文件大小为 $F$，用户数为 $N$，服务器上传能力 $u_s$，第 $i$ 个用户的上传/下载能力为 $u_i, d_i$，最小下载能力 $d_{min}$。
+    *   **C/S 架构**：
+        $$ D_{cs} = \\max \\left\\{ \\frac{N F}{u_s}, \\frac{F}{d_{min}} \\right\\} $$
+        随着 $N$ 增加，分发时间线性增长。
+    *   **P2P 架构**：
+        $$ D_{p2p} = \\max \\left\\{ \\frac{F}{u_s}, \\frac{F}{d_{min}}, \\frac{N F}{u_s + \\sum_{i=1}^N u_i} \\right\\} $$
+        具有**自扩展性 (Self-scalability)**。当 $N$ 很大时，分子分母都含 $N$，分发时间趋于常数。
 *   **BitTorrent 协议**：
     *   **文件分块 (Chunk)**：文件被划分为固定大小（如 256KB）的块。
     *   **Tracker**：服务器，用于跟踪参与 Torrent 的 Peer 列表。
