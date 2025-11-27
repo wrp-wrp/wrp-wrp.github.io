@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    计算理论学习笔记 | rprp&#39;s blog
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/theoryofcomputation/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/theoryofcomputation/">
+  <meta property="og:site_name" content="rprp&#39;s blog">
+  <meta property="og:title" content="计算理论学习笔记">
+  <meta property="og:description" content="计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-11-26T10:00:00+08:00">
+    <meta property="article:modified_time" content="2025-11-26T10:00:00+08:00">
+    <meta property="article:tag" content="计算理论">
+    <meta property="article:tag" content="自动机">
+    <meta property="article:tag" content="图灵机">
+    <meta property="article:tag" content="复杂性">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.56b1873d8852f8a5a109abda36c1bfcde55cb48e5bcbe0d8c934a196a7dc374a.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/theoryofcomputation/">计算理论学习笔记</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">计算理论学习笔记</h1>
+        <p class="single-summary">计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-11-26T10:00:00&#43;08:00">November 26, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <h1 class="heading" id="计算理论导引">
+  计算理论导引
+  <a class="anchor" href="#%e8%ae%a1%e7%ae%97%e7%90%86%e8%ae%ba%e5%af%bc%e5%bc%95">#</a>
+</h1>
+<h2 class="heading" id="1-自动机与语言-automata-and-languages">
+  1. 自动机与语言 (Automata and Languages)
+  <a class="anchor" href="#1-%e8%87%aa%e5%8a%a8%e6%9c%ba%e4%b8%8e%e8%af%ad%e8%a8%80-automata-and-languages">#</a>
+</h2>
+<h3 class="heading" id="正则语言-regular-languages">
+  正则语言 (Regular Languages)
+  <a class="anchor" href="#%e6%ad%a3%e5%88%99%e8%af%ad%e8%a8%80-regular-languages">#</a>
+</h3>
+<ul>
+<li><strong>有限自动机 (Finite Automata)</strong>
+<ul>
+<li><strong>确定性有限自动机 (DFA)</strong>: $M = (Q, \Sigma, \delta, q_0, F)$</li>
+<li><strong>非确定性有限自动机 (NFA)</strong>: 允许 $\epsilon$ 转移，同一输入可能有多个转移路径。</li>
+<li><strong>等价性与转化</strong>:
+<ul>
+<li><strong>NFA $\to$ DFA (子集构造法 / Subset Construction)</strong>:
+<ul>
+<li>DFA 的每个状态对应 NFA 状态的一个子集。</li>
+<li>转移函数考虑 $\epsilon$-闭包：$\delta_{DFA}(R, a) = \bigcup_{r \in R} E(\delta_{NFA}(r, a))$。</li>
+</ul>
+</li>
+<li><strong>RegEx $\to$ NFA</strong>:
+<ul>
+<li>模块化构造：对 $a, \epsilon, \emptyset$ 建立基础 NFA。</li>
+<li>组合：利用 $\epsilon$ 转移实现并 ($A \cup B$)、连接 ($AB$) 和星号 ($A^*$) 运算。</li>
+</ul>
+</li>
+<li><strong>DFA $\to$ RegEx (状态消除法 / GNFA)</strong>:
+<ul>
+<li>转化为 GNFA (边标记为正则表达式)。</li>
+<li>逐步消除中间状态，更新剩余状态间的正则表达式路径：$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>正则表达式 (Regular Expressions)</strong>: 描述正则语言的代数表示。</li>
+<li><strong>封闭性 (Closure Properties)</strong>:
+<ul>
+<li>正则语言在 <strong>并、交、补、连接、星号</strong> 运算下封闭。</li>
+</ul>
+</li>
+<li><strong>Myhill-Nerode 定理</strong>:
+<ul>
+<li>用于证明语言非正则，或证明 DFA 的最小性。</li>
+<li>$L$ 是正则语言 $\iff$ $L$ 的等价类数目有限。</li>
+</ul>
+</li>
+<li><strong>泵引理 (Pumping Lemma for Regular Languages)</strong>：
+<ul>
+<li>用于证明某些语言<strong>不是</strong>正则语言。</li>
+<li>若 $A$ 是正则语言，则存在泵长度 $p$，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $xyz$，满足：
+<ol>
+<li>$\forall i \ge 0, xy^iz \in A$</li>
+<li>$|y| &gt; 0$</li>
+<li>$|xy| \le p$</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="上下文无关语言-context-free-languages">
+  上下文无关语言 (Context-Free Languages)
+  <a class="anchor" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%97%a0%e5%85%b3%e8%af%ad%e8%a8%80-context-free-languages">#</a>
+</h3>
+<ul>
+<li><strong>上下文无关文法 (CFG)</strong>: $G = (V, \Sigma, R, S)$
+<ul>
+<li>产生式规则形式：$A \to \alpha$，其中 $A \in V, \alpha \in (V \cup \Sigma)^*$。</li>
+<li><strong>歧义性 (Ambiguity)</strong>: 如果一个字符串有两棵不同的派生树（最左推导），则称该文法是歧义的。</li>
+<li><strong>乔姆斯基范式 (CNF)</strong>: 任何 CFL 都可以由 CNF 文法生成（产生式为 $A \to BC$ 或 $A \to a$）。</li>
+</ul>
+</li>
+<li><strong>下推自动机 (Pushdown Automata, PDA)</strong>:
+<ul>
+<li><strong>定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$，其中 $\Gamma$ 是栈字母表。</li>
+<li>相当于 NFA + 一个无限容量的栈 (Stack) (LIFO)。</li>
+<li><strong>等价性</strong>: 一个语言是上下文无关的，当且仅当它被某个 PDA 识别。</li>
+<li><strong>CFG $\to$ PDA (模拟最左推导)</strong>:
+<ul>
+<li>核心思想：PDA 的栈用于存储当前的推导序列。</li>
+<li>扩展规则：
+<ol>
+<li><strong>展开</strong>: 若栈顶是<strong>非终结符</strong> $A$，非确定性地选择产生式 $A \to \alpha$，弹出 $A$ 并将 $\alpha$ (逆序) 压栈。</li>
+<li><strong>匹配</strong>: 若栈顶是<strong>终结符</strong> $a$，读取输入字符 $a$，若匹配则弹出栈顶，否则拒绝。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>PDA $\to$ CFG (构造思路)</strong>:
+<ul>
+<li>目标：构造文法 $G$，使得 $L(G) = L(M)$。</li>
+<li>变量：引入非终结符 $A_{pq}$，表示 PDA 从状态 $p$ 读入字符串并到达状态 $q$，且栈在过程结束时回到与开始时相同的高度（净变化为 0）。</li>
+<li>产生式规则：
+<ol>
+<li>$\forall p \in Q, A_{pp} \to \epsilon$。</li>
+<li>$\forall p, q, r \in Q, A_{pq} \to A_{pr} A_{rq}$。</li>
+<li>若 PDA 存在转移 $(r, x) \in \delta(p, a, \epsilon)$ (推入 x) 和 $(q, \epsilon) \in \delta(s, b, x)$ (弹出 x)，则添加规则 $A_{pq} \to a A_{rs} b$。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>确定性下推自动机 (DPDA)</strong>:
+<ul>
+<li>确定性的 PDA（每一步转移是唯一的，且 $\epsilon$ 转移有限制）。</li>
+<li><strong>能力差异</strong>: DPDA 识别的语言类（确定性上下文无关语言, DCFL）是 CFL 的真子集 ($DCFL \subsetneq CFL$)。</li>
+<li>例如：${ww^R}$ 是 CFL 但不是 DCFL；${wcw^R}$ 是 DCFL。</li>
+<li>DPDA 能够被确定性地解析，这对编译器设计很重要。</li>
+</ul>
+</li>
+<li><strong>封闭性 (Closure Properties)</strong>:
+<ul>
+<li>CFL 在 <strong>并、连接、星号</strong> 运算下封闭。</li>
+<li>CFL 在 <strong>交、补</strong> 运算下 <strong>不封闭</strong>。</li>
+<li>CFL 与正则语言的交集是 CFL。</li>
+</ul>
+</li>
+<li><strong>泵引理 (Pumping Lemma for CFL)</strong>: 用于证明某些语言不是上下文无关语言。
+<ul>
+<li>字符串 $s$ 可分为 $uvxyz$，满足 $|vxy| \le p, |vy| &gt; 0$，且 $\forall i \ge 0, uv^ixy^iz \in A$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="乔姆斯基谱系-chomsky-hierarchy">
+  乔姆斯基谱系 (Chomsky Hierarchy)
+  <a class="anchor" href="#%e4%b9%94%e5%a7%86%e6%96%af%e5%9f%ba%e8%b0%b1%e7%b3%bb-chomsky-hierarchy">#</a>
+</h3>
+<p>文法 $G=(V, \Sigma, R, S)$ 根据产生式规则的限制分为四类：</p>
+<ol>
+<li><strong>0 型文法 (无限制文法)</strong>:
+<ul>
+<li>产生式：$\alpha \to \beta$ (无限制)。</li>
+<li>对应自动机：<strong>图灵机 (Turing Machine)</strong>。</li>
+<li>对应语言：<strong>图灵可识别语言 (Recursively Enumerable)</strong>。</li>
+</ul>
+</li>
+<li><strong>1 型文法 (上下文有关文法, CSG)</strong>:
+<ul>
+<li>产生式：$\alpha A \beta \to \alpha \gamma \beta$，且 $|\gamma| \ge 1$ (即长度不减，除了 $S \to \epsilon$)。</li>
+<li>对应自动机：<strong>线性有界自动机 (Linear Bounded Automata, LBA)</strong>。</li>
+<li>对应语言：<strong>上下文有关语言 (Context-Sensitive Languages)</strong>。</li>
+</ul>
+</li>
+<li><strong>2 型文法 (上下文无关文法, CFG)</strong>:
+<ul>
+<li>产生式：$A \to \gamma$。</li>
+<li>对应自动机：<strong>下推自动机 (PDA)</strong>。</li>
+<li>对应语言：<strong>上下文无关语言 (CFL)</strong>。</li>
+</ul>
+</li>
+<li><strong>3 型文法 (正则文法, Regular Grammar)</strong>:
+<ul>
+<li>产生式：$A \to aB$ 或 $A \to a$ (右线性)。</li>
+<li>对应自动机：<strong>有限自动机 (DFA/NFA)</strong>。</li>
+<li>对应语言：<strong>正则语言 (Regular Languages)</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>包含关系</strong>: Regular $\subsetneq$ CFL $\subsetneq$ CSL $\subsetneq$ RE。</p>
+<h2 class="heading" id="2-可计算性理论-computability-theory">
+  2. 可计算性理论 (Computability Theory)
+  <a class="anchor" href="#2-%e5%8f%af%e8%ae%a1%e7%ae%97%e6%80%a7%e7%90%86%e8%ae%ba-computability-theory">#</a>
+</h2>
+<h3 class="heading" id="图灵机-turing-machines">
+  图灵机 (Turing Machines)
+  <a class="anchor" href="#%e5%9b%be%e7%81%b5%e6%9c%ba-turing-machines">#</a>
+</h3>
+<ul>
+<li><strong>定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$
+<ul>
+<li>拥有无限长的纸带，可读写，读写头可左右移动。</li>
+</ul>
+</li>
+<li><strong>变体 (Variants)</strong>:
+<ul>
+<li><strong>多带图灵机 (Multitape TM)</strong>: 拥有 $k$ 条纸带。等价于单带图灵机。</li>
+<li><strong>非确定性图灵机 (NTM)</strong>: 转移函数 $\delta$ 返回状态集合。等价于确定性图灵机 (DTM)。</li>
+<li><strong>枚举器 (Enumerator)</strong>: 带有打印机的图灵机，用于枚举语言中的所有字符串。</li>
+</ul>
+</li>
+<li><strong>丘奇-图灵论题 (Church-Turing Thesis)</strong>：任何直观上可计算的算法，都可以由图灵机执行。</li>
+</ul>
+<h3 class="heading" id="可判定性-decidability">
+  可判定性 (Decidability)
+  <a class="anchor" href="#%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7-decidability">#</a>
+</h3>
+<ul>
+<li><strong>可判定语言 (Decidable Languages)</strong>: 存在一个图灵机，对任何输入都能在有限步内停机并给出“接受”或“拒绝”的判定。</li>
+<li><strong>图灵可识别语言 (Turing-recognizable / RE)</strong>: 存在一个图灵机，对属于该语言的输入会停机接受；对不属于的输入可能拒绝，也可能无限循环。
+<ul>
+<li><strong>补集性质</strong>: 语言 $A$ 是可判定的 $\iff$ $A$ 和 $\bar{A}$ 都是图灵可识别的。</li>
+</ul>
+</li>
+<li><strong>停机问题 (Halting Problem)</strong>: $A_{TM} = { \langle M, w \rangle \mid M \text{ is a TM and } M \text{ accepts } w }$
+<ul>
+<li>结论：$A_{TM}$ 是不可判定的（Undecidable）。</li>
+<li>证明方法：对角线法 (Diagonalization)。</li>
+</ul>
+</li>
+<li><strong>不可判定性证明 (Undecidability Proofs)</strong>:
+<ul>
+<li><strong>归约 (Reduction)</strong>: 若 $A \le_m B$ 且 $A$ 不可判定，则 $B$ 不可判定。</li>
+<li><strong>莱斯定理 (Rice&rsquo;s Theorem)</strong>: 设 $P$ 是图灵可识别语言类的非平凡性质，则判定一个语言是否具有性质 $P$ 是不可判定的。
+<ul>
+<li>非平凡性质：至少有一个语言满足 $P$，且至少有一个语言不满足 $P$。</li>
+<li>例子：判定 $L(M)$ 是否为空、是否有限、是否包含 &ldquo;101&rdquo; 等。</li>
+</ul>
+</li>
+<li><strong>波斯特对应问题 (PCP)</strong>: 给定一组多米诺骨牌，是否存在排列使得上下字符串相同？（不可判定）。</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="3-计算复杂性理论-complexity-theory">
+  3. 计算复杂性理论 (Complexity Theory)
+  <a class="anchor" href="#3-%e8%ae%a1%e7%ae%97%e5%a4%8d%e6%9d%82%e6%80%a7%e7%90%86%e8%ae%ba-complexity-theory">#</a>
+</h2>
+<h3 class="heading" id="时间复杂性类-time-complexity-classes">
+  时间复杂性类 (Time Complexity Classes)
+  <a class="anchor" href="#%e6%97%b6%e9%97%b4%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb-time-complexity-classes">#</a>
+</h3>
+<ul>
+<li><strong>P (Polynomial time)</strong>: 确定性单带图灵机在多项式时间内可判定的语言类。
+<ul>
+<li>代表“有效可解”的问题。</li>
+</ul>
+</li>
+<li><strong>NP (Nondeterministic Polynomial time)</strong>: 非确定性图灵机在多项式时间内可判定的语言类。
+<ul>
+<li>等价定义：可以在多项式时间内<strong>验证</strong>一个解的问题类。</li>
+<li>$P \subseteq NP$。</li>
+</ul>
+</li>
+<li><strong>时间分层定理 (Time Hierarchy Theorem)</strong>:
+<ul>
+<li>对于任何时间可构造函数 $t(n)$，存在语言在 $O(t(n))$ 时间内可判定，但不能在 $o(t(n)/\log t(n))$ 时间内判定。</li>
+<li>结论：$P \subsetneq EXPTIME$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="空间复杂性类-space-complexity-classes">
+  空间复杂性类 (Space Complexity Classes)
+  <a class="anchor" href="#%e7%a9%ba%e9%97%b4%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb-space-complexity-classes">#</a>
+</h3>
+<ul>
+<li><strong>PSPACE</strong>: 确定性图灵机在多项式空间内可判定的语言类。</li>
+<li><strong>NPSPACE</strong>: 非确定性图灵机在多项式空间内可判定的语言类。</li>
+<li><strong>萨维奇定理 (Savitch&rsquo;s Theorem)</strong>:
+<ul>
+<li>对于任何函数 $f(n) \ge n$，有 $NSPACE(f(n)) \subseteq SPACE(f^2(n))$。</li>
+<li>推论：$PSPACE = NPSPACE$。</li>
+</ul>
+</li>
+<li><strong>PSPACE-Complete</strong>:
+<ul>
+<li><strong>TQBF (True Quantified Boolean Formulas)</strong>: 带有全称 ($\forall$) 和存在 ($\exists$) 量词的布尔公式真值问题。</li>
+<li>包含关系：$P \subseteq NP \subseteq PSPACE = NPSPACE \subseteq EXPTIME$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="np-完全性-np-completeness">
+  NP 完全性 (NP-Completeness)
+  <a class="anchor" href="#np-%e5%ae%8c%e5%85%a8%e6%80%a7-np-completeness">#</a>
+</h3>
+<ul>
+<li><strong>多项式时间归约 (Polynomial-time reduction)</strong>: 若问题 A 可以多项式时间归约为问题 B ($A \le_p B$)，则 B 至少和 A 一样难。</li>
+<li><strong>NP-Complete (NPC)</strong>:
+<ol>
+<li>$L \in NP$</li>
+<li>$\forall L&rsquo; \in NP, L&rsquo; \le_p L$ (即 L 是 NP 中最难的问题)</li>
+</ol>
+</li>
+<li><strong>Cook-Levin 定理</strong>: SAT 问题是 NPC 的。</li>
+<li><strong>常见 NPC 问题</strong>:
+<ul>
+<li>3-SAT</li>
+<li>团问题 (Clique)</li>
+<li>顶点覆盖 (Vertex Cover)</li>
+<li>哈密顿路径 (Hamiltonian Path)</li>
+<li>旅行商问题 (TSP)</li>
+<li>子集和问题 (Subset Sum)</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="p-vs-np">
+  P vs NP
+  <a class="anchor" href="#p-vs-np">#</a>
+</h3>
+<ul>
+<li>核心问题：$P \stackrel{?}{=} NP$</li>
+<li>目前普遍猜想 $P \neq NP$。</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/networkreview/">
+                        计算机网络按层复习
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>

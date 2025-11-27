@@ -12,6 +12,16 @@ summary = "按网络层次（物理/链路/网络/传输/应用）整理的计�
 
 ---
 
+## 体系结构与参考模型
+
++ **OSI 七层模型** vs **TCP/IP 五层模型**
+  ![OSI vs TCP/IP](image1.png)
+
++ **TCP/IP 五层模型各层传输单元**
+  ![TCP/IP Layers](image2.png)
+
+---
+
 ## 物理层（Physical Layer） — 编码与调制
 
 ### 采样与信道极限

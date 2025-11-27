@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>计算理论 on rprp&#39;s blog</title>
+    <link>https://example.org/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</link>
+    <description>Recent content in 计算理论 on rprp&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 26 Nov 2025 10:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算理论学习笔记</title>
+      <link>https://example.org/posts/theoryofcomputation/</link>
+      <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
+      <guid>https://example.org/posts/theoryofcomputation/</guid>
+      <description>计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</description>
+    </item>
+  </channel>
+</rss>
