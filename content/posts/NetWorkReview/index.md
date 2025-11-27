@@ -351,10 +351,32 @@ NAT 技术主要用于解决 **IPv4 地址短缺** 问题，允许专用网络�
     - 使得 P2P 应用（如 BitTorrent、VoIP）开发困难（需要 NAT 穿透技术，如 STUN/TURN）。
     - 消耗路由器性能（需修改 IP/TCP/UDP 头部校验和）。
 
-### IP 协议关键字段
- - **TTL (Time To Live)**：生存时间，每经过一个路由器减 1，减至 0 丢弃，防止环路。
- - **Protocol**：上层协议标识（6=TCP, 17=UDP, 1=ICMP）。
- - **Fragment**：标识、标志、片偏移，用于分片重组。
+### IP 数据报格式 (IPv4)
+IPv4 数据报由 **首部 (Header)** 和 **数据 (Data)** 两部分组成。首部长度可变，但固定部分为 20 字节。
+
+#### 1. 固定首部 (20 Bytes)
+*   **版本 (Version)** [4 bits]：IP 协议版本，IPv4 为 4。
+*   **首部长度 (IHL)** [4 bits]：单位为 4 字节。最小值为 5 (5*4=20 字节)，最大值为 15 (60 字节)。
+*   **区分服务 (TOS/DS)** [8 bits]：用于 QoS，标记优先级、延迟、吞吐量等要求。
+*   **总长度 (Total Length)** [16 bits]：首部 + 数据的总长度，单位字节。最大 65535 字节。
+*   **标识 (Identification)** [16 bits]：计数器，用于分片重组，同一数据报的所有分片具有相同的 ID。
+*   **标志 (Flags)** [3 bits]：
+    - Bit 0: 保留。
+    - Bit 1: **DF (Don't Fragment)**。置 1 禁止分片。
+    - Bit 2: **MF (More Fragments)**。置 1 表示后面还有分片，置 0 表示这是最后一个分片。
+*   **片偏移 (Fragment Offset)** [13 bits]：指出本分片在原数据报中的相对位置。单位是 **8 字节**。
+*   **生存时间 (TTL)** [8 bits]：防止环路。每经过一个路由器减 1，减至 0 丢弃。
+*   **协议 (Protocol)** [8 bits]：指出数据部分携带的上层协议。
+    - `1`: ICMP
+    - `6`: TCP
+    - `17`: UDP
+*   **首部校验和 (Header Checksum)** [16 bits]：只校验首部，不校验数据（数据由上层校验）。每跳都需要重新计算（因为 TTL 变了）。
+*   **源 IP 地址** [32 bits]
+*   **目的 IP 地址** [32 bits]
+
+#### 2. 可变部分 (Options)
+*   长度可变，0 到 40 字节。用于排错、测量、安全等（如记录路由 Record Route、时间戳 Timestamp）。
+*   **填充 (Padding)**：确保首部长度是 4 字节的整数倍。
 
 ### ICMP (Internet Control Message Protocol)
  - **定义**：网络层协议，用于在 IP 主机、路由器之间传递控制消息。ICMP 报文封装在 IP 数据报中（Protocol 字段为 1）。
