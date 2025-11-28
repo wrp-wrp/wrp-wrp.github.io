@@ -216,6 +216,7 @@
         <li><a href="#可靠数据传输rdt演进">可靠数据传输（RDT）演进</a></li>
         <li><a href="#流水线协议">流水线协议</a></li>
         <li><a href="#tcp--udp">TCP / UDP</a></li>
+        <li><a href="#tcp-报文段结构-tcp-segment-structure">TCP 报文段结构 (TCP Segment Structure)</a></li>
         <li><a href="#tcp-超时与-rtt-估算">TCP 超时与 RTT 估算</a></li>
         <li><a href="#tcp-拥塞控制算法变体">TCP 拥塞控制算法变体</a></li>
         <li><a href="#tcp-连接管理">TCP 连接管理</a></li>
@@ -1290,6 +1291,96 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
 <ul>
 <li><strong>TCP</strong>：面向连接，可靠传输，拥塞控制（慢启动、拥塞避免、快速重传/恢复）、流量控制（滑动窗口）。</li>
 <li><strong>UDP</strong>：无连接、无保证，适合实时/简单请求场景（如 DNS、实时媒体）。</li>
+</ul>
+<h3 class="heading" id="tcp-报文段结构-tcp-segment-structure">
+  TCP 报文段结构 (TCP Segment Structure)
+  <a class="anchor" href="#tcp-%e6%8a%a5%e6%96%87%e6%ae%b5%e7%bb%93%e6%9e%84-tcp-segment-structure">#</a>
+</h3>
+<p>TCP 报文段由首部和数据组成。首部最小长度为 20 字节。</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    
+    
+      
+        <div class="img-container">
+            <img loading="lazy" alt="TCP Segment Structure" src="/posts/networkreview/tcp-segment.svg">
+        </div>
+      
+    
+
+    
+</figure>
+</p>
+<h4 class="heading" id="1-关键字段详解">
+  1. 关键字段详解
+  <a class="anchor" href="#1-%e5%85%b3%e9%94%ae%e5%ad%97%e6%ae%b5%e8%af%a6%e8%a7%a3">#</a>
+</h4>
+<ul>
+<li><strong>源端口与目的端口</strong> (各 16 bits)：标识通信双方的应用进程。</li>
+<li><strong>序列号 (Sequence Number)</strong> (32 bits)：
+<ul>
+<li>指出本报文段数据部分的<strong>第一个字节</strong>的序号。</li>
+<li>TCP 是面向字节流的，每个字节都有序号。</li>
+</ul>
+</li>
+<li><strong>确认号 (Acknowledgment Number)</strong> (32 bits)：
+<ul>
+<li><strong>期望</strong>收到对方下一个报文段的第一个字节的序号。</li>
+<li>若确认号为 $N$，则表示到序号 $N-1$ 为止的所有数据都已正确收到（累积确认）。</li>
+</ul>
+</li>
+<li><strong>首部长度 (Data Offset)</strong> (4 bits)：
+<ul>
+<li>指出 TCP 首部有多长（单位为 4 字节）。</li>
+<li>最小 5 (20 字节)，最大 15 (60 字节)。</li>
+</ul>
+</li>
+<li><strong>保留</strong> (6 bits)：保留为 0。</li>
+<li><strong>标志位 (Flags)</strong> (6 bits)：
+<ul>
+<li><strong>URG</strong>：紧急指针有效。</li>
+<li><strong>ACK</strong>：确认号有效（连接建立后所有传送的报文段都必须把 ACK 置 1）。</li>
+<li><strong>PSH</strong> (Push)：接收方应尽快将报文段交付应用进程，不再等待缓存填满。</li>
+<li><strong>RST</strong> (Reset)：连接出错，需释放连接并重新建立。</li>
+<li><strong>SYN</strong> (Synchronize)：同步序号，用于建立连接。</li>
+<li><strong>FIN</strong> (Finish)：发送方数据已发完，要求释放连接。</li>
+</ul>
+</li>
+<li><strong>接收窗口 (Window Size)</strong> (16 bits)：
+<ul>
+<li>告诉对方：“我现在允许你发送的数据量”。</li>
+<li>用于<strong>流量控制</strong>，单位为字节。</li>
+</ul>
+</li>
+<li><strong>校验和 (Checksum)</strong> (16 bits)：
+<ul>
+<li>覆盖首部和数据。</li>
+<li>计算时需加上 12 字节的<strong>伪首部</strong> (Pseudo Header，包含源/目 IP、协议号、TCP 长度)，以防止误投递。</li>
+</ul>
+</li>
+<li><strong>紧急指针 (Urgent Pointer)</strong> (16 bits)：只有当 URG=1 时有效，指出紧急数据的末尾在报文段中的位置。</li>
+</ul>
+<h4 class="heading" id="2-选项-options">
+  2. 选项 (Options)
+  <a class="anchor" href="#2-%e9%80%89%e9%a1%b9-options">#</a>
+</h4>
+<ul>
+<li>长度可变，最长 40 字节。</li>
+<li><strong>MSS (Maximum Segment Size)</strong>：最大报文段长度。仅在 SYN 报文段中协商，指明本端能接收的最大数据载荷长度（不含 TCP 首部）。</li>
+<li><strong>SACK (Selective Acknowledgment)</strong>：选择性确认，用于告知发送方哪些非连续的块已收到。</li>
+<li><strong>Window Scale</strong>：窗口扩大因子，用于支持超过 65535 字节的窗口（长肥管道）。</li>
 </ul>
 <h3 class="heading" id="tcp-超时与-rtt-估算">
   TCP 超时与 RTT 估算
