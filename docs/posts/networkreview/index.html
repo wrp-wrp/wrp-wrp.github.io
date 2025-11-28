@@ -630,10 +630,27 @@
 <li><strong>随机访问</strong>：纯 ALOHA、时隙 ALOHA、CSMA、CSMA/CD（有线）、CSMA/CA（无线）。</li>
 <li><strong>轮流方法</strong>：轮询、令牌环（Token Ring）。</li>
 </ul>
-<h4 class="heading" id="csma-的三种监听策略">
+<h4 class="heading" id="aloha-协议-简述">
+  ALOHA 协议 (简述)
+  <a class="anchor" href="#aloha-%e5%8d%8f%e8%ae%ae-%e7%ae%80%e8%bf%b0">#</a>
+</h4>
+<ul>
+<li><strong>纯 ALOHA</strong>：想发就发。冲突就重传。效率极低 (18.4%)。</li>
+<li><strong>时隙 ALOHA (Slotted ALOHA)</strong>：只能在时间片开始时发送。效率翻倍 (36.8%)。</li>
+</ul>
+<h4 class="heading" id="csma-carrier-sense-multiple-access">
+  CSMA (Carrier Sense Multiple Access)
+  <a class="anchor" href="#csma-carrier-sense-multiple-access">#</a>
+</h4>
+<p>CSMA 改进了 ALOHA，核心思想是 <strong>“先听后发” (Listen before talk)</strong>。</p>
+<ul>
+<li><strong>原理</strong>：发送前先监听信道。若信道忙，则推迟发送；若信道空闲，则按某种策略发送。</li>
+<li><strong>冲突原因</strong>：虽然先听后发，但由于 <strong>传播时延 (Propagation Delay)</strong> 的存在，当一个站点发送数据后，信号尚未到达另一个站点时，后者仍可能检测到信道空闲而发送数据，从而导致冲突。</li>
+</ul>
+<h5 class="heading" id="csma-的三种监听策略">
   CSMA 的三种监听策略
   <a class="anchor" href="#csma-%e7%9a%84%e4%b8%89%e7%a7%8d%e7%9b%91%e5%90%ac%e7%ad%96%e7%95%a5">#</a>
-</h4>
+</h5>
 <p>CSMA 的核心是“先听后发”，根据监听结果的不同处理方式，分为：</p>
 <ol>
 <li><strong>1-坚持 (1-persistent)</strong>：
@@ -708,25 +725,62 @@
 </h3>
 <p><em>用于无线局域网 (IEEE 802.11)</em></p>
 <ul>
-<li><strong>为什么不用 CD？</strong>
+<li>
+<p><strong>为什么不用 CD？</strong></p>
 <ol>
 <li><strong>检测困难</strong>：无线信号衰减剧烈，发送方本地信号强度远大于接收到的远端信号，难以在发送时检测到冲突。</li>
 <li><strong>隐蔽站问题 (Hidden Terminal)</strong>：A 和 C 都想发给 B，但 A 听不到 C，导致 A 以为信道空闲而发送，在 B 处发生冲突。</li>
 </ol>
 </li>
-<li><strong>核心机制 (MACA 思想)</strong>：
+<li>
+<p><strong>完整传输过程详解 (DIFS -&gt; 退避 -&gt; RTS -&gt; CTS -&gt; Data -&gt; ACK)</strong>
+无线传输是一个有序的交互过程，通过不同的帧间间隔 (IFS) 来区分优先级。</p>
 <ol>
-<li><strong>帧间间隔 (IFS)</strong>：发送前必须等待一段空闲时间（DIFS/SIFS 等），优先级高的帧等待时间短。</li>
-<li><strong>随机退避</strong>：即使信道空闲，也先退避一段随机时间，避免多个站点同时检测到空闲而冲突。</li>
-<li><strong>链路层确认 (ACK)</strong>：接收方收到数据后回复 ACK。若发送方未收到 ACK，则重传。</li>
-<li><strong>RTS/CTS (可选，解决隐蔽站)</strong>：
+<li><strong>DIFS (Distributed Inter-Frame Space)</strong>：
 <ul>
-<li><strong>RTS (Request To Send)</strong>：发送方广播“我要发数据，需占用时间 T”。</li>
-<li><strong>CTS (Clear To Send)</strong>：接收方广播“允许发送，需占用时间 T”。</li>
-<li><strong>NAV (Network Allocation Vector)</strong>：周围站点收到 RTS 或 CTS 后，在时间 T 内保持静默（虚拟载波监听）。</li>
+<li><strong>作用</strong>：发送方在发送数据帧（或 RTS）前，必须先检测到信道空闲并持续等待 DIFS 时间。</li>
+<li><strong>目的</strong>：确保信道确实空闲，且让高优先级帧（如 ACK，使用更短的 SIFS）有机会先发送。</li>
+</ul>
+</li>
+<li><strong>随机退避 (Random Backoff)</strong>：
+<ul>
+<li><strong>作用</strong>：经过 DIFS 后，若信道仍空闲，发送方启动倒计时（随机选择一个 slot 数）。</li>
+<li><strong>目的</strong>：避免多个站点同时等待 DIFS 结束后立即发送导致冲突。</li>
+</ul>
+</li>
+<li><strong>RTS (Request To Send)</strong> [可选]：
+<ul>
+<li><strong>作用</strong>：发送方广播“请求发送”，包含<strong>预约时长</strong>（传输数据+ACK所需时间）。</li>
+<li><strong>目的</strong>：解决隐蔽站问题；预约信道。</li>
+</ul>
+</li>
+<li><strong>SIFS (Short Inter-Frame Space)</strong>：
+<ul>
+<li><strong>作用</strong>：最短的帧间间隔，用于 RTS/CTS/Data/ACK 之间的切换。</li>
+<li><strong>目的</strong>：确保正在进行的交互序列不被其他站点打断（因为 SIFS &lt; DIFS，其他人还在等 DIFS 时，这边 SIFS 已经发完了）。</li>
+</ul>
+</li>
+<li><strong>CTS (Clear To Send)</strong>：
+<ul>
+<li><strong>作用</strong>：接收方收到 RTS 后，等待 SIFS，广播“允许发送”，也包含预约时长。</li>
+<li><strong>目的</strong>：通知发送方可以发了；同时通知<strong>周围所有站点</strong>（包括隐蔽站）在接下来的时间内保持静默（设置 NAV）。</li>
+</ul>
+</li>
+<li><strong>Data (数据帧)</strong>：
+<ul>
+<li><strong>作用</strong>：发送方收到 CTS 后，等待 SIFS，发送真正的数据。</li>
+</ul>
+</li>
+<li><strong>ACK (确认帧)</strong>：
+<ul>
+<li><strong>作用</strong>：接收方收到数据并校验无误后，等待 SIFS，回复 ACK。</li>
+<li><strong>目的</strong>：由于没有冲突检测 (CD)，发送方必须依靠 ACK 来确认发送成功。若未收到 ACK，则重传。</li>
 </ul>
 </li>
 </ol>
+<blockquote>
+<p><strong>NAV (Network Allocation Vector)</strong>：虚拟载波监听机制。其他站点收到 RTS 或 CTS 中的“预约时长”后，会更新自己的 NAV 计时器，在倒计时结束前不尝试发送数据，即使物理信道看起来是空闲的。</p>
+</blockquote>
 </li>
 </ul>
 <h4 class="heading" id="无线局域网的差错控制">
