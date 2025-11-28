@@ -832,13 +832,30 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
   <a class="anchor" href="#%e5%b1%80%e5%9f%9f%e7%bd%91%e4%ba%92%e8%bf%9e%e4%b8%8e%e4%ba%a4%e6%8d%a2%e6%9c%ba%e8%bd%ac%e5%8f%91">#</a>
 </h3>
 <p>局域网内的通信主要依靠<strong>以太网交换机 (Switch)</strong>，它工作在链路层。</p>
-<h4 class="heading" id="1-交换机-vs-集线器-hub">
-  1. 交换机 vs 集线器 (Hub)
-  <a class="anchor" href="#1-%e4%ba%a4%e6%8d%a2%e6%9c%ba-vs-%e9%9b%86%e7%ba%bf%e5%99%a8-hub">#</a>
+<h4 class="heading" id="1-交换以太网-switched-ethernet-与冲突消除">
+  1. 交换以太网 (Switched Ethernet) 与冲突消除
+  <a class="anchor" href="#1-%e4%ba%a4%e6%8d%a2%e4%bb%a5%e5%a4%aa%e7%bd%91-switched-ethernet-%e4%b8%8e%e5%86%b2%e7%aa%81%e6%b6%88%e9%99%a4">#</a>
 </h4>
+<p><strong>交换以太网</strong>是指以<strong>交换机 (Switch)</strong> 为核心设备构建的星形拓扑以太网。它本质上消除了冲突，原因如下：</p>
 <ul>
-<li><strong>集线器 (Hub)</strong>：物理层设备。收到信号后，简单放大并<strong>广播</strong>到所有其他端口。所有主机共享冲突域，带宽共享。</li>
-<li><strong>交换机 (Switch)</strong>：链路层设备。能识别帧的 MAC 地址，<strong>选择性转发</strong>。每个端口是一个独立的冲突域，支持全双工，带宽独享。</li>
+<li><strong>独占冲突域 (Micro-segmentation)</strong>：
+<ul>
+<li><strong>集线器 (Hub)</strong>：所有端口属于同一个冲突域。A 发数据，B 就不能发。</li>
+<li><strong>交换机 (Switch)</strong>：<strong>每个端口是一个独立的冲突域</strong>。端口 A 的通信不会干扰端口 B。</li>
+</ul>
+</li>
+<li><strong>全双工通信 (Full Duplex)</strong>：
+<ul>
+<li>交换机与主机之间通常使用全双工链路（发送和接收使用不同线对）。</li>
+<li>这意味着主机可以同时发送和接收，物理上消除了“发送”与“接收”信号的碰撞。</li>
+</ul>
+</li>
+<li><strong>内部交换与缓存</strong>：
+<ul>
+<li>若 A 和 C 同时发给 B，交换机会将帧<strong>缓存</strong>在队列中排队转发，而不是让信号在线缆上叠加（碰撞）。</li>
+<li>因此，在全双工交换以太网中，<strong>CSMA/CD 协议实际上不再被触发</strong>。</li>
+</ul>
+</li>
 </ul>
 <h4 class="heading" id="2-交换机工作原理自学习与转发">
   2. 交换机工作原理：自学习与转发
