@@ -630,13 +630,61 @@
 <li><strong>随机访问</strong>：纯 ALOHA、时隙 ALOHA、CSMA、CSMA/CD（有线）、CSMA/CA（无线）。</li>
 <li><strong>轮流方法</strong>：轮询、令牌环（Token Ring）。</li>
 </ul>
-<h4 class="heading" id="aloha-协议-简述">
-  ALOHA 协议 (简述)
-  <a class="anchor" href="#aloha-%e5%8d%8f%e8%ae%ae-%e7%ae%80%e8%bf%b0">#</a>
+<h4 class="heading" id="aloha-协议详解">
+  ALOHA 协议详解
+  <a class="anchor" href="#aloha-%e5%8d%8f%e8%ae%ae%e8%af%a6%e8%a7%a3">#</a>
 </h4>
+<p>ALOHA 协议是随机接入（Random Access）协议的鼻祖，虽然现代网络很少直接使用，但它是理解 CSMA 的基础。</p>
+<h5 class="heading" id="1-纯-aloha-pure-aloha">
+  1. 纯 ALOHA (Pure ALOHA)
+  <a class="anchor" href="#1-%e7%ba%af-aloha-pure-aloha">#</a>
+</h5>
 <ul>
-<li><strong>纯 ALOHA</strong>：想发就发。冲突就重传。效率极低 (18.4%)。</li>
-<li><strong>时隙 ALOHA (Slotted ALOHA)</strong>：只能在时间片开始时发送。效率翻倍 (36.8%)。</li>
+<li><strong>基本思想</strong>：想发就发。
+<ul>
+<li>用户有数据要发送时，<strong>立即</strong>发送。</li>
+<li>发送完后，等待确认 (ACK)。</li>
+<li>若收到 ACK，发送成功；若超时未收到 ACK，则认为发生冲突，等待一个<strong>随机时间</strong>后重传。</li>
+</ul>
+</li>
+<li><strong>冲突分析</strong>：
+<ul>
+<li>假设帧长为 $T$。</li>
+<li>若 $t_0$ 时刻发送一帧，那么在 $[t_0 - T, t_0 + T]$ 这段时间内（共 $2T$），如果有其他用户也发送了帧，就会发生冲突。</li>
+<li><strong>冲突危险期 (Vulnerable Period)</strong>：$2T$。</li>
+</ul>
+</li>
+<li><strong>效率</strong>：
+<ul>
+<li>假设网络负载服从泊松分布。</li>
+<li>最大吞吐量（信道利用率）仅为 <strong>18.4%</strong> ($1/2e$)。</li>
+</ul>
+</li>
+</ul>
+<h5 class="heading" id="2-时隙-aloha-slotted-aloha">
+  2. 时隙 ALOHA (Slotted ALOHA)
+  <a class="anchor" href="#2-%e6%97%b6%e9%9a%99-aloha-slotted-aloha">#</a>
+</h5>
+<ul>
+<li><strong>改进</strong>：将时间划分为等长的<strong>时隙 (Slot)</strong>，时隙长度等于一个帧的传输时间 $T$。</li>
+<li><strong>规则</strong>：
+<ul>
+<li>站点只能在<strong>每个时隙的开始时刻</strong>发送帧。</li>
+<li>如果用户在时隙中间产生了数据，必须等到下一个时隙开始才能发送。</li>
+</ul>
+</li>
+<li><strong>冲突分析</strong>：
+<ul>
+<li>因为强制对齐了发送时间，只有在同一个时隙内有两个或以上站点发送才会冲突。</li>
+<li><strong>冲突危险期</strong>：减半为 $T$。</li>
+</ul>
+</li>
+<li><strong>效率</strong>：
+<ul>
+<li>冲突概率降低，最大吞吐量翻倍，达到 <strong>36.8%</strong> ($1/e$)。</li>
+<li><em>代价</em>：需要全网时间同步。</li>
+</ul>
+</li>
 </ul>
 <h4 class="heading" id="csma-carrier-sense-multiple-access">
   CSMA (Carrier Sense Multiple Access)
