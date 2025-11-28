@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59764&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:59764/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59764/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59764/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:59764/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:59764/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:59764/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
 
-<meta property="og:url" content="http://localhost:59764/posts/networkreview/">
+<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -95,7 +95,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:59764/">rprp&#39;s blog</a>
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -227,6 +227,16 @@
         <li><a href="#dns-域名系统-domain-name-system">DNS 域名系统 (Domain Name System)</a></li>
         <li><a href="#电子邮件-email">电子邮件 (Email)</a></li>
         <li><a href="#p2p-文件分发-peer-to-peer">P2P 文件分发 (Peer-to-Peer)</a></li>
+      </ul>
+    </li>
+    <li><a href="#综合案例当你在浏览器输入-url-时发生了什么">综合案例：当你在浏览器输入 URL 时发生了什么？</a>
+      <ul>
+        <li><a href="#1-准备阶段接入网络-dhcp--arp">1. 准备阶段：接入网络 (DHCP &amp; ARP)</a></li>
+        <li><a href="#2-名字解析找-ip-dns">2. 名字解析：找 IP (DNS)</a></li>
+        <li><a href="#3-建立连接三次握手-tcp">3. 建立连接：三次握手 (TCP)</a></li>
+        <li><a href="#4-数据传输发送请求与响应-http">4. 数据传输：发送请求与响应 (HTTP)</a></li>
+        <li><a href="#5-页面渲染与资源加载">5. 页面渲染与资源加载</a></li>
+        <li><a href="#6-断开连接四次挥手-tcp">6. 断开连接：四次挥手 (TCP)</a></li>
       </ul>
     </li>
     <li><a href="#实验与常用速算附录">实验与常用速算（附录）</a></li>
@@ -1327,6 +1337,32 @@ $$ TimeoutInterval = EstimatedRTT + 4 \times DevRTT $$</p>
 <li><strong>初始值</strong>：通常为 1 秒。</li>
 <li><strong>超时后</strong>：若出现超时，$TimeoutInterval$ 通常<strong>加倍</strong>（指数退避），而不是重新计算，直到收到新的非重传报文段的 ACK。</li>
 </ul>
+<h4 class="heading" id="5-tcp-重传计时器管理规则-简化版">
+  5. TCP 重传计时器管理规则 (简化版)
+  <a class="anchor" href="#5-tcp-%e9%87%8d%e4%bc%a0%e8%ae%a1%e6%97%b6%e5%99%a8%e7%ae%a1%e7%90%86%e8%a7%84%e5%88%99-%e7%ae%80%e5%8c%96%e7%89%88">#</a>
+</h4>
+<p>TCP 通常仅使用<strong>单一重传计时器</strong>（Single Retransmission Timer），即使有多个已发送但未确认的段。管理逻辑如下：</p>
+<ol>
+<li><strong>发送数据时</strong>：若计时器当前<strong>未运行</strong>，则启动计时器（过期时间设为 $TimeoutInterval$）。</li>
+<li><strong>收到 ACK 时</strong>：
+<ul>
+<li>若该 ACK 确认了<strong>新数据</strong>（累积确认）：
+<ul>
+<li>更新 $EstimatedRTT$ 等参数（仅当该段未曾重传，遵循 Karn 算法）。</li>
+<li>若仍有未确认的数据，<strong>重启</strong>计时器。</li>
+<li>若所有数据都已确认，<strong>停止</strong>计时器。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>计时器超时</strong>：
+<ul>
+<li><strong>重传</strong>：重传<strong>最早</strong>那个未被确认的报文段（仅重传一个）。</li>
+<li><strong>退避</strong>：将 $TimeoutInterval$ <strong>加倍</strong>（指数退避）。这能有效防止网络拥塞进一步恶化。</li>
+<li><strong>重启</strong>：重启计时器。</li>
+</ul>
+</li>
+</ol>
 <h3 class="heading" id="tcp-拥塞控制算法变体">
   TCP 拥塞控制算法变体
   <a class="anchor" href="#tcp-%e6%8b%a5%e5%a1%9e%e6%8e%a7%e5%88%b6%e7%ae%97%e6%b3%95%e5%8f%98%e4%bd%93">#</a>
@@ -1584,6 +1620,77 @@ $$ D_{p2p} = \max \left\{ \frac{F}{u_s}, \frac{F}{d_{min}}, \frac{N F}{u_s + \su
 </ul>
 </li>
 </ul>
+<hr>
+<h2 class="heading" id="综合案例当你在浏览器输入-url-时发生了什么">
+  综合案例：当你在浏览器输入 URL 时发生了什么？
+  <a class="anchor" href="#%e7%bb%bc%e5%90%88%e6%a1%88%e4%be%8b%e5%bd%93%e4%bd%a0%e5%9c%a8%e6%b5%8f%e8%a7%88%e5%99%a8%e8%be%93%e5%85%a5-url-%e6%97%b6%e5%8f%91%e7%94%9f%e4%ba%86%e4%bb%80%e4%b9%88">#</a>
+</h2>
+<p>这是一个经典的面试题，也是串联计算机网络各层协议的最佳案例。假设你打开电脑，连接 WiFi，在浏览器输入 <code>http://www.google.com</code> 并回车。</p>
+<h3 class="heading" id="1-准备阶段接入网络-dhcp--arp">
+  1. 准备阶段：接入网络 (DHCP &amp; ARP)
+  <a class="anchor" href="#1-%e5%87%86%e5%a4%87%e9%98%b6%e6%ae%b5%e6%8e%a5%e5%85%a5%e7%bd%91%e7%bb%9c-dhcp--arp">#</a>
+</h3>
+<p>如果你的电脑刚连上网络，还没有 IP 地址：</p>
+<ol>
+<li><strong>DHCP (应用层/UDP)</strong>：电脑广播 <code>DHCP Discover</code> 报文。</li>
+<li><strong>DHCP Server</strong>（通常是路由器）回复 <code>DHCP Offer</code>，分配 <strong>本机 IP</strong>、<strong>子网掩码</strong>、<strong>默认网关 IP</strong> 和 <strong>DNS 服务器 IP</strong>。</li>
+<li><strong>ARP (链路层)</strong>：电脑现在有了网关 IP，但要发包出去需要网关的 MAC 地址。
+<ul>
+<li>电脑广播 <code>ARP Request</code>：“谁是 192.168.1.1？”</li>
+<li>网关回复 <code>ARP Reply</code>：“我是，MAC 是 xx:xx&hellip;”。</li>
+</ul>
+</li>
+</ol>
+<h3 class="heading" id="2-名字解析找-ip-dns">
+  2. 名字解析：找 IP (DNS)
+  <a class="anchor" href="#2-%e5%90%8d%e5%ad%97%e8%a7%a3%e6%9e%90%e6%89%be-ip-dns">#</a>
+</h3>
+<p>浏览器不知道 <code>www.google.com</code> 在哪，需要 IP 地址。</p>
+<ol>
+<li><strong>查询缓存</strong>：浏览器缓存 $\rightarrow$ 操作系统缓存 (hosts) $\rightarrow$ 路由器缓存。</li>
+<li><strong>DNS 查询 (应用层/UDP)</strong>：若缓存未命中，向 <strong>本地 DNS 服务器</strong> 发送查询请求。</li>
+<li><strong>迭代/递归</strong>：本地 DNS 依次询问根、.com、google.com 权威服务器，最终获得 <code>www.google.com</code> 的 IP 地址。</li>
+</ol>
+<h3 class="heading" id="3-建立连接三次握手-tcp">
+  3. 建立连接：三次握手 (TCP)
+  <a class="anchor" href="#3-%e5%bb%ba%e7%ab%8b%e8%bf%9e%e6%8e%a5%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b-tcp">#</a>
+</h3>
+<p>拿到目标 IP 后，浏览器准备发送 HTTP 请求，但 HTTP 基于 TCP，需先建立连接。</p>
+<ol>
+<li><strong>封装</strong>：TCP 头部 (SYN=1, Seq=x) $\rightarrow$ IP 头部 (源/目 IP) $\rightarrow$ MAC 头部 (源 MAC/网关 MAC)。</li>
+<li><strong>握手流程</strong>：
+<ul>
+<li>Client 发送 <strong>SYN</strong>。</li>
+<li>Server 回复 <strong>SYN+ACK</strong>。</li>
+<li>Client 发送 <strong>ACK</strong>。</li>
+<li><em>注：此时连接建立，双方确认了初始序列号和窗口大小。</em></li>
+</ul>
+</li>
+</ol>
+<h3 class="heading" id="4-数据传输发送请求与响应-http">
+  4. 数据传输：发送请求与响应 (HTTP)
+  <a class="anchor" href="#4-%e6%95%b0%e6%8d%ae%e4%bc%a0%e8%be%93%e5%8f%91%e9%80%81%e8%af%b7%e6%b1%82%e4%b8%8e%e5%93%8d%e5%ba%94-http">#</a>
+</h3>
+<ol>
+<li><strong>发送请求</strong>：浏览器构建 <code>HTTP GET / HTTP/1.1</code> 请求报文。</li>
+<li><strong>传输</strong>：报文被 TCP 分段，IP 分片，通过网关转发，经过互联网上的多个路由器（OSPF/BGP 决定路径），最终到达 Google 服务器。</li>
+<li><strong>服务器处理</strong>：Google 服务器收到包，解析 HTTP 请求，处理业务逻辑，构建 <code>HTTP 200 OK</code> 响应报文（包含 HTML 内容）。</li>
+<li><strong>接收响应</strong>：响应报文回传给浏览器。</li>
+</ol>
+<h3 class="heading" id="5-页面渲染与资源加载">
+  5. 页面渲染与资源加载
+  <a class="anchor" href="#5-%e9%a1%b5%e9%9d%a2%e6%b8%b2%e6%9f%93%e4%b8%8e%e8%b5%84%e6%ba%90%e5%8a%a0%e8%bd%bd">#</a>
+</h3>
+<ol>
+<li><strong>解析</strong>：浏览器解析 HTML，构建 DOM 树。</li>
+<li><strong>子资源加载</strong>：解析过程中发现 CSS、JS、图片等链接，<strong>重复上述步骤</strong>（DNS可能缓存，TCP可能复用 Keep-Alive）下载这些资源。</li>
+<li><strong>渲染</strong>：结合 DOM 树和 CSSOM 树，绘制页面。</li>
+</ol>
+<h3 class="heading" id="6-断开连接四次挥手-tcp">
+  6. 断开连接：四次挥手 (TCP)
+  <a class="anchor" href="#6-%e6%96%ad%e5%bc%80%e8%bf%9e%e6%8e%a5%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b-tcp">#</a>
+</h3>
+<p>若 HTTP 头部 Connection: close 或页面关闭，触发 TCP 四次挥手释放连接资源。</p>
 <hr>
 <h2 class="heading" id="实验与常用速算附录">
   实验与常用速算（附录）
