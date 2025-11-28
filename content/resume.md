@@ -23,7 +23,7 @@ Database Systems, Approximate Nearest Neighbor Search (ANNS), Streaming Algorith
 
 ## Research Experience
 
-**Research Assistant** | *Database Group (Prof. Shuhao Zhang), HUST*  
+**Research Intern** | *Database Group (Prof. Shuhao Zhang), HUST*  
 *Nov. 2024 – Present*
 - Investigating **ANNS in streaming scenarios**; identified recall degradation caused by data distribution shifts.
 - Contributed to a benchmark paper on streaming vector search (4th Author, under review at **SIGMOD**).
