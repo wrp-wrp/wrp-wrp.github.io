@@ -694,13 +694,90 @@ TCP 通常仅使用**单一重传计时器**（Single Retransmission Timer），
 
 ## 应用层（Application Layer） — 协议演进与常见服务
 
-### HTTP
- | 版本 | 连接 | 核心 | 说明 |
- |---:|:---:|:---|:---|
- | HTTP/1.0 | 短连接 | 文本 | 每请求建连接 |
- | HTTP/1.1 | 长连接 | 管线化 | Keep-Alive、管线化（有限应用） |
- | HTTP/2 | 多路复用 | 二进制分帧、HPACK | 降低头部开销、单连接多流 |
- | HTTP/3 | QUIC/UDP | 0-RTT、连接迁移 | 解决 TCP 层面队头阻塞 |
+### HTTP 超文本传输协议 (HyperText Transfer Protocol)
+HTTP 是 Web 的核心应用层协议，定义了 Web 客户端（浏览器）与 Web 服务器之间交换消息的格式和方式。
+
+#### 1. 基本概念
+*   **C/S 架构**：Client 发起请求，Server 返回响应。
+*   **无状态 (Stateless)**：服务器不维护关于客户的任何信息。即服务器不知道刚才这个 IP 的用户是否访问过。
+    *   *优点*：服务器设计简单，支持高性能并发。
+    *   *缺点*：无法关联用户操作（如购物车），需引入 Cookie/Session 解决。
+*   **传输层**：基于 **TCP** (端口 80)。HTTPS 基于 **SSL/TLS** (端口 443)。
+
+#### 2. HTTP 连接类型
+*   **非持久连接 (Non-persistent Connection)** [HTTP/1.0 默认]
+    *   每个 TCP 连接只传输**一个**请求/响应对象。
+    *   传输完毕后立即关闭 TCP 连接。
+    *   *缺点*：每个对象都要经历 TCP 三次握手，延迟高；服务器端并发连接数压力大。
+*   **持久连接 (Persistent Connection)** [HTTP/1.1 默认]
+    *   **Keep-Alive**：服务器在发送响应后保持 TCP 连接打开。后续请求/响应复用该连接。
+    *   **非流水线 (Without Pipelining)**：发一个请求，等收到响应后再发下一个。
+    *   **流水线 (With Pipelining)**：客户端可以连续发送多个请求，无需等待响应。服务器按顺序返回响应。（注：因队头阻塞问题，现代浏览器默认并未广泛启用流水线）。
+
+#### 3. HTTP 报文格式
+HTTP 报文是纯文本（HTTP/2 之前），人眼可读。
+
+**A. 请求报文 (Request Message)**
+```text
+GET /index.html HTTP/1.1      <-- 请求行 (方法 URL 版本)
+Host: www.example.com         <-- 首部行 (Header Lines)
+User-Agent: Mozilla/5.0
+Connection: keep-alive
+                              <-- 空行 (CRLF)
+(Body)                        <-- 请求体 (GET 通常为空，POST 有数据)
+```
+
+**B. 响应报文 (Response Message)**
+```text
+HTTP/1.1 200 OK               <-- 状态行 (版本 状态码 短语)
+Date: Thu, 28 Nov 2025...     <-- 首部行
+Server: Apache
+Content-Type: text/html
+Content-Length: 1234
+                              <-- 空行
+<html>...</html>              <-- 响应体 (Entity Body)
+```
+
+#### 4. 常见 HTTP 方法 (Methods)
+*   **GET**：请求指定资源。参数在 URL 中可见。
+*   **POST**：向服务器提交数据（如表单）。数据在报文体中。
+*   **HEAD**：类似 GET，但服务器只返回首部，不返回实体主体（用于调试或检查资源是否存在）。
+*   **PUT**：上传文件，替换目标资源。
+*   **DELETE**：删除指定资源。
+
+#### 5. 常见状态码 (Status Codes)
+*   **1xx**：通知信息（如 100 Continue）。
+*   **2xx**：成功。
+    *   **200 OK**：请求成功。
+*   **3xx**：重定向。
+    *   **301 Moved Permanently**：永久移动（更新书签）。
+    *   **304 Not Modified**：资源未修改（使用缓存）。
+*   **4xx**：客户端错误。
+    *   **400 Bad Request**：请求语法错误。
+    *   **401 Unauthorized**：未授权（需登录）。
+    *   **403 Forbidden**：禁止访问。
+    *   **404 Not Found**：资源不存在。
+*   **5xx**：服务器错误。
+    *   **500 Internal Server Error**：服务器内部错误。
+    *   **502 Bad Gateway**：网关错误。
+
+#### 6. Cookie 与 Session
+为了解决 HTTP 无状态的问题：
+*   **Cookie**：
+    *   存储在**客户端**（浏览器）。
+    *   服务器在响应头中设置 `Set-Cookie: id=123`。
+    *   浏览器后续请求会自动带上 `Cookie: id=123`。
+*   **Session**：
+    *   存储在**服务器端**。
+    *   通常利用 Cookie 传递 SessionID 来关联用户会话。
+
+#### 7. HTTP 版本演进详解
+| 版本 | 核心特性 | 解决的问题 | 遗留问题 |
+| :--- | :--- | :--- | :--- |
+| **HTTP/1.0** | 短连接 | 建立了基本的请求/响应模型 | 连接无法复用，性能差 |
+| **HTTP/1.1** | **持久连接 (Keep-Alive)**<br>管线化 (Pipelining)<br>Host 头 | 减少了 TCP 握手开销 | **队头阻塞 (HOL Blocking)**：一个请求卡住，后续请求全被堵塞 |
+| **HTTP/2** | **多路复用 (Multiplexing)**<br>二进制分帧<br>头部压缩 (HPACK)<br>服务器推送 | 解决了应用层的队头阻塞；单连接并发多请求 | **TCP 队头阻塞**：底层 TCP 丢包会导致所有流等待 |
+| **HTTP/3** | **基于 QUIC (UDP)**<br>0-RTT 建连<br>连接迁移 (Connection ID) | 彻底解决 TCP 队头阻塞；网络切换不断连 | 部署兼容性（UDP 丢包/限速问题） |
 
 ### DNS 域名系统 (Domain Name System)
 DNS 是互联网的电话簿，负责将人类可读的主机名 (如 `www.example.com`) 转换为机器可读的 IP 地址。
