@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59764&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:59764/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59764/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59764/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:59764/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:59764/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:59764/posts/networkreview/"/>
 
-<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
+<meta property="og:url" content="http://localhost:59764/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -95,7 +95,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+        <a href="http://localhost:59764/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -1113,9 +1113,28 @@ $$ U = \frac{T_{frame}}{T_{frame} + RTT} = \frac{1}{1 + 2a} $$
 <li><strong>源 IP 地址</strong> [32 bits]</li>
 <li><strong>目的 IP 地址</strong> [32 bits]</li>
 </ul>
-<h4 class="heading" id="2-可变部分-options">
-  2. 可变部分 (Options)
-  <a class="anchor" href="#2-%e5%8f%af%e5%8f%98%e9%83%a8%e5%88%86-options">#</a>
+<h4 class="heading" id="2-ip-分片机制与关键字段">
+  2. IP 分片机制与关键字段
+  <a class="anchor" href="#2-ip-%e5%88%86%e7%89%87%e6%9c%ba%e5%88%b6%e4%b8%8e%e5%85%b3%e9%94%ae%e5%ad%97%e6%ae%b5">#</a>
+</h4>
+<p>当 IP 数据报长度超过链路 MTU 时，需要进行分片。涉及的四个关键字段如下：</p>
+<ol>
+<li><strong>标识 (Identification)</strong>：同一原始数据报的所有分片拥有相同的标识，用于接收端重组。</li>
+<li><strong>标志 (Flags)</strong>：
+<ul>
+<li><strong>DF (Don&rsquo;t Fragment)</strong>：若为 1，禁止分片（超限则丢弃并报错）。</li>
+<li><strong>MF (More Fragments)</strong>：若为 1，表示后续还有分片；若为 0，表示这是最后一个分片。</li>
+</ul>
+</li>
+<li><strong>片偏移 (Fragment Offset)</strong>：表示当前分片在原始数据报中的位置（单位：<strong>8 字节</strong>）。</li>
+<li><strong>总长度 (Total Length)</strong>：分片后，每个分片的首部该字段会被修改为当前分片的总长度（首部+数据）。</li>
+</ol>
+<blockquote>
+<p><strong>重组四元组</strong>：接收端通过 <strong>源 IP</strong>、<strong>目的 IP</strong>、<strong>协议</strong> 和 <strong>标识</strong> 来唯一确定一个分片属于哪个原始数据报。</p>
+</blockquote>
+<h4 class="heading" id="3-可变部分-options">
+  3. 可变部分 (Options)
+  <a class="anchor" href="#3-%e5%8f%af%e5%8f%98%e9%83%a8%e5%88%86-options">#</a>
 </h4>
 <ul>
 <li>长度可变，0 到 40 字节。用于排错、测量、安全等（如记录路由 Record Route、时间戳 Timestamp）。</li>
