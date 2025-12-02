@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    PKE 内核可用工具总览 | rprp&#39;s blog
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/pke-kernel-tools/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/pke-kernel-tools/">
+  <meta property="og:site_name" content="rprp&#39;s blog">
+  <meta property="og:title" content="PKE 内核可用工具总览">
+  <meta property="og:description" content="面向在 riscv-pke 中扩展代理内核时常用的函数、宏、类型与配套设施，按主题归类列举。">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-02T12:00:00+08:00">
+    <meta property="article:modified_time" content="2025-12-02T12:00:00+08:00">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.56b1873d8852f8a5a109abda36c1bfcde55cb48e5bcbe0d8c934a196a7dc374a.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/resume" >
+                /resume
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/pke-kernel-tools/">PKE 内核可用工具总览</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">PKE 内核可用工具总览</h1>
+        <p class="single-summary">面向在 riscv-pke 中扩展代理内核时常用的函数、宏、类型与配套设施，按主题归类列举。</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-12-02T12:00:00&#43;08:00">December 2, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-risc-v-体系结构与-csr-工具">1. RISC-V 体系结构与 CSR 工具</a></li>
+    <li><a href="#2-物理内存与虚拟内存">2. 物理内存与虚拟内存</a></li>
+    <li><a href="#3-进程上下文与调度钩子">3. 进程、上下文与调度钩子</a></li>
+    <li><a href="#4-elf-与用户程序加载">4. ELF 与用户程序加载</a></li>
+    <li><a href="#5-系统调用与陷入">5. 系统调用与陷入</a></li>
+    <li><a href="#6-spike-接口与调试辅助">6. Spike 接口与调试辅助</a></li>
+    <li><a href="#7-通用工具库">7. 通用工具库</a></li>
+    <li><a href="#8-构建与用户空间配套">8. 构建与用户空间配套</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <p>面向在 <code>riscv-pke</code> 中扩展代理内核时常用的函数、宏、类型与配套设施，按主题归类列举。每项均包含来源位置（<code>文件:行</code>）与推荐用法示例，方便查阅与复用。</p>
+<h2 class="heading" id="1-risc-v-体系结构与-csr-工具">
+  1. RISC-V 体系结构与 CSR 工具
+  <a class="anchor" href="#1-risc-v-%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84%e4%b8%8e-csr-%e5%b7%a5%e5%85%b7">#</a>
+</h2>
+<ul>
+<li><code>write_csr(name, value)</code> / <code>read_csr(name)</code>（<code>kernel/riscv.h:170-186</code>）
+<ul>
+<li><strong>用途</strong>：直接读写 <code>sstatus</code>、<code>sepc</code>、<code>stvec</code>、<code>satp</code> 等 CSR。</li>
+<li><strong>参数</strong>：<code>name</code> 为 CSR 标识（宏），<code>value</code> 为 64 位值。</li>
+<li><strong>常见场景</strong>：保存/恢复 <code>sepc</code>，在 trap 前后切换 <code>stvec</code>，开启中断位 (<code>SSTATUS_SIE</code>)。</li>
+<li><strong>示例</strong>：<code>uint64 sepc = read_csr(sepc); write_csr(stvec, (uint64)smode_trap_vector);</code></li>
+</ul>
+</li>
+<li><code>flush_tlb()</code>（<code>kernel/riscv.h:206</code>）
+<ul>
+<li><strong>用途</strong>：在修改页表后刷新 TLB，避免旧映射残留。</li>
+<li><strong>实现</strong>：执行 <code>sfence.vma zero, zero</code>。</li>
+<li><strong>示例</strong>：<code>map_pages(...); flush_tlb();</code></li>
+</ul>
+</li>
+<li><code>MAKE_SATP(pagetable)</code> / <code>SATP_SV39</code>（<code>kernel/riscv.h:208-211</code>）
+<ul>
+<li><strong>用途</strong>：根据物理页表根地址构造 <code>satp</code> 需要的值。</li>
+<li><strong>返回</strong>：<code>SATP_SV39 | (pagetable &gt;&gt; 12)</code>。</li>
+<li><strong>示例</strong>：<code>write_csr(satp, MAKE_SATP(g_kernel_pagetable));</code></li>
+</ul>
+</li>
+<li><code>CAUSE_*</code> / <code>SSTATUS_*</code> / <code>SIP_*</code>（<code>kernel/riscv.h:148-188</code>）
+<ul>
+<li><strong>用途</strong>：<code>CAUSE_USER_ECALL</code>, <code>CAUSE_MTIMER_S_TRAP</code> 等常量用于解析 <code>scause</code>；<code>SSTATUS_SPP</code> 帮助确认陷入前所处特权级；<code>SIP_SSIP</code> 可用于屏蔽软件中断。</li>
+<li><strong>示例</strong>：<code>if (read_csr(scause) == CAUSE_USER_ECALL) handle_syscall(...);</code></li>
+</ul>
+</li>
+<li>页表宏（<code>kernel/riscv.h:193-236</code>）
+<ul>
+<li><code>PGSIZE</code>/<code>PGSHIFT</code>：定义页大小/偏移位数；用于 <code>addr &amp; (PGSIZE-1)</code> 计算页内偏移。</li>
+<li><code>MAXVA</code>：超过该值的 VA 被视为非法，通常配合 <code>if (va &gt;= MAXVA) panic(...)</code>。</li>
+<li><code>PX(level, va)</code> 与 <code>PXSHIFT(level)</code>、<code>PXMASK</code>：提取 SV39 三层页号，level=2→0 依次对应 VPN[2:0]。</li>
+<li><code>PTE_V/R/W/X/U/G/A/D</code>：PTE 权限位。</li>
+<li><code>PA2PTE(pa)</code> / <code>PTE2PA(pte)</code> / <code>PTE_FLAGS(pte)</code>：在 PTE 与物理地址之间转换。</li>
+<li><strong>示例</strong>：
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">pte_t</span> *pte = pt + <span style="color:#666;font-weight:bold;font-style:italic">PX</span>(1, va);
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">if</span> (!(*pte &amp; PTE_V)) *pte = <span style="color:#666;font-weight:bold;font-style:italic">PA2PTE</span>(new_page) | PTE_V;
+</span></span><span style="display:flex;"><span>uint64 pa = <span style="color:#666;font-weight:bold;font-style:italic">PTE2PA</span>(*pte) | (va &amp; (PGSIZE-1));
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="2-物理内存与虚拟内存">
+  2. 物理内存与虚拟内存
+  <a class="anchor" href="#2-%e7%89%a9%e7%90%86%e5%86%85%e5%ad%98%e4%b8%8e%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98">#</a>
+</h2>
+<ul>
+<li><code>pmm_init()</code> / <code>alloc_page()</code> / <code>free_page()</code>（<code>kernel/pmm.h:4-9</code>）
+<ul>
+<li><strong>pmm_init</strong>：启动早期调用，建立可分配物理页池。</li>
+<li><strong>alloc_page</strong>：返回一页物理内存首地址（<code>void*</code>），保证 4KB 对齐；若内存耗尽返回 <code>NULL</code>。</li>
+<li>**free_page(pa)<code>**：将 </code>alloc_page` 返回的地址重新入队。</li>
+<li><strong>示例</strong>：
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">void</span> *page = <span style="color:#666;font-weight:bold;font-style:italic">alloc_page</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">if</span> (!page) <span style="color:#666;font-weight:bold;font-style:italic">panic</span>(<span style="color:#666;font-style:italic">&#34;out of memory&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">memset</span>(page, 0, PGSIZE);
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// ...使用...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#666;font-weight:bold;font-style:italic">free_page</span>(page);
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>地址布局常量（<code>kernel/memlayout.h:5-19</code>）
+<ul>
+<li><code>DRAM_BASE</code>/<code>KERN_BASE</code>：物理/虚拟 DRAM 起点（此处相同），保证内核在高地址运行。</li>
+<li><code>USER_STACK_TOP</code>：用户栈虚拟顶部（0x7ffff000）；<code>USER_FREE_ADDRESS_START</code>：实验 2.2 中简易堆的初始虚拟地址。</li>
+<li><strong>用法</strong>：<code>proc-&gt;trapframe-&gt;regs.sp = USER_STACK_TOP;</code></li>
+</ul>
+</li>
+<li>VMM 工具集（<code>kernel/vmm.h:6-33</code>, <code>kernel/vmm.c:14-199</code>）
+<ul>
+<li><code>map_pages(pagetable, va, size, pa, perm)</code>
+<ul>
+<li><strong>参数</strong>：<code>va/pa</code> 起始地址，<code>size</code> 字节数（会自动对齐），<code>perm</code> 为 PTE 权限位（例如 <code>prot_to_type(PROT_READ|PROT_WRITE, user)</code>）。</li>
+<li><strong>返回</strong>：成功返回 0，失败（申请 PTE 失败或重复映射）会 <code>panic</code> 或返回 -1。</li>
+<li><strong>注意</strong>：传入的 <code>pagetable</code> 必须是根目录；<code>va/pa</code> 不需要页对齐，函数内部会 <code>ROUNDDOWN</code>。</li>
+</ul>
+</li>
+<li><code>prot_to_type(prot, user)</code>
+<ul>
+<li><strong>参数</strong>：<code>prot</code> 为 <code>PROT_*</code> 位或组合，<code>user</code> 非零表示需要 <code>PTE_U</code>。</li>
+<li><strong>返回</strong>：对应的 PTE 位组合，会自动添加 <code>PTE_A</code>/<code>PTE_D</code>。</li>
+<li><strong>示例</strong>：<code>int perm = prot_to_type(PROT_READ|PROT_WRITE, 1);</code></li>
+</ul>
+</li>
+<li><code>page_walk(pagetable, va, alloc)</code>
+<ul>
+<li><strong>参数</strong>：<code>alloc</code> = 1 时允许为缺失的中间层（level 2/1）分配新页；=0 时遇到无效 PTE 返回 <code>NULL</code>。</li>
+<li><strong>返回</strong>：指向 level-0 PTE 的指针，可用于读取或设置映射。</li>
+<li><strong>示例</strong>：
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">pte_t</span> *pte = <span style="color:#666;font-weight:bold;font-style:italic">page_walk</span>(pt, va, 1);
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">if</span> (!pte) <span style="font-weight:bold;text-decoration:underline">return</span> -1;
+</span></span><span style="display:flex;"><span>*pte = <span style="color:#666;font-weight:bold;font-style:italic">PA2PTE</span>(pa) | perm | PTE_V;
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li><code>lookup_pa(pagetable, va)</code>
+<ul>
+<li><strong>作用</strong>：只读查询虚拟地址对应的物理页，若 PTE 不存在或仅执行权限则返回 0。</li>
+<li><strong>适用</strong>：在调试 <code>kern_vm_init()</code> 时验证映射是否成功。</li>
+</ul>
+</li>
+<li><code>kern_vm_init()</code> / <code>kern_vm_map()</code>
+<ul>
+<li><strong><code>kern_vm_init</code> 步骤</strong>：分配页目录→清零→映射 <code>[KERN_BASE,_etext)</code>（RX）→映射 <code>[_etext,PHYS_TOP)</code>（RW）→保存至 <code>g_kernel_pagetable</code>。</li>
+<li><strong><code>kern_vm_map</code></strong>：<code>map_pages</code> 的内核包装，失败时立即 <code>panic(&quot;kern_vm_map&quot;)</code>。</li>
+</ul>
+</li>
+<li><code>user_vm_map()</code> / <code>user_vm_unmap()</code> / <code>user_va_to_pa()</code>
+<ul>
+<li><code>user_vm_map</code>：与 <code>kern_vm_map</code> 类似，用于用户空间。返回非零表示错误。</li>
+<li><code>user_vm_unmap</code>：实验后续要求实现虚拟区间解除映射并可选释放物理页。</li>
+<li><code>user_va_to_pa</code>：输入用户页表根和虚拟地址，若映射存在，返回对应的物理地址（加上页内偏移）；否则返回 <code>NULL</code>。syscall 需要用它把用户缓冲区转成内核可访问的 PA。</li>
+<li><strong>示例</strong>：<code>char *pa = user_va_to_pa(current-&gt;pagetable, buf); if (!pa) return -1;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="3-进程上下文与调度钩子">
+  3. 进程、上下文与调度钩子
+  <a class="anchor" href="#3-%e8%bf%9b%e7%a8%8b%e4%b8%8a%e4%b8%8b%e6%96%87%e4%b8%8e%e8%b0%83%e5%ba%a6%e9%92%a9%e5%ad%90">#</a>
+</h2>
+<ul>
+<li><code>trapframe</code>（<code>kernel/process.h:6-20</code>）
+<ul>
+<li><strong>字段</strong>：
+<ul>
+<li><code>regs</code>：保存通用寄存器（按 <code>riscv_regs</code> 顺序）。</li>
+<li><code>kernel_sp</code>：陷入时使用的内核栈指针。</li>
+<li><code>kernel_trap</code>：指向 <code>smode_trap_handler</code>，<code>switch_to</code> 会将其写入 <code>stvec</code>。</li>
+<li><code>epc</code>：存放用户返回地址。</li>
+<li><code>kernel_satp</code>：S→U 切换后恢复内核页表使用。</li>
+</ul>
+</li>
+<li><strong>初始化</strong>：<code>memset(trapframe, 0, sizeof(trapframe)); trapframe-&gt;regs.sp = USER_STACK_TOP;</code></li>
+</ul>
+</li>
+<li><code>process</code>（<code>kernel/process.h:22-29</code>）
+<ul>
+<li><code>kstack</code>：trap 时使用的内核栈顶部（<code>alloc_page()+PGSIZE</code>）。</li>
+<li><code>pagetable</code>：用户页表根。</li>
+<li><code>trapframe</code>：指向上述结构。</li>
+</ul>
+</li>
+<li><code>switch_to(process *proc)</code>（<code>kernel/process.h:31</code>，实现于 <code>kernel/process.c</code>）
+<ul>
+<li><strong>流程</strong>：设置 <code>SSTATUS_SPP</code> 为 User、<code>SSTATUS_SPIE</code> 允许返回后启用中断，配置 <code>stvec = proc-&gt;trapframe-&gt;kernel_trap</code>，设置 <code>sscratch = proc-&gt;trapframe</code>，填好 <code>satp = MAKE_SATP(proc-&gt;pagetable)</code>，最后通过 <code>sret</code> 跳入用户态。</li>
+<li><strong>调用</strong>：内核加载/调度完成后执行 <code>switch_to(&amp;user_app);</code>。</li>
+</ul>
+</li>
+<li><code>current</code> / <code>g_ufree_page</code>（<code>kernel/process.h:35-39</code>）
+<ul>
+<li><code>current</code>：全局指针，指向正在运行的 <code>process</code>；<code>smode_trap_handler</code> 中要 <code>assert(current)</code> 后才能访问 <code>current-&gt;trapframe</code>。</li>
+<li><code>g_ufree_page</code>：Lab2_2 的简单堆实现使用的游标，表示下一块可用用户虚拟地址。</li>
+</ul>
+</li>
+<li><code>smode_trap_handler()</code>（<code>kernel/strap.c</code>, 声明于 <code>kernel/strap.h:4</code>）
+<ul>
+<li><strong>入口</strong>：<code>mentry.S</code> 在 S 态发生 trap 时保存寄存器并跳转至此。</li>
+<li><strong>核心逻辑</strong>：
+<ol>
+<li>检查 <code>SSTATUS_SPP</code>，确保来自 U 态；保存 <code>sepc</code>。</li>
+<li>读取 <code>scause</code>：
+<ul>
+<li><code>CAUSE_USER_ECALL</code> → <code>handle_syscall(current-&gt;trapframe)</code>，并在 <code>handle_syscall</code> 中 <code>tf-&gt;epc += 4; tf-&gt;regs.a0 = do_syscall(...);</code>。</li>
+<li><code>CAUSE_MTIMER_S_TRAP</code> → <code>handle_mtimer_trap()</code>，增加 tick 并清除 <code>SIP_SSIP</code>。</li>
+<li><code>CAUSE_ILLEGAL_INSTRUCTION</code> → 输出错误并 <code>shutdown(-1)</code>。</li>
+<li>其他 → <code>panic</code>。</li>
+</ul>
+</li>
+<li>调用 <code>switch_to(current);</code> 恢复用户上下文。</li>
+</ol>
+</li>
+<li><strong>扩展</strong>：若新增外部中断或页故障处理，在 <code>smode_trap_handler</code> 中添加新的 <code>cause</code> case。</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="4-elf-与用户程序加载">
+  4. ELF 与用户程序加载
+  <a class="anchor" href="#4-elf-%e4%b8%8e%e7%94%a8%e6%88%b7%e7%a8%8b%e5%ba%8f%e5%8a%a0%e8%bd%bd">#</a>
+</h2>
+<ul>
+<li><code>load_bincode_from_host_elf(process *p)</code>（<code>kernel/elf.h:58-62</code>，实现见 <code>kernel/elf.c</code>）
+<ul>
+<li><strong>输入</strong>：<code>process</code> 结构体，其中 <code>trapframe</code>/<code>pagetable</code> 已分配。</li>
+<li><strong>行为</strong>：读取 <code>obj/app_*.elf</code>，校验 <code>ELF_MAGIC</code>，对每个 <code>ELF_PROG_LOAD</code> 段：分配/复制段内容到对应物理内存，再将段虚拟地址映射到 <code>p-&gt;pagetable</code>；最后将 <code>proc-&gt;trapframe-&gt;epc</code> 设置为 ELF entry。</li>
+<li><strong>注意</strong>：需要保证段大小按页对齐，<code>load_bincode_from_host_elf</code> 内部会调用 <code>user_vm_map</code>。</li>
+</ul>
+</li>
+<li><code>elf_init(elf_ctx *ctx, void *info)</code> / <code>elf_load(elf_ctx *ctx)</code>（<code>kernel/elf.h:58-60</code>）
+<ul>
+<li><strong>用途</strong>：若需要自定义加载器（如多个程序或动态库），可使用 <code>elf_ctx</code> 组合调用；<code>info</code> 通常是文件句柄或内存缓冲区。</li>
+<li><strong>返回值</strong>：<code>elf_status</code>，如 <code>EL_OK</code>、<code>EL_NOTELF</code>、<code>EL_ENOMEM</code>。错误时应 <code>panic</code> 或向上返回。</li>
+</ul>
+</li>
+<li><code>load_user_program(process *proc)</code>（<code>kernel/kernel.c:38-74</code>）示例
+<ul>
+<li>分配并清零 <code>trapframe</code>/<code>pagetable</code>。</li>
+<li>分配用户栈页面并设置 <code>proc-&gt;trapframe-&gt;regs.sp = USER_STACK_TOP</code>。</li>
+<li>调用 <code>load_bincode_from_host_elf(proc)</code>。</li>
+<li>通过 <code>user_vm_map</code> 映射用户栈、trapframe、trap 向量等特殊页面。</li>
+<li>供参考：编写自定义加载流程时，可仿照此函数的顺序。</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="5-系统调用与陷入">
+  5. 系统调用与陷入
+  <a class="anchor" href="#5-%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8%e4%b8%8e%e9%99%b7%e5%85%a5">#</a>
+</h2>
+<ul>
+<li>Syscall 号（<code>kernel/syscall.h:7-15</code>）
+<ul>
+<li><code>SYS_user_base = 64</code>，保证与 Spike 自带 syscall 区分。</li>
+<li>已有：<code>SYS_user_print</code>、<code>SYS_user_exit</code>、<code>SYS_user_allocate_page</code>、<code>SYS_user_free_page</code>。</li>
+<li><strong>新增流程</strong>：在此定义常量 → <code>kernel/syscall.c</code> 中实现处理 → <code>user/user_lib.c</code> 添加用户态封装 → <code>user/user_lib.h</code> 暴露原型。</li>
+</ul>
+</li>
+<li><code>do_syscall(long a0..a7)</code>（<code>kernel/syscall.c:43-51</code>）
+<ul>
+<li><strong>输入</strong>：S 模式 trap 保存的 <code>a0..a7</code>。<code>a0</code> 是 syscall 号，其余为参数。</li>
+<li><strong>返回</strong>：写回 <code>a0</code>，作为用户态函数返回值。</li>
+<li><strong>扩展</strong>：新增 case 时务必返回成功/错误码，并在必要时使用 <code>user_va_to_pa</code> 校验指针。</li>
+</ul>
+</li>
+<li><code>sys_user_print(const char *buf, size_t n)</code>（<code>kernel/syscall.c:18-27</code>）
+<ul>
+<li><strong>流程</strong>：
+<ol>
+<li>使用 <code>user_va_to_pa(current-&gt;pagetable, buf)</code> 翻译用户缓冲区。</li>
+<li>调用 <code>sprint(pa)</code> 输出，返回 0。</li>
+</ol>
+</li>
+<li><strong>要点</strong>：<code>buf</code> 必须为用户虚拟地址，不可直接传给 <code>sprint</code>。</li>
+</ul>
+</li>
+<li><code>sys_user_exit(uint64 code)</code>（<code>kernel/syscall.c:32-37</code>）
+<ul>
+<li><strong>行为</strong>：打印退出码后调用 <code>shutdown(code)</code>，终止实验。</li>
+<li><strong>扩展</strong>：多进程实验中可改为清理资源并调度下一个进程。</li>
+</ul>
+</li>
+<li>用户态封装（<code>user/user_lib.c:13-50</code>）
+<ul>
+<li><code>do_user_call(sysnum, a1..a7)</code>：内联汇编 <code>ecall</code>，将参数放入 <code>a0..a7</code>。</li>
+<li><code>printu(const char *fmt, ...)</code>：堆栈上构造临时缓冲区→<code>SYS_user_print</code>。</li>
+<li><code>exit(int code)</code>：直接调用 <code>SYS_user_exit</code>。</li>
+<li><strong>新增示例</strong>：
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">int</span> <span style="color:#666;font-weight:bold;font-style:italic">user_allocate_page</span>(<span style="font-weight:bold;text-decoration:underline">size_t</span> sz) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> <span style="color:#666;font-weight:bold;font-style:italic">do_user_call</span>(SYS_user_allocate_page, sz, 0,0,0,0,0,0);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>Trap 分派（<code>kernel/strap.c:15-77</code>）
+<ul>
+<li><code>handle_syscall(trapframe *tf)</code>：<code>tf-&gt;epc += 4</code>（跳过 <code>ecall</code>），<code>tf-&gt;regs.a0 = do_syscall(...)</code>。</li>
+<li><code>handle_mtimer_trap()</code>：增加 <code>g_ticks</code>，使用 <code>write_csr(sip, read_csr(sip) &amp; ~SIP_SSIP)</code> 清除软件中断。</li>
+<li><code>smode_trap_handler()</code>：整合上述处理并最终 <code>switch_to(current)</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="6-spike-接口与调试辅助">
+  6. Spike 接口与调试辅助
+  <a class="anchor" href="#6-spike-%e6%8e%a5%e5%8f%a3%e4%b8%8e%e8%b0%83%e8%af%95%e8%be%85%e5%8a%a9">#</a>
+</h2>
+<ul>
+<li><code>sprint(const char *fmt, ...)</code> / <code>putstring(const char *s)</code>（<code>spike_interface/spike_utils.h:9-40</code>）
+<ul>
+<li><strong>用途</strong>：通过 HTIF 将字符串打印到宿主机控制台。<code>sprint</code> 支持格式化，<code>putstring</code> 只输出原串。</li>
+<li><strong>示例</strong>：<code>sprint(&quot;user frame 0x%lx\n&quot;, proc-&gt;trapframe);</code></li>
+</ul>
+</li>
+<li><code>panic(const char *fmt, ...)</code> / <code>die()</code> / <code>assert(x)</code> / <code>kassert(x)</code>
+<ul>
+<li><strong>行为</strong>：打印错误并调用 <code>poweroff(-1)</code>。<code>assert</code> 打印表达式文本，<code>kassert</code> 以 <code>cond</code> 字符串为信息。</li>
+<li><strong>使用建议</strong>：在必须终止实验的错误（如页表构建失败）时调用。</li>
+</ul>
+</li>
+<li><code>shutdown(int code)</code> / <code>poweroff(uint16 code)</code>
+<ul>
+<li><strong>用途</strong>：结束 Spike 仿真。<code>shutdown</code> 包装 <code>poweroff</code> 并允许传递整数退出码。</li>
+<li><strong>示例</strong>：<code>if (fatal) shutdown(-1);</code></li>
+</ul>
+</li>
+<li><code>frontend_syscall(long n, uint64 a0..a6)</code>
+<ul>
+<li><strong>用途</strong>：直接调用 Spike 的前端服务（如读取主机文件）。默认实验无需使用，文件系统/设备实验会用到。</li>
+</ul>
+</li>
+<li>调试 &amp; 构建命令（<code>Makefile:115-151</code>）
+<ul>
+<li><code>make run</code>：编译后运行 <code>spike</code>。</li>
+<li><code>make gdb</code>：启动 <code>spike --rbb-port=9824 -H kernel user</code>，随后 <code>openocd</code> + <code>riscv64-unknown-elf-gdb</code>，支持断点、寄存器查看。</li>
+<li><code>make objdump</code>：生成 <code>obj/kernel_dump</code> / <code>obj/user_dump</code>，可用 <code>less</code> 浏览。</li>
+<li><code>make cscope</code>：生成 <code>cscope.out</code> 方便代码导航。</li>
+<li><code>make format</code>：运行 <code>format.py</code> 对 C/ASM 代码格式化。</li>
+<li><code>make clean</code>：删除 <code>obj/</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="7-通用工具库">
+  7. 通用工具库
+  <a class="anchor" href="#7-%e9%80%9a%e7%94%a8%e5%b7%a5%e5%85%b7%e5%ba%93">#</a>
+</h2>
+<ul>
+<li>类型别名（<code>util/types.h:4-22</code>）
+<ul>
+<li><code>uint8/16/32/64</code>, <code>int8/...</code>, <code>size_t</code>, <code>ssize_t</code>, <code>bool</code>, <code>TRUE/FALSE</code>, <code>NULL</code>。</li>
+<li><strong>用法</strong>：在内核/用户代码中统一整数宽度：<code>uint64 pa = PTE2PA(*pte);</code></li>
+</ul>
+</li>
+<li>字符串/内存函数（<code>util/string.h:6-14</code>）
+<ul>
+<li><code>memset</code>, <code>memcpy</code>, <code>memmove</code>, <code>strlen</code>, <code>strcmp</code>, <code>strcpy</code>, <code>safestrcpy</code>, <code>atol</code>。</li>
+<li><strong>示例</strong>：<code>memcpy(dst, src, len);</code>、<code>if (strcmp(cmd, &quot;run&quot;)==0) ...</code>。</li>
+</ul>
+</li>
+<li><code>snprintf</code> / <code>vsnprintf</code>（<code>util/snprintf.h/.c</code>）
+<ul>
+<li><strong>用途</strong>：生成格式化字符串到指定缓冲区。<code>printu</code> 中已示范：生成字符串后交给 syscall 打印。</li>
+<li><strong>示例</strong>：
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">char</span> buf[64];
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">snprintf</span>(buf, <span style="font-weight:bold;text-decoration:underline">sizeof</span>(buf), <span style="color:#666;font-style:italic">&#34;pa=0x%lx&#34;</span>, pa);
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">sprint</span>(<span style="color:#666;font-style:italic">&#34;%s</span><span style="color:#666;font-style:italic">\n</span><span style="color:#666;font-style:italic">&#34;</span>, buf);
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>常用宏（<code>util/functions.h:4-13</code>）
+<ul>
+<li><code>ROUNDUP(a,b)</code> / <code>ROUNDDOWN(a,b)</code>：四舍五入到 b 的倍数。</li>
+<li><code>MAX</code> / <code>MIN</code>：返回较大/小值。</li>
+<li><code>likely(x)</code> / <code>unlikely(x)</code>：GCC 的分支预测提示。</li>
+<li><code>ARRAY_SIZE(x)</code>：统计数组元素个数。</li>
+<li><strong>示例</strong>：<code>uint64 first = ROUNDDOWN(va, PGSIZE);</code></li>
+</ul>
+</li>
+<li>汇编辅助（<code>util/load_store.S</code>）
+<ul>
+<li>提供 <code>load_uint8/16/32/64</code>、<code>store_uint8/16/32/64</code> 等函数，在需要按特定宽度访问非对齐地址或与用户态共享代码时可直接调用。</li>
+<li><strong>示例</strong>：<code>extern uint64 load_uint64(uint64 *); val = load_uint64(addr);</code></li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="8-构建与用户空间配套">
+  8. 构建与用户空间配套
+  <a class="anchor" href="#8-%e6%9e%84%e5%bb%ba%e4%b8%8e%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e9%85%8d%e5%a5%97">#</a>
+</h2>
+<ul>
+<li><code>Makefile</code> 目标（<code>Makefile:7-151</code>）
+<ul>
+<li><code>make</code>：默认构建内核与用户 ELF。若只想重建某个组件，直接 <code>make obj/riscv-pke</code> 亦可。</li>
+<li><code>make run</code>：展示横幅 “HUST PKE” 后运行 <code>spike obj/riscv-pke obj/app_helloworld_no_lds</code>。</li>
+<li><code>make gdb</code>：串联 <code>spike --rbb-port=9824 -H ...</code> + <code>openocd -f ./.spike.cfg</code> + <code>riscv64-unknown-elf-gdb -command=./.gdbinit</code>。可在 GDB 中使用 <code>target remote localhost:3333</code>（已写在 <code>.gdbinit</code>）调试。</li>
+<li><code>make objdump</code>：对 kernel/user ELF 分别运行 <code>riscv64-unknown-elf-objdump -d</code>，输出至 <code>obj/kernel_dump</code>、<code>obj/user_dump</code>。</li>
+<li><code>make cscope</code>: 生成 <code>cscope.out</code>、<code>cscope.files</code>，在终端 <code>cscope -d</code> 浏览。</li>
+<li><code>make format</code>: 调用 <code>format.py</code> 遍历当前目录自动格式化。</li>
+<li><code>make clean</code>: 删除整个 <code>obj/</code> 目录，清扫中间文件。</li>
+</ul>
+</li>
+<li>用户态应用与库
+<ul>
+<li>示例：<code>user/app_helloworld_no_lds.c</code>（Lab2 版本）与 <code>user/app_helloworld.c</code>（Lab1 版本）展示基本结构：<code>#include &quot;user_lib.h&quot;</code> → <code>main</code> 中调用 <code>printu</code> → <code>exit(0)</code>。</li>
+<li><code>user/user_lib.c</code>：内含 <code>do_user_call</code>（封装 <code>ecall</code>），<code>printu</code>、<code>exit</code> 等接口；后续实验会添加 <code>malloc/free/yield</code> 等封装。扩展应用只需在此添加新函数并实现对应 syscall。</li>
+<li><code>user/user_lib.h</code>：用户程序需要包含的声明。</li>
+<li><code>user/user.lds</code>：用户态链接脚本（指定入口、段布局），必要时可调整以支持新段或特定内存布局。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>借助以上工具，实验中无需重复搭建底层设施：直接引入相应头文件，即可获得 CSR 访问、页表管理、物理内存分配、Spike I/O、常用字符串/数学宏等能力，专注在实验要求的功能补全与策略实现上即可。</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/theoryofcomputation/">
+                        计算理论学习笔记
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>

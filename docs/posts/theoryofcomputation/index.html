@@ -196,9 +196,11 @@
     <li><a href="#3-计算复杂性理论-complexity-theory">3. 计算复杂性理论 (Complexity Theory)</a>
       <ul>
         <li><a href="#时间复杂性类-time-complexity-classes">时间复杂性类 (Time Complexity Classes)</a></li>
-        <li><a href="#空间复杂性类-space-complexity-classes">空间复杂性类 (Space Complexity Classes)</a></li>
+        <li><a href="#p-vs-np-问题">P vs NP 问题</a></li>
         <li><a href="#np-完全性-np-completeness">NP 完全性 (NP-Completeness)</a></li>
-        <li><a href="#p-vs-np">P vs NP</a></li>
+        <li><a href="#空间复杂性类-space-complexity-classes">空间复杂性类 (Space Complexity Classes)</a></li>
+        <li><a href="#进阶定理-advanced-theorems">进阶定理 (Advanced Theorems)</a></li>
+        <li><a href="#复杂性类关系图谱">复杂性类关系图谱</a></li>
       </ul>
     </li>
   </ul>
@@ -218,8 +220,10 @@
   正则语言 (Regular Languages)
   <a class="anchor" href="#%e6%ad%a3%e5%88%99%e8%af%ad%e8%a8%80-regular-languages">#</a>
 </h3>
-<ul>
-<li><strong>有限自动机 (Finite Automata)</strong>
+<h4 class="heading" id="有限自动机-finite-automata">
+  有限自动机 (Finite Automata)
+  <a class="anchor" href="#%e6%9c%89%e9%99%90%e8%87%aa%e5%8a%a8%e6%9c%ba-finite-automata">#</a>
+</h4>
 <ul>
 <li><strong>确定性有限自动机 (DFA)</strong>: $M = (Q, \Sigma, \delta, q_0, F)$</li>
 <li><strong>非确定性有限自动机 (NFA)</strong>: 允许 $\epsilon$ 转移，同一输入可能有多个转移路径。</li>
@@ -246,30 +250,42 @@
 </ul>
 </li>
 </ul>
-</li>
-<li><strong>正则表达式 (Regular Expressions)</strong>: 描述正则语言的代数表示。</li>
-<li><strong>封闭性 (Closure Properties)</strong>:
+<h4 class="heading" id="正则表达式-regular-expressions">
+  正则表达式 (Regular Expressions)
+  <a class="anchor" href="#%e6%ad%a3%e5%88%99%e8%a1%a8%e8%be%be%e5%bc%8f-regular-expressions">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: 描述正则语言的代数表示。</li>
+</ul>
+<h4 class="heading" id="封闭性-closure-properties">
+  封闭性 (Closure Properties)
+  <a class="anchor" href="#%e5%b0%81%e9%97%ad%e6%80%a7-closure-properties">#</a>
+</h4>
 <ul>
 <li>正则语言在 <strong>并、交、补、连接、星号</strong> 运算下封闭。</li>
 </ul>
-</li>
-<li><strong>Myhill-Nerode 定理</strong>:
+<h4 class="heading" id="myhill-nerode-定理">
+  Myhill-Nerode 定理
+  <a class="anchor" href="#myhill-nerode-%e5%ae%9a%e7%90%86">#</a>
+</h4>
 <ul>
-<li>用于证明语言非正则，或证明 DFA 的最小性。</li>
-<li>$L$ 是正则语言 $\iff$ $L$ 的等价类数目有限。</li>
+<li><strong>用途</strong>: 用于证明语言非正则，或证明 DFA 的最小性。</li>
+<li><strong>定理</strong>: $L$ 是正则语言 $\iff$ $L$ 的等价类数目有限。</li>
 </ul>
-</li>
-<li><strong>泵引理 (Pumping Lemma for Regular Languages)</strong>：
-<ul>
-<li><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>正则语言 (反证法)。</li>
-<li><strong>定理</strong>: 若 $A$ 是正则语言，则存在泵长度 $p$ (取决于 $A$ 的 DFA 状态数)，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $xyz$，满足：
+<h4 class="heading" id="泵引理-pumping-lemma-for-regular-languages">
+  泵引理 (Pumping Lemma for Regular Languages)
+  <a class="anchor" href="#%e6%b3%b5%e5%bc%95%e7%90%86-pumping-lemma-for-regular-languages">#</a>
+</h4>
+<blockquote>
+<p><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>正则语言 (反证法)。</p>
+</blockquote>
+<p><strong>定理</strong>: 若 $A$ 是正则语言，则存在泵长度 $p$ (取决于 $A$ 的 DFA 状态数)，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $xyz$，满足：</p>
 <ol>
 <li>$\forall i \ge 0, xy^iz \in A$ (可以将 $y$ 重复任意次，结果仍在语言中)</li>
 <li>$|y| &gt; 0$ (中间部分非空)</li>
 <li>$|xy| \le p$ (重复部分发生在开头的前 $p$ 个字符内)</li>
 </ol>
-</li>
-<li><strong>直观理解 (鸽巢原理)</strong>:
+<p><strong>直观理解 (鸽巢原理)</strong>:</p>
 <ul>
 <li>设 DFA 有 $p$ 个状态。</li>
 <li>如果输入字符串 $s$ 的长度 $|s| \ge p$，则处理 $s$ 的前 $p$ 个字符时，DFA 必须经过 $p+1$ 个状态序列 (包含起始状态)。</li>
@@ -277,8 +293,7 @@
 <li>这两个相同状态之间的路径形成了一个环 ($y$)。</li>
 <li>我们可以遍历这个环任意次 ($y^i$)，最终仍会到达相同的接受状态。</li>
 </ul>
-</li>
-<li><strong>典型例子</strong>: 证明 $L = {0^n1^n \mid n \ge 0}$ 不是正则语言。
+<p><strong>典型例子</strong>: 证明 $L = {0^n1^n \mid n \ge 0}$ 不是正则语言。</p>
 <ol>
 <li><strong>假设</strong> $L$ 是正则语言。</li>
 <li>设 $p$ 为泵引理给出的泵长度。</li>
@@ -291,23 +306,27 @@
 <li>这与泵引理的条件 1 矛盾。</li>
 <li><strong>结论</strong>: 假设不成立，$L$ 不是正则语言。</li>
 </ol>
-</li>
-</ul>
-</li>
-</ul>
 <h3 class="heading" id="上下文无关语言-context-free-languages">
   上下文无关语言 (Context-Free Languages)
   <a class="anchor" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%97%a0%e5%85%b3%e8%af%ad%e8%a8%80-context-free-languages">#</a>
 </h3>
+<h4 class="heading" id="上下文无关文法-cfg">
+  上下文无关文法 (CFG)
+  <a class="anchor" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%97%a0%e5%85%b3%e6%96%87%e6%b3%95-cfg">#</a>
+</h4>
 <ul>
-<li><strong>上下文无关文法 (CFG)</strong>: $G = (V, \Sigma, R, S)$
+<li><strong>定义</strong>: $G = (V, \Sigma, R, S)$
 <ul>
 <li>产生式规则形式：$A \to \alpha$，其中 $A \in V, \alpha \in (V \cup \Sigma)^*$。</li>
+</ul>
+</li>
 <li><strong>歧义性 (Ambiguity)</strong>: 如果一个字符串有两棵不同的派生树（最左推导），则称该文法是歧义的。</li>
 <li><strong>乔姆斯基范式 (CNF)</strong>: 任何 CFL 都可以由 CNF 文法生成（产生式为 $A \to BC$ 或 $A \to a$）。</li>
 </ul>
-</li>
-<li><strong>下推自动机 (Pushdown Automata, PDA)</strong>:
+<h4 class="heading" id="下推自动机-pushdown-automata-pda">
+  下推自动机 (Pushdown Automata, PDA)
+  <a class="anchor" href="#%e4%b8%8b%e6%8e%a8%e8%87%aa%e5%8a%a8%e6%9c%ba-pushdown-automata-pda">#</a>
+</h4>
 <ul>
 <li><strong>定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$，其中 $\Gamma$ 是栈字母表。</li>
 <li>相当于 NFA + 一个无限容量的栈 (Stack) (LIFO)。</li>
@@ -353,33 +372,39 @@
 </ol>
 </li>
 </ul>
-</li>
-<li><strong>确定性下推自动机 (DPDA)</strong>:
+<h4 class="heading" id="确定性下推自动机-dpda">
+  确定性下推自动机 (DPDA)
+  <a class="anchor" href="#%e7%a1%ae%e5%ae%9a%e6%80%a7%e4%b8%8b%e6%8e%a8%e8%87%aa%e5%8a%a8%e6%9c%ba-dpda">#</a>
+</h4>
 <ul>
 <li>确定性的 PDA（每一步转移是唯一的，且 $\epsilon$ 转移有限制）。</li>
 <li><strong>能力差异</strong>: DPDA 识别的语言类（确定性上下文无关语言, DCFL）是 CFL 的真子集 ($DCFL \subsetneq CFL$)。</li>
 <li>例如：${ww^R}$ 是 CFL 但不是 DCFL；${wcw^R}$ 是 DCFL。</li>
 <li>DPDA 能够被确定性地解析，这对编译器设计很重要。</li>
 </ul>
-</li>
-<li><strong>封闭性 (Closure Properties)</strong>:
+<h4 class="heading" id="封闭性-closure-properties-1">
+  封闭性 (Closure Properties)
+  <a class="anchor" href="#%e5%b0%81%e9%97%ad%e6%80%a7-closure-properties-1">#</a>
+</h4>
 <ul>
 <li>CFL 在 <strong>并、连接、星号</strong> 运算下封闭。</li>
 <li>CFL 在 <strong>交、补</strong> 运算下 <strong>不封闭</strong>。</li>
 <li>CFL 与正则语言的交集是 CFL。</li>
 </ul>
-</li>
-<li><strong>泵引理 (Pumping Lemma for CFL)</strong>:
-<ul>
-<li><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>上下文无关语言。</li>
-<li><strong>定理</strong>: 若 $A$ 是 CFL，则存在泵长度 $p$，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $uvxyz$，满足：
+<h4 class="heading" id="泵引理-pumping-lemma-for-cfl">
+  泵引理 (Pumping Lemma for CFL)
+  <a class="anchor" href="#%e6%b3%b5%e5%bc%95%e7%90%86-pumping-lemma-for-cfl">#</a>
+</h4>
+<blockquote>
+<p><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>上下文无关语言。</p>
+</blockquote>
+<p><strong>定理</strong>: 若 $A$ 是 CFL，则存在泵长度 $p$，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $uvxyz$，满足：</p>
 <ol>
 <li>$\forall i \ge 0, uv^ixy^iz \in A$</li>
 <li>$|vy| &gt; 0$ (即 $v$ 和 $y$ 不全为空)</li>
 <li>$|vxy| \le p$</li>
 </ol>
-</li>
-<li><strong>直观理解</strong>:
+<p><strong>直观理解</strong>:</p>
 <ul>
 <li>考虑生成字符串 $s$ 的派生树 (Parse Tree)。</li>
 <li>若 $s$ 足够长，树的高度必然很高。</li>
@@ -387,8 +412,7 @@
 <li>设路径上较底层的 $R$ 生成子串 $x$，较高层的 $R$ 生成子串 $vxy$。</li>
 <li>我们可以用较高层的子树替换较低层的子树 (泵升)，或者反之 (泵降)，生成的字符串仍由文法生成。</li>
 </ul>
-</li>
-<li><strong>典型例子</strong>: 证明 $L = {a^nb^nc^n \mid n \ge 0}$ 不是 CFL。
+<p><strong>典型例子</strong>: 证明 $L = {a^nb^nc^n \mid n \ge 0}$ 不是 CFL。</p>
 <ol>
 <li><strong>假设</strong> $L$ 是 CFL，设 $p$ 为泵长度。</li>
 <li><strong>选择</strong> $s = a^pb^pc^p \in L$。</li>
@@ -402,9 +426,11 @@
 <li>无论哪种情况，$uv^2xy^2z \notin L$。</li>
 <li><strong>结论</strong>: $L$ 不是 CFL。</li>
 </ol>
-</li>
-</ul>
-</li>
+<h4 class="heading" id="进阶引理">
+  进阶引理
+  <a class="anchor" href="#%e8%bf%9b%e9%98%b6%e5%bc%95%e7%90%86">#</a>
+</h4>
+<ul>
 <li><strong>奥格登引理 (Ogden&rsquo;s Lemma)</strong>:
 <ul>
 <li>CFL 泵引理的推广，提供了更强的约束力。</li>
@@ -418,7 +444,7 @@
 <li><strong>用途</strong>: 用于证明某些即使满足普通泵引理但仍非 CFL 的语言 (例如某些具有特定结构的语言)。</li>
 </ul>
 </li>
-<li><strong>交换引理 (Interchange Lemma)</strong> (进阶):
+<li><strong>交换引理 (Interchange Lemma)</strong>:
 <ul>
 <li>另一个用于证明非 CFL 的强力工具，特别是当泵引理失效时。</li>
 <li><strong>定理</strong>: 设 $L$ 是 CFL。则存在常数 $c &gt; 0$，使得对于 $L$ 的任意长度为 $n$ 的子集 $S_n \subseteq L \cap \Sigma^n$，若 $|S_n|$ 足够大，则存在 $S_n$ 的子集 $Z \subseteq S_n$，使得 $Z$ 中的任意两个串 $w_i, w_j$ 都可以分解为 $w_i = x_i y_i z_i, w_j = x_j y_j z_j$，满足：
@@ -435,38 +461,50 @@
   乔姆斯基谱系 (Chomsky Hierarchy)
   <a class="anchor" href="#%e4%b9%94%e5%a7%86%e6%96%af%e5%9f%ba%e8%b0%b1%e7%b3%bb-chomsky-hierarchy">#</a>
 </h3>
-<p>文法 $G=(V, \Sigma, R, S)$ 根据产生式规则的限制分为四类：</p>
-<ol>
-<li><strong>0 型文法 (无限制文法)</strong>:
-<ul>
-<li>产生式：$\alpha \to \beta$ (无限制)。</li>
-<li>对应自动机：<strong>图灵机 (Turing Machine)</strong>。</li>
-<li>对应语言：<strong>图灵可识别语言 (Recursively Enumerable)</strong>。</li>
-</ul>
-</li>
-<li><strong>1 型文法 (上下文有关文法, CSG)</strong>:
-<ul>
-<li>产生式：$\alpha A \beta \to \alpha \gamma \beta$，且 $|\gamma| \ge 1$ (即长度不减，除了 $S \to \epsilon$)。</li>
-<li>对应自动机：<strong>线性有界自动机 (Linear Bounded Automata, LBA)</strong>。</li>
-<li>对应语言：<strong>上下文有关语言 (Context-Sensitive Languages)</strong>。</li>
-</ul>
-</li>
-<li><strong>2 型文法 (上下文无关文法, CFG)</strong>:
-<ul>
-<li>产生式：$A \to \gamma$。</li>
-<li>对应自动机：<strong>下推自动机 (PDA)</strong>。</li>
-<li>对应语言：<strong>上下文无关语言 (CFL)</strong>。</li>
-</ul>
-</li>
-<li><strong>3 型文法 (正则文法, Regular Grammar)</strong>:
-<ul>
-<li>产生式：$A \to aB$ 或 $A \to a$ (右线性)。</li>
-<li>对应自动机：<strong>有限自动机 (DFA/NFA)</strong>。</li>
-<li>对应语言：<strong>正则语言 (Regular Languages)</strong>。</li>
-</ul>
-</li>
-</ol>
-<p><strong>包含关系</strong>: Regular $\subsetneq$ CFL $\subsetneq$ CSL $\subsetneq$ RE。</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">文法类型</th>
+                <th style="text-align: left">文法名称</th>
+                <th style="text-align: left">产生式规则</th>
+                <th style="text-align: left">对应自动机</th>
+                <th style="text-align: left">对应语言</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>0 型</strong></td>
+                <td style="text-align: left">无限制文法</td>
+                <td style="text-align: left">$\alpha \to \beta$</td>
+                <td style="text-align: left">图灵机 (TM)</td>
+                <td style="text-align: left">递归可枚举 (RE)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>1 型</strong></td>
+                <td style="text-align: left">上下文有关文法 (CSG)</td>
+                <td style="text-align: left">$\alpha A \beta \to \alpha \gamma \beta,</td>
+                <td style="text-align: left">\gamma</td>
+                <td style="text-align: left">\ge 1$</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>2 型</strong></td>
+                <td style="text-align: left">上下文无关文法 (CFG)</td>
+                <td style="text-align: left">$A \to \gamma$</td>
+                <td style="text-align: left">下推自动机 (PDA)</td>
+                <td style="text-align: left">上下文无关 (CFL)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>3 型</strong></td>
+                <td style="text-align: left">正则文法</td>
+                <td style="text-align: left">$A \to aB$ 或 $A \to a$</td>
+                <td style="text-align: left">有限自动机 (DFA/NFA)</td>
+                <td style="text-align: left">正则语言 (Regular)</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p><strong>包含关系</strong>: Regular $\subsetneq$ CFL $\subsetneq$ CSL $\subsetneq$ RE。</p>
 <h2 class="heading" id="2-可计算性理论-computability-theory">
   2. 可计算性理论 (Computability Theory)
   <a class="anchor" href="#2-%e5%8f%af%e8%ae%a1%e7%ae%97%e6%80%a7%e7%90%86%e8%ae%ba-computability-theory">#</a>
@@ -475,21 +513,98 @@
   图灵机 (Turing Machines)
   <a class="anchor" href="#%e5%9b%be%e7%81%b5%e6%9c%ba-turing-machines">#</a>
 </h3>
+<h4 class="heading" id="形式化定义-formal-definition">
+  形式化定义 (Formal Definition)
+  <a class="anchor" href="#%e5%bd%a2%e5%bc%8f%e5%8c%96%e5%ae%9a%e4%b9%89-formal-definition">#</a>
+</h4>
+<p>图灵机是一个 7 元组 $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$，其中：</p>
+<ol>
+<li>$Q$: 有限状态集合。</li>
+<li>$\Sigma$: 输入字母表 (不包含空白符 $\textvisiblespace$)。</li>
+<li>$\Gamma$: 纸带字母表 (包含 $\Sigma$ 和 $\textvisiblespace$)。</li>
+<li>$\delta$: 转移函数 $Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$。
 <ul>
-<li><strong>定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$
-<ul>
-<li>拥有无限长的纸带，可读写，读写头可左右移动。</li>
+<li>含义：根据当前状态和读写头下的字符，决定(1)新状态，(2)写入的新字符，(3)读写头移动方向(左/右)。</li>
 </ul>
 </li>
-<li><strong>变体 (Variants)</strong>:
+<li>$q_0 \in Q$: 起始状态。</li>
+<li>$q_{accept} \in Q$: 接受状态。</li>
+<li>$q_{reject} \in Q$: 拒绝状态 ($q_{reject} \ne q_{accept}$)。</li>
+</ol>
+<h4 class="heading" id="组态与计算-configuration-and-computation">
+  组态与计算 (Configuration and Computation)
+  <a class="anchor" href="#%e7%bb%84%e6%80%81%e4%b8%8e%e8%ae%a1%e7%ae%97-configuration-and-computation">#</a>
+</h4>
 <ul>
-<li><strong>多带图灵机 (Multitape TM)</strong>: 拥有 $k$ 条纸带。等价于单带图灵机。</li>
-<li><strong>非确定性图灵机 (NTM)</strong>: 转移函数 $\delta$ 返回状态集合。等价于确定性图灵机 (DTM)。</li>
-<li><strong>枚举器 (Enumerator)</strong>: 带有打印机的图灵机，用于枚举语言中的所有字符串。</li>
+<li><strong>组态 (Configuration)</strong>: 包含当前状态、当前纸带内容和读写头位置的快照。
+<ul>
+<li>表示为 $u q v$，其中 $q \in Q$，纸带内容为 $uv$，读写头位于 $v$ 的第一个字符上。</li>
 </ul>
 </li>
-<li><strong>丘奇-图灵论题 (Church-Turing Thesis)</strong>：任何直观上可计算的算法，都可以由图灵机执行。</li>
+<li><strong>计算过程</strong>: 从起始组态 $q_0 w$ 开始，根据转移函数 $\delta$ 一步步更新组态。</li>
+<li><strong>停机</strong>: 当进入 $q_{accept}$ 或 $q_{reject}$ 时，计算立即停止。</li>
 </ul>
+<h4 class="heading" id="语言识别-language-recognition">
+  语言识别 (Language Recognition)
+  <a class="anchor" href="#%e8%af%ad%e8%a8%80%e8%af%86%e5%88%ab-language-recognition">#</a>
+</h4>
+<ul>
+<li><strong>图灵可识别 (Turing-recognizable / Recursively Enumerable)</strong>:
+<ul>
+<li>语言 $L$ 被图灵机 $M$ 识别，即 $L(M) = L$。</li>
+<li>对 $w \in L$，M 最终进入 $q_{accept}$。</li>
+<li>对 $w \notin L$，M 可能进入 $q_{reject}$，也可能<strong>无限循环 (Loop)</strong>。</li>
+</ul>
+</li>
+<li><strong>图灵可判定 (Turing-decidable / Recursive)</strong>:
+<ul>
+<li>语言 $L$ 被图灵机 $M$ 判定。</li>
+<li>M 是一个<strong>判定器 (Decider)</strong>：对任何输入，M 都能在有限步内停机 (接受或拒绝)，<strong>绝不循环</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="变体-variants">
+  变体 (Variants)
+  <a class="anchor" href="#%e5%8f%98%e4%bd%93-variants">#</a>
+</h4>
+<ul>
+<li><strong>多带图灵机 (Multitape TM)</strong>:
+<ul>
+<li>拥有 $k$ 条独立的纸带和读写头。</li>
+<li><strong>等价性</strong>: 多带 TM 等价于单带 TM (可以相互模拟，时间复杂度仅差平方级别)。</li>
+</ul>
+</li>
+<li><strong>非确定性图灵机 (NTM)</strong>:
+<ul>
+<li>转移函数 $\delta: Q \times \Gamma \to \mathcal{P}(Q \times \Gamma \times \{L, R\})$。</li>
+<li><strong>等价性</strong>: NTM 等价于 DTM (可以通过广度优先搜索模拟 NTM 的所有分支)。</li>
+</ul>
+</li>
+<li><strong>枚举器 (Enumerator)</strong>:
+<ul>
+<li>带有打印机的图灵机，用于枚举语言中的所有字符串。</li>
+<li>$L$ 是图灵可识别的 $\iff$ 存在枚举器枚举 $L$。</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="通用图灵机-universal-turing-machine">
+  通用图灵机 (Universal Turing Machine)
+  <a class="anchor" href="#%e9%80%9a%e7%94%a8%e5%9b%be%e7%81%b5%e6%9c%ba-universal-turing-machine">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: 一个能模拟任何其他图灵机的图灵机 $U$。</li>
+<li><strong>输入</strong>: $\langle M, w \rangle$，其中 $M$ 是图灵机的编码，$w$ 是输入串。</li>
+<li><strong>工作原理</strong>: $U$ 在自己的纸带上模拟 $M$ 在 $w$ 上的运行过程。</li>
+<li><strong>意义</strong>: 证明了“存储程序计算机”的可行性，是现代计算机的理论基础。</li>
+</ul>
+<h4 class="heading" id="丘奇-图灵论题-church-turing-thesis">
+  丘奇-图灵论题 (Church-Turing Thesis)
+  <a class="anchor" href="#%e4%b8%98%e5%a5%87-%e5%9b%be%e7%81%b5%e8%ae%ba%e9%a2%98-church-turing-thesis">#</a>
+</h4>
+<blockquote>
+<p><strong>核心观点</strong>: 任何直观上“可计算”的算法，都可以由图灵机执行。
+这意味着图灵机不仅仅是一种数学模型，它捕捉到了计算的本质极限。</p>
+</blockquote>
 <h3 class="heading" id="可判定性-decidability">
   可判定性 (Decidability)
   <a class="anchor" href="#%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7-decidability">#</a>
@@ -501,24 +616,30 @@
 <li><strong>补集性质</strong>: 语言 $A$ 是可判定的 $\iff$ $A$ 和 $\bar{A}$ 都是图灵可识别的。</li>
 </ul>
 </li>
-<li><strong>停机问题 (Halting Problem)</strong>: $A_{TM} = { \langle M, w \rangle \mid M \text{ is a TM and } M \text{ accepts } w }$
-<ul>
-<li>结论：$A_{TM}$ 是不可判定的（Undecidable）。</li>
-<li>证明方法：对角线法 (Diagonalization)。</li>
 </ul>
-</li>
-<li><strong>不可判定性证明 (Undecidability Proofs)</strong>:
+<h4 class="heading" id="停机问题-halting-problem">
+  停机问题 (Halting Problem)
+  <a class="anchor" href="#%e5%81%9c%e6%9c%ba%e9%97%ae%e9%a2%98-halting-problem">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: $A_{TM} = \{ \langle M, w \rangle \mid M \text{ is a TM and } M \text{ accepts } w \}$</li>
+<li><strong>结论</strong>: $A_{TM}$ 是不可判定的（Undecidable）。</li>
+<li><strong>证明方法</strong>: 对角线法 (Diagonalization)。</li>
+</ul>
+<h4 class="heading" id="不可判定性证明-undecidability-proofs">
+  不可判定性证明 (Undecidability Proofs)
+  <a class="anchor" href="#%e4%b8%8d%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7%e8%af%81%e6%98%8e-undecidability-proofs">#</a>
+</h4>
 <ul>
 <li><strong>归约 (Reduction)</strong>: 若 $A \le_m B$ 且 $A$ 不可判定，则 $B$ 不可判定。</li>
-<li><strong>莱斯定理 (Rice&rsquo;s Theorem)</strong>: 设 $P$ 是图灵可识别语言类的非平凡性质，则判定一个语言是否具有性质 $P$ 是不可判定的。
+<li><strong>莱斯定理 (Rice&rsquo;s Theorem)</strong>:
 <ul>
-<li>非平凡性质：至少有一个语言满足 $P$，且至少有一个语言不满足 $P$。</li>
-<li>例子：判定 $L(M)$ 是否为空、是否有限、是否包含 &ldquo;101&rdquo; 等。</li>
+<li><strong>定理</strong>: 设 $P$ 是图灵可识别语言类的非平凡性质，则判定一个语言是否具有性质 $P$ 是不可判定的。</li>
+<li><strong>非平凡性质</strong>: 至少有一个语言满足 $P$，且至少有一个语言不满足 $P$。</li>
+<li><strong>例子</strong>: 判定 $L(M)$ 是否为空、是否有限、是否包含 &ldquo;101&rdquo; 等。</li>
 </ul>
 </li>
 <li><strong>波斯特对应问题 (PCP)</strong>: 给定一组多米诺骨牌，是否存在排列使得上下字符串相同？（不可判定）。</li>
-</ul>
-</li>
 </ul>
 <h2 class="heading" id="3-计算复杂性理论-complexity-theory">
   3. 计算复杂性理论 (Complexity Theory)
@@ -540,30 +661,20 @@
 <li>$P \subseteq NP$。</li>
 </ul>
 </li>
-<li><strong>时间分层定理 (Time Hierarchy Theorem)</strong>:
-<ul>
-<li>对于任何时间可构造函数 $t(n)$，存在语言在 $O(t(n))$ 时间内可判定，但不能在 $o(t(n)/\log t(n))$ 时间内判定。</li>
-<li>结论：$P \subsetneq EXPTIME$。</li>
 </ul>
-</li>
-</ul>
-<h3 class="heading" id="空间复杂性类-space-complexity-classes">
-  空间复杂性类 (Space Complexity Classes)
-  <a class="anchor" href="#%e7%a9%ba%e9%97%b4%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb-space-complexity-classes">#</a>
+<h3 class="heading" id="p-vs-np-问题">
+  P vs NP 问题
+  <a class="anchor" href="#p-vs-np-%e9%97%ae%e9%a2%98">#</a>
 </h3>
 <ul>
-<li><strong>PSPACE</strong>: 确定性图灵机在多项式空间内可判定的语言类。</li>
-<li><strong>NPSPACE</strong>: 非确定性图灵机在多项式空间内可判定的语言类。</li>
-<li><strong>萨维奇定理 (Savitch&rsquo;s Theorem)</strong>:
+<li><strong>核心问题</strong>: $P \stackrel{?}{=} NP$
 <ul>
-<li>对于任何函数 $f(n) \ge n$，有 $NSPACE(f(n)) \subseteq SPACE(f^2(n))$。</li>
-<li>推论：$PSPACE = NPSPACE$。</li>
+<li>即：对于所有易于验证解的问题，是否也都易于求解？</li>
 </ul>
 </li>
-<li><strong>PSPACE-Complete</strong>:
+<li><strong>普遍猜想</strong>: $P \neq NP$。
 <ul>
-<li><strong>TQBF (True Quantified Boolean Formulas)</strong>: 带有全称 ($\forall$) 和存在 ($\exists$) 量词的布尔公式真值问题。</li>
-<li>包含关系：$P \subseteq NP \subseteq PSPACE = NPSPACE \subseteq EXPTIME$。</li>
+<li>这意味着存在一些问题，虽然验证其解很容易，但找到解却非常困难。</li>
 </ul>
 </li>
 </ul>
@@ -591,14 +702,82 @@
 </ul>
 </li>
 </ul>
-<h3 class="heading" id="p-vs-np">
-  P vs NP
-  <a class="anchor" href="#p-vs-np">#</a>
+<h3 class="heading" id="空间复杂性类-space-complexity-classes">
+  空间复杂性类 (Space Complexity Classes)
+  <a class="anchor" href="#%e7%a9%ba%e9%97%b4%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb-space-complexity-classes">#</a>
 </h3>
 <ul>
-<li>核心问题：$P \stackrel{?}{=} NP$</li>
-<li>目前普遍猜想 $P \neq NP$。</li>
+<li><strong>PSPACE</strong>: 确定性图灵机在多项式空间内可判定的语言类。</li>
+<li><strong>NPSPACE</strong>: 非确定性图灵机在多项式空间内可判定的语言类。</li>
+<li><strong>萨维奇定理 (Savitch&rsquo;s Theorem)</strong>:
+<ul>
+<li>对于任何函数 $f(n) \ge n$，有 $NSPACE(f(n)) \subseteq SPACE(f^2(n))$。</li>
+<li>推论：$PSPACE = NPSPACE$。</li>
 </ul>
+</li>
+<li><strong>PSPACE-Complete</strong>:
+<ul>
+<li><strong>TQBF (True Quantified Boolean Formulas)</strong>: 带有全称 ($\forall$) 和存在 ($\exists$) 量词的布尔公式真值问题。</li>
+<li>包含关系：$P \subseteq NP \subseteq PSPACE = NPSPACE \subseteq EXPTIME$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="进阶定理-advanced-theorems">
+  进阶定理 (Advanced Theorems)
+  <a class="anchor" href="#%e8%bf%9b%e9%98%b6%e5%ae%9a%e7%90%86-advanced-theorems">#</a>
+</h3>
+<ul>
+<li><strong>时间分层定理 (Time Hierarchy Theorem)</strong>:
+<ul>
+<li>对于任何时间可构造函数 $t(n)$，存在语言在 $O(t(n))$ 时间内可判定，但不能在 $o(t(n)/\log t(n))$ 时间内判定。</li>
+<li>结论：$P \subsetneq EXPTIME$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="复杂性类关系图谱">
+  复杂性类关系图谱
+  <a class="anchor" href="#%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb%e5%85%b3%e7%b3%bb%e5%9b%be%e8%b0%b1">#</a>
+</h3>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">复杂性类</th>
+                <th style="text-align: left">定义 (自动机/资源)</th>
+                <th style="text-align: left">典型问题</th>
+                <th style="text-align: left">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>P</strong></td>
+                <td style="text-align: left">DTM + Poly Time</td>
+                <td style="text-align: left">排序, 最短路径</td>
+                <td style="text-align: left">有效可解</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>NP</strong></td>
+                <td style="text-align: left">NTM + Poly Time</td>
+                <td style="text-align: left">SAT, TSP, Clique</td>
+                <td style="text-align: left">易验证，难求解</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>PSPACE</strong></td>
+                <td style="text-align: left">DTM + Poly Space</td>
+                <td style="text-align: left">TQBF, 广义地理游戏</td>
+                <td style="text-align: left">空间资源受限</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>EXPTIME</strong></td>
+                <td style="text-align: left">DTM + Exp Time</td>
+                <td style="text-align: left">广义国际象棋</td>
+                <td style="text-align: left">极其困难</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p><strong>包含链</strong>:
+$$ P \subseteq NP \subseteq PSPACE = NPSPACE \subseteq EXPTIME $$</p>
 
     </div>
   </article>
@@ -629,6 +808,15 @@
         </div>
 
         <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/pke-kernel-tools/">
+                        PKE 内核可用工具总览
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
             
         </div>
 
