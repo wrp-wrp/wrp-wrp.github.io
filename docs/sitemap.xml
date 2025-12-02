@@ -2,43 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>http://localhost:50082/</loc>
     <lastmod>2025-12-02T12:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/pke-kernel-tools/</loc>
+    <loc>http://localhost:50082/posts/pke-kernel-tools/</loc>
     <lastmod>2025-12-02T12:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>http://localhost:50082/posts/</loc>
     <lastmod>2025-12-02T12:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/chat/</loc>
+    <loc>http://localhost:50082/chat/</loc>
     <lastmod>2025-12-02T12:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/resume/</loc>
+    <loc>http://localhost:50082/resume/</loc>
     <lastmod>2025-11-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>http://localhost:50082/tags/</loc>
     <lastmod>2025-11-26T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA/</loc>
+    <loc>http://localhost:50082/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA/</loc>
     <lastmod>2025-11-26T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%A4%8D%E6%9D%82%E6%80%A7/</loc>
+    <loc>http://localhost:50082/tags/%E5%A4%8D%E6%9D%82%E6%80%A7/</loc>
     <lastmod>2025-11-26T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/</loc>
+    <loc>http://localhost:50082/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/</loc>
     <lastmod>2025-11-26T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</loc>
+    <loc>http://localhost:50082/tags/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/</loc>
     <lastmod>2025-11-26T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/theoryofcomputation/</loc>
+    <loc>http://localhost:50082/posts/theoryofcomputation/</loc>
     <lastmod>2025-11-26T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/networkreview/</loc>
+    <loc>http://localhost:50082/posts/networkreview/</loc>
     <lastmod>2025-11-20T12:01:45+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
+    <loc>http://localhost:50082/about/</loc>
     <lastmod>2025-11-19T00:00:00+08:00</lastmod>
   </url>
 </urlset>
