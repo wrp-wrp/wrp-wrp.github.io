@@ -70,6 +70,10 @@ url = "/about"
 name = "resume"
 url = "/resume"
 
+[[params.menu]]
+name = "chat"
+url = "/chat"
+
 # Syntax highlight on code blocks
 [markup]
   [markup.goldmark]
@@ -80,10 +84,10 @@ url = "/resume"
 
 # Giscus comments
 [params.giscus]
-enable = false
-repo = "user/repo"
-repoid = "repoId"
+enable = true
+repo = "wrp-wrp/wrp-wrp.github.io"
+repoid = "R_kgDOQY3FSA"
 category = "General"
-categoryid = "categoryId"
+categoryid = "DIC_kwDOQY3FSM4CzTKb"
 mapping = "pathname"
 theme = "preferred_color_scheme"

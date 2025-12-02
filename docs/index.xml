@@ -16,6 +16,13 @@
       <description>面向在 riscv-pke 中扩展代理内核时常用的函数、宏、类型与配套设施，按主题归类列举。</description>
     </item>
     <item>
+      <title>聊天室</title>
+      <link>http://localhost:1313/chat/</link>
+      <pubDate>Tue, 02 Dec 2025 12:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/chat/</guid>
+      <description>&lt;p&gt;欢迎来到聊天室！在这里你可以畅所欲言。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：如果你是博主，请确保已在 &lt;code&gt;hugo.toml&lt;/code&gt; 中正确配置了 Giscus 的 &lt;code&gt;repoid&lt;/code&gt; 和 &lt;code&gt;categoryid&lt;/code&gt;，否则评论区无法加载。&lt;/p&gt;&#xA;&lt;/blockquote&gt;</description>
+    </item>
+    <item>
       <title>Resume</title>
       <link>http://localhost:1313/resume/</link>
       <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
