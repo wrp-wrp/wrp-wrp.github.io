@@ -68,7 +68,12 @@ WASM 给算法的移植和高性能支持带来了方便，于是大家开始把
 
 然后我就实现了这么一个库，看起来跑出来效果确实挺不错：
 
-> 代码链接：[f3-wasm-demo](https://github.com/wrp-wrp/f3-wasm-demo)
+> 代码链接：[QuantifyWebANN](https://github.com/wrp-wrp/QuantifyWebANN)
+
+### 实验结果
+
+- [Benchmark Report - Top-K=10](benchmark_report-Topk10.pdf)
+- [Benchmark Report - Top-K=100](benchmark_report-Topk100.pdf)
 
 做实验的时候由于 reranking 设置得比较多，可能甚至 recall 都比裸 HNSW 高一点，原论文可能认为自己的方法不影响 recall 而没有放出 recall，所以这里使用"可能"二字。
 

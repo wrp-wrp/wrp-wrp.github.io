@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了 | rprp&#39;s blog
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/wasmvectoranns/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/wasmvectoranns/">
+  <meta property="og:site_name" content="rprp&#39;s blog">
+  <meta property="og:title" content="WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了">
+  <meta property="og:description" content="端侧 ANNS 调研：量化索引 &#43; HNSW 图搜索 &#43; 精确 Reranking 是简洁高效的架构，无需过度设计。">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-22T15:41:00+08:00">
+    <meta property="article:modified_time" content="2025-12-22T15:41:00+08:00">
+    <meta property="article:tag" content="WASM">
+    <meta property="article:tag" content="向量检索">
+    <meta property="article:tag" content="ANNS">
+    <meta property="article:tag" content="量化">
+    <meta property="article:tag" content="HNSW">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.56b1873d8852f8a5a109abda36c1bfcde55cb48e5bcbe0d8c934a196a7dc374a.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/resume" >
+                /resume
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/chat" >
+                /chat
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/wasmvectoranns/">WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了</h1>
+        <p class="single-summary">端侧 ANNS 调研：量化索引 + HNSW 图搜索 + 精确 Reranking 是简洁高效的架构，无需过度设计。</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-12-22T15:41:00&#43;08:00">December 22, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景端侧-anns-的兴起">背景：端侧 ANNS 的兴起</a></li>
+    <li><a href="#内存限制问题">内存限制问题</a></li>
+    <li><a href="#现有方案webanns">现有方案：WebANNS</a></li>
+    <li><a href="#一个简单的思路量化就够了">一个简单的思路：量化就够了</a></li>
+    <li><a href="#三阶段流水线架构">三阶段流水线架构</a></li>
+    <li><a href="#实验验证">实验验证</a>
+      <ul>
+        <li><a href="#实验结果">实验结果</a></li>
+      </ul>
+    </li>
+    <li><a href="#核心感想">核心感想</a></li>
+    <li><a href="#担忧量化影响-recall">担忧：量化影响 recall？</a></li>
+    <li><a href="#结论端侧-anns-不需要过度设计">结论：端侧 ANNS 不需要过度设计</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h1 class="heading" id="wasm--vector-index-端侧-anns-调研">
+  WASM + Vector Index 端侧 ANNS 调研
+  <a class="anchor" href="#wasm--vector-index-%e7%ab%af%e4%be%a7-anns-%e8%b0%83%e7%a0%94">#</a>
+</h1>
+<p>最近在简单调研一下 WASM + Vector Index 的工作，好像主要集中在浏览器端做 ANNS，于是开始大力调研，发现还真是（</p>
+<h2 class="heading" id="背景端侧-anns-的兴起">
+  背景：端侧 ANNS 的兴起
+  <a class="anchor" href="#%e8%83%8c%e6%99%af%e7%ab%af%e4%be%a7-anns-%e7%9a%84%e5%85%b4%e8%b5%b7">#</a>
+</h2>
+<p>为了更快进行检索不远程调用搜索引擎的结果，砍掉这个网络延迟；也为了一些隐私考虑，一部分端侧 ANNS 搜索的研究开始展开了。由于索引的构建时间特别长，可能不很好研究，所以看起来主要都集中在&quot;已经给你一个索引，如何进行更快的搜索&quot;展开。</p>
+<p>WASM 给算法的移植和高性能支持带来了方便，于是大家开始把 Vector Index 直接丢进 WASM，然后遇到了一个主要问题，就是浏览器和 WASM 都有比较强的内存限制。</p>
+<h2 class="heading" id="内存限制问题">
+  内存限制问题
+  <a class="anchor" href="#%e5%86%85%e5%ad%98%e9%99%90%e5%88%b6%e9%97%ae%e9%a2%98">#</a>
+</h2>
+<p>以浏览器为例：</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">场景</th>
+                <th style="text-align: left">限制</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left">传统 Float32 向量</td>
+                <td style="text-align: left">480K 条 768 维向量 ≈ 1.4GB</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">浏览器 Tab 内存限制</td>
+                <td style="text-align: left">通常在 2-4GB</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">WASM 线性内存上限</td>
+                <td style="text-align: left">4GB</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p>但是显然数据不存在内存里，访问就会慢，比如浏览器的 IndexedDB，速度就比内存慢不少。</p>
+<p>看起来这个问题就是很标准的 <strong>&ldquo;小内存，外部存储访问慢的 ANNS&rdquo;</strong>，核心目标就是在不拖慢速度的条件下解决这个小内存的问题。</p>
+<h2 class="heading" id="现有方案webanns">
+  现有方案：WebANNS
+  <a class="anchor" href="#%e7%8e%b0%e6%9c%89%e6%96%b9%e6%a1%88webanns">#</a>
+</h2>
+<p>于是，学术界出现了一些解决方案，比如 <strong>WebANNS</strong>，主张将向量部分存储在 IndexedDB 磁盘上，通过复杂的缓存策略和懒加载机制来节省内存：</p>
+<ul>
+<li>在 search 的时候没加载到内存的点先不访问，先存着</li>
+<li>然后一个 batch 一个 batch 这样批量取回来</li>
+<li>还加入了一些额外的多级缓存</li>
+</ul>
+<p>但是看看论文内容可以发现，<strong>论文表示内存占用压缩到数据的 20% 的时候，P99 延迟提高了 40 倍</strong>，这就感觉代价有点太大了。</p>
+<h2 class="heading" id="一个简单的思路量化就够了">
+  一个简单的思路：量化就够了
+  <a class="anchor" href="#%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84%e6%80%9d%e8%b7%af%e9%87%8f%e5%8c%96%e5%b0%b1%e5%a4%9f%e4%ba%86">#</a>
+</h2>
+<p>所以一个想法是，这样复杂的从外面取向量的复杂机制真的有必要吗？</p>
+<p>随着现在向量量化技术发展越来越好，比如 <strong>RaBitQ</strong> 的出现，看起来我直接把向量量化压缩以后直接存到内存里，先进行一个粗筛，最后拿着一堆 id 去外部存储把这些向量取回来 reranking，这样只会有一次批量的读取，无论还是读取次数还是读的 id 数量都比 WebANNS 类似的外部存储访问次数达到 $O(\text{ef})$ 的复杂机制好不少，只是 $O(1)$，还很容易实现。</p>
+<h2 class="heading" id="三阶段流水线架构">
+  三阶段流水线架构
+  <a class="anchor" href="#%e4%b8%89%e9%98%b6%e6%ae%b5%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%9e%b6%e6%9e%84">#</a>
+</h2>
+<p>所以类似 DiskANN 的结构，可以实现下面这个 pipeline，这个 pipeline 也没有像 DiskANN 那样优化外部存储的存储方式，只是简单从 IndexedDB 调用：</p>
+<pre tabindex="0"><code>量化索引（全内存）→ 图搜索 → 批量读取原始向量 → 精确重排序
+</code></pre><p>这个三阶段流水线的核心思想是：</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">策略</th>
+                <th style="text-align: left">效果</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left">用量化换内存</td>
+                <td style="text-align: left">Int8 量化实现 4x 压缩，Int4 可达 8x</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">图搜索全在内存</td>
+                <td style="text-align: left">消除遍历阶段的磁盘 IO</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">仅候选向量走磁盘</td>
+                <td style="text-align: left">批量读取 20-200 个向量用于精确重排序</td>
+            </tr>
+        </tbody>
+    </table>
+</div><h2 class="heading" id="实验验证">
+  实验验证
+  <a class="anchor" href="#%e5%ae%9e%e9%aa%8c%e9%aa%8c%e8%af%81">#</a>
+</h2>
+<p>然后我就实现了这么一个库，看起来跑出来效果确实挺不错：</p>
+<blockquote>
+<p>代码链接：<a href="https://github.com/wrp-wrp/QuantifyWebANN">QuantifyWebANN</a></p>
+</blockquote>
+<h3 class="heading" id="实验结果">
+  实验结果
+  <a class="anchor" href="#%e5%ae%9e%e9%aa%8c%e7%bb%93%e6%9e%9c">#</a>
+</h3>
+<ul>
+<li><a href="benchmark_report-Topk10.pdf">Benchmark Report - Top-K=10</a></li>
+<li><a href="benchmark_report-Topk100.pdf">Benchmark Report - Top-K=100</a></li>
+</ul>
+<p>做实验的时候由于 reranking 设置得比较多，可能甚至 recall 都比裸 HNSW 高一点，原论文可能认为自己的方法不影响 recall 而没有放出 recall，所以这里使用&quot;可能&quot;二字。</p>
+<h2 class="heading" id="核心感想">
+  核心感想
+  <a class="anchor" href="#%e6%a0%b8%e5%bf%83%e6%84%9f%e6%83%b3">#</a>
+</h2>
+<p>感觉一个比较大的感想是，可能确实就是大部分场景下<strong>量化对高维的 ANNS recall 影响就是不怎么大</strong>，在小内存的情况下，内存上的收益比在 reranking 个数上的亏损大得多，或许直接这么简单量化的方法在小内存的场景就是最好的，进一步的压缩可能更应该倾向图索引本身的压缩或者干脆这种小内存场景直接用 IVFPQ。</p>
+<p>并且考虑到 WASM 的推广，量化算法更加容易部署到计算核里去，根据用户场景自定义的设计看起来更简单了。</p>
+<h2 class="heading" id="担忧量化影响-recall">
+  担忧：量化影响 recall？
+  <a class="anchor" href="#%e6%8b%85%e5%bf%a7%e9%87%8f%e5%8c%96%e5%bd%b1%e5%93%8d-recall">#</a>
+</h2>
+<p>感觉实测多 reranking 一点也没啥影响？让 AI 评价一下：</p>
+<ol>
+<li>
+<p><strong>高维空间的距离分布特点</strong>：在高维空间中，向量之间的距离差异相对较小（维度灾难），这意味着 Top-K 候选的距离往往比较接近。</p>
+</li>
+<li>
+<p><strong>量化误差可以被 Reranking 纠正</strong>：只要量化后的近似搜索能找到「大致正确」的候选集，后续的精确距离重排序就能恢复准确的排序。</p>
+</li>
+<li>
+<p><strong>HNSW 的容错性</strong>：图索引本身就有一定的冗余，即使个别边的距离计算有误差，整体导航方向仍然大致正确。</p>
+</li>
+</ol>
+<h2 class="heading" id="结论端侧-anns-不需要过度设计">
+  结论：端侧 ANNS 不需要过度设计
+  <a class="anchor" href="#%e7%bb%93%e8%ae%ba%e7%ab%af%e4%be%a7-anns-%e4%b8%8d%e9%9c%80%e8%a6%81%e8%bf%87%e5%ba%a6%e8%ae%be%e8%ae%a1">#</a>
+</h2>
+<p>在内存受限的端侧场景，仿照 DiskANN 的思路：</p>
+<pre tabindex="0"><code>量化索引（全内存）+ HNSW 图搜索 + 精确 Reranking
+</code></pre><p>这就是一种简洁、高效、好用的架构模式。</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">指标</th>
+                <th style="text-align: left">表现</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left">✅ 延迟</td>
+                <td style="text-align: left">稳定在 10ms 级别</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">✅ Recall</td>
+                <td style="text-align: left">根据 reranking 数量几乎保持原状</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">✅ 工程复杂度</td>
+                <td style="text-align: left">简单，易于维护</td>
+            </tr>
+            <tr>
+                <td style="text-align: left">✅ 缓存策略</td>
+                <td style="text-align: left">无需复杂的缓存调度策略</td>
+            </tr>
+        </tbody>
+    </table>
+</div><hr>
+<p>不过作为一只本科生小朋友感觉可能有一些没考虑到的点，但是作为一个研究这一方面的科研实习生，确实有点对 WebANNS 和类似想法的设计感到疑惑.jpg</p>
+
+    </div>
+  </article>
+    <div class="single-comments">
+      <script src="https://giscus.app/client.js"
+        data-repo="wrp-wrp/wrp-wrp.github.io"
+        data-repo-id="R_kgDOQY3FSA"
+        data-category="General"
+        data-category-id="DIC_kwDOQY3FSM4CzTKb"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+    </div>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/pke-kernel-tools/">
+                        PKE 内核可用工具总览
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
