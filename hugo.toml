@@ -3,7 +3,6 @@ languageCode = 'en-us'
 title = "rprp's blog"
 theme = 'typo'
 math = true
-publishDir = "docs"
 
 # Google analytics code
 googleAnalytics = "G-xxxxxxxxx"
