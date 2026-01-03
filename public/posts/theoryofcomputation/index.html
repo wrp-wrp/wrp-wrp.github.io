@@ -909,6 +909,14 @@ $$A_{pq} \to a A_{rs} b$$
 <li><strong>注意</strong>: 由于计算树可能极深（甚至无限），必须用 BFS 而非 DFS 排查，以确保如果存在接受路径，DTM 一定能找到。</li>
 </ul>
 </li>
+<li><strong>等价的硬件增强 (Equivalent Hardware Variants)</strong>:
+<ul>
+<li><strong>原地不动 (Stay-Option)</strong>: 允许读写头在某一步不移动 ($L, R, S$)。模拟：用先右转再左转 ($R, L$) 替代 $S$。</li>
+<li><strong>双向无限带 (Two-way Infinite Tape)</strong>: 纸带向左也是无限的。模拟：将纸带在起始位置“对折”，用单带的两条轨道（多轨技术）分别模拟原带的正半轴和负半轴。</li>
+<li><strong>多轨图灵机 (Multi-track TM)</strong>: 每个方格存储一个 $k$ 元组。等价于增加字母表大小，将 $\Gamma^k$ 视为一个新的超级字母表。</li>
+<li><strong>多读写头与多维带</strong>: 分别通过在纸带上增加标记位和将高维坐标映射（如螺旋映射）到一维序列来进行模拟。</li>
+</ul>
+</li>
 </ul>
 <h4 class="heading" id="可计算函数-computable-functions">
   可计算函数 (Computable Functions)
