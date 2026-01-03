@@ -177,32 +177,45 @@ body.single-page footer {
 /* 6. Tablet/Mobile Fallback */
 @media screen and (max-width: 1139px) {
 
+    html,
+    body {
+        overflow-x: hidden !important;
+        position: relative !important;
+        width: 100% !important;
+    }
+
     body.single-page,
     body.single-page .content,
     body.single-page .main {
         width: 100vw !important;
+        max-width: 100vw !important;
         overflow-x: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
     }
 
     .post-layout {
+        display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
-        padding: 0 1rem !important;
-        margin: 1.5rem 0 !important;
+        align-items: flex-start !important;
+        /* Changed from center */
+        padding: 1rem !important;
+        margin: 0 !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        gap: 0 !important;
+        gap: 2rem !important;
     }
 
     .side-toc {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
-        margin-bottom: 2rem !important;
-        padding: 1rem !important;
+        margin: 0 0 2rem 0 !important;
+        padding: 1.2rem !important;
         background: var(--code-background) !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
         border: 1px solid var(--code-border) !important;
         box-sizing: border-box !important;
     }
@@ -219,6 +232,8 @@ body.single-page footer {
     .post-article {
         width: 100% !important;
         max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
     }
 }
@@ -244,7 +259,6 @@ body.single-page footer {
     padding-left: 0 !important;
     margin: 0 !important;
     border-left: 1px solid rgba(128, 128, 128, 0.1);
-    /* Subtle vertical line */
 }
 
 .side-toc nav ul ul {
@@ -263,7 +277,6 @@ body.single-page footer {
     line-height: 1.4 !important;
     font-size: 0.8rem !important;
     margin-left: -1px;
-    /* Align with parent border */
     border-left: 2px solid transparent !important;
 }
 
@@ -305,6 +318,13 @@ body.single-page footer {
     overflow-wrap: break-word !important;
     word-wrap: break-word !important;
     min-width: 0 !important;
+    word-break: normal !important;
+}
+
+/* Final safeguard for inline code */
+.single-content code {
+    word-break: break-all !important;
+    white-space: normal !important;
 }
 
 /* Ensure math formulas don't break the layout */
@@ -332,9 +352,14 @@ body.single-page footer {
     white-space: pre !important;
 }
 
+.single-content pre code {
+    white-space: pre !important;
+    word-break: normal !important;
+}
+
 /* Safe margin for mobile */
 @media screen and (max-width: 768px) {
     .post-layout {
-        padding: 0 0.8rem !important;
+        padding: 0 1rem !important;
     }
 }
