@@ -26,6 +26,7 @@
 .notice-note {
     border-color: #0969da;
 }
+
 .notice-note .notice-title {
     color: #0969da;
 }
@@ -33,6 +34,7 @@
 .notice-tip {
     border-color: #1a7f37;
 }
+
 .notice-tip .notice-title {
     color: #1a7f37;
 }
@@ -40,6 +42,7 @@
 .notice-important {
     border-color: #8250df;
 }
+
 .notice-important .notice-title {
     color: #8250df;
 }
@@ -47,6 +50,7 @@
 .notice-warning {
     border-color: #9a6700;
 }
+
 .notice-warning .notice-title {
     color: #9a6700;
 }
@@ -54,6 +58,7 @@
 .notice-caution {
     border-color: #d1242f;
 }
+
 .notice-caution .notice-title {
     color: #d1242f;
 }
@@ -63,17 +68,162 @@
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.dark .notice-note { border-color: #2f81f7; }
-.dark .notice-note .notice-title { color: #2f81f7; }
+.dark .notice-note {
+    border-color: #2f81f7;
+}
 
-.dark .notice-tip { border-color: #3fb950; }
-.dark .notice-tip .notice-title { color: #3fb950; }
+.dark .notice-note .notice-title {
+    color: #2f81f7;
+}
 
-.dark .notice-important { border-color: #a371f7; }
-.dark .notice-important .notice-title { color: #a371f7; }
+.dark .notice-tip {
+    border-color: #3fb950;
+}
 
-.dark .notice-warning { border-color: #d29922; }
-.dark .notice-warning .notice-title { color: #d29922; }
+.dark .notice-tip .notice-title {
+    color: #3fb950;
+}
 
-.dark .notice-caution { border-color: #f85149; }
-.dark .notice-caution .notice-title { color: #f85149; }
+.dark .notice-important {
+    border-color: #a371f7;
+}
+
+.dark .notice-important .notice-title {
+    color: #a371f7;
+}
+
+.dark .notice-warning {
+    border-color: #d29922;
+}
+
+.dark .notice-warning .notice-title {
+    color: #d29922;
+}
+
+.dark .notice-caution {
+    border-color: #f85149;
+}
+
+.dark .notice-caution .notice-title {
+    color: #f85149;
+}
+
+/* Side TOC Layout */
+body.single-page {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+body.single-page .content {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.single-page header,
+body.single-page .breadcrumbs,
+body.single-page footer {
+    max-width: var(--main-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--main-padding);
+    padding-right: var(--main-padding);
+}
+
+.post-layout {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.post-article {
+    width: 100%;
+    max-width: var(--main-width);
+    padding-left: var(--main-padding);
+    padding-right: var(--main-padding);
+    margin-bottom: var(--main-padding-bottom);
+}
+
+@media screen and (min-width: 1100px) {
+    .side-toc {
+        display: block !important;
+        position: sticky;
+        top: 6rem;
+        width: 200px;
+        height: min-content;
+        margin-left: -240px;
+        /* Pull it to the left of the article */
+        padding-right: 1.5rem;
+        border-right: 1px solid var(--code-border);
+        font-size: 0.85rem;
+        z-index: 10;
+        align-self: flex-start;
+    }
+
+    .side-toc-content {
+        max-height: calc(100vh - 10rem);
+        overflow-y: auto;
+    }
+}
+
+@media screen and (max-width: 1099px) {
+    .post-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .side-toc {
+        width: 100%;
+        max-width: var(--main-width);
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--code-background);
+        border-radius: 8px;
+        border: 1px solid var(--code-border);
+    }
+}
+
+.side-toc-title {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--content-secondary);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.side-toc nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.side-toc nav ul ul {
+    padding-left: 1rem;
+}
+
+.side-toc nav a {
+    text-decoration: none;
+    color: var(--content-secondary);
+    display: block;
+    padding: 0.25rem 0;
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
+    padding-left: 0.6rem;
+    line-height: 1.2;
+    font-size: 0.85rem;
+}
+
+.side-toc nav a:hover {
+    color: var(--content-primary);
+}
+
+.side-toc nav a.active {
+    color: var(--content-primary);
+    font-weight: 700;
+    border-left-color: var(--content-primary);
+}

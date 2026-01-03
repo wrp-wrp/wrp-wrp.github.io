@@ -88,7 +88,7 @@
 
 
 
-<body class="auto">
+<body class="auto single-page">
 
   <div class="content">
     <header>
@@ -166,27 +166,10 @@
         <a href="/posts/theoryofcomputation/">计算理论学习笔记</a></div>
 
 
-<div >
-  <article>
-    <header class="single-intro-container">
-        
-        <h1 class="single-title">计算理论学习笔记</h1>
-        <p class="single-summary">计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</p>
-        
-        <div class="single-subsummary">
-          
-          <div>
-            
-            <p class="single-date">
-              <time datetime="2025-11-26T10:00:00&#43;08:00">November 26, 2025</time>
-            </p>
-          </div>
-        </div>
-        
-    </header>
-      <aside class="toc">
-        <p><strong>Table of contents</strong></p>
-        <nav id="TableOfContents">
+<div class="post-layout ">
+  <aside class="side-toc">
+    <p class="side-toc-title">目录</p>
+    <nav id="TableOfContents">
   <ul>
     <li><a href="#1-自动机与语言-automata-and-languages">1. 自动机与语言 (Automata and Languages)</a>
       <ul>
@@ -213,9 +196,27 @@
     </li>
   </ul>
 </nav>
-      </aside>
-    
-    <div class="single-content">
+  </aside>
+
+  <article class="post-article">
+    <header class="single-intro-container">
+
+      <h1 class="single-title">计算理论学习笔记</h1>
+      <p class="single-summary">计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</p>
+      
+      <div class="single-subsummary">
+        
+        <div>
+          
+          <p class="single-date">
+            <time datetime="2025-11-26T10:00:00&#43;08:00">November 26, 2025</time>
+          </p>
+        </div>
+      </div>
+
+    </header>
+
+    <div class="single-content" id="post-content">
       <h1 class="heading" id="计算理论导引">
   计算理论导引
   <a class="anchor" href="#%e8%ae%a1%e7%ae%97%e7%90%86%e8%ae%ba%e5%af%bc%e5%bc%95">#</a>
@@ -912,8 +913,8 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 </code></pre><blockquote><p>已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p></blockquote>
     </div>
   </article>
-    <div class="single-comments">
-      <script src="https://giscus.app/client.js"
+  <div class="single-comments">
+    <script src="https://giscus.app/client.js"
         data-repo="wrp-wrp/wrp-wrp.github.io"
         data-repo-id="R_kgDOQY3FSA"
         data-category="General"
@@ -930,7 +931,7 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
         async>
 </script>
 
-    </div>
+  </div>
 
   
 
@@ -989,8 +990,12 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
   </div>
   
 
-</div>
+  
+  
+  <script defer src="/%20js/toc.js"></script>
+  
 
+</div>
 
     </main>
   </div>
@@ -1059,6 +1064,7 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
   
 </body>
 
-<script src="/js/theme-switch.js"></script>
-<script defer src="/js/copy-code.js"></script>
+<script src="/%20js/theme-switch.js"></script>
+<script defer src="/%20js/copy-code.js"></script>
+
 </html>

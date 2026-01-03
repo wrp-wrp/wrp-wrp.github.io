@@ -89,7 +89,7 @@
 
 
 
-<body class="auto">
+<body class="auto single-page">
 
   <div class="content">
     <header>
@@ -167,27 +167,10 @@
         <a href="/posts/wasmvectoranns/">WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了</a></div>
 
 
-<div >
-  <article>
-    <header class="single-intro-container">
-        
-        <h1 class="single-title">WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了</h1>
-        <p class="single-summary">端侧 ANNS 调研：量化索引 + HNSW 图搜索 + 精确 Reranking 是简洁高效的架构，无需过度设计。</p>
-        
-        <div class="single-subsummary">
-          
-          <div>
-            
-            <p class="single-date">
-              <time datetime="2025-12-22T15:41:00&#43;08:00">December 22, 2025</time>
-            </p>
-          </div>
-        </div>
-        
-    </header>
-      <aside class="toc">
-        <p><strong>Table of contents</strong></p>
-        <nav id="TableOfContents">
+<div class="post-layout ">
+  <aside class="side-toc">
+    <p class="side-toc-title">目录</p>
+    <nav id="TableOfContents">
   <ul>
     <li><a href="#背景端侧-anns-的兴起">背景：端侧 ANNS 的兴起</a></li>
     <li><a href="#内存限制问题">内存限制问题</a></li>
@@ -204,9 +187,27 @@
     <li><a href="#结论端侧-anns-不需要过度设计">结论：端侧 ANNS 不需要过度设计</a></li>
   </ul>
 </nav>
-      </aside>
-    
-    <div class="single-content">
+  </aside>
+
+  <article class="post-article">
+    <header class="single-intro-container">
+
+      <h1 class="single-title">WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了</h1>
+      <p class="single-summary">端侧 ANNS 调研：量化索引 + HNSW 图搜索 + 精确 Reranking 是简洁高效的架构，无需过度设计。</p>
+      
+      <div class="single-subsummary">
+        
+        <div>
+          
+          <p class="single-date">
+            <time datetime="2025-12-22T15:41:00&#43;08:00">December 22, 2025</time>
+          </p>
+        </div>
+      </div>
+
+    </header>
+
+    <div class="single-content" id="post-content">
       <h1 class="heading" id="wasm--vector-index-端侧-anns-调研">
   WASM + Vector Index 端侧 ANNS 调研
   <a class="anchor" href="#wasm--vector-index-%e7%ab%af%e4%be%a7-anns-%e8%b0%83%e7%a0%94">#</a>
@@ -374,8 +375,8 @@
 
     </div>
   </article>
-    <div class="single-comments">
-      <script src="https://giscus.app/client.js"
+  <div class="single-comments">
+    <script src="https://giscus.app/client.js"
         data-repo="wrp-wrp/wrp-wrp.github.io"
         data-repo-id="R_kgDOQY3FSA"
         data-category="General"
@@ -392,7 +393,7 @@
         async>
 </script>
 
-    </div>
+  </div>
 
   
 
@@ -442,8 +443,12 @@
   </div>
   
 
-</div>
+  
+  
+  <script defer src="/%20js/toc.js"></script>
+  
 
+</div>
 
     </main>
   </div>
@@ -512,6 +517,7 @@
   
 </body>
 
-<script src="/js/theme-switch.js"></script>
-<script defer src="/js/copy-code.js"></script>
+<script src="/%20js/theme-switch.js"></script>
+<script defer src="/%20js/copy-code.js"></script>
+
 </html>
