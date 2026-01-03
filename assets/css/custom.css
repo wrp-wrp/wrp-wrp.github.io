@@ -1,0 +1,79 @@
+/* GitHub Style Alerts */
+.notice {
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-left: 0.25rem solid;
+    border-radius: 0.3rem;
+    font-size: 0.95em;
+    background-color: var(--code-background);
+}
+
+.notice-title {
+    font-weight: 700;
+    margin-top: 0 !important;
+    margin-bottom: 0.5rem !important;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+}
+
+.notice p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Colors and Icons */
+.notice-note {
+    border-color: #0969da;
+}
+.notice-note .notice-title {
+    color: #0969da;
+}
+
+.notice-tip {
+    border-color: #1a7f37;
+}
+.notice-tip .notice-title {
+    color: #1a7f37;
+}
+
+.notice-important {
+    border-color: #8250df;
+}
+.notice-important .notice-title {
+    color: #8250df;
+}
+
+.notice-warning {
+    border-color: #9a6700;
+}
+.notice-warning .notice-title {
+    color: #9a6700;
+}
+
+.notice-caution {
+    border-color: #d1242f;
+}
+.notice-caution .notice-title {
+    color: #d1242f;
+}
+
+/* Dark mode adjustments if needed */
+.dark .notice {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .notice-note { border-color: #2f81f7; }
+.dark .notice-note .notice-title { color: #2f81f7; }
+
+.dark .notice-tip { border-color: #3fb950; }
+.dark .notice-tip .notice-title { color: #3fb950; }
+
+.dark .notice-important { border-color: #a371f7; }
+.dark .notice-important .notice-title { color: #a371f7; }
+
+.dark .notice-warning { border-color: #d29922; }
+.dark .notice-warning .notice-title { color: #d29922; }
+
+.dark .notice-caution { border-color: #f85149; }
+.dark .notice-caution .notice-title { color: #f85149; }
