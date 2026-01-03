@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="https://wrp-wrp.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://wrp-wrp.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://wrp-wrp.github.io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="https://wrp-wrp.github.io/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://wrp-wrp.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="https://wrp-wrp.github.io/posts/wasmvectoranns/"/>
+<link rel="canonical" href="http://localhost:1313/posts/wasmvectoranns/"/>
 
-<meta property="og:url" content="https://wrp-wrp.github.io/posts/wasmvectoranns/">
+<meta property="og:url" content="http://localhost:1313/posts/wasmvectoranns/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了">
   <meta property="og:description" content="端侧 ANNS 调研：量化索引 &#43; HNSW 图搜索 &#43; 精确 Reranking 是简洁高效的架构，无需过度设计。">
@@ -102,26 +102,8 @@
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.bc941c1dd6a2c273f710d46c28167cfe3b65318e52ee701bff79e93e2977ad6a.css" media="all">
+<link rel="stylesheet" href="/assets/combined.min.9aafdd28153540e16823f679e4945be1e87517652d7b966e969db648fe0443a1.css" media="all">
 
-
-
-
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
-      <script>
-        var doNotTrack = false;
-        if ( false ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-xxxxxxxxx');
-        }
-      </script>
 
 
 
@@ -157,7 +139,7 @@
     
 
     <h1 class="header-title">
-        <a href="https://wrp-wrp.github.io/">rprp&#39;s blog</a>
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -327,8 +309,11 @@
   <a class="anchor" href="#%e4%b8%89%e9%98%b6%e6%ae%b5%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%9e%b6%e6%9e%84">#</a>
 </h2>
 <p>所以类似 DiskANN 的结构，可以实现下面这个 pipeline，这个 pipeline 也没有像 DiskANN 那样优化外部存储的存储方式，只是简单从 IndexedDB 调用：</p>
-<pre tabindex="0"><code>量化索引（全内存）→ 图搜索 → 批量读取原始向量 → 精确重排序
-</code></pre><p>这个三阶段流水线的核心思想是：</p>
+<div class="code-block">
+  <pre tabindex="0"><code>量化索引（全内存）→ 图搜索 → 批量读取原始向量 → 精确重排序</code></pre>
+  <button class="copy-code-button">copy</button>
+</div>
+<p>这个三阶段流水线的核心思想是：</p>
 
 <div class="table-outer">
     <table>
@@ -395,8 +380,11 @@
   <a class="anchor" href="#%e7%bb%93%e8%ae%ba%e7%ab%af%e4%be%a7-anns-%e4%b8%8d%e9%9c%80%e8%a6%81%e8%bf%87%e5%ba%a6%e8%ae%be%e8%ae%a1">#</a>
 </h2>
 <p>在内存受限的端侧场景，仿照 DiskANN 的思路：</p>
-<pre tabindex="0"><code>量化索引（全内存）+ HNSW 图搜索 + 精确 Reranking
-</code></pre><p>这就是一种简洁、高效、好用的架构模式。</p>
+<div class="code-block">
+  <pre tabindex="0"><code>量化索引（全内存）+ HNSW 图搜索 + 精确 Reranking</code></pre>
+  <button class="copy-code-button">copy</button>
+</div>
+<p>这就是一种简洁、高效、好用的架构模式。</p>
 
 <div class="table-outer">
     <table>

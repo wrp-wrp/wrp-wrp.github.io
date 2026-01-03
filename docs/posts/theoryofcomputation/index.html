@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="https://wrp-wrp.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://wrp-wrp.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://wrp-wrp.github.io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="https://wrp-wrp.github.io/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://wrp-wrp.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="https://wrp-wrp.github.io/posts/theoryofcomputation/"/>
+<link rel="canonical" href="http://localhost:1313/posts/theoryofcomputation/"/>
 
-<meta property="og:url" content="https://wrp-wrp.github.io/posts/theoryofcomputation/">
+<meta property="og:url" content="http://localhost:1313/posts/theoryofcomputation/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算理论学习笔记">
   <meta property="og:description" content="计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。">
@@ -101,26 +101,8 @@
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.bc941c1dd6a2c273f710d46c28167cfe3b65318e52ee701bff79e93e2977ad6a.css" media="all">
+<link rel="stylesheet" href="/assets/combined.min.9aafdd28153540e16823f679e4945be1e87517652d7b966e969db648fe0443a1.css" media="all">
 
-
-
-
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
-      <script>
-        var doNotTrack = false;
-        if ( false ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-xxxxxxxxx');
-        }
-      </script>
 
 
 
@@ -156,7 +138,7 @@
     
 
     <h1 class="header-title">
-        <a href="https://wrp-wrp.github.io/">rprp&#39;s blog</a>
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -706,8 +688,11 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
         </tbody>
     </table>
 </div><p><strong>包含关系</strong>:</p>
-<pre tabindex="0"><code>Regular ⊊ CFL ⊊ CSL ⊊ RE
-</code></pre><h2 class="heading" id="2-可计算性理论-computability-theory">
+<div class="code-block">
+  <pre tabindex="0"><code>Regular ⊊ CFL ⊊ CSL ⊊ RE</code></pre>
+  <button class="copy-code-button">copy</button>
+</div>
+<h2 class="heading" id="2-可计算性理论-computability-theory">
   2. 可计算性理论 (Computability Theory)
   <a class="anchor" href="#2-%e5%8f%af%e8%ae%a1%e7%ae%97%e6%80%a7%e7%90%86%e8%ae%ba-computability-theory">#</a>
 </h2>
@@ -965,8 +950,11 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
         </tbody>
     </table>
 </div><p><strong>包含链</strong>:</p>
-<pre tabindex="0"><code>P ⊆ NP ⊆ PSPACE = NPSPACE ⊆ EXPTIME
-</code></pre><blockquote><p>已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p></blockquote>
+<div class="code-block">
+  <pre tabindex="0"><code>P ⊆ NP ⊆ PSPACE = NPSPACE ⊆ EXPTIME</code></pre>
+  <button class="copy-code-button">copy</button>
+</div>
+<blockquote><p>已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p></blockquote>
             </div>
         </article>
         <div class="single-comments">

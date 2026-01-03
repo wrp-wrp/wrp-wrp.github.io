@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="https://wrp-wrp.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://wrp-wrp.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://wrp-wrp.github.io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="https://wrp-wrp.github.io/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://wrp-wrp.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="https://wrp-wrp.github.io/posts/networkreview/"/>
+<link rel="canonical" href="http://localhost:1313/posts/networkreview/"/>
 
-<meta property="og:url" content="https://wrp-wrp.github.io/posts/networkreview/">
+<meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算机网络按层复习">
   <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
@@ -97,26 +97,8 @@
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.bc941c1dd6a2c273f710d46c28167cfe3b65318e52ee701bff79e93e2977ad6a.css" media="all">
+<link rel="stylesheet" href="/assets/combined.min.9aafdd28153540e16823f679e4945be1e87517652d7b966e969db648fe0443a1.css" media="all">
 
-
-
-
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
-      <script>
-        var doNotTrack = false;
-        if ( false ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-xxxxxxxxx');
-        }
-      </script>
 
 
 
@@ -152,7 +134,7 @@
     
 
     <h1 class="header-title">
-        <a href="https://wrp-wrp.github.io/">rprp&#39;s blog</a>
+        <a href="http://localhost:1313/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -1924,21 +1906,27 @@ $$ TimeoutInterval = EstimatedRTT + 4 \times DevRTT $$</p>
 </h4>
 <p>HTTP 报文是纯文本（HTTP/2 之前），人眼可读。</p>
 <p><strong>A. 请求报文 (Request Message)</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>GET /index.html HTTP/1.1      &lt;-- 请求行 (方法 URL 版本)
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>GET /index.html HTTP/1.1      &lt;-- 请求行 (方法 URL 版本)
 </span></span><span style="display:flex;"><span>Host: www.example.com         &lt;-- 首部行 (Header Lines)
 </span></span><span style="display:flex;"><span>User-Agent: Mozilla/5.0
 </span></span><span style="display:flex;"><span>Connection: keep-alive
 </span></span><span style="display:flex;"><span>                              &lt;-- 空行 (CRLF)
-</span></span><span style="display:flex;"><span>(Body)                        &lt;-- 请求体 (GET 通常为空，POST 有数据)
-</span></span></code></pre></div><p><strong>B. 响应报文 (Response Message)</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HTTP/1.1 200 OK               &lt;-- 状态行 (版本 状态码 短语)
+</span></span><span style="display:flex;"><span>(Body)                        &lt;-- 请求体 (GET 通常为空，POST 有数据)</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<p><strong>B. 响应报文 (Response Message)</strong></p>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HTTP/1.1 200 OK               &lt;-- 状态行 (版本 状态码 短语)
 </span></span><span style="display:flex;"><span>Date: Thu, 28 Nov 2025...     &lt;-- 首部行
 </span></span><span style="display:flex;"><span>Server: Apache
 </span></span><span style="display:flex;"><span>Content-Type: text/html
 </span></span><span style="display:flex;"><span>Content-Length: 1234
 </span></span><span style="display:flex;"><span>                              &lt;-- 空行
-</span></span><span style="display:flex;"><span>&lt;html&gt;...&lt;/html&gt;              &lt;-- 响应体 (Entity Body)
-</span></span></code></pre></div><h4 class="heading" id="4-常见-http-方法-methods">
+</span></span><span style="display:flex;"><span>&lt;html&gt;...&lt;/html&gt;              &lt;-- 响应体 (Entity Body)</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<h4 class="heading" id="4-常见-http-方法-methods">
   4. 常见 HTTP 方法 (Methods)
   <a class="anchor" href="#4-%e5%b8%b8%e8%a7%81-http-%e6%96%b9%e6%b3%95-methods">#</a>
 </h4>
