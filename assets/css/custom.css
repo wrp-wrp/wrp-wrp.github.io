@@ -253,9 +253,10 @@ body.single-page footer {
 
 .side-toc nav a.active {
     color: var(--content-primary) !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     border-left-color: var(--content-primary) !important;
-    background: rgba(128, 128, 128, 0.06);
+    border-left-width: 3px !important;
+    background: rgba(128, 128, 128, 0.12) !important;
 }
 
 /* Sub-level active refinement */

@@ -5,7 +5,7 @@
 {{ partial "breadcrumbs.html" . }}
 {{ end }}
 
-<div class="post-layout {{ if .Param " autonumber" }} autonumber {{ end }}">
+<div class="post-layout {{ if .Param "autonumber" }}autonumber{{ end }}">
 
     {{- /* Table of Contents - Side Display */}}
     {{- if .Param "toc" }}
@@ -79,7 +79,7 @@
 
         {{/* Integration with ScrollSpy */}}
         {{ if .Param "toc" }}
-        <script defer src="{{ " js/toc.js" | relURL }}"></script>
+        <script defer src="{{ "js/toc.js" | relURL }}"></script>
         {{ end }}
     </div>
 </div>
