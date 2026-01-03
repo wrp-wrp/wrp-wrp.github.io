@@ -22,7 +22,6 @@
     margin-bottom: 0 !important;
 }
 
-/* Colors and Icons */
 .notice-note {
     border-color: #0969da;
 }
@@ -63,7 +62,6 @@
     color: #d1242f;
 }
 
-/* Dark mode adjustments if needed */
 .dark .notice {
     background-color: rgba(255, 255, 255, 0.05);
 }
@@ -108,122 +106,133 @@
     color: #f85149;
 }
 
-/* Side TOC Layout */
-body.single-page {
+/* ============================================================
+   Side TOC Layout - FINAL PERFECT VERSION
+   ============================================================ */
+
+/* 1. Global Container Reset for Single Pages */
+body.single-page,
+body.single-page .content,
+body.single-page .main {
     max-width: none !important;
     width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-body.single-page .content {
-    max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: block !important;
 }
 
+/* 2. Standard Width Alignment for Header/Footer/Breadcrumbs */
 body.single-page header,
 body.single-page .breadcrumbs,
 body.single-page footer {
-    max-width: var(--main-width);
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--main-padding);
-    padding-right: var(--main-padding);
+    max-width: 780px !important;
+    margin: 0 auto !important;
+    padding-left: var(--main-padding) !important;
+    padding-right: var(--main-padding) !important;
 }
 
+/* 3. Post Layout Centering */
 .post-layout {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-    margin-top: 2rem;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: 60px !important;
+    width: 100% !important;
+    margin: 3rem auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+/* 4. Article Column */
+.post-main-column {
+    flex: 0 1 780px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
 }
 
 .post-article {
-    width: 100%;
-    max-width: var(--main-width);
-    padding-left: var(--main-padding);
-    padding-right: var(--main-padding);
-    margin-bottom: var(--main-padding-bottom);
+    width: 100% !important;
+    margin-bottom: 3rem !important;
 }
 
-@media screen and (min-width: 1100px) {
+/* 5. Sticky TOC Sidebar (> 1140px for safe side-by-side) */
+@media screen and (min-width: 1140px) {
     .side-toc {
         display: block !important;
-        position: sticky;
-        top: 6rem;
-        width: 200px;
-        height: min-content;
-        margin-left: -240px;
-        /* Pull it to the left of the article */
-        padding-right: 1.5rem;
-        border-right: 1px solid var(--code-border);
-        font-size: 0.85rem;
-        z-index: 10;
-        align-self: flex-start;
-    }
-
-    .side-toc-content {
-        max-height: calc(100vh - 10rem);
-        overflow-y: auto;
+        flex: 0 0 240px !important;
+        position: sticky !important;
+        top: 6rem !important;
+        max-height: calc(100vh - 8rem) !important;
+        overflow-y: auto !important;
+        border-right: 1px solid var(--code-border) !important;
+        padding-right: 1.5rem !important;
+        order: -1 !important;
+        /* Forces layout to the left */
+        font-size: 0.82rem !important;
+        opacity: 0.9;
     }
 }
 
-@media screen and (max-width: 1099px) {
+/* 6. Tablet/Mobile Fallback */
+@media screen and (max-width: 1139px) {
     .post-layout {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 0 1.4em !important;
     }
 
     .side-toc {
-        width: 100%;
-        max-width: var(--main-width);
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--code-background);
-        border-radius: 8px;
-        border: 1px solid var(--code-border);
+        display: block !important;
+        width: 100% !important;
+        max-width: 780px !important;
+        margin-bottom: 2.5rem !important;
+        padding: 1.5rem !important;
+        background: var(--code-background) !important;
+        border-radius: 8px !important;
+        border: 1px solid var(--code-border) !important;
     }
 }
 
+/* 7. Fine-grained TOC styling */
 .side-toc-title {
     font-weight: 800;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--content-secondary);
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .side-toc nav ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
 }
 
 .side-toc nav ul ul {
-    padding-left: 1rem;
+    padding-left: 1rem !important;
+    margin-top: 0.2rem !important;
 }
 
 .side-toc nav a {
-    text-decoration: none;
-    color: var(--content-secondary);
-    display: block;
-    padding: 0.25rem 0;
-    transition: all 0.2s ease;
-    border-left: 2px solid transparent;
-    padding-left: 0.6rem;
-    line-height: 1.2;
-    font-size: 0.85rem;
+    text-decoration: none !important;
+    color: var(--content-secondary) !important;
+    display: block !important;
+    padding: 0.35rem 0 !important;
+    transition: all 0.2s ease !important;
+    border-left: 2px solid transparent !important;
+    padding-left: 0.8rem !important;
+    line-height: 1.3 !important;
 }
 
 .side-toc nav a:hover {
-    color: var(--content-primary);
+    color: var(--content-primary) !important;
+    background: rgba(128, 128, 128, 0.05);
 }
 
 .side-toc nav a.active {
-    color: var(--content-primary);
-    font-weight: 700;
-    border-left-color: var(--content-primary);
+    color: var(--content-primary) !important;
+    font-weight: 800 !important;
+    border-left-color: var(--content-primary) !important;
 }

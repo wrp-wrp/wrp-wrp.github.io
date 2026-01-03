@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="https://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://example.org/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://example.org/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://example.org/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:1313/posts/theoryofcomputation/"/>
+<link rel="canonical" href="https://example.org/posts/theoryofcomputation/"/>
 
-<meta property="og:url" content="http://localhost:1313/posts/theoryofcomputation/">
+<meta property="og:url" content="https://example.org/posts/theoryofcomputation/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="计算理论学习笔记">
   <meta property="og:description" content="计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。">
@@ -63,7 +63,64 @@
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.56b1873d8852f8a5a109abda36c1bfcde55cb48e5bcbe0d8c934a196a7dc374a.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.922257de13cfca7b0ba2453c84b9578b5e90f6c01bc2d5bf7d8dbc3c4ce5f37c.css" media="all">
+
+
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-xxxxxxxxx');
+        }
+      </script>
 
 
 
@@ -99,7 +156,7 @@
     
 
     <h1 class="header-title">
-        <a href="http://localhost:1313/">rprp&#39;s blog</a>
+        <a href="https://example.org/">rprp&#39;s blog</a>
     </h1>
 
     <div class="header-menu">
@@ -161,15 +218,14 @@
 
 
 
-
 <div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
         <a href="/posts/theoryofcomputation/">计算理论学习笔记</a></div>
 
 
 <div class="post-layout ">
-  <aside class="side-toc">
-    <p class="side-toc-title">目录</p>
-    <nav id="TableOfContents">
+    <aside class="side-toc">
+        <p class="side-toc-title">目录</p>
+        <nav id="TableOfContents">
   <ul>
     <li><a href="#1-自动机与语言-automata-and-languages">1. 自动机与语言 (Automata and Languages)</a>
       <ul>
@@ -196,28 +252,27 @@
     </li>
   </ul>
 </nav>
-  </aside>
+    </aside>
 
-  <article class="post-article">
-    <header class="single-intro-container">
+    <div class="post-main-column">
+        <article class="post-article">
+            <header class="single-intro-container">
+                <h1 class="single-title">计算理论学习笔记</h1>
+                <p class="single-summary">计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</p>
+                
+                <div class="single-subsummary">
+                    
+                    <div>
+                        
+                        <p class="single-date">
+                            <time datetime=" 2025-11-26T10:00:00&#43;08:00">November 26, 2025</time>
+                        </p>
+                    </div>
+                </div>
+            </header>
 
-      <h1 class="single-title">计算理论学习笔记</h1>
-      <p class="single-summary">计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</p>
-      
-      <div class="single-subsummary">
-        
-        <div>
-          
-          <p class="single-date">
-            <time datetime="2025-11-26T10:00:00&#43;08:00">November 26, 2025</time>
-          </p>
-        </div>
-      </div>
-
-    </header>
-
-    <div class="single-content" id="post-content">
-      <h1 class="heading" id="计算理论导引">
+            <div class="single-content" id="post-content">
+                <h1 class="heading" id="计算理论导引">
   计算理论导引
   <a class="anchor" href="#%e8%ae%a1%e7%ae%97%e7%90%86%e8%ae%ba%e5%af%bc%e5%bc%95">#</a>
 </h1>
@@ -677,6 +732,7 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 <li><strong>$q_{accept}$</strong>: 接受状态。</li>
 <li><strong>$q_{reject}$</strong>: 拒绝状态 ($q_{reject} \neq q_{accept}$)。</li>
 </ol>
+<p>计算理论（Theory of Computation）是计算机科学的数学基础，主要研究计算过程及其界限。</p>
 <h4 class="heading" id="组态与计算-configuration-and-computation">
   组态与计算 (Configuration and Computation)
   <a class="anchor" href="#%e7%bb%84%e6%80%81%e4%b8%8e%e8%ae%a1%e7%ae%97-configuration-and-computation">#</a>
@@ -911,10 +967,10 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 </div><p><strong>包含链</strong>:</p>
 <pre tabindex="0"><code>P ⊆ NP ⊆ PSPACE = NPSPACE ⊆ EXPTIME
 </code></pre><blockquote><p>已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p></blockquote>
-    </div>
-  </article>
-  <div class="single-comments">
-    <script src="https://giscus.app/client.js"
+            </div>
+        </article>
+        <div class="single-comments">
+            <script src="https://giscus.app/client.js"
         data-repo="wrp-wrp/wrp-wrp.github.io"
         data-repo-id="R_kgDOQY3FSA"
         data-category="General"
@@ -931,71 +987,21 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
         async>
 </script>
 
-  </div>
-
-  
-
-  
-
-  
-  
-
-<div class="single-pagination">
-    <hr />
-
-    <div class="flexnowrap">
-
-        <div class="single-pagination-prev">
-            
-            <div class="single-pagination-container-prev">
-                <div class="single-pagination-text">←</div>
-                <div class="single-pagination-text">
-                    <a href="/posts/networkreview/">
-                        计算机网络按层复习
-                    </a>
-                </div>
-            </div>
-            
         </div>
 
-        <div class="single-pagination-next">
-            
-            <div class="single-pagination-container-next">
-                <div class="single-pagination-text">
-                    <a href="/posts/wasmvectoranns/">
-                        WASM &#43; Vector Index 端侧 ANNS 调研：量化就够了
-                    </a>
-                </div>
-                <div class="single-pagination-text">→</div>
-            </div>
-            
-        </div>
+        
 
+        
+        <div class="back-to-top"><a href="#top">back to top</a></div>
+        
+
+        
+        
+        <script defer src="/%20js/toc.js"></script>
+        
     </div>
-
-    <hr />
 </div>
 
-
-
-  
-
-  
-
-  
-  <div class="back-to-top">
-    <a href="#top">
-      back to top
-    </a>
-  </div>
-  
-
-  
-  
-  <script defer src="/%20js/toc.js"></script>
-  
-
-</div>
 
     </main>
   </div>

@@ -283,6 +283,7 @@ Regular ⊊ CFL ⊊ CSL ⊊ RE
 6.  **$q_{accept}$**: 接受状态。
 7.  **$q_{reject}$**: 拒绝状态 ($q_{reject} \neq q_{accept}$)。
 
+计算理论（Theory of Computation）是计算机科学的数学基础，主要研究计算过程及其界限。
 #### 组态与计算 (Configuration and Computation)
 - **组态 (Configuration)**: 包含当前状态、当前纸带内容和读写头位置的快照。
     - 表示为 $u q v$，其中 $q \\in Q$，纸带内容为 $uv$，读写头位于 $v$ 的第一个字符上。

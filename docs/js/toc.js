@@ -1,26 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tocLinks = document.querySelectorAll('.side-toc nav a');
-    const sections = Array.from(tocLinks).map(link => {
-        const id = link.getAttribute('href').substring(1);
-        return document.getElementById(id);
-    }).filter(section => section !== null);
+    if (tocLinks.length === 0) return;
 
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -80% 0px',
-        threshold: 0
-    };
+    const sections = Array.from(tocLinks).map(link => {
+        const id = decodeURIComponent(link.getAttribute('href').substring(1));
+        return document.getElementById(id);
+    }).filter(s => s !== null);
 
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.getAttribute('id');
                 tocLinks.forEach(link => {
-                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                    const href = decodeURIComponent(link.getAttribute('href').substring(1));
+                    link.classList.toggle('active', href === id);
                 });
             }
         });
-    }, observerOptions);
+    }, {
+        rootMargin: '0px 0px -80% 0px',
+        threshold: 0
+    });
 
-    sections.forEach(section => observer.observe(section));
+    sections.forEach(s => observer.observe(s));
 });
