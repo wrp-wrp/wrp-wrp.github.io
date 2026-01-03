@@ -218,7 +218,8 @@
     <li><a href="#2-可计算性理论-computability-theory">2. 可计算性理论 (Computability Theory)</a>
       <ul>
         <li><a href="#图灵机-turing-machines">图灵机 (Turing Machines)</a></li>
-        <li><a href="#可判定性-decidability">可判定性 (Decidability)</a></li>
+        <li><a href="#判定性问题汇总-decidability-summary">判定性问题汇总 (Decidability Summary)</a></li>
+        <li><a href="#可判定性理论-decidability-theory">可判定性理论 (Decidability Theory)</a></li>
       </ul>
     </li>
     <li><a href="#3-计算复杂性理论-complexity-theory">3. 计算复杂性理论 (Complexity Theory)</a>
@@ -789,101 +790,194 @@ $$A_{pq} \to a A_{rs} b$$
   图灵机 (Turing Machines)
   <a class="anchor" href="#%e5%9b%be%e7%81%b5%e6%9c%ba-turing-machines">#</a>
 </h3>
+<p>图灵机（TM）是现代计算机的终极理论模型。它拥有一个<strong>无限长</strong>且<strong>可读写</strong>的纸带。</p>
+<h4 class="heading" id="直观描述-informal-description">
+  直观描述 (Informal Description)
+  <a class="anchor" href="#%e7%9b%b4%e8%a7%82%e6%8f%8f%e8%bf%b0-informal-description">#</a>
+</h4>
+<p>一台标准的单带图灵机包含：</p>
+<ul>
+<li><strong>无限长纸带</strong>: 划分为一个个方格，每个方格存一个字符。初始输入 $w$ 放在左端，右侧全是空白符 $\sqcup$。</li>
+<li><strong>读写头 (Head)</strong>: 可以在纸带上左右移动，读取或修改当前方格。</li>
+<li><strong>状态寄存器</strong>: 记录 TM 的当前状态。</li>
+</ul>
 <h4 class="heading" id="形式化定义-formal-definition">
   形式化定义 (Formal Definition)
   <a class="anchor" href="#%e5%bd%a2%e5%bc%8f%e5%8c%96%e5%ae%9a%e4%b9%89-formal-definition">#</a>
 </h4>
 <blockquote><p>图灵机是一个 7 元组 $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$</p></blockquote><ol>
 <li><strong>$Q$</strong>: 有限状态集合。</li>
-<li><strong>$\Sigma$</strong>: 输入字母表 (不含空白符 $\sqcup$)。</li>
+<li><strong>$\Sigma$</strong>: 输入字母表 (不含 $\sqcup$)。</li>
 <li><strong>$\Gamma$</strong>: 纸带字母表 (包含 $\Sigma$ 和 $\sqcup$)。</li>
 <li><strong>$\delta$</strong>: 转移函数 $Q \times \Gamma \to Q \times \Gamma \times {L, R}$。
 <ul>
-<li>决定：(新状态, 写入字符, 移动方向)。</li>
+<li>含义：(旧状态, 读字符) $\to$ (新状态, 写字符, 移动方向)。</li>
 </ul>
 </li>
-<li><strong>$q_0$</strong>: 起始状态。</li>
-<li><strong>$q_{accept}$</strong>: 接受状态。</li>
-<li><strong>$q_{reject}$</strong>: 拒绝状态 ($q_{reject} \neq q_{accept}$)。</li>
+<li><strong>$q_0, q_{accept}, q_{reject}$</strong>: 起始、接受、拒绝状态。</li>
 </ol>
 <p>计算理论（Theory of Computation）是计算机科学的数学基础，主要研究计算过程及其界限。</p>
-<h4 class="heading" id="组态与计算-configuration-and-computation">
-  组态与计算 (Configuration and Computation)
-  <a class="anchor" href="#%e7%bb%84%e6%80%81%e4%b8%8e%e8%ae%a1%e7%ae%97-configuration-and-computation">#</a>
+<h4 class="heading" id="判定器与语言-deciders-and-languages">
+  判定器与语言 (Deciders and Languages)
+  <a class="anchor" href="#%e5%88%a4%e5%ae%9a%e5%99%a8%e4%b8%8e%e8%af%ad%e8%a8%80-deciders-and-languages">#</a>
 </h4>
+<p>图灵机处理输入有三种可能：<strong>接受、拒绝、或死循环</strong>。</p>
 <ul>
-<li><strong>组态 (Configuration)</strong>: 包含当前状态、当前纸带内容和读写头位置的快照。
+<li><strong>图灵可判定 (Turing-decidable)</strong>:
 <ul>
-<li>表示为 $u q v$，其中 $q \in Q$，纸带内容为 $uv$，读写头位于 $v$ 的第一个字符上。</li>
+<li>如果语言 $L$ 能被一台<strong>判定器 (Decider)</strong> 识别。</li>
+<li><strong>判定器定义</strong>: 即使对不属于自己的字符串，也一定会停机（拒绝），<strong>绝不进入死循环</strong>。</li>
 </ul>
 </li>
-<li><strong>计算过程</strong>: 从起始组态 $q_0 w$ 开始，根据转移函数 $\delta$ 一步步更新组态。</li>
-<li><strong>停机</strong>: 当进入 $q_{accept}$ 或 $q_{reject}$ 时，计算立即停止。</li>
-</ul>
-<h4 class="heading" id="语言识别-language-recognition">
-  语言识别 (Language Recognition)
-  <a class="anchor" href="#%e8%af%ad%e8%a8%80%e8%af%86%e5%88%ab-language-recognition">#</a>
-</h4>
+<li><strong>图灵可识别 (Turing-recognizable)</strong>:
 <ul>
-<li><strong>图灵可识别 (Turing-recognizable / Recursively Enumerable)</strong>:
-<ul>
-<li>语言 $L$ 被图灵机 $M$ 识别，即 $L(M) = L$。</li>
-<li>对 $w \in L$，M 最终进入 $q_{accept}$。</li>
-<li>对 $w \notin L$，M 可能进入 $q_{reject}$，也可能<strong>无限循环 (Loop)</strong>。</li>
-</ul>
-</li>
-<li><strong>图灵可判定 (Turing-decidable / Recursive)</strong>:
-<ul>
-<li>语言 $L$ 被图灵机 $M$ 判定。</li>
-<li>M 是一个<strong>判定器 (Decider)</strong>：对任何输入，M 都能在有限步内停机 (接受或拒绝)，<strong>绝不循环</strong>。</li>
+<li>机器只需对属于 $L$ 的串停机。对于不属于 $L$ 的串，机器可能会一直跑下去（Looping）。</li>
 </ul>
 </li>
 </ul>
-<h4 class="heading" id="变体-variants">
-  变体 (Variants)
-  <a class="anchor" href="#%e5%8f%98%e4%bd%93-variants">#</a>
+<blockquote><p><strong>算法必须停机</strong>: 在丘奇-图灵论题中，我们通常把“算法”等同于“图灵判定器”。</p></blockquote><h4 class="heading" id="算法设计技巧标记与扫描-marking--scanning">
+  算法设计技巧：标记与扫描 (Marking &amp; Scanning)
+  <a class="anchor" href="#%e7%ae%97%e6%b3%95%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7%e6%a0%87%e8%ae%b0%e4%b8%8e%e6%89%ab%e6%8f%8f-marking--scanning">#</a>
 </h4>
+<p>图灵机最核心的“编程”思路是通过扩展纸带字母表来记录状态和位置。</p>
 <ul>
+<li><strong>符号标记</strong>: 若要在 $a, b, c$ 构成的纸带中查找并在特定位置做记录，可以引入标记符号 $\dot{a}$。这相当于给物理位置做了一个“书签”。</li>
+<li><strong>跨度检查</strong>: 处理形如 $B = {w#w \mid w \in {0, 1}^*}$ 的语言时，TM 的工作逻辑：
+<ol>
+<li>在左侧读取一个字符，将其变为标记符号（如 $0 \to \dot{0}$）。</li>
+<li>“携带”该字符信息（通过状态转移），向右移动越过 $#$ 寻找第一个未标记字符。</li>
+<li>如果匹配，则标记之；如果不匹配或中途出错，进入 $q_{reject}$。</li>
+<li>重复此过程直至全部扫描完成。</li>
+</ol>
+</li>
+<li><strong>状态携带</strong>: TM 有限的状态集合 $Q$ 可以看作是 CPU 的寄存器，用来暂存读写头刚刚“闻”过的少量文字信息。</li>
+</ul>
+<h4 class="heading" id="图灵机变体与等价性-variants--equivalence">
+  图灵机变体与等价性 (Variants &amp; Equivalence)
+  <a class="anchor" href="#%e5%9b%be%e7%81%b5%e6%9c%ba%e5%8f%98%e4%bd%93%e4%b8%8e%e7%ad%89%e4%bb%b7%e6%80%a7-variants--equivalence">#</a>
+</h4>
+<blockquote><p><strong>计算能力的不变性</strong>: 尽管有多种变体，它们在<strong>可判定性</strong>（哪些语言能被解出来）层面都是完全等价的。</p></blockquote><ul>
 <li><strong>多带图灵机 (Multitape TM)</strong>:
 <ul>
-<li>拥有 $k$ 条独立的纸带和读写头。</li>
-<li><strong>等价性</strong>: 多带 TM 等价于单带 TM (可以相互模拟，时间复杂度仅差平方级别)。</li>
+<li><strong>结构</strong>: $k$ 条带，每条带都有独立的读写头。</li>
+<li><strong>等价性证法</strong>: 1 条单带可以模拟 $k$ 条带。使用特殊的分隔符 <code>#</code> 将多条带内容串联，并使用带点的符号（如 $\dot{a}$）标记原本 $k$ 个读写头在单带上的“虚拟位置”。</li>
+<li><strong>代价</strong>: 若原步数为 $t(n)$，单带模拟步数为 $O(t^2(n))$。</li>
 </ul>
 </li>
 <li><strong>非确定性图灵机 (NTM)</strong>:
 <ul>
-<li>转移函数 $\delta: Q \times \Gamma \to \mathcal{P}(Q \times \Gamma \times \{L, R\})$。</li>
-<li><strong>等价性</strong>: NTM 等价于 DTM (可以通过广度优先搜索模拟 NTM 的所有分支)。</li>
+<li><strong>逻辑</strong>: 在每一步，TM 都可以有多个可能的转移选择。</li>
+<li><strong>等价性证法</strong>: 确定性 TM 可以通过<strong>广度优先搜索 (BFS)</strong> 遍历 NTM 的计算树。</li>
+<li><strong>注意</strong>: 由于计算树可能极深（甚至无限），必须用 BFS 而非 DFS 排查，以确保如果存在接受路径，DTM 一定能找到。</li>
 </ul>
 </li>
 <li><strong>枚举器 (Enumerator)</strong>:
 <ul>
-<li>带有打印机的图灵机，用于枚举语言中的所有字符串。</li>
-<li>$L$ 是图灵可识别的 $\iff$ 存在枚举器枚举 $L$。</li>
+<li>带有打印机的图灵机，用于依次打印语言中的所有字符串。</li>
+<li>$L$ 是图灵可识别的 $\iff$ 存在某个枚举器可以枚举它。</li>
 </ul>
 </li>
+</ul>
+<h4 class="heading" id="图灵机作为换能器-tms-as-transducers">
+  图灵机作为换能器 (TMs as Transducers)
+  <a class="anchor" href="#%e5%9b%be%e7%81%b5%e6%9c%ba%e4%bd%9c%e4%b8%ba%e6%8d%a2%e8%83%bd%e5%99%a8-tms-as-transducers">#</a>
+</h4>
+<p>图灵机不仅可以输出“接受/拒绝”，还可以作为<strong>函数计算器</strong>。</p>
+<ul>
+<li><strong>定义</strong>: 对于函数 $f: \Sigma^* \to \Sigma^*$，若图灵机在输入 $w$ 下停机，且纸带最终内容为 $f(w)$，则称该函数是<strong>图灵可计算的</strong>。</li>
+<li><strong>例子</strong>: 二进制加法、乘法、字符串翻转等。</li>
 </ul>
 <h4 class="heading" id="通用图灵机-universal-turing-machine">
   通用图灵机 (Universal Turing Machine)
   <a class="anchor" href="#%e9%80%9a%e7%94%a8%e5%9b%be%e7%81%b5%e6%9c%ba-universal-turing-machine">#</a>
 </h4>
 <ul>
-<li><strong>定义</strong>: 一个能模拟任何其他图灵机的图灵机 $U$。</li>
-<li><strong>输入</strong>: $\langle M, w \rangle$，其中 $M$ 是图灵机的编码，$w$ 是输入串。</li>
-<li><strong>工作原理</strong>: $U$ 在自己的纸带上模拟 $M$ 在 $w$ 上的运行过程。</li>
-<li><strong>意义</strong>: 证明了“存储程序计算机”的可行性，是现代计算机的理论基础。</li>
+<li><strong>定义</strong>: 一个能通过读取描述信息来模拟<strong>任何</strong>其他图灵机的图灵机 $U$。</li>
+<li><strong>输入</strong>: $\langle M, w \rangle$，其中 $M$ 是某种图灵机的编码，$w$ 是其输入。</li>
+<li><strong>工作原理</strong>: $U$ 的纸带被划分为三部分：模拟 $M$ 的带、存储 $M$ 的状态转换表、以及 $M$ 的当前虚拟状态。</li>
+<li><strong>意义</strong>: 证明了“硬件与软件的统一”，是现代通用电子计算机的理论始祖。</li>
 </ul>
 <h4 class="heading" id="丘奇-图灵论题-church-turing-thesis">
   丘奇-图灵论题 (Church-Turing Thesis)
   <a class="anchor" href="#%e4%b8%98%e5%a5%87-%e5%9b%be%e7%81%b5%e8%ae%ba%e9%a2%98-church-turing-thesis">#</a>
 </h4>
-<blockquote><p><strong>核心观点</strong>: 任何直观上&quot;可计算&quot;的算法，都可以由图灵机执行。</p>
-<p>这意味着图灵机不仅仅是一种数学模型，它捕捉到了<strong>计算的本质极限</strong>。</p></blockquote><h3 class="heading" id="可判定性-decidability">
-  可判定性 (Decidability)
-  <a class="anchor" href="#%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7-decidability">#</a>
+<blockquote><p><strong>核心观点</strong>: 任何“算法”在直观上可以由人类计算员执行的过程，都可以被图灵机精确模拟。</p>
+<p>这将模糊的“算法”概念转化为了严格的数学定义。它意味着图灵机不仅是一种模型，更是<strong>计算能力的宇宙上限</strong>。</p></blockquote><h4 class="heading" id="基本模型的判定性示例-examples-of-decidable-problems">
+  基本模型的判定性示例 (Examples of Decidable Problems)
+  <a class="anchor" href="#%e5%9f%ba%e6%9c%ac%e6%a8%a1%e5%9e%8b%e7%9a%84%e5%88%a4%e5%ae%9a%e6%80%a7%e7%a4%ba%e4%be%8b-examples-of-decidable-problems">#</a>
+</h4>
+<p>在图灵机看来，判定一个 DFA 或 CFG 是否接受某个串，本质上是运行一个“模拟算法”：</p>
+<ul>
+<li><strong>$A_{DFA}$</strong>: 给定 $\langle B, w \rangle$，判定 DFA $B$ 是否接受 $w$。
+<ul>
+<li><strong>算法</strong>: 直接在 $B$ 上模拟运行 $w$ 即可。由于 $B$ 状态有限，$w$ 长度有限，一定会停机。</li>
+</ul>
+</li>
+<li><strong>$E_{DFA}$</strong>: 给定 $\langle A \rangle$，判定 $L(A)$ 是否为空。
+<ul>
+<li><strong>算法</strong>: 这是一个图论搜索问题。检查从起始状态出发是否能到达任何接受状态。</li>
+</ul>
+</li>
+<li><strong>$A_{CFG}$</strong>: 给定 $\langle G, w \rangle$，判定 CFG $G$ 是否派生 $w$。
+<ul>
+<li><strong>算法</strong>: 不能简单地模拟派生（可能无限分支），但可以转为 <strong>Chomsky 范式 (CNF)</strong> 后使用 <strong>CYK 算法</strong>或动态规划在多项式时间内判定。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="判定性问题汇总-decidability-summary">
+  判定性问题汇总 (Decidability Summary)
+  <a class="anchor" href="#%e5%88%a4%e5%ae%9a%e6%80%a7%e9%97%ae%e9%a2%98%e6%b1%87%e6%80%bb-decidability-summary">#</a>
+</h3>
+<p>在进入不可判定性之前，我们先梳理针对简单模型的“好消息”：</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: center">问题模型</th>
+                <th style="text-align: left">描述</th>
+                <th style="text-align: center">DFA/NFA</th>
+                <th style="text-align: center">CFG</th>
+                <th style="text-align: center">TM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center"><strong>$A$ (Acceptance)</strong></td>
+                <td style="text-align: left">机器是否接受字符串 $w$？</td>
+                <td style="text-align: center"><strong>DECIDABLE</strong></td>
+                <td style="text-align: center"><strong>DECIDABLE</strong></td>
+                <td style="text-align: center"><strong>RECOGNIZABLE</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>$E$ (Emptiness)</strong></td>
+                <td style="text-align: left">机器识别的语言是否为空？</td>
+                <td style="text-align: center"><strong>DECIDABLE</strong></td>
+                <td style="text-align: center"><strong>DECIDABLE</strong></td>
+                <td style="text-align: center"><strong>UNDECIDABLE</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>$EQ$ (Equality)</strong></td>
+                <td style="text-align: left">两台机器是否识别相同语言？</td>
+                <td style="text-align: center"><strong>DECIDABLE</strong></td>
+                <td style="text-align: center"><strong>UNDECIDABLE</strong></td>
+                <td style="text-align: center"><strong>UNDECIDABLE</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>停机 (Halting)</strong></td>
+                <td style="text-align: left">机器在输入 $w$ 下是否停机？</td>
+                <td style="text-align: center"><strong>(Trivial)</strong></td>
+                <td style="text-align: center"><strong>(Trivial)</strong></td>
+                <td style="text-align: center"><strong>UNDECIDABLE</strong></td>
+            </tr>
+        </tbody>
+    </table>
+</div><blockquote><p><strong>观察</strong>: 随着自动机变得越来越强大（从 DFA 到 CFG 再到 TM），其自身的<strong>元属性判定</strong>却变得越来越困难。上下文无关文法的 $EQ_{CFG}$ 是不可判定的，这是一个著名的“陷阱”。</p></blockquote><h3 class="heading" id="可判定性理论-decidability-theory">
+  可判定性理论 (Decidability Theory)
+  <a class="anchor" href="#%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7%e7%90%86%e8%ae%ba-decidability-theory">#</a>
 </h3>
 <p><strong>可判定语言 (Decidable Languages)</strong><br>
-存在一个图灵机，对任何输入都能在有限步内停机并给出&quot;接受&quot;或&quot;拒绝&quot;的判定。</p>
+存在一个图灵机，对任何输入都能在有限步内停机并给出&quot;接受&quot;或&quot;拒绝&quot;的判定。这类语言构成了 <strong>P</strong> 和 <strong>PSPACE</strong> 的基础。</p>
 <p><strong>图灵可识别语言 (Turing-recognizable / RE)</strong><br>
 存在一个图灵机，对属于该语言的输入会停机接受；对不属于的输入可能拒绝，也可能无限循环。</p>
 <blockquote><p><strong>补集性质</strong>: 语言 $A$ 是可判定的 $\iff$ $A$ 和 $\bar{A}$ 都是图灵可识别的。</p></blockquote><h4 class="heading" id="停机问题-halting-problem">
