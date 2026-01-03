@@ -1,0 +1,61 @@
+<svg width="640" height="220" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f9; border:1px solid #ddd; border-radius:4px; display: block; margin: 0 auto;">
+  <style>
+    .box { fill: #fff; stroke: #333; stroke-width: 1.5px; }
+    .text { font-family: sans-serif; font-size: 14px; text-anchor: middle; fill: #333; }
+    .small-text { font-family: sans-serif; font-size: 12px; text-anchor: middle; fill: #333; }
+    .label { font-family: monospace; font-size: 12px; fill: #666; text-anchor: middle; }
+    .byte-label { font-family: monospace; font-size: 12px; fill: #666; text-anchor: start; }
+  </style>
+  
+  <!-- Bit Markers -->
+  <text x="10" y="15" class="label" text-anchor="start">0</text>
+  <text x="300" y="15" class="label">16</text>
+  <text x="590" y="15" class="label" text-anchor="end">31</text>
+
+  <!-- Row 1 -->
+  <rect x="10" y="20" width="290" height="30" class="box" />
+  <text x="155" y="40" class="text">Source Port (16)</text>
+  <rect x="300" y="20" width="290" height="30" class="box" />
+  <text x="445" y="40" class="text">Destination Port (16)</text>
+  <text x="605" y="40" class="byte-label">0</text>
+
+  <!-- Row 2 -->
+  <rect x="10" y="50" width="580" height="30" class="box" />
+  <text x="300" y="70" class="text">Sequence Number (32)</text>
+  <text x="605" y="70" class="byte-label">4</text>
+
+  <!-- Row 3 -->
+  <rect x="10" y="80" width="580" height="30" class="box" />
+  <text x="300" y="100" class="text">Acknowledgment Number (32)</text>
+  <text x="605" y="100" class="byte-label">8</text>
+
+  <!-- Row 4 -->
+  <!-- Offset: 4 bits -> 72.5px -->
+  <rect x="10" y="110" width="72" height="30" class="box" />
+  <text x="46" y="130" class="small-text">Offset</text>
+  
+  <!-- Reserved: 6 bits -> 108.75px -->
+  <rect x="82" y="110" width="109" height="30" class="box" />
+  <text x="136" y="130" class="small-text">Reserved</text>
+  
+  <!-- Flags: 6 bits -> 108.75px -->
+  <rect x="191" y="110" width="109" height="30" class="box" />
+  <text x="245" y="130" class="small-text">Flags</text>
+  
+  <!-- Window: 16 bits -> 290px -->
+  <rect x="300" y="110" width="290" height="30" class="box" />
+  <text x="445" y="130" class="text">Window Size (16)</text>
+  <text x="605" y="130" class="byte-label">12</text>
+
+  <!-- Row 5 -->
+  <rect x="10" y="140" width="290" height="30" class="box" />
+  <text x="155" y="160" class="text">Checksum (16)</text>
+  <rect x="300" y="140" width="290" height="30" class="box" />
+  <text x="445" y="160" class="text">Urgent Pointer (16)</text>
+  <text x="605" y="160" class="byte-label">16</text>
+
+  <!-- Row 6 -->
+  <rect x="10" y="170" width="580" height="30" class="box" stroke-dasharray="4" />
+  <text x="300" y="190" class="text">Options (Variable) + Padding</text>
+  <text x="605" y="190" class="byte-label">20</text>
+</svg>

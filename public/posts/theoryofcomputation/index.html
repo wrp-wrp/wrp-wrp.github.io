@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://wrp-wrp.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://wrp-wrp.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://wrp-wrp.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://wrp-wrp.github.io/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://wrp-wrp.github.io/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    计算理论学习笔记 | rprp&#39;s blog
+    
+</title>
+
+<link rel="canonical" href="https://wrp-wrp.github.io/posts/theoryofcomputation/"/>
+
+<meta property="og:url" content="https://wrp-wrp.github.io/posts/theoryofcomputation/">
+  <meta property="og:site_name" content="rprp&#39;s blog">
+  <meta property="og:title" content="计算理论学习笔记">
+  <meta property="og:description" content="计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-11-26T10:00:00+08:00">
+    <meta property="article:modified_time" content="2025-11-26T10:00:00+08:00">
+    <meta property="article:tag" content="计算理论">
+    <meta property="article:tag" content="自动机">
+    <meta property="article:tag" content="图灵机">
+    <meta property="article:tag" content="复杂性">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.e1b7806c05f665fc6618459b71b08425426f9a9580f4b6736ef198d2d3e8de00.css" media="all">
+
+
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-xxxxxxxxx');
+        }
+      </script>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto single-page">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://wrp-wrp.github.io/">rprp&#39;s blog</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/resume" >
+                /resume
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/chat" >
+                /chat
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/theoryofcomputation/">计算理论学习笔记</a></div>
+
+
+<div class="post-layout ">
+    <aside class="side-toc">
+        <p class="side-toc-title">目录</p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-自动机与语言-automata-and-languages">1. 自动机与语言 (Automata and Languages)</a>
+      <ul>
+        <li><a href="#正则语言-regular-languages">正则语言 (Regular Languages)</a></li>
+        <li><a href="#上下文无关语言-context-free-languages">上下文无关语言 (Context-Free Languages)</a></li>
+        <li><a href="#乔姆斯基谱系-chomsky-hierarchy">乔姆斯基谱系 (Chomsky Hierarchy)</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-可计算性理论-computability-theory">2. 可计算性理论 (Computability Theory)</a>
+      <ul>
+        <li><a href="#图灵机-turing-machines">图灵机 (Turing Machines)</a></li>
+        <li><a href="#可判定性-decidability">可判定性 (Decidability)</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-计算复杂性理论-complexity-theory">3. 计算复杂性理论 (Complexity Theory)</a>
+      <ul>
+        <li><a href="#时间复杂性类-time-complexity-classes">时间复杂性类 (Time Complexity Classes)</a></li>
+        <li><a href="#p-vs-np-问题">P vs NP 问题</a></li>
+        <li><a href="#np-完全性-np-completeness">NP 完全性 (NP-Completeness)</a></li>
+        <li><a href="#空间复杂性类-space-complexity-classes">空间复杂性类 (Space Complexity Classes)</a></li>
+        <li><a href="#进阶定理-advanced-theorems">进阶定理 (Advanced Theorems)</a></li>
+        <li><a href="#复杂性类关系图谱">复杂性类关系图谱</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+
+    <div class="post-main-column">
+        <article class="post-article">
+            <header class="single-intro-container">
+                <h1 class="single-title">计算理论学习笔记</h1>
+                <p class="single-summary">计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</p>
+                
+                <div class="single-subsummary">
+                    
+                    <div>
+                        
+                        <p class="single-date">
+                            <time datetime=" 2025-11-26T10:00:00&#43;08:00">November 26, 2025</time>
+                        </p>
+                    </div>
+                </div>
+            </header>
+
+            <div class="single-content" id="post-content">
+                <h1 class="heading" id="计算理论导引">
+  计算理论导引
+  <a class="anchor" href="#%e8%ae%a1%e7%ae%97%e7%90%86%e8%ae%ba%e5%af%bc%e5%bc%95">#</a>
+</h1>
+<blockquote><p>本笔记涵盖计算理论的三大核心领域：<strong>自动机与语言</strong>、<strong>可计算性理论</strong>和<strong>计算复杂性理论</strong>，系统梳理从有限自动机到图灵机，从可判定性到NP完全性的核心概念与定理。</p>
+</blockquote><hr>
+<h2 class="heading" id="1-自动机与语言-automata-and-languages">
+  1. 自动机与语言 (Automata and Languages)
+  <a class="anchor" href="#1-%e8%87%aa%e5%8a%a8%e6%9c%ba%e4%b8%8e%e8%af%ad%e8%a8%80-automata-and-languages">#</a>
+</h2>
+<h3 class="heading" id="正则语言-regular-languages">
+  正则语言 (Regular Languages)
+  <a class="anchor" href="#%e6%ad%a3%e5%88%99%e8%af%ad%e8%a8%80-regular-languages">#</a>
+</h3>
+<h4 class="heading" id="有限自动机-finite-automata">
+  有限自动机 (Finite Automata)
+  <a class="anchor" href="#%e6%9c%89%e9%99%90%e8%87%aa%e5%8a%a8%e6%9c%ba-finite-automata">#</a>
+</h4>
+<blockquote><p><strong>确定性有限自动机 (DFA)</strong>: $M = (Q, \Sigma, \delta, q_0, F)$
+<strong>非确定性有限自动机 (NFA)</strong>: 允许 $\epsilon$ 转移，同一输入可能有多个转移路径。</p></blockquote><p><strong>等价性与转化</strong>:</p>
+<ul>
+<li><strong>NFA $\to$ DFA (子集构造法)</strong>:
+<ul>
+<li>DFA 的每个状态对应 NFA 状态的一个子集。</li>
+<li>转移函数考虑 $\epsilon$-闭包：
+$$\delta_{DFA}(R, a) = \bigcup_{r \in R} E(\delta_{NFA}(r, a))$$</li>
+</ul>
+</li>
+<li><strong>RegEx $\to$ NFA (Thompson 构造法)</strong>:
+<ul>
+<li>模块化构造基础 NFA，利用 $\epsilon$ 转移实现并 ($A \cup B$)、连接 ($AB$) 和星号 ($A^*$) 运算。</li>
+</ul>
+</li>
+<li><strong>DFA $\to$ RegEx (状态消除法)</strong>:
+<ul>
+<li>转化为 GNFA 后逐步消除中间状态。</li>
+<li>路径更新公式：
+$$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="正则表达式-regular-expressions">
+  正则表达式 (Regular Expressions)
+  <a class="anchor" href="#%e6%ad%a3%e5%88%99%e8%a1%a8%e8%be%be%e5%bc%8f-regular-expressions">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: 描述正则语言的代数表示。</li>
+</ul>
+<h4 class="heading" id="封闭性-closure-properties">
+  封闭性 (Closure Properties)
+  <a class="anchor" href="#%e5%b0%81%e9%97%ad%e6%80%a7-closure-properties">#</a>
+</h4>
+<p>正则语言在以下运算下<strong>封闭</strong>：</p>
+<ul>
+<li>✓ 并 (Union)</li>
+<li>✓ 交 (Intersection)</li>
+<li>✓ 补 (Complement)</li>
+<li>✓ 连接 (Concatenation)</li>
+<li>✓ 星号 (Kleene Star)</li>
+</ul>
+<h4 class="heading" id="myhill-nerode-定理">
+  Myhill-Nerode 定理
+  <a class="anchor" href="#myhill-nerode-%e5%ae%9a%e7%90%86">#</a>
+</h4>
+<ul>
+<li><strong>用途</strong>: 用于证明语言非正则，或证明 DFA 的最小性。</li>
+<li><strong>定理</strong>: $L$ 是正则语言 $\iff$ $L$ 的等价类数目有限。</li>
+</ul>
+<h4 class="heading" id="泵引理-pumping-lemma-for-regular-languages">
+  泵引理 (Pumping Lemma for Regular Languages)
+  <a class="anchor" href="#%e6%b3%b5%e5%bc%95%e7%90%86-pumping-lemma-for-regular-languages">#</a>
+</h4>
+<blockquote><p><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>正则语言 (反证法)。</p></blockquote><p><strong>定理</strong>: 若 $A$ 是正则语言，则存在泵长度 $p$ (取决于 $A$ 的 DFA 状态数)，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $xyz$，满足：</p>
+<ol>
+<li>$\forall i \ge 0, xy^iz \in A$ (可以将 $y$ 重复任意次，结果仍在语言中)</li>
+<li>$|y| &gt; 0$ (中间部分非空)</li>
+<li>$|xy| \le p$ (重复部分发生在开头的前 $p$ 个字符内)</li>
+</ol>
+<p><strong>直观理解 (鸽巢原理)</strong>:</p>
+<ul>
+<li>设 DFA 有 $p$ 个状态。</li>
+<li>如果输入字符串 $s$ 的长度 $|s| \ge p$，则处理 $s$ 的前 $p$ 个字符时，DFA 必须经过 $p+1$ 个状态序列 (包含起始状态)。</li>
+<li>根据鸽巢原理，这 $p+1$ 个状态中至少有两个是相同的。</li>
+<li>这两个相同状态之间的路径形成了一个环 ($y$)。</li>
+<li>我们可以遍历这个环任意次 ($y^i$)，最终仍会到达相同的接受状态。</li>
+</ul>
+<p><strong>典型例子</strong>: 证明 $L = {0^n1^n \mid n \ge 0}$ 不是正则语言。</p>
+<ol>
+<li><strong>假设</strong> $L$ 是正则语言。</li>
+<li>设 $p$ 为泵引理给出的泵长度。</li>
+<li><strong>选择</strong> 字符串 $s = 0^p1^p$。显然 $s \in L$ 且 $|s| = 2p \ge p$。</li>
+<li>根据泵引理，存在分割 $s = xyz$，满足 $|xy| \le p$ 和 $|y| &gt; 0$。</li>
+<li>由于 $|xy| \le p$，且 $s$ 以 $p$ 个 $0$ 开头，因此 $x$ 和 $y$ 必定完全由 $0$ 组成。即 $y = 0^k$，其中 $1 \le k \le p$。</li>
+<li><strong>泵升</strong>: 取 $i=2$，考虑字符串 $s&rsquo; = xy^2z = xyyz$。</li>
+<li>$s&rsquo;$ 中 $0$ 的数量为 $p+k$，而 $1$ 的数量仍为 $p$。</li>
+<li>因为 $k \ge 1$，所以 $p+k \ne p$。故 $s&rsquo; \notin L$。</li>
+<li>这与泵引理的条件 1 矛盾。</li>
+<li><strong>结论</strong>: 假设不成立，$L$ 不是正则语言。</li>
+</ol>
+<h3 class="heading" id="上下文无关语言-context-free-languages">
+  上下文无关语言 (Context-Free Languages)
+  <a class="anchor" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%97%a0%e5%85%b3%e8%af%ad%e8%a8%80-context-free-languages">#</a>
+</h3>
+<h4 class="heading" id="上下文无关文法-cfg">
+  上下文无关文法 (CFG)
+  <a class="anchor" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%97%a0%e5%85%b3%e6%96%87%e6%b3%95-cfg">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: $G = (V, \Sigma, R, S)$
+<ul>
+<li>产生式规则形式：$A \to \alpha$，其中 $A \in V, \alpha \in (V \cup \Sigma)^*$.</li>
+</ul>
+</li>
+</ul>
+<h5 class="heading" id="派生与派生树-derivations--parse-trees">
+  派生与派生树 (Derivations &amp; Parse Trees)
+  <a class="anchor" href="#%e6%b4%be%e7%94%9f%e4%b8%8e%e6%b4%be%e7%94%9f%e6%a0%91-derivations--parse-trees">#</a>
+</h5>
+<ul>
+<li><strong>派生 (Derivation)</strong>: 通过反复应用产生式规则，从起始符 $S$ 生成字符串的过程。</li>
+<li><strong>最左派生 (Leftmost Derivation)</strong>: 在推导的每一步中，总是选择字符串中最左边的非终结符进行替换。</li>
+<li><strong>最右派生 (Rightmost Derivation)</strong>: 总是替换最右边的非终结符。</li>
+<li><strong>派生树 (Parse Tree)</strong>: 派生的图形化表示，它忽略了替换的顺序，只关注“谁生成了谁”。</li>
+</ul>
+<h5 class="heading" id="歧义性-ambiguity">
+  歧义性 (Ambiguity)
+  <a class="anchor" href="#%e6%ad%a7%e4%b9%89%e6%80%a7-ambiguity">#</a>
+</h5>
+<ul>
+<li><strong>定义</strong>: 如果一个文法对同一个字符串存在<strong>两棵不同的派生树</strong>（或两个不同的最左/最右派生），则称该文法是<strong>歧义的 (Ambiguous)</strong>。</li>
+</ul>
+<blockquote><p><strong>为什么歧义性很糟糕？</strong><br>
+在编译器设计中，派生树决定了程序的语义。例如，在算术表达式中，不同的派生树可能导致不同的运算优先级：</p>
+<ul>
+<li>文法: $E \to E + E \mid E \times E \mid \text{id}$</li>
+<li>字符串: $a + b \times c$</li>
+<li><strong>歧义</strong>: 它可以被解析为 $(a+b) \times c$ 或 $a + (b \times c)$。</li>
+</ul></blockquote><ul>
+<li><strong>固有歧义 (Inherently Ambiguous Language)</strong>: 有些语言（如 ${a^i b^j c^k \mid i=j \text{ 或 } j=k}$）无论用什么 CFG 描述都是歧义的。</li>
+</ul>
+<h5 class="heading" id="乔姆斯基范式-cnf">
+  乔姆斯基范式 (CNF)
+  <a class="anchor" href="#%e4%b9%94%e5%a7%86%e6%96%af%e5%9f%ba%e8%8c%83%e5%bc%8f-cnf">#</a>
+</h5>
+<ul>
+<li><strong>定义</strong>: 产生式规则仅限于以下两种形式：
+<ol>
+<li>$A \to BC$ (两个非终结符)</li>
+<li>$A \to a$ (一个终结符)</li>
+</ol>
+<ul>
+<li>(可选) $S \to \epsilon$ (如果语言包含空串，且 $S$ 不出现在规则右侧)。</li>
+</ul>
+</li>
+</ul>
+<blockquote><p><strong>为什么要用 CNF？</strong></p>
+<ol>
+<li><strong>二叉树性质</strong>: CNF 生成的派生树始终是二叉树，这使得算法处理（如动态规划）变得极其高效。</li>
+<li><strong>解析算法</strong>: 它是 <strong>CYK 算法</strong>（在 $O(n^3)$ 时间内判定一个串是否属于该语言）的基础。</li>
+<li><strong>长度预测</strong>: 对于长度为 $n$ 的字符串，CNF 的派生步数正好是 $2n-1$。</li>
+</ol></blockquote><h5 class="heading" id="任意-cfg-转化为-cnf-的算法">
+  任意 CFG 转化为 CNF 的算法
+  <a class="anchor" href="#%e4%bb%bb%e6%84%8f-cfg-%e8%bd%ac%e5%8c%96%e4%b8%ba-cnf-%e7%9a%84%e7%ae%97%e6%b3%95">#</a>
+</h5>
+<p>任何不包含空串（或修正后）的上下文无关语言都可以转化为 CNF，分为四个步骤：</p>
+<ol>
+<li><strong>引入新起始符</strong>:
+<ul>
+<li>添加 $S_0 \to S$，确保原有起始符不出现在产生式的右侧。</li>
+</ul>
+</li>
+<li><strong>消除 $\epsilon$-产生式</strong>:
+<ul>
+<li>找出所有能推导出空串的变量 $A$ ($A \Rightarrow^* \epsilon$)。</li>
+<li>对于每条包含 $A$ 的规则（如 $B \to uAv$），添加一条不含该 $A$ 的规则（如 $B \to uv$）。</li>
+</ul>
+</li>
+<li><strong>消除单位产生式</strong>:
+<ul>
+<li>找出所有 $A \to B$ 的规则。</li>
+<li>如果有 $B \to u$，则直接添加 $A \to u$。重复此过程直至消除所有单纯的非终结符替换。</li>
+</ul>
+</li>
+<li><strong>转换剩余规则</strong>:
+<ul>
+<li><strong>混合规则</strong>: 对于 $A \to Ba$，改写为 $A \to BU$ 和 $U \to a$。</li>
+<li><strong>过长规则</strong>: 对于 $A \to B_1 B_2 \dots B_k$ ($k &gt; 2$)，改写为串联的二元规则：$A \to B_1 C_1, C_1 \to B_2 C_2 \dots$。</li>
+</ul>
+</li>
+</ol>
+<h4 class="heading" id="下推自动机-pushdown-automata-pda">
+  下推自动机 (Pushdown Automata, PDA)
+  <a class="anchor" href="#%e4%b8%8b%e6%8e%a8%e8%87%aa%e5%8a%a8%e6%9c%ba-pushdown-automata-pda">#</a>
+</h4>
+<blockquote><p><strong>形式化定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$</p>
+<ul>
+<li>$\Gamma$: 栈字母表。</li>
+<li>PDA $\approx$ 拥有无限容量栈 (LIFO) 的 NFA。</li>
+</ul></blockquote><p><strong>等价性</strong>: 一个语言是上下文无关的 $\iff$ 它被某个 PDA 识别。</p>
+<h5 class="heading" id="1-cfg-to-pda-自顶向下模拟解析">
+  1. CFG $\to$ PDA (自顶向下模拟解析)
+  <a class="anchor" href="#1-cfg-to-pda-%e8%87%aa%e9%a1%b6%e5%90%91%e4%b8%8b%e6%a8%a1%e6%8b%9f%e8%a7%a3%e6%9e%90">#</a>
+</h5>
+<ul>
+<li><strong>核心逻辑</strong>: 在 PDA 栈中模拟 CFG 的<strong>最左推导</strong>。栈用于存储尚未匹配的推导符号。</li>
+<li><strong>PDA 构造</strong>:
+<ul>
+<li>设 CFG 为 $G = (V, \Sigma, R, S)$。构造 PDA $P = ({q_{start}, q_{loop}, q_{accept}}, \Sigma, V \cup \Sigma, \delta, q_{start}, {q_{accept}})$。</li>
+</ul>
+</li>
+<li><strong>转移函数规则</strong>:
+<ol>
+<li><strong>初始化</strong>: $\delta(q_{start}, \epsilon, \epsilon) = {(q_{loop}, S$)}$ (将起始符和结束标志压栈)。</li>
+<li><strong>展开非终结符</strong>: 对于每个产生式 $A \to w \in R$:
+$$\delta(q_{loop}, \epsilon, A) = {(q_{loop}, w)}$$
+<em>(若栈顶是变量，则非确定性地替换为其右部)</em>。</li>
+<li><strong>匹配终结符</strong>: 对于每个 $a \in \Sigma$:
+$$\delta(q_{loop}, a, a) = {(q_{loop}, \epsilon)}$$
+<em>(若栈顶是终结符且与输入匹配，则弹出并读取输入)</em>。</li>
+<li><strong>结束</strong>: $\delta(q_{loop}, \epsilon, $) = {(q_{accept}, \epsilon)}$。</li>
+</ol>
+</li>
+</ul>
+<h5 class="heading" id="2-pda-to-cfg-状态对路径构造">
+  2. PDA $\to$ CFG (状态对路径构造)
+  <a class="anchor" href="#2-pda-to-cfg-%e7%8a%b6%e6%80%81%e5%af%b9%e8%b7%af%e5%be%84%e6%9e%84%e9%80%a0">#</a>
+</h5>
+<ul>
+<li><strong>目标</strong>: 定义变量 $A_{pq}$，使其生成所有能让 PDA 从状态 $p$ 开始（栈为空）运行到状态 $q$（栈再次为空）的字符串。</li>
+<li><strong>构造三部曲</strong>:
+<ol>
+<li><strong>基础规则 (Base Case)</strong>:
+<ul>
+<li>$\forall p \in Q: A_{pp} \to \epsilon$ (原地不动产生空串)。</li>
+</ul>
+</li>
+<li><strong>串联规则 (Concatenation)</strong>:
+<ul>
+<li>$\forall p, q, r \in Q: A_{pq} \to A_{pr} A_{rq}$ (路径可以拆分为经过中间状态 $r$ 的两段)。</li>
+</ul>
+</li>
+<li><strong>嵌套规则 (Nested Step)</strong>:
+<ul>
+<li>如果 $p$ 读取 $a$ 压入 $t$，且 $s$ 读取 $b$ 弹出 $t$ 后到达 $q$：
+$$A_{pq} \to a A_{rs} b$$
+<em>(这表示栈顶符号 $t$ 的生命周期始于 $p \to r$，终于 $s \to q$)</em>。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<blockquote><p><strong>算法直觉</strong>: 这个转换本质上是将 PDA 的<strong>运行轨迹</strong>映射回文法的<strong>派生树</strong>。PDA 的压栈对应树的生长，弹栈对应树枝的结束。</p></blockquote><h4 class="heading" id="确定性下推自动机-dpda">
+  确定性下推自动机 (DPDA)
+  <a class="anchor" href="#%e7%a1%ae%e5%ae%9a%e6%80%a7%e4%b8%8b%e6%8e%a8%e8%87%aa%e5%8a%a8%e6%9c%ba-dpda">#</a>
+</h4>
+<ul>
+<li>确定性的 PDA（每一步转移是唯一的，且 $\epsilon$ 转移有限制）。</li>
+<li><strong>能力差异</strong>: DPDA 识别的语言类（确定性上下文无关语言, DCFL）是 CFL 的真子集 ($DCFL \subsetneq CFL$)。</li>
+<li>例如：${ww^R}$ 是 CFL 但不是 DCFL；${wcw^R}$ 是 DCFL。</li>
+<li>DPDA 能够被确定性地解析，这对编译器设计很重要。</li>
+</ul>
+<h4 class="heading" id="封闭性-closure-properties-1">
+  封闭性 (Closure Properties)
+  <a class="anchor" href="#%e5%b0%81%e9%97%ad%e6%80%a7-closure-properties-1">#</a>
+</h4>
+<p>CFL 的封闭性：</p>
+<ul>
+<li>✓ 并 (Union)</li>
+<li>✓ 连接 (Concatenation)</li>
+<li>✓ 星号 (Kleene Star)</li>
+<li>✗ 交 (Intersection) - <strong>不封闭</strong></li>
+<li>✗ 补 (Complement) - <strong>不封闭</strong></li>
+</ul>
+<blockquote><p>CFL 与正则语言的交集仍是 CFL。</p></blockquote><h4 class="heading" id="泵引理-pumping-lemma-for-cfl">
+  泵引理 (Pumping Lemma for CFL)
+  <a class="anchor" href="#%e6%b3%b5%e5%bc%95%e7%90%86-pumping-lemma-for-cfl">#</a>
+</h4>
+<blockquote><p><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>上下文无关语言。</p></blockquote><p><strong>定理</strong>: 若 $A$ 是 CFL，则存在泵长度 $p$，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $uvxyz$，满足：</p>
+<ol>
+<li>$\forall i \ge 0, uv^ixy^iz \in A$</li>
+<li>$|vy| &gt; 0$ (即 $v$ 和 $y$ 不全为空)</li>
+<li>$|vxy| \le p$</li>
+</ol>
+<p><strong>直观理解</strong>:</p>
+<ul>
+<li>考虑生成字符串 $s$ 的派生树 (Parse Tree)。</li>
+<li>若 $s$ 足够长，树的高度必然很高。</li>
+<li>如果树的高度超过 $|V|$ (非终结符的数量)，则在最长路径上必然会出现重复的非终结符 $R$。</li>
+<li>设路径上较底层的 $R$ 生成子串 $x$，较高层的 $R$ 生成子串 $vxy$。</li>
+<li>我们可以用较高层的子树替换较低层的子树 (泵升)，或者反之 (泵降)，生成的字符串仍由文法生成。</li>
+</ul>
+<p><strong>典型例子</strong>: 证明 $L = {a^nb^nc^n \mid n \ge 0}$ 不是 CFL。</p>
+<ol>
+<li><strong>假设</strong> $L$ 是 CFL，设 $p$ 为泵长度。</li>
+<li><strong>选择</strong> $s = a^pb^pc^p \in L$。</li>
+<li>根据引理，存在分割 $s = uvxyz$，满足 $|vxy| \le p$ 和 $|vy| &gt; 0$。</li>
+<li><strong>分析情况</strong>: 由于 $|vxy| \le p$，子串 $vxy$ 不可能同时包含 $a, b, c$ 三种字符 (因为 $a$ 区和 $c$ 区中间隔着 $p$ 个 $b$)。
+<ul>
+<li>情况 1: $v$ 和 $y$ 只包含一种类型的字符 (例如全 $a$)。泵升后该字符数量增加，其他不变，破坏相等关系。</li>
+<li>情况 2: $v$ 和 $y$ 包含两种类型的字符 (例如 $a$ 和 $b$)。泵升后 $a$ 和 $b$ 数量增加，$c$ 不变，破坏相等关系。</li>
+</ul>
+</li>
+<li>无论哪种情况，$uv^2xy^2z \notin L$。</li>
+<li><strong>结论</strong>: $L$ 不是 CFL。</li>
+</ol>
+<h4 class="heading" id="进阶引理">
+  进阶引理
+  <a class="anchor" href="#%e8%bf%9b%e9%98%b6%e5%bc%95%e7%90%86">#</a>
+</h4>
+<ul>
+<li><strong>奥格登引理 (Ogden&rsquo;s Lemma)</strong>:
+<ul>
+<li>CFL 泵引理的推广，提供了更强的约束力。</li>
+<li><strong>定理</strong>: 若 $A$ 是 CFL，则存在长度 $p$。对于任意 $s \in A$ 且我们在 $s$ 中标记了至少 $p$ 个位置，则 $s$ 可分割为 $uvxyz$，满足：
+<ol>
+<li>$\forall i \ge 0, uv^ixy^iz \in A$</li>
+<li>$v$ 和 $y$ 中至少包含一个<strong>标记</strong>位置。</li>
+<li>$vxy$ 中最多包含 $p$ 个<strong>标记</strong>位置。</li>
+</ol>
+</li>
+<li><strong>用途</strong>: 用于证明某些即使满足普通泵引理但仍非 CFL 的语言 (例如某些具有特定结构的语言)。</li>
+</ul>
+</li>
+<li><strong>交换引理 (Interchange Lemma)</strong>:
+<ul>
+<li>另一个用于证明非 CFL 的强力工具，特别是当泵引理失效时。</li>
+<li><strong>定理</strong>: 设 $L$ 是 CFL。则存在常数 $c &gt; 0$，使得对于 $L$ 的任意长度为 $n$ 的子集 $S_n \subseteq L \cap \Sigma^n$，若 $|S_n|$ 足够大，则存在 $S_n$ 的子集 $Z \subseteq S_n$，使得 $Z$ 中的任意两个串 $w_i, w_j$ 都可以分解为 $w_i = x_i y_i z_i, w_j = x_j y_j z_j$，满足：
+<ol>
+<li>$|x_i| = |x_j|, |y_i| = |y_j|, |z_i| = |z_j|$</li>
+<li>$|y_i| &gt; 0$</li>
+<li>交换中间部分后仍属于 $L$，即 $x_i y_j z_i \in L$ 且 $x_j y_i z_j \in L$。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="cfl-的判定问题与不可判定性-decidability-boundary">
+  CFL 的判定问题与不可判定性 (Decidability Boundary)
+  <a class="anchor" href="#cfl-%e7%9a%84%e5%88%a4%e5%ae%9a%e9%97%ae%e9%a2%98%e4%b8%8e%e4%b8%8d%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7-decidability-boundary">#</a>
+</h4>
+<p>虽然 CFL 比正则语言更强大，但这种能力的提升也带来了代价：许多在正则语言中可判定的问题，在 CFL 中变成了<strong>不可判定</strong>的。</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">问题 (Decision Problem)</th>
+                <th style="text-align: center">是否可判定</th>
+                <th style="text-align: left">常用方法 / 备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>$A_{CFG}$ (成员资格)</strong></td>
+                <td style="text-align: center"><strong>✓ 是</strong></td>
+                <td style="text-align: left"><strong>CYK 算法</strong>: 基于动态规划，复杂度 $O(n^3)$。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>$E_{CFG}$ (空性)</strong></td>
+                <td style="text-align: center"><strong>✓ 是</strong></td>
+                <td style="text-align: left"><strong>标记算法</strong>: 从终结符开始向上标记可达非终结符。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>$ALL_{CFG}$ (通用性)</strong></td>
+                <td style="text-align: center"><strong>✗ 否</strong></td>
+                <td style="text-align: left">判定 $L(G) = \Sigma^*$ 是不可判定的（可通过 TM 接受轨迹规约）。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>$EQ_{CFG}$ (相等性)</strong></td>
+                <td style="text-align: center"><strong>✗ 否</strong></td>
+                <td style="text-align: left">判定两个 CFG 是否生成相同语言是不可判定的。</td>
+            </tr>
+        </tbody>
+    </table>
+</div><blockquote><p><strong>危险的“相等性”</strong>:
+能够判定两个 DFA 是否等价（通过最小化等），但<strong>无法判定两个 CFG 是否等价</strong>。这意味着对于复杂的代码语法，没有通用的算法能判断两套文法规则是否完全一致。</p></blockquote><h4 class="heading" id="经典案例深度探讨-ww-wwr-与-overlineww">
+  经典案例深度探讨: $ww, ww^R$ 与 $\overline{ww}$
+  <a class="anchor" href="#%e7%bb%8f%e5%85%b8%e6%a1%88%e4%be%8b%e6%b7%b1%e5%ba%a6%e6%8e%a2%e8%ae%a8-ww-wwr-%e4%b8%8e-overlineww">#</a>
+</h4>
+<p>通过对比这三个极具代表性的语言，可以深入理解 PDA 的限制与能力：</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">语言</th>
+                <th style="text-align: center">是否为 CFL</th>
+                <th style="text-align: left">核心 Insight (物理直觉)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>$ww^R$</strong></td>
+                <td style="text-align: center"><strong>✓ 是</strong></td>
+                <td style="text-align: left"><strong>栈的 LIFO 特性</strong>: 栈天然支持“后进先出”。当我们把 $w$ 压入栈时，弹出的顺序正好是 $w^R$。非确定性 PDA 可以“猜”中点。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>$ww$</strong></td>
+                <td style="text-align: center"><strong>✗ 否</strong></td>
+                <td style="text-align: left"><strong>先进先出的缺失</strong>: 栈无法直接匹配“先进先出”的序列。要匹配第二个 $w$ 的第一个字符，它被压在栈底，无法触达。</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>$\overline{ww}$</strong></td>
+                <td style="text-align: center"><strong>✓ 是</strong></td>
+                <td style="text-align: left"><strong>非确定性的力量</strong>: 虽然判定相等很难，但在非确定性下“寻找一个错误”很简单。只要存在一个位置 $i$ 使得 $s_i \neq s_{i+n}$，就是非 $ww$。</td>
+            </tr>
+        </tbody>
+    </table>
+</div><hr>
+<h5 class="heading" id="1-为什么-wwr-是-cfl">
+  1. 为什么 $ww^R$ 是 CFL？
+  <a class="anchor" href="#1-%e4%b8%ba%e4%bb%80%e4%b9%88-wwr-%e6%98%af-cfl">#</a>
+</h5>
+<ul>
+<li><strong>PDA 构造</strong>:
+<ol>
+<li>处于状态 $q_1$ 时，读取字符并压入栈。</li>
+<li><strong>非确定性地</strong>猜测字符串的中点，跳转到状态 $q_2$。</li>
+<li>在 $q_2$ 中，每读取一个字符，就从栈顶弹出一个字符进行对比。</li>
+<li>如果全部匹配且栈正好清空，则接受。</li>
+</ol>
+</li>
+<li><strong>Key Insight</strong>: 栈的<strong>局部性 (Locality)</strong>。匹配 $ww^R$ 只需要知道“最近”读到了什么，这与栈的顶端操作完美契合。</li>
+</ul>
+<h5 class="heading" id="2-为什么-ww-不是-cfl">
+  2. 为什么 $ww$ 不是 CFL？
+  <a class="anchor" href="#2-%e4%b8%ba%e4%bb%80%e4%b9%88-ww-%e4%b8%8d%e6%98%af-cfl">#</a>
+</h5>
+<ul>
+<li><strong>直观证明</strong>: 考虑 $s = a^p b^p a^p b^p$。泵引理的 $vxy$ 窗口长度为 $p$，它只能跨越 $a^p$ 或 $a^p b^p$ 或 $b^p$ 等局部区域，无法同时改变第一段 $w$ 和第二段 $w$ 中对应的位置而保持它们相同。</li>
+<li><strong>Key Insight</strong>: <strong>远距离关联 (Long-range correlation)</strong>。栈只能处理嵌套结构的关联（如括号匹配），无法处理平行的跨度关联。</li>
+</ul>
+<h5 class="heading" id="3-为什么-overlineww-非-ww-竟然是-cfl">
+  3. 为什么 $\overline{ww}$ (非 $ww$) 竟然是 CFL？
+  <a class="anchor" href="#3-%e4%b8%ba%e4%bb%80%e4%b9%88-overlineww-%e9%9d%9e-ww-%e7%ab%9f%e7%84%b6%e6%98%af-cfl">#</a>
+</h5>
+<p>这是一个违反直觉的结论，因为 CFL 在补集运算下不封闭。</p>
+<ul>
+<li><strong>核心逻辑</strong>: 一个偶数长度字符串 $s \in \overline{ww}$ 当且仅当 $\exists i, j$ 满足 $|i-j| = n$ 且 $s_i \neq s_j$ ($n$ 为半长)。</li>
+<li><strong>CFG 设计思路</strong>:
+<ul>
+<li>一个非 $ww$ 的字符串可以表示为：$A B$ 或 $B A$。</li>
+<li>其中 $A$ 是一个形如 $x \dots y$ 的序列，其中第 $k$ 个字符和倒数第 $k$ 个字符&hellip; 这种构造比较复杂，更简单的理解是：</li>
+<li>它可以转化为检测是否存在 $s_i \neq s_{j}$ 且中间隔了刚好 $n-1$ 个字符。</li>
+</ul>
+</li>
+<li><strong>Key Insight</strong>: <strong>非确定性的不对称性</strong>。证明“所有位置都对等”需要全局一致性（PDA 做不到）；但证明“存在一个位置不对”只需要非确定性地选中那个位置并局部验证（PDA 擅长）。</li>
+</ul>
+<h4 class="heading" id="深度讨论非确定性与语法分析-deeper-insights">
+  深度讨论：非确定性与语法分析 (Deeper Insights)
+  <a class="anchor" href="#%e6%b7%b1%e5%ba%a6%e8%ae%a8%e8%ae%ba%e9%9d%9e%e7%a1%ae%e5%ae%9a%e6%80%a7%e4%b8%8e%e8%af%ad%e6%b3%95%e5%88%86%e6%9e%90-deeper-insights">#</a>
+</h4>
+<p>在理解 CFG 与 PDA 时，有两个极其关键的理论与工程问题值得讨论：</p>
+<h5 class="heading" id="1-为什么非确定性对-pda-如此重要">
+  1. 为什么“非确定性”对 PDA 如此重要？
+  <a class="anchor" href="#1-%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9d%9e%e7%a1%ae%e5%ae%9a%e6%80%a7%e5%af%b9-pda-%e5%a6%82%e6%ad%a4%e9%87%8d%e8%a6%81">#</a>
+</h5>
+<p>在<strong>有限自动机</strong>中，$NFA = DFA$。但在<strong>下推自动机</strong>中，$NPDA &gt; DPDA$。</p>
+<ul>
+<li><strong>原因</strong>: 栈是 LIFO 的。在 NPDA 中，我们可以在不知道后续输入的情况下，“非确定性地”尝试不同的栈操作分支。即便某个分支失败了，栈的状态在其他分支中是独立保留的。</li>
+<li><strong>直觉</strong>: 想象一个迷宫（PDA 的纸带+栈）。NFA 只是在房间里走，标记过的地方可以记下来；而 PDA 带着一卷无限长的绳子（栈），非确定性允许它在分岔路口同时尝试多条路径，每条路径都有自己的“解绳子”进度。</li>
+</ul>
+<h5 class="heading" id="2-语法分析器-parser-是如何解决非确定性的">
+  2. 语法分析器 (Parser) 是如何解决非确定性的？
+  <a class="anchor" href="#2-%e8%af%ad%e6%b3%95%e5%88%86%e6%9e%90%e5%99%a8-parser-%e6%98%af%e5%a6%82%e4%bd%95%e8%a7%a3%e5%86%b3%e9%9d%9e%e7%a1%ae%e5%ae%9a%e6%80%a7%e7%9a%84">#</a>
+</h5>
+<p>虽然 NPDA 更有能力，但现代编程语言几乎都设计成 <strong>Deterministic (DCFL)</strong>，以便编译器能快速解析。</p>
+<ul>
+<li><strong>向前看 (Lookahead)</strong>: 编译器（如 Yacc, Bison）通过查看后续的 1 个或 $k$ 个符号来消除非确定性分支。</li>
+<li><strong>文法分级</strong>:
+<ul>
+<li><strong>LL(k)</strong>: 自顶向下，从左到右，最左派生。</li>
+<li><strong>LR(k)</strong>: 自底向上，从左到右，最右派生（更强大，能处理更多文法）。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="乔姆斯基谱系-chomsky-hierarchy">
+  乔姆斯基谱系 (Chomsky Hierarchy)
+  <a class="anchor" href="#%e4%b9%94%e5%a7%86%e6%96%af%e5%9f%ba%e8%b0%b1%e7%b3%bb-chomsky-hierarchy">#</a>
+</h3>
+<blockquote><p>乔姆斯基谱系将形式语言按生成能力划分为四个层次，每一层对应不同的文法类型和自动机模型。</p></blockquote>
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: center">文法类型</th>
+                <th style="text-align: left">文法名称</th>
+                <th style="text-align: left">产生式规则</th>
+                <th style="text-align: left">对应自动机</th>
+                <th style="text-align: left">对应语言</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center"><strong>0 型</strong></td>
+                <td style="text-align: left">无限制文法</td>
+                <td style="text-align: left">$\alpha \to \beta$</td>
+                <td style="text-align: left">图灵机 (TM)</td>
+                <td style="text-align: left">递归可枚举 (RE)</td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>1 型</strong></td>
+                <td style="text-align: left">上下文有关文法 (CSG)</td>
+                <td style="text-align: left">$\alpha A \beta \to \alpha \gamma \beta$</td>
+                <td style="text-align: left">线性有界自动机 (LBA)</td>
+                <td style="text-align: left">上下文有关 (CSL)</td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>2 型</strong></td>
+                <td style="text-align: left">上下文无关文法 (CFG)</td>
+                <td style="text-align: left">$A \to \gamma$</td>
+                <td style="text-align: left">下推自动机 (PDA)</td>
+                <td style="text-align: left">上下文无关 (CFL)</td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>3 型</strong></td>
+                <td style="text-align: left">正则文法</td>
+                <td style="text-align: left">$A \to aB$ 或 $A \to a$</td>
+                <td style="text-align: left">有限自动机 (DFA/NFA)</td>
+                <td style="text-align: left">正则语言 (Regular)</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p><strong>包含关系</strong>:</p>
+<div class="code-block">
+  <pre tabindex="0"><code>Regular ⊊ CFL ⊊ CSL ⊊ RE</code></pre>
+  <button class="copy-code-button">copy</button>
+</div>
+<h2 class="heading" id="2-可计算性理论-computability-theory">
+  2. 可计算性理论 (Computability Theory)
+  <a class="anchor" href="#2-%e5%8f%af%e8%ae%a1%e7%ae%97%e6%80%a7%e7%90%86%e8%ae%ba-computability-theory">#</a>
+</h2>
+<h3 class="heading" id="图灵机-turing-machines">
+  图灵机 (Turing Machines)
+  <a class="anchor" href="#%e5%9b%be%e7%81%b5%e6%9c%ba-turing-machines">#</a>
+</h3>
+<h4 class="heading" id="形式化定义-formal-definition">
+  形式化定义 (Formal Definition)
+  <a class="anchor" href="#%e5%bd%a2%e5%bc%8f%e5%8c%96%e5%ae%9a%e4%b9%89-formal-definition">#</a>
+</h4>
+<blockquote><p>图灵机是一个 7 元组 $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$</p></blockquote><ol>
+<li><strong>$Q$</strong>: 有限状态集合。</li>
+<li><strong>$\Sigma$</strong>: 输入字母表 (不含空白符 $\sqcup$)。</li>
+<li><strong>$\Gamma$</strong>: 纸带字母表 (包含 $\Sigma$ 和 $\sqcup$)。</li>
+<li><strong>$\delta$</strong>: 转移函数 $Q \times \Gamma \to Q \times \Gamma \times {L, R}$。
+<ul>
+<li>决定：(新状态, 写入字符, 移动方向)。</li>
+</ul>
+</li>
+<li><strong>$q_0$</strong>: 起始状态。</li>
+<li><strong>$q_{accept}$</strong>: 接受状态。</li>
+<li><strong>$q_{reject}$</strong>: 拒绝状态 ($q_{reject} \neq q_{accept}$)。</li>
+</ol>
+<p>计算理论（Theory of Computation）是计算机科学的数学基础，主要研究计算过程及其界限。</p>
+<h4 class="heading" id="组态与计算-configuration-and-computation">
+  组态与计算 (Configuration and Computation)
+  <a class="anchor" href="#%e7%bb%84%e6%80%81%e4%b8%8e%e8%ae%a1%e7%ae%97-configuration-and-computation">#</a>
+</h4>
+<ul>
+<li><strong>组态 (Configuration)</strong>: 包含当前状态、当前纸带内容和读写头位置的快照。
+<ul>
+<li>表示为 $u q v$，其中 $q \in Q$，纸带内容为 $uv$，读写头位于 $v$ 的第一个字符上。</li>
+</ul>
+</li>
+<li><strong>计算过程</strong>: 从起始组态 $q_0 w$ 开始，根据转移函数 $\delta$ 一步步更新组态。</li>
+<li><strong>停机</strong>: 当进入 $q_{accept}$ 或 $q_{reject}$ 时，计算立即停止。</li>
+</ul>
+<h4 class="heading" id="语言识别-language-recognition">
+  语言识别 (Language Recognition)
+  <a class="anchor" href="#%e8%af%ad%e8%a8%80%e8%af%86%e5%88%ab-language-recognition">#</a>
+</h4>
+<ul>
+<li><strong>图灵可识别 (Turing-recognizable / Recursively Enumerable)</strong>:
+<ul>
+<li>语言 $L$ 被图灵机 $M$ 识别，即 $L(M) = L$。</li>
+<li>对 $w \in L$，M 最终进入 $q_{accept}$。</li>
+<li>对 $w \notin L$，M 可能进入 $q_{reject}$，也可能<strong>无限循环 (Loop)</strong>。</li>
+</ul>
+</li>
+<li><strong>图灵可判定 (Turing-decidable / Recursive)</strong>:
+<ul>
+<li>语言 $L$ 被图灵机 $M$ 判定。</li>
+<li>M 是一个<strong>判定器 (Decider)</strong>：对任何输入，M 都能在有限步内停机 (接受或拒绝)，<strong>绝不循环</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="变体-variants">
+  变体 (Variants)
+  <a class="anchor" href="#%e5%8f%98%e4%bd%93-variants">#</a>
+</h4>
+<ul>
+<li><strong>多带图灵机 (Multitape TM)</strong>:
+<ul>
+<li>拥有 $k$ 条独立的纸带和读写头。</li>
+<li><strong>等价性</strong>: 多带 TM 等价于单带 TM (可以相互模拟，时间复杂度仅差平方级别)。</li>
+</ul>
+</li>
+<li><strong>非确定性图灵机 (NTM)</strong>:
+<ul>
+<li>转移函数 $\delta: Q \times \Gamma \to \mathcal{P}(Q \times \Gamma \times \{L, R\})$。</li>
+<li><strong>等价性</strong>: NTM 等价于 DTM (可以通过广度优先搜索模拟 NTM 的所有分支)。</li>
+</ul>
+</li>
+<li><strong>枚举器 (Enumerator)</strong>:
+<ul>
+<li>带有打印机的图灵机，用于枚举语言中的所有字符串。</li>
+<li>$L$ 是图灵可识别的 $\iff$ 存在枚举器枚举 $L$。</li>
+</ul>
+</li>
+</ul>
+<h4 class="heading" id="通用图灵机-universal-turing-machine">
+  通用图灵机 (Universal Turing Machine)
+  <a class="anchor" href="#%e9%80%9a%e7%94%a8%e5%9b%be%e7%81%b5%e6%9c%ba-universal-turing-machine">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: 一个能模拟任何其他图灵机的图灵机 $U$。</li>
+<li><strong>输入</strong>: $\langle M, w \rangle$，其中 $M$ 是图灵机的编码，$w$ 是输入串。</li>
+<li><strong>工作原理</strong>: $U$ 在自己的纸带上模拟 $M$ 在 $w$ 上的运行过程。</li>
+<li><strong>意义</strong>: 证明了“存储程序计算机”的可行性，是现代计算机的理论基础。</li>
+</ul>
+<h4 class="heading" id="丘奇-图灵论题-church-turing-thesis">
+  丘奇-图灵论题 (Church-Turing Thesis)
+  <a class="anchor" href="#%e4%b8%98%e5%a5%87-%e5%9b%be%e7%81%b5%e8%ae%ba%e9%a2%98-church-turing-thesis">#</a>
+</h4>
+<blockquote><p><strong>核心观点</strong>: 任何直观上&quot;可计算&quot;的算法，都可以由图灵机执行。</p>
+<p>这意味着图灵机不仅仅是一种数学模型，它捕捉到了<strong>计算的本质极限</strong>。</p></blockquote><h3 class="heading" id="可判定性-decidability">
+  可判定性 (Decidability)
+  <a class="anchor" href="#%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7-decidability">#</a>
+</h3>
+<p><strong>可判定语言 (Decidable Languages)</strong><br>
+存在一个图灵机，对任何输入都能在有限步内停机并给出&quot;接受&quot;或&quot;拒绝&quot;的判定。</p>
+<p><strong>图灵可识别语言 (Turing-recognizable / RE)</strong><br>
+存在一个图灵机，对属于该语言的输入会停机接受；对不属于的输入可能拒绝，也可能无限循环。</p>
+<blockquote><p><strong>补集性质</strong>: 语言 $A$ 是可判定的 $\iff$ $A$ 和 $\bar{A}$ 都是图灵可识别的。</p></blockquote><h4 class="heading" id="停机问题-halting-problem">
+  停机问题 (Halting Problem)
+  <a class="anchor" href="#%e5%81%9c%e6%9c%ba%e9%97%ae%e9%a2%98-halting-problem">#</a>
+</h4>
+<ul>
+<li><strong>定义</strong>: $A_{TM} = \{ \langle M, w \rangle \mid M \text{ is a TM and } M \text{ accepts } w \}$</li>
+<li><strong>结论</strong>: $A_{TM}$ 是不可判定的（Undecidable）。</li>
+<li><strong>证明方法</strong>: 对角线法 (Diagonalization)。</li>
+</ul>
+<h4 class="heading" id="不可判定性证明-undecidability-proofs">
+  不可判定性证明 (Undecidability Proofs)
+  <a class="anchor" href="#%e4%b8%8d%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7%e8%af%81%e6%98%8e-undecidability-proofs">#</a>
+</h4>
+<ul>
+<li><strong>归约 (Reduction)</strong>: 若 $A \le_m B$ 且 $A$ 不可判定，则 $B$ 不可判定。</li>
+<li><strong>莱斯定理 (Rice&rsquo;s Theorem)</strong>:
+<ul>
+<li><strong>定理</strong>: 设 $P$ 是图灵可识别语言类的非平凡性质，则判定一个语言是否具有性质 $P$ 是不可判定的。</li>
+<li><strong>非平凡性质</strong>: 至少有一个语言满足 $P$，且至少有一个语言不满足 $P$。</li>
+<li><strong>例子</strong>: 判定 $L(M)$ 是否为空、是否有限、是否包含 &ldquo;101&rdquo; 等。</li>
+</ul>
+</li>
+<li><strong>波斯特对应问题 (PCP)</strong>: 给定一组多米诺骨牌，是否存在排列使得上下字符串相同？（不可判定）。</li>
+</ul>
+<h2 class="heading" id="3-计算复杂性理论-complexity-theory">
+  3. 计算复杂性理论 (Complexity Theory)
+  <a class="anchor" href="#3-%e8%ae%a1%e7%ae%97%e5%a4%8d%e6%9d%82%e6%80%a7%e7%90%86%e8%ae%ba-complexity-theory">#</a>
+</h2>
+<h3 class="heading" id="时间复杂性类-time-complexity-classes">
+  时间复杂性类 (Time Complexity Classes)
+  <a class="anchor" href="#%e6%97%b6%e9%97%b4%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb-time-complexity-classes">#</a>
+</h3>
+<ul>
+<li><strong>P (Polynomial time)</strong>: 确定性单带图灵机在多项式时间内可判定的语言类。
+<ul>
+<li>代表“有效可解”的问题。</li>
+</ul>
+</li>
+<li><strong>NP (Nondeterministic Polynomial time)</strong>: 非确定性图灵机在多项式时间内可判定的语言类。
+<ul>
+<li>等价定义：可以在多项式时间内<strong>验证</strong>一个解的问题类。</li>
+<li>$P \subseteq NP$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="p-vs-np-问题">
+  P vs NP 问题
+  <a class="anchor" href="#p-vs-np-%e9%97%ae%e9%a2%98">#</a>
+</h3>
+<blockquote><p><strong>千禧年大奖难题</strong>: $P \stackrel{?}{=} NP$ 是计算机科学最重要的未解问题之一。</p>
+<p><strong>问题本质</strong>: 对于所有易于验证解的问题，是否也都易于求解？</p></blockquote><p><strong>普遍猜想</strong>: $P \neq NP$</p>
+<ul>
+<li>这意味着存在一些问题，虽然<strong>验证其解很容易</strong>，但<strong>找到解却非常困难</strong>。</li>
+</ul>
+<h3 class="heading" id="np-完全性-np-completeness">
+  NP 完全性 (NP-Completeness)
+  <a class="anchor" href="#np-%e5%ae%8c%e5%85%a8%e6%80%a7-np-completeness">#</a>
+</h3>
+<ul>
+<li><strong>多项式时间归约 (Polynomial-time reduction)</strong>: 若问题 A 可以多项式时间归约为问题 B ($A \le_p B$)，则 B 至少和 A 一样难。</li>
+<li><strong>NP-Complete (NPC)</strong>:
+<ol>
+<li>$L \in NP$</li>
+<li>$\forall L&rsquo; \in NP, L&rsquo; \le_p L$ (即 L 是 NP 中最难的问题)</li>
+</ol>
+</li>
+<li><strong>Cook-Levin 定理</strong>: SAT 问题是 NPC 的。</li>
+<li><strong>常见 NPC 问题</strong>:
+<ul>
+<li>3-SAT</li>
+<li>团问题 (Clique)</li>
+<li>顶点覆盖 (Vertex Cover)</li>
+<li>哈密顿路径 (Hamiltonian Path)</li>
+<li>旅行商问题 (TSP)</li>
+<li>子集和问题 (Subset Sum)</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="空间复杂性类-space-complexity-classes">
+  空间复杂性类 (Space Complexity Classes)
+  <a class="anchor" href="#%e7%a9%ba%e9%97%b4%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb-space-complexity-classes">#</a>
+</h3>
+<ul>
+<li><strong>PSPACE</strong>: 确定性图灵机在多项式空间内可判定的语言类。</li>
+<li><strong>NPSPACE</strong>: 非确定性图灵机在多项式空间内可判定的语言类。</li>
+<li><strong>萨维奇定理 (Savitch&rsquo;s Theorem)</strong>:
+<ul>
+<li>对于任何函数 $f(n) \ge n$，有 $NSPACE(f(n)) \subseteq SPACE(f^2(n))$。</li>
+<li>推论：$PSPACE = NPSPACE$。</li>
+</ul>
+</li>
+<li><strong>PSPACE-Complete</strong>:
+<ul>
+<li><strong>TQBF (True Quantified Boolean Formulas)</strong>: 带有全称 ($\forall$) 和存在 ($\exists$) 量词的布尔公式真值问题。</li>
+<li>包含关系：$P \subseteq NP \subseteq PSPACE = NPSPACE \subseteq EXPTIME$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="进阶定理-advanced-theorems">
+  进阶定理 (Advanced Theorems)
+  <a class="anchor" href="#%e8%bf%9b%e9%98%b6%e5%ae%9a%e7%90%86-advanced-theorems">#</a>
+</h3>
+<ul>
+<li><strong>时间分层定理 (Time Hierarchy Theorem)</strong>:
+<ul>
+<li>对于任何时间可构造函数 $t(n)$，存在语言在 $O(t(n))$ 时间内可判定，但不能在 $o(t(n)/\log t(n))$ 时间内判定。</li>
+<li>结论：$P \subsetneq EXPTIME$。</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="复杂性类关系图谱">
+  复杂性类关系图谱
+  <a class="anchor" href="#%e5%a4%8d%e6%9d%82%e6%80%a7%e7%b1%bb%e5%85%b3%e7%b3%bb%e5%9b%be%e8%b0%b1">#</a>
+</h3>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: center">复杂性类</th>
+                <th style="text-align: left">定义 (自动机/资源)</th>
+                <th style="text-align: left">典型问题</th>
+                <th style="text-align: left">特点</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center"><strong>P</strong></td>
+                <td style="text-align: left">DTM + 多项式时间</td>
+                <td style="text-align: left">排序, 最短路径</td>
+                <td style="text-align: left">有效可解</td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>NP</strong></td>
+                <td style="text-align: left">NTM + 多项式时间</td>
+                <td style="text-align: left">SAT, TSP, Clique</td>
+                <td style="text-align: left">易验证，难求解</td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>PSPACE</strong></td>
+                <td style="text-align: left">DTM + 多项式空间</td>
+                <td style="text-align: left">TQBF, 广义地理游戏</td>
+                <td style="text-align: left">空间资源受限</td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><strong>EXPTIME</strong></td>
+                <td style="text-align: left">DTM + 指数时间</td>
+                <td style="text-align: left">广义国际象棋</td>
+                <td style="text-align: left">极其困难</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p><strong>包含链</strong>:</p>
+<div class="code-block">
+  <pre tabindex="0"><code>P ⊆ NP ⊆ PSPACE = NPSPACE ⊆ EXPTIME</code></pre>
+  <button class="copy-code-button">copy</button>
+</div>
+<blockquote><p>已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p></blockquote>
+            </div>
+        </article>
+        <div class="single-comments">
+            <script src="https://giscus.app/client.js"
+        data-repo="wrp-wrp/wrp-wrp.github.io"
+        data-repo-id="R_kgDOQY3FSA"
+        data-category="General"
+        data-category-id="DIC_kwDOQY3FSM4CzTKb"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+        </div>
+
+        
+
+        
+        <div class="back-to-top"><a href="#top">back to top</a></div>
+        
+
+        
+        
+        <script defer src="/js/toc.js"></script>
+        
+    </div>
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/%20js/theme-switch.js"></script>
+<script defer src="/%20js/copy-code.js"></script>
+
+</html>
