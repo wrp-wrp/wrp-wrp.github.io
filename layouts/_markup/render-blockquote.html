@@ -1,0 +1,35 @@
+{{- $content := .Inner | markdownify -}}
+{{- $lines := split .Inner "\n" -}}
+{{- $firstLine := index $lines 0 | trim -}}
+
+{{- $type := "" -}}
+{{- if (findRE `^\[!NOTE\]` $firstLine) -}}
+  {{- $type = "note" -}}
+{{- else if (findRE `^\[!TIP\]` $firstLine) -}}
+  {{- $type = "tip" -}}
+{{- else if (findRE `^\[!IMPORTANT\]` $firstLine) -}}
+  {{- $type = "important" -}}
+{{- else if (findRE `^\[!WARNING\]` $firstLine) -}}
+  {{- $type = "warning" -}}
+{{- else if (findRE `^\[!CAUTION\]` $firstLine) -}}
+  {{- $type = "caution" -}}
+{{- end -}}
+
+{{- if $type -}}
+  {{- $cleanInner := .Inner | replaceRE (printf `^\[!%s\]\n?` (upper $type)) "" | markdownify -}}
+  <div class="notice notice-{{ $type }}">
+    <p class="notice-title">
+      {{- if eq $type "note" -}}NOTE
+      {{- else if eq $type "tip" -}}TIP
+      {{- else if eq $type "important" -}}IMPORTANT
+      {{- else if eq $type "warning" -}}WARNING
+      {{- else if eq $type "caution" -}}CAUTION
+      {{- end -}}
+    </p>
+    {{- $cleanInner | safeHTML -}}
+  </div>
+{{- else -}}
+  <blockquote>
+    {{- .Inner | markdownify | safeHTML -}}
+  </blockquote>
+{{- end -}}

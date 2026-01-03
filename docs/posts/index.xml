@@ -16,13 +16,6 @@
       <description>端侧 ANNS 调研：量化索引 + HNSW 图搜索 + 精确 Reranking 是简洁高效的架构，无需过度设计。</description>
     </item>
     <item>
-      <title>PKE 内核可用工具总览</title>
-      <link>http://localhost:1313/posts/pke-kernel-tools/</link>
-      <pubDate>Tue, 02 Dec 2025 12:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/posts/pke-kernel-tools/</guid>
-      <description>面向在 riscv-pke 中扩展代理内核时常用的函数、宏、类型与配套设施，按主题归类列举。</description>
-    </item>
-    <item>
       <title>计算理论学习笔记</title>
       <link>http://localhost:1313/posts/theoryofcomputation/</link>
       <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
