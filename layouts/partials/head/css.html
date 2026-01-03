@@ -1,0 +1,22 @@
+{{ $CSS_resources := slice }}
+{{ $files := slice "css/reset.css" "css/vars.css" "css/utils.css" "css/fonts.css" "css/main.css" "css/custom.css"
+"css/colors/default.css" }}
+
+{{ range $files }}
+{{ $res := resources.Get . }}
+{{ if $res }}
+{{ $CSS_resources = $CSS_resources | append $res }}
+{{ end }}
+{{ end }}
+
+{{ with .Site.Params.colorPalette }}
+{{ $res := resources.Get (printf "css/colors/%s.css" .) }}
+{{ if $res }}
+{{ $CSS_resources = $CSS_resources | append $res }}
+{{ end }}
+{{ end }}
+
+{{ if $CSS_resources }}
+{{ $combined := $CSS_resources | resources.Concat "assets/combined.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $combined.RelPermalink }}" media="all">
+{{ end }}
