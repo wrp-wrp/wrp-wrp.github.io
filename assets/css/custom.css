@@ -299,3 +299,42 @@ body.single-page footer {
     background: rgba(128, 128, 128, 0.2);
     border-radius: 10px;
 }
+
+/* 8. Responsive Content Fixes (Preventing half-width on mobile) */
+.single-content {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    min-width: 0 !important;
+}
+
+/* Ensure math formulas don't break the layout */
+.katex-display {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0.5rem 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Ensure tables are scrollable on small screens */
+.single-content table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-collapse: collapse !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Ensure code blocks don't overflow */
+.single-content pre {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    white-space: pre !important;
+}
+
+/* Safe margin for mobile */
+@media screen and (max-width: 768px) {
+    .post-layout {
+        padding: 0 0.8rem !important;
+    }
+}
