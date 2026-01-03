@@ -1,35 +1,31 @@
-{{- $content := .Inner | markdownify -}}
-{{- $lines := split .Inner "\n" -}}
-{{- $firstLine := index $lines 0 | trim -}}
-
 {{- $type := "" -}}
-{{- if (findRE `^\[!NOTE\]` $firstLine) -}}
-  {{- $type = "note" -}}
-{{- else if (findRE `^\[!TIP\]` $firstLine) -}}
-  {{- $type = "tip" -}}
-{{- else if (findRE `^\[!IMPORTANT\]` $firstLine) -}}
-  {{- $type = "important" -}}
-{{- else if (findRE `^\[!WARNING\]` $firstLine) -}}
-  {{- $type = "warning" -}}
-{{- else if (findRE `^\[!CAUTION\]` $firstLine) -}}
-  {{- $type = "caution" -}}
+{{- if (findRE `\[!NOTE\]` .Text) -}}
+{{- $type = "note" -}}
+{{- else if (findRE `\[!TIP\]` .Text) -}}
+{{- $type = "tip" -}}
+{{- else if (findRE `\[!IMPORTANT\]` .Text) -}}
+{{- $type = "important" -}}
+{{- else if (findRE `\[!WARNING\]` .Text) -}}
+{{- $type = "warning" -}}
+{{- else if (findRE `\[!CAUTION\]` .Text) -}}
+{{- $type = "caution" -}}
 {{- end -}}
 
 {{- if $type -}}
-  {{- $cleanInner := .Inner | replaceRE (printf `^\[!%s\]\n?` (upper $type)) "" | markdownify -}}
-  <div class="notice notice-{{ $type }}">
+{{- $cleanText := .Text | replaceRE (printf `\[!%s\]\s?` (upper $type)) "" -}}
+<div class="notice notice-{{ $type }}">
     <p class="notice-title">
-      {{- if eq $type "note" -}}NOTE
-      {{- else if eq $type "tip" -}}TIP
-      {{- else if eq $type "important" -}}IMPORTANT
-      {{- else if eq $type "warning" -}}WARNING
-      {{- else if eq $type "caution" -}}CAUTION
-      {{- end -}}
+        {{- if eq $type "note" -}}NOTE
+        {{- else if eq $type "tip" -}}TIP
+        {{- else if eq $type "important" -}}IMPORTANT
+        {{- else if eq $type "warning" -}}WARNING
+        {{- else if eq $type "caution" -}}CAUTION
+        {{- end -}}
     </p>
-    {{- $cleanInner | safeHTML -}}
-  </div>
+    {{- $cleanText | safeHTML -}}
+</div>
 {{- else -}}
-  <blockquote>
-    {{- .Inner | markdownify | safeHTML -}}
-  </blockquote>
+<blockquote>
+    {{- .Text | safeHTML -}}
+</blockquote>
 {{- end -}}

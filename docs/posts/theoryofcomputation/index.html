@@ -220,10 +220,8 @@
   计算理论导引
   <a class="anchor" href="#%e8%ae%a1%e7%ae%97%e7%90%86%e8%ae%ba%e5%af%bc%e5%bc%95">#</a>
 </h1>
-<blockquote>
-<p>本笔记涵盖计算理论的三大核心领域：<strong>自动机与语言</strong>、<strong>可计算性理论</strong>和<strong>计算复杂性理论</strong>，系统梳理从有限自动机到图灵机，从可判定性到NP完全性的核心概念与定理。</p>
-</blockquote>
-<hr>
+<blockquote><p>本笔记涵盖计算理论的三大核心领域：<strong>自动机与语言</strong>、<strong>可计算性理论</strong>和<strong>计算复杂性理论</strong>，系统梳理从有限自动机到图灵机，从可判定性到NP完全性的核心概念与定理。</p>
+</blockquote><hr>
 <h2 class="heading" id="1-自动机与语言-automata-and-languages">
   1. 自动机与语言 (Automata and Languages)
   <a class="anchor" href="#1-%e8%87%aa%e5%8a%a8%e6%9c%ba%e4%b8%8e%e8%af%ad%e8%a8%80-automata-and-languages">#</a>
@@ -236,12 +234,8 @@
   有限自动机 (Finite Automata)
   <a class="anchor" href="#%e6%9c%89%e9%99%90%e8%87%aa%e5%8a%a8%e6%9c%ba-finite-automata">#</a>
 </h4>
-<blockquote>
-<p>[!NOTE]
-<strong>确定性有限自动机 (DFA)</strong>: $M = (Q, \Sigma, \delta, q_0, F)$
-<strong>非确定性有限自动机 (NFA)</strong>: 允许 $\epsilon$ 转移，同一输入可能有多个转移路径。</p>
-</blockquote>
-<p><strong>等价性与转化</strong>:</p>
+<blockquote><p><strong>确定性有限自动机 (DFA)</strong>: $M = (Q, \Sigma, \delta, q_0, F)$
+<strong>非确定性有限自动机 (NFA)</strong>: 允许 $\epsilon$ 转移，同一输入可能有多个转移路径。</p></blockquote><p><strong>等价性与转化</strong>:</p>
 <ul>
 <li><strong>NFA $\to$ DFA (子集构造法)</strong>:
 <ul>
@@ -294,11 +288,7 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
   泵引理 (Pumping Lemma for Regular Languages)
   <a class="anchor" href="#%e6%b3%b5%e5%bc%95%e7%90%86-pumping-lemma-for-regular-languages">#</a>
 </h4>
-<blockquote>
-<p>[!IMPORTANT]
-<strong>用途</strong>: 用于证明某些语言<strong>不是</strong>正则语言 (反证法)。</p>
-</blockquote>
-<p><strong>定理</strong>: 若 $A$ 是正则语言，则存在泵长度 $p$ (取决于 $A$ 的 DFA 状态数)，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $xyz$，满足：</p>
+<blockquote><p><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>正则语言 (反证法)。</p></blockquote><p><strong>定理</strong>: 若 $A$ 是正则语言，则存在泵长度 $p$ (取决于 $A$ 的 DFA 状态数)，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $xyz$，满足：</p>
 <ol>
 <li>$\forall i \ge 0, xy^iz \in A$ (可以将 $y$ 重复任意次，结果仍在语言中)</li>
 <li>$|y| &gt; 0$ (中间部分非空)</li>
@@ -357,17 +347,13 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 <ul>
 <li><strong>定义</strong>: 如果一个文法对同一个字符串存在<strong>两棵不同的派生树</strong>（或两个不同的最左/最右派生），则称该文法是<strong>歧义的 (Ambiguous)</strong>。</li>
 </ul>
-<blockquote>
-<p>[!WARNING]
-<strong>为什么歧义性很糟糕？</strong><br>
+<blockquote><p><strong>为什么歧义性很糟糕？</strong><br>
 在编译器设计中，派生树决定了程序的语义。例如，在算术表达式中，不同的派生树可能导致不同的运算优先级：</p>
 <ul>
 <li>文法: $E \to E + E \mid E \times E \mid \text{id}$</li>
 <li>字符串: $a + b \times c$</li>
 <li><strong>歧义</strong>: 它可以被解析为 $(a+b) \times c$ 或 $a + (b \times c)$。</li>
-</ul>
-</blockquote>
-<ul>
+</ul></blockquote><ul>
 <li><strong>固有歧义 (Inherently Ambiguous Language)</strong>: 有些语言（如 ${a^i b^j c^k \mid i=j \text{ 或 } j=k}$）无论用什么 CFG 描述都是歧义的。</li>
 </ul>
 <h5 class="heading" id="乔姆斯基范式-cnf">
@@ -385,16 +371,12 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 </ul>
 </li>
 </ul>
-<blockquote>
-<p>[!TIP]
-<strong>为什么要用 CNF？</strong></p>
+<blockquote><p><strong>为什么要用 CNF？</strong></p>
 <ol>
 <li><strong>二叉树性质</strong>: CNF 生成的派生树始终是二叉树，这使得算法处理（如动态规划）变得极其高效。</li>
 <li><strong>解析算法</strong>: 它是 <strong>CYK 算法</strong>（在 $O(n^3)$ 时间内判定一个串是否属于该语言）的基础。</li>
 <li><strong>长度预测</strong>: 对于长度为 $n$ 的字符串，CNF 的派生步数正好是 $2n-1$。</li>
-</ol>
-</blockquote>
-<h5 class="heading" id="任意-cfg-转化为-cnf-的算法">
+</ol></blockquote><h5 class="heading" id="任意-cfg-转化为-cnf-的算法">
   任意 CFG 转化为 CNF 的算法
   <a class="anchor" href="#%e4%bb%bb%e6%84%8f-cfg-%e8%bd%ac%e5%8c%96%e4%b8%ba-cnf-%e7%9a%84%e7%ae%97%e6%b3%95">#</a>
 </h5>
@@ -428,15 +410,11 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
   下推自动机 (Pushdown Automata, PDA)
   <a class="anchor" href="#%e4%b8%8b%e6%8e%a8%e8%87%aa%e5%8a%a8%e6%9c%ba-pushdown-automata-pda">#</a>
 </h4>
-<blockquote>
-<p>[!NOTE]
-<strong>形式化定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$</p>
+<blockquote><p><strong>形式化定义</strong>: $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$</p>
 <ul>
 <li>$\Gamma$: 栈字母表。</li>
 <li>PDA $\approx$ 拥有无限容量栈 (LIFO) 的 NFA。</li>
-</ul>
-</blockquote>
-<p><strong>等价性</strong>: 一个语言是上下文无关的 $\iff$ 它被某个 PDA 识别。</p>
+</ul></blockquote><p><strong>等价性</strong>: 一个语言是上下文无关的 $\iff$ 它被某个 PDA 识别。</p>
 <h5 class="heading" id="1-cfg-to-pda-模拟最左推导">
   1. CFG $\to$ PDA (模拟最左推导)
   <a class="anchor" href="#1-cfg-to-pda-%e6%a8%a1%e6%8b%9f%e6%9c%80%e5%b7%a6%e6%8e%a8%e5%af%bc">#</a>
@@ -488,19 +466,11 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 <li>✗ 交 (Intersection) - <strong>不封闭</strong></li>
 <li>✗ 补 (Complement) - <strong>不封闭</strong></li>
 </ul>
-<blockquote>
-<p>[!NOTE]
-CFL 与正则语言的交集仍是 CFL。</p>
-</blockquote>
-<h4 class="heading" id="泵引理-pumping-lemma-for-cfl">
+<blockquote><p>CFL 与正则语言的交集仍是 CFL。</p></blockquote><h4 class="heading" id="泵引理-pumping-lemma-for-cfl">
   泵引理 (Pumping Lemma for CFL)
   <a class="anchor" href="#%e6%b3%b5%e5%bc%95%e7%90%86-pumping-lemma-for-cfl">#</a>
 </h4>
-<blockquote>
-<p>[!IMPORTANT]
-<strong>用途</strong>: 用于证明某些语言<strong>不是</strong>上下文无关语言。</p>
-</blockquote>
-<p><strong>定理</strong>: 若 $A$ 是 CFL，则存在泵长度 $p$，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $uvxyz$，满足：</p>
+<blockquote><p><strong>用途</strong>: 用于证明某些语言<strong>不是</strong>上下文无关语言。</p></blockquote><p><strong>定理</strong>: 若 $A$ 是 CFL，则存在泵长度 $p$，使得 $\forall s \in A, |s| \ge p$，可以将 $s$ 分割为 $uvxyz$，满足：</p>
 <ol>
 <li>$\forall i \ge 0, uv^ixy^iz \in A$</li>
 <li>$|vy| &gt; 0$ (即 $v$ 和 $y$ 不全为空)</li>
@@ -636,11 +606,7 @@ CFL 与正则语言的交集仍是 CFL。</p>
   乔姆斯基谱系 (Chomsky Hierarchy)
   <a class="anchor" href="#%e4%b9%94%e5%a7%86%e6%96%af%e5%9f%ba%e8%b0%b1%e7%b3%bb-chomsky-hierarchy">#</a>
 </h3>
-<blockquote>
-<p>[!NOTE]
-乔姆斯基谱系将形式语言按生成能力划分为四个层次，每一层对应不同的文法类型和自动机模型。</p>
-</blockquote>
-
+<blockquote><p>乔姆斯基谱系将形式语言按生成能力划分为四个层次，每一层对应不同的文法类型和自动机模型。</p></blockquote>
 <div class="table-outer">
     <table>
         <thead>
@@ -697,11 +663,7 @@ CFL 与正则语言的交集仍是 CFL。</p>
   形式化定义 (Formal Definition)
   <a class="anchor" href="#%e5%bd%a2%e5%bc%8f%e5%8c%96%e5%ae%9a%e4%b9%89-formal-definition">#</a>
 </h4>
-<blockquote>
-<p>[!NOTE]
-图灵机是一个 7 元组 $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$</p>
-</blockquote>
-<ol>
+<blockquote><p>图灵机是一个 7 元组 $M = (Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$</p></blockquote><ol>
 <li><strong>$Q$</strong>: 有限状态集合。</li>
 <li><strong>$\Sigma$</strong>: 输入字母表 (不含空白符 $\sqcup$)。</li>
 <li><strong>$\Gamma$</strong>: 纸带字母表 (包含 $\Sigma$ 和 $\sqcup$)。</li>
@@ -784,12 +746,8 @@ CFL 与正则语言的交集仍是 CFL。</p>
   丘奇-图灵论题 (Church-Turing Thesis)
   <a class="anchor" href="#%e4%b8%98%e5%a5%87-%e5%9b%be%e7%81%b5%e8%ae%ba%e9%a2%98-church-turing-thesis">#</a>
 </h4>
-<blockquote>
-<p>[!TIP]
-<strong>核心观点</strong>: 任何直观上&quot;可计算&quot;的算法，都可以由图灵机执行。</p>
-<p>这意味着图灵机不仅仅是一种数学模型，它捕捉到了<strong>计算的本质极限</strong>。</p>
-</blockquote>
-<h3 class="heading" id="可判定性-decidability">
+<blockquote><p><strong>核心观点</strong>: 任何直观上&quot;可计算&quot;的算法，都可以由图灵机执行。</p>
+<p>这意味着图灵机不仅仅是一种数学模型，它捕捉到了<strong>计算的本质极限</strong>。</p></blockquote><h3 class="heading" id="可判定性-decidability">
   可判定性 (Decidability)
   <a class="anchor" href="#%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7-decidability">#</a>
 </h3>
@@ -797,11 +755,7 @@ CFL 与正则语言的交集仍是 CFL。</p>
 存在一个图灵机，对任何输入都能在有限步内停机并给出&quot;接受&quot;或&quot;拒绝&quot;的判定。</p>
 <p><strong>图灵可识别语言 (Turing-recognizable / RE)</strong><br>
 存在一个图灵机，对属于该语言的输入会停机接受；对不属于的输入可能拒绝，也可能无限循环。</p>
-<blockquote>
-<p>[!NOTE]
-<strong>补集性质</strong>: 语言 $A$ 是可判定的 $\iff$ $A$ 和 $\bar{A}$ 都是图灵可识别的。</p>
-</blockquote>
-<h4 class="heading" id="停机问题-halting-problem">
+<blockquote><p><strong>补集性质</strong>: 语言 $A$ 是可判定的 $\iff$ $A$ 和 $\bar{A}$ 都是图灵可识别的。</p></blockquote><h4 class="heading" id="停机问题-halting-problem">
   停机问题 (Halting Problem)
   <a class="anchor" href="#%e5%81%9c%e6%9c%ba%e9%97%ae%e9%a2%98-halting-problem">#</a>
 </h4>
@@ -850,12 +804,8 @@ CFL 与正则语言的交集仍是 CFL。</p>
   P vs NP 问题
   <a class="anchor" href="#p-vs-np-%e9%97%ae%e9%a2%98">#</a>
 </h3>
-<blockquote>
-<p>[!CAUTION]
-<strong>千禧年大奖难题</strong>: $P \stackrel{?}{=} NP$ 是计算机科学最重要的未解问题之一。</p>
-<p><strong>问题本质</strong>: 对于所有易于验证解的问题，是否也都易于求解？</p>
-</blockquote>
-<p><strong>普遍猜想</strong>: $P \neq NP$</p>
+<blockquote><p><strong>千禧年大奖难题</strong>: $P \stackrel{?}{=} NP$ 是计算机科学最重要的未解问题之一。</p>
+<p><strong>问题本质</strong>: 对于所有易于验证解的问题，是否也都易于求解？</p></blockquote><p><strong>普遍猜想</strong>: $P \neq NP$</p>
 <ul>
 <li>这意味着存在一些问题，虽然<strong>验证其解很容易</strong>，但<strong>找到解却非常困难</strong>。</li>
 </ul>
@@ -959,11 +909,7 @@ CFL 与正则语言的交集仍是 CFL。</p>
     </table>
 </div><p><strong>包含链</strong>:</p>
 <pre tabindex="0"><code>P ⊆ NP ⊆ PSPACE = NPSPACE ⊆ EXPTIME
-</code></pre><blockquote>
-<p>[!NOTE]
-已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p>
-</blockquote>
-
+</code></pre><blockquote><p>已知 $P \subsetneq EXPTIME$（时间分层定理），但 $P$ 与 $NP$、$NP$ 与 $PSPACE$ 的关系仍未解决。</p></blockquote>
     </div>
   </article>
     <div class="single-comments">
