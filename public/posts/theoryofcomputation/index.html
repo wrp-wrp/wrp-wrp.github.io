@@ -371,7 +371,101 @@ $$R_{new} = R_{old} \cup (R_{in} R_{loop}^* R_{out})$$</li>
 <li>这与泵引理的条件 1 矛盾。</li>
 <li><strong>结论</strong>: 假设不成立，$L$ 不是正则语言。</li>
 </ol>
-<h3 class="heading" id="上下文无关语言-context-free-languages">
+<h4 class="heading" id="正则语言的可判定性问题-decidability-problems-for-regular-languages">
+  正则语言的可判定性问题 (Decidability Problems for Regular Languages)
+  <a class="anchor" href="#%e6%ad%a3%e5%88%99%e8%af%ad%e8%a8%80%e7%9a%84%e5%8f%af%e5%88%a4%e5%ae%9a%e6%80%a7%e9%97%ae%e9%a2%98-decidability-problems-for-regular-languages">#</a>
+</h4>
+<p>正则语言有许多性质都是<strong>可判定的</strong>，这得益于 DFA/NFA 的有限性结构。以下是核心的判定问题及其算法：</p>
+<h5 class="heading" id="1-接受问题-a_dfa">
+  1. 接受问题 $A_{DFA}$
+  <a class="anchor" href="#1-%e6%8e%a5%e5%8f%97%e9%97%ae%e9%a2%98-a_dfa">#</a>
+</h5>
+<ul>
+<li><strong>问题</strong>: 给定 DFA $M$ 和字符串 $w$，判定 $M$ 是否接受 $w$。</li>
+<li><strong>算法</strong>: 在 $M$ 上直接模拟运行 $w$，检查最终状态是否为接受状态。</li>
+<li><strong>时间复杂度</strong>: $O(n)$，其中 $n = |w|$。</li>
+<li><strong>可判定性</strong>: <strong>可判定</strong>。</li>
+</ul>
+<h5 class="heading" id="2-空性问题-e_dfa">
+  2. 空性问题 $E_{DFA}$
+  <a class="anchor" href="#2-%e7%a9%ba%e6%80%a7%e9%97%ae%e9%a2%98-e_dfa">#</a>
+</h5>
+<ul>
+<li><strong>问题</strong>: 给定 DFA $M$，判定 $L(M)$ 是否为空（即 $L(M) = \emptyset$）。</li>
+<li><strong>算法</strong>:
+<ol>
+<li>将 DFA 看作有向图，状态为节点，转移为边。</li>
+<li>从起始状态 $q_0$ 开始进行 <strong>DFS/BFS 搜索</strong>。</li>
+<li>如果搜索过程中到达了任何接受状态，则 $L(M) \neq \emptyset$；否则 $L(M) = \emptyset$。</li>
+</ol>
+</li>
+<li><strong>时间复杂度</strong>: $O(|Q| + |\delta|)$（图遍历）。</li>
+<li><strong>可判定性</strong>: <strong>可判定</strong>。</li>
+</ul>
+<h5 class="heading" id="3-等价性问题-eq_dfa">
+  3. 等价性问题 $EQ_{DFA}$
+  <a class="anchor" href="#3-%e7%ad%89%e4%bb%b7%e6%80%a7%e9%97%ae%e9%a2%98-eq_dfa">#</a>
+</h5>
+<ul>
+<li><strong>问题</strong>: 给定两个 DFA $M_1$ 和 $M_2$，判定 $L(M_1) = L(M_2)$。</li>
+<li><strong>算法核心思想</strong>:
+<ul>
+<li><strong>对称差构造</strong>: $L(M_1) = L(M_2) \iff (L(M_1) \cap \overline{L(M_2)}) \cup (\overline{L(M_1)} \cap L(M_2)) = \emptyset$</li>
+<li>利用正则语言的封闭性（补、交、并），构造识别对称差的 DFA。</li>
+<li>然后对该 DFA 运行空性检测。</li>
+</ul>
+</li>
+<li><strong>步骤</strong>:
+<ol>
+<li>构造 $M_1&rsquo;$ 识别 $\overline{L(M_1)}$（状态取补）。</li>
+<li>构造 $M_2&rsquo;$ 识别 $\overline{L(M_2)}$。</li>
+<li>构造 $M_3$ 识别 $L(M_1) \cap \overline{L(M_2)}$（积自动机）。</li>
+<li>构造 $M_4$ 识别 $\overline{L(M_1)} \cap L(M_2)$。</li>
+<li>构造 $M_5$ 识别 $L(M_3) \cup L(M_4)$。</li>
+<li>对 $M_5$ 执行空性检测。</li>
+</ol>
+</li>
+<li><strong>时间复杂度</strong>: $O(|Q_1| \times |Q_2|)$（积自动机构造）。</li>
+<li><strong>可判定性</strong>: <strong>可判定</strong>。</li>
+</ul>
+<h5 class="heading" id="4-无限性问题-infinite_dfa">
+  4. 无限性问题 $INFINITE_{DFA}$
+  <a class="anchor" href="#4-%e6%97%a0%e9%99%90%e6%80%a7%e9%97%ae%e9%a2%98-infinite_dfa">#</a>
+</h5>
+<ul>
+<li><strong>问题</strong>: 给定 DFA $M$，判定 $L(M)$ 是否为无限集。</li>
+<li><strong>算法核心</strong>:
+<ul>
+<li><strong>泵引理应用</strong>: 如果 $L(M)$ 无限，则必存在长度在 $[p, 2p)$ 范围内的字符串被接受（其中 $p = |Q|$）。</li>
+<li><strong>检测环路</strong>: 在 DFA 的可达接受状态路径中检测是否存在环。</li>
+</ul>
+</li>
+<li><strong>步骤</strong>:
+<ol>
+<li>计算所有从 $q_0$ 可达的接受状态。</li>
+<li>对每个可达的接受状态，检查是否存在从 $q_0$ 到该状态的路径，使得路径上有环。</li>
+<li>如果存在这样的环，则 $L(M)$ 无限；否则有限。</li>
+</ol>
+</li>
+<li><strong>简化算法</strong>: 检查是否存在长度 $\geq p$ 且 $&lt; 2p$ 的被接受字符串。</li>
+<li><strong>时间复杂度</strong>: $O(|Q|^2)$。</li>
+<li><strong>可判定性</strong>: <strong>可判定</strong>。</li>
+</ul>
+<h5 class="heading" id="5-正则性判定-regular_tm">
+  5. 正则性判定 $REGULAR_{TM}$
+  <a class="anchor" href="#5-%e6%ad%a3%e5%88%99%e6%80%a7%e5%88%a4%e5%ae%9a-regular_tm">#</a>
+</h5>
+<ul>
+<li><strong>问题</strong>: 给定图灵机 $M$，判定 $L(M)$ 是否为正则语言。</li>
+<li><strong>结论</strong>: <strong>不可判定</strong>（由莱斯定理直接得出）。</li>
+<li><strong>直觉</strong>: 这是关于图灵机识别语言的非平凡性质，根据 Rice 定理，所有这类问题都是不可判定的。</li>
+</ul>
+<blockquote><p><strong>关键观察</strong>:</p>
+<ul>
+<li>对于<strong>有限结构</strong>（DFA/NFA），几乎所有自然的判定问题都是可判定的。</li>
+<li>但对于<strong>图灵机</strong>识别的语言，判断它是否具有正则性等性质则是不可判定的。</li>
+<li>这体现了有限自动机的&quot;可控性&quot;与图灵机的&quot;强大但不可预测性&quot;之间的根本差异。</li>
+</ul></blockquote><h3 class="heading" id="上下文无关语言-context-free-languages">
   上下文无关语言 (Context-Free Languages)
   <a class="anchor" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%97%a0%e5%85%b3%e8%af%ad%e8%a8%80-context-free-languages">#</a>
 </h3>
@@ -800,6 +894,152 @@ $$A_{pq} \to a A_{rs} b$$
   <pre tabindex="0"><code>Regular ⊊ CFL ⊊ CSL ⊊ RE</code></pre>
   <button class="copy-code-button">copy</button>
 </div>
+<h4 class="heading" id="常见语言分类典型例子">
+  常见语言分类（典型例子）
+  <a class="anchor" href="#%e5%b8%b8%e8%a7%81%e8%af%ad%e8%a8%80%e5%88%86%e7%b1%bb%e5%85%b8%e5%9e%8b%e4%be%8b%e5%ad%90">#</a>
+</h4>
+<p>理解不同语言类的<strong>典型例子</strong>对于快速判断语言归属至关重要：</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">语言类</th>
+                <th style="text-align: left">典型正例（属于该类）</th>
+                <th style="text-align: left">典型反例（不属于该类但可能属于更高类）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>正则语言</strong></td>
+                <td style="text-align: left">• ${w \mid w$ 包含偶数个0$}$<br>• $(0+1)^*$<br>• ${0^n1^m \mid n,m \geq 0}$<br>• 所有有限语言</td>
+                <td style="text-align: left">• ${0^n1^n \mid n \geq 0}$ (是CFL)<br>• ${ww \mid w \in {0,1}^*}$ (是CFL)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>上下文无关</strong></td>
+                <td style="text-align: left">• ${0^n1^n \mid n \geq 0}$<br>• ${w \mid w = w^R}$ (回文)<br>• ${wcw^R \mid w \in {0,1}^*}$<br>• 正确括号匹配<br>• 算术表达式</td>
+                <td style="text-align: left">• ${0^n1^n2^n \mid n \geq 0}$ (是CSL)<br>• ${ww \mid w \in {0,1}^*}$ (是CSL)<br>• ${a^{n^2} \mid n \geq 0}$ (是CSL)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>上下文有关</strong></td>
+                <td style="text-align: left">• ${0^n1^n2^n \mid n \geq 0}$<br>• ${ww \mid w \in {0,1}^*}$<br>• ${a^{n^2} \mid n \geq 0}$</td>
+                <td style="text-align: left">• 停机问题的补集 (是RE但非递归)<br>• $\overline{A_{TM}}$ (不可识别)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>递归可枚举</strong></td>
+                <td style="text-align: left">• $A_{TM} = {\langle M,w \rangle \mid M$ 接受 $w}$<br>• 所有可判定语言<br>• 所有CSL</td>
+                <td style="text-align: left">• $\overline{A_{TM}}$ (不可识别)<br>• 不停机问题的语言</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>可判定</strong></td>
+                <td style="text-align: left">• 所有正则语言<br>• 大部分CSL<br>• ${G \mid G$ 是CFG且 $L(G) \neq \emptyset}$</td>
+                <td style="text-align: left">• $A_{TM}$<br>• ${G \mid L(G) = \Sigma^*}$ (G是CFG)</td>
+            </tr>
+        </tbody>
+    </table>
+</div><blockquote><p><strong>快速判断技巧</strong>：</p>
+<ol>
+<li><strong>计数平衡</strong>（如 $a^n b^n$）→ 上下文无关的标志</li>
+<li><strong>两层计数</strong>（如 $a^n b^n c^n$）→ 超越CFL</li>
+<li><strong>完美复制</strong>（如 $ww$）→ 超越CFL</li>
+<li><strong>有限状态可数的</strong>（如&quot;偶数个0&quot;）→ 正则</li>
+</ol></blockquote><h4 class="heading" id="判定性问题完整对比表">
+  判定性问题完整对比表
+  <a class="anchor" href="#%e5%88%a4%e5%ae%9a%e6%80%a7%e9%97%ae%e9%a2%98%e5%ae%8c%e6%95%b4%e5%af%b9%e6%af%94%e8%a1%a8">#</a>
+</h4>
+<p>下表总结了不同语言类上的核心判定问题，是考试和研究的重要参考：</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">判定问题</th>
+                <th style="text-align: center">正则 (DFA)</th>
+                <th style="text-align: center">上下文无关 (CFG)</th>
+                <th style="text-align: center">递归可枚举 (TM)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong>A (成员资格)</strong><br>$w \in L(M)$?</td>
+                <td style="text-align: center">✅ $O(n)$<br>直接模拟</td>
+                <td style="text-align: center">✅ $O(n^3)$<br>CYK算法</td>
+                <td style="text-align: center">✅ 可识别<br>❌ 不可判定</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>E (空性)</strong><br>$L(M) = \emptyset$?</td>
+                <td style="text-align: center">✅ $O(|Q|)$<br>图可达性</td>
+                <td style="text-align: center">✅ $O(|V|)$<br>标记算法</td>
+                <td style="text-align: center">❌ 不可判定<br>(规约自$A_{TM}$)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>EQ (等价性)</strong><br>$L(M_1) = L(M_2)$?</td>
+                <td style="text-align: center">✅ $O(|Q_1| \cdot |Q_2|)$<br>对称差+空性</td>
+                <td style="text-align: center">❌ 不可判定<br>(经典结论)</td>
+                <td style="text-align: center">❌ 不可判定<br>(莱斯定理)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>ALL (全集)</strong><br>$L(M) = \Sigma^*$?</td>
+                <td style="text-align: center">✅ $O(|Q|)$<br>补+空性</td>
+                <td style="text-align: center">❌ 不可判定<br>(规约自PCP)</td>
+                <td style="text-align: center">❌ 不可判定<br>(莱斯定理)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>FINITE (有限性)</strong><br>$|L(M)| &lt; \infty$?</td>
+                <td style="text-align: center">✅ $O(|Q|^2)$<br>环检测+泵引理</td>
+                <td style="text-align: center">✅ $O(|V|^2)$<br>自相关性检测</td>
+                <td style="text-align: center">❌ 不可判定<br>(莱斯定理)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>INFINITE (无限性)</strong><br>$|L(M)| = \infty$?</td>
+                <td style="text-align: center">✅ $O(|Q|^2)$<br>见上</td>
+                <td style="text-align: center">✅ $O(|V|^2)$<br>见上</td>
+                <td style="text-align: center">❌ 不可判定<br>(莱斯定理)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>REG (正则性)</strong><br>$L(M)$ 是正则?</td>
+                <td style="text-align: center">✅ 平凡<br>(总是真)</td>
+                <td style="text-align: center">❌ 不可判定<br>(语言属性)</td>
+                <td style="text-align: center">❌ 不可判定<br>(莱斯定理)</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong>CFL (上下文无关性)</strong><br>$L(M)$ 是CFL?</td>
+                <td style="text-align: center">✅ 平凡</td>
+                <td style="text-align: center">✅ 平凡</td>
+                <td style="text-align: center">❌ 不可判定<br>(莱斯定理)</td>
+            </tr>
+        </tbody>
+    </table>
+</div><blockquote><p><strong>关键观察模式</strong>：</p>
+<ol>
+<li><strong>正则语言</strong>：几乎所有自然判定问题都<strong>可判定且高效</strong>（多项式时间）</li>
+<li><strong>上下文无关</strong>：成员和空性可判定，但<strong>等价性和全集性不可判定</strong>（这是个重要分界线）</li>
+<li><strong>图灵机</strong>：除了成员资格（可识别），几乎所有关于语言性质的判定问题都<strong>不可判定</strong>（莱斯定理）</li>
+</ol>
+<p><strong>记忆口诀</strong>：</p>
+<ul>
+<li>正则全能判（所有问题都OK）</li>
+<li>上下文要小心（只有成员和空性OK）</li>
+<li>图灵机最难（几乎都不行，莱斯定理是万能杀手）</li>
+</ul></blockquote><h4 class="heading" id="莱斯定理的威力">
+  莱斯定理的威力
+  <a class="anchor" href="#%e8%8e%b1%e6%96%af%e5%ae%9a%e7%90%86%e7%9a%84%e5%a8%81%e5%8a%9b">#</a>
+</h4>
+<p><strong>莱斯定理</strong>是判断图灵机相关问题不可判定性的&quot;核武器&quot;。以下是典型应用清单：</p>
+<p><strong>因莱斯定理直接得出不可判定的问题</strong>：</p>
+<ul>
+<li>${⟨M⟩ \mid L(M) = \emptyset}$ （空性）</li>
+<li>${⟨M⟩ \mid L(M)$ 是正则语言$}$ （正则性）</li>
+<li>${⟨M⟩ \mid L(M)$ 是有限语言$}$ （有限性）</li>
+<li>${⟨M⟩ \mid L(M)$ 包含字符串 &ldquo;010&rdquo;$}$ （包含特定串）</li>
+<li>${⟨M⟩ \mid L(M) = L(M&rsquo;)$ 对某个固定的 $M&rsquo;}$ （等于特定语言）</li>
+</ul>
+<p><strong>不能用莱斯定理的问题</strong>（这些是关于TM的<strong>实现细节</strong>，而非其<strong>识别的语言</strong>）：</p>
+<ul>
+<li>${⟨M⟩ \mid M$ 有偶数个状态$}$ ✅ 可判定（只需数状态）</li>
+<li>${⟨M⟩ \mid M$ 在输入&quot;010&quot;上运行超过100步$}$ ✅ 可判定（模拟100步）</li>
+<li>${⟨M⟩ \mid M$ 的转移函数包含某个特定转移$}$ ✅ 可判定（检查编码）</li>
+</ul>
 <h2 class="heading" id="2-可计算性理论-computability-theory">
   2. 可计算性理论 (Computability Theory)
   <a class="anchor" href="#2-%e5%8f%af%e8%ae%a1%e7%ae%97%e6%80%a7%e7%90%86%e8%ae%ba-computability-theory">#</a>
