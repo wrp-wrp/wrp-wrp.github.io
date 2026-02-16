@@ -1,6 +1,6 @@
 +++
 date = '2025-11-26T10:00:00+08:00'
-draft = false
+draft = true
 math = true
 title = '计算理论学习笔记'
 summary = "计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。"
