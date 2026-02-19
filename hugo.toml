@@ -21,12 +21,14 @@ colorPalette = 'default'
 hideHeader = false
 
 # Intro on main page, content is markdown
-homeIntroTitle = 'rprp · wrp-wrp'
+homeIntroTitle = 'rprp'
 homeIntroContent = """
 wrp-wrp · he/him — A student from Huazhong University of Science and Technology, ACM competitor, ICPC regional Au.
 
 Currently focused on approximate nearest neighbor search (ANNS) algorithms, database systems research, and sharing notes from contests, research, and system design.
 """
+homeAvatarPath = "images/home-avatar.jpg"
+homeAvatarAlt = "rprp avatar"
 
 # Collection to display on home
 homeCollectionTitle = 'Posts'

@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>量化 on rprp's blog</title><link>https://wrp-wrp.github.io/tags/%E9%87%8F%E5%8C%96/</link><description>Recent content in 量化 on rprp's blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 22 Dec 2025 15:41:00 +0800</lastBuildDate><atom:link href="https://wrp-wrp.github.io/tags/%E9%87%8F%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>WASM + Vector Index 端侧 ANNS 调研：量化似乎已经足够了</title><link>https://wrp-wrp.github.io/posts/wasmvectoranns/</link><pubDate>Mon, 22 Dec 2025 15:41:00 +0800</pubDate><guid>https://wrp-wrp.github.io/posts/wasmvectoranns/</guid><description>在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，可能已经是性价比很高的一条路。</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>量化 on rprp&#39;s blog</title>
+    <link>http://localhost:1313/tags/%E9%87%8F%E5%8C%96/</link>
+    <description>Recent content in 量化 on rprp&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 22 Dec 2025 15:41:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E9%87%8F%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WebAssembly and Vector Index for On-Device ANNS: Quantization Appears Sufficient</title>
+      <link>http://localhost:1313/posts/wasmvectoranns/</link>
+      <pubDate>Mon, 22 Dec 2025 15:41:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/wasmvectoranns/</guid>
+      <description>在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，走 diskann 路线看起来足够了。</description>
+    </item>
+  </channel>
+</rss>

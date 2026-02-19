@@ -2,8 +2,8 @@
 date = '2026-02-16T13:43:00+08:00'
 draft = true
 math = true
-title = '2025 Final'
-summary = "来点 2025 年终总结"
+title = '2025 Summary'
+summary = "Summary for 2025 "
 +++
 
-之前一直感觉好像每次下一年 or 下一个学期的自己回看自己的上一年 or 上一个学期都有点呆呆的， 看起来啥也没做， 感觉也该总结一下上一年干了些啥。
+

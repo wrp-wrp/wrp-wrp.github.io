@@ -1,1 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on rprp's blog</title><link>https://wrp-wrp.github.io/posts/</link><description>Recent content in Posts on rprp's blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 22 Dec 2025 15:41:00 +0800</lastBuildDate><atom:link href="https://wrp-wrp.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>WASM + Vector Index 端侧 ANNS 调研：量化似乎已经足够了</title><link>https://wrp-wrp.github.io/posts/wasmvectoranns/</link><pubDate>Mon, 22 Dec 2025 15:41:00 +0800</pubDate><guid>https://wrp-wrp.github.io/posts/wasmvectoranns/</guid><description>在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，可能已经是性价比很高的一条路。</description></item><item><title>计算机网络按层复习</title><link>https://wrp-wrp.github.io/posts/networkreview/</link><pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate><guid>https://wrp-wrp.github.io/posts/networkreview/</guid><description>按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on rprp&#39;s blog</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on rprp&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Feb 2026 13:43:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2025 Summary</title>
+      <link>http://localhost:1313/posts/2025-final/</link>
+      <pubDate>Mon, 16 Feb 2026 13:43:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-final/</guid>
+      <description>Summary for 2025</description>
+    </item>
+    <item>
+      <title>WebAssembly and Vector Index for On-Device ANNS: Quantization Appears Sufficient</title>
+      <link>http://localhost:1313/posts/wasmvectoranns/</link>
+      <pubDate>Mon, 22 Dec 2025 15:41:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/wasmvectoranns/</guid>
+      <description>在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，走 diskann 路线看起来足够了。</description>
+    </item>
+    <item>
+      <title>计算理论学习笔记</title>
+      <link>http://localhost:1313/posts/theoryofcomputation/</link>
+      <pubDate>Wed, 26 Nov 2025 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/theoryofcomputation/</guid>
+      <description>计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。</description>
+    </item>
+    <item>
+      <title>NetWork Review Notes</title>
+      <link>http://localhost:1313/posts/networkreview/</link>
+      <pubDate>Thu, 20 Nov 2025 12:01:45 +0800</pubDate>
+      <guid>http://localhost:1313/posts/networkreview/</guid>
+      <description>按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。</description>
+    </item>
+  </channel>
+</rss>

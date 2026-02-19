@@ -5,6 +5,8 @@ math = true
 toc = true
 title = 'NetWork Review Notes'
 summary = "按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。"
+title_en = "NetWork Review Notes"
+summary_en = "A layer-by-layer computer networking review covering the physical, data link, network, transport, and application layers, with line coding and modulation notes."
 +++
 
 # 按层整理的计算机网络复习笔记

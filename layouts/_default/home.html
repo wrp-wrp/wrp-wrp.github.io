@@ -2,61 +2,133 @@
 
 {{ .Content }}
 
-{{/* Intro summary section */}}
+{{ $homeCollection := .Site.Params.homeCollection | default "posts" }}
+{{ $pages := where .Site.RegularPages "Section" $homeCollection }}
+{{ $pages = sort $pages "Date" "desc" }}
+{{ $featuredPosts := first 3 $pages }}
+{{ $avatarPath := .Site.Params.homeAvatarPath | default "" }}
+{{ $focusAreas := .Site.Params.homeResearchAreas }}
+{{ if not $focusAreas }}
+{{ $focusAreas = slice "Approximate Nearest Neighbor Search (ANNS)" "Streaming Vector Indexes" "Database Systems" }}
+{{ end }}
+{{ $paginationSize := .Site.Params.paginationSize | default 20 }}
+{{ if le $paginationSize 0 }}
+{{ $paginationSize = 20 }}
+{{ end }}
+{{ $paginator := .Paginate $pages $paginationSize }}
 
-{{ if or .Site.Params.homeIntroTitle .Site.Params.homeIntroContent }}
-<div class="intro">
-    {{ with .Site.Params.homeIntroTitle }}
-    <h1>{{ . }}</h1>
-    {{ end }}
+<section class="home-hero">
+    <div class="home-hero-main">
+        <div class="home-identity">
+            <div>
+                {{ with .Site.Params.homeIntroTitle }}
+                <p class="home-kicker">Research Notes and Technical Reports</p>
+                <h1 class="home-hero-title">{{ . }}</h1>
+                {{ end }}
+            </div>
+            {{ with $avatarPath }}
+            <img class="home-avatar" src="{{ . | relURL }}"
+                alt="{{ $.Site.Params.homeAvatarAlt | default "avatar" }}">
+            {{ end }}
+        </div>
 
-    {{ with .Site.Params.homeIntroContent }}
-    <p>{{ . | markdownify }}</p>
-    {{ end }}
-</div>
+        {{ with .Site.Params.homeIntroContent }}
+        <div class="home-hero-description">
+            {{ . | markdownify }}
+        </div>
+        {{ end }}
+
+        <div class="home-hero-links">
+            <a href="{{ "/posts/" | relURL }}">Posts</a>
+            <span>|</span>
+            <a href="{{ "/about/" | relURL }}">About</a>
+            <span>|</span>
+            <a href="{{ "/resume/" | relURL }}">Resume</a>
+        </div>
+
+        {{ with site.Params.social }}
+        <p class="home-contact">
+            {{- $total := len . -}}
+            {{- range $index, $item := . -}}
+            <a href="{{ trim $item.url " " | safeURL }}" target="_blank" rel="noopener noreferrer me"
+                title="{{ ($item.title | default $item.name) | title }}">{{ ($item.title | default $item.name) | title }}</a>{{ if lt (add $index 1) $total }} | {{ end }}
+            {{- end -}}
+        </p>
+        {{ end }}
+    </div>
+
+    <aside class="home-hero-meta">
+        <div class="home-meta-card">
+            <p class="home-meta-label">Posts</p>
+            <p class="home-meta-value">{{ len $pages }}</p>
+        </div>
+        <div class="home-meta-card">
+            <p class="home-meta-label">Research Focus</p>
+            <ul class="home-focus-list">
+                {{ range $focusAreas }}
+                <li>{{ . }}</li>
+                {{ end }}
+            </ul>
+        </div>
+        {{ if gt (len $pages) 0 }}
+        {{ with index $pages 0 }}
+        <div class="home-meta-card">
+            <p class="home-meta-label">Last Updated</p>
+            <p class="home-meta-date">{{ .Date | time.Format "2 Jan 2006" }}</p>
+        </div>
+        {{ end }}
+        {{ end }}
+    </aside>
+</section>
+
+{{ if gt (len $featuredPosts) 0 }}
+<section class="home-featured">
+    <div class="home-section-head">
+        <h2>Recent Notes</h2>
+        <a href="{{ "/posts/" | relURL }}">View all</a>
+    </div>
+
+    <div class="home-featured-grid">
+        {{ range $featuredPosts }}
+        {{ $displayTitle := or .Params.title_en .Title }}
+        {{ $displaySummary := or .Params.summary_en .Summary }}
+        <article class="home-post-card">
+            <p class="home-post-date">{{ .Date | time.Format (.Site.Params.listDateFormat | default "2 Jan 2006") }}</p>
+            <h3 class="home-post-title">
+                <a href="{{ .RelPermalink }}">{{ $displayTitle }}</a>
+            </h3>
+            {{ with $displaySummary }}
+            <p class="home-post-summary">{{ . | plainify | truncate 130 }}</p>
+            {{ end }}
+        </article>
+        {{ end }}
+    </div>
+</section>
 {{ end }}
 
-{{/* Social Icons */}}
-
-{{ with site.Params.social }}
-<div class="social-icons">
-    {{- range . }}
-    <a href="{{ trim .url " " | safeURL }}" target="_blank"
-        rel="noopener noreferrer me"
-        title="{{ (.title | default .name) | title }}">
-        {{ partial "svg.html" . }}
-    </a>
-    {{- end }}
-</div>
-{{ end }}
-
-{{/* Collection Section */}}
-
-{{ if .Site.Params.homeCollection }}
-
-<div class="list-container">
-    {{ with .Site.Params.homeCollectionTitle}}
-    <h1> {{ . }} </h1>
+<section class="list-container home-archive">
+    {{ with .Site.Params.homeCollectionTitle }}
+    <h2>{{ . }}</h2>
     {{ end }}
 
-    {{ $pages := where .Site.RegularPages "Section" .Site.Params.homeCollection
-    }}
-
-    {{ $paginationSize := 1}}
-    {{ if (gt .Site.Params.paginationSize 0) }}
-    {{ $paginationSize = .Site.Params.paginationSize }}
+    {{ $dateFormat := .Site.Params.listDateFormat | default "2 Jan 2006" }}
+    {{ range $paginator.Pages }}
+    {{ $displayTitle := or .Params.title_en .Title }}
+    {{ $displaySummary := or .Params.summary_en .Summary }}
+    <div class="post-line home-post-line">
+        <p class="line-date">{{ .Date | time.Format $dateFormat }}</p>
+        <div>
+            <p class="line-title">
+                <a href="{{ .RelPermalink }}">{{ $displayTitle }}</a>
+            </p>
+            {{ if $.Site.Params.listSummaries }}
+            <p class="line-summary">{{ $displaySummary | plainify }}</p>
+            {{ end }}
+        </div>
+    </div>
     {{ end }}
 
-    {{ $paginator := .Paginate $pages $paginationSize }}
-
-    {{ range $index, $page := $paginator.Pages }}
-    {{ partial "post-entry.html" $page}}
-    {{ end }}
-
-    {{ partial "pagination-controls.html" $paginator}}
-
-</div>
-
-{{ end }}
+    {{ partial "pagination-controls.html" $paginator }}
+</section>
 
 {{ end }}
