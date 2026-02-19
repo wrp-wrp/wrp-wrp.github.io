@@ -2,8 +2,8 @@
 date = '2025-12-22T15:41:00+08:00'
 draft = false
 math = true
-title = 'WASM + Vector Index 端侧 ANNS 调研：量化似乎已经足够了'
-summary = "在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，可能已经是性价比很高的一条路。"
+title = 'WebAssembly and Vector Index for On-Device ANNS: Quantization Appears Sufficient'
+summary = "在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，走 diskann 路线看起来足够了。"
 tags = ["WASM", "向量检索", "ANNS", "量化", "HNSW"]
 categories = ["技术调研"]
 +++

@@ -3,7 +3,7 @@ date = '2025-11-20T12:01:45+08:00'
 draft = false
 math = true
 toc = true
-title = '计算机网络按层复习'
+title = 'NetWork Review Notes'
 summary = "按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。"
 +++
 
