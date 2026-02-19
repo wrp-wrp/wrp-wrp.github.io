@@ -1,0 +1,48 @@
+{{- $pattern := default "*.{jpg,jpeg,png,webp,avif,gif,svg}" (.Get "match") -}}
+{{- $columns := default "3" (.Get "columns") -}}
+{{- $gap := default "0.9rem" (.Get "gap") -}}
+{{- $showCaptions := eq (lower (default "false" (.Get "captions"))) "true" -}}
+{{- $images := slice -}}
+
+{{- with .Get "images" -}}
+  {{- range split . "," -}}
+    {{- $name := trim . " " -}}
+    {{- with $.Page.Resources.GetMatch $name -}}
+      {{- $images = $images | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $images = .Page.Resources.Match $pattern -}}
+  {{- $images = sort $images "Name" -}}
+{{- end -}}
+
+{{- if gt (len $images) 0 -}}
+<section class="gallery" data-gallery style='{{ printf "--gallery-columns:%s;--gallery-gap:%s;" $columns $gap }}'>
+  {{- with .Get "title" -}}
+  <p class="gallery-title">{{ . }}</p>
+  {{- end -}}
+  <div class="gallery-grid">
+    {{- range $index, $image := $images -}}
+      {{- $alt := default $image.Name $image.Title -}}
+      <figure class="gallery-item">
+        <a class="gallery-link"
+          href="{{ $image.RelPermalink }}"
+          data-gallery-item
+          data-gallery-index="{{ $index }}"
+          data-gallery-alt="{{ $alt }}">
+          <img loading="lazy"
+            src="{{ $image.RelPermalink }}"
+            alt="{{ $alt }}"
+            {{ with $image.Width }}width="{{ . }}"{{ end }}
+            {{ with $image.Height }}height="{{ . }}"{{ end }}>
+        </a>
+        {{- if $showCaptions -}}
+        <figcaption class="gallery-caption">{{ $alt }}</figcaption>
+        {{- end -}}
+      </figure>
+    {{- end -}}
+  </div>
+</section>
+{{- else -}}
+<p class="gallery-empty">Gallery is empty. Add image files to the page bundle first.</p>
+{{- end -}}

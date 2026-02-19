@@ -7,6 +7,8 @@ Personal blog based on Hugo.
 For local writing, preview, and deployment steps, see:
 
 - [`BLOG_WORKFLOW.md`](BLOG_WORKFLOW.md)
+- [`WRITING_WORKFLOW.md`](WRITING_WORKFLOW.md)
+- [`GALLERY_WORKFLOW.md`](GALLERY_WORKFLOW.md)
 
 The helper script is:
 
