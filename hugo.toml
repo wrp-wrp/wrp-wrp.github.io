@@ -64,6 +64,10 @@ name = "posts"
 url = "/posts"
 
 [[params.menu]]
+name = "english"
+url = "/english"
+
+[[params.menu]]
 name = "about"
 url = "/about"
 
