@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blog-writer</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header id="header">
+            <div class="header-left">
+                <h1>blog-writer</h1>
+                <span class="header-badge" id="hugo-status">connecting...</span>
+            </div>
+            <div class="header-right">
+                <button id="btn-theme" class="btn-icon" title="Toggle theme">
+                    <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <button id="btn-new" class="btn btn-primary" title="New Post (Ctrl+N)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    New Post
+                </button>
+                <button id="btn-publish" class="btn btn-accent" title="Publish (Ctrl+P)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Publish
+                </button>
+                <button id="btn-delete" class="btn btn-danger" style="display:none" title="Delete Post">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <div id="main">
+            <!-- Sidebar: post list -->
+            <aside id="sidebar">
+                <div class="sidebar-search">
+                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="search-input" placeholder="Search...">
+                </div>
+                <div id="post-list"></div>
+            </aside>
+
+            <!-- Editor pane -->
+            <div id="editor-pane">
+                <div id="editor-empty" class="empty-state">
+                    <div class="empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <p>Select a post or create a new one</p>
+                    <p class="empty-hint">Paste or drag images into the editor</p>
+                </div>
+                <div id="editor-container" style="display:none">
+                    <!-- Toolbar -->
+                    <div class="editor-toolbar">
+                        <div class="toolbar-left">
+                            <input type="text" id="fm-title" class="fm-title-input" placeholder="Untitled">
+                        </div>
+                        <div class="toolbar-right">
+                            <label class="fm-toggle" title="Draft">
+                                <input type="checkbox" id="fm-draft">
+                                <span class="toggle-label">Draft</span>
+                            </label>
+                            <label class="fm-toggle" title="Math">
+                                <input type="checkbox" id="fm-math" checked>
+                                <span class="toggle-label">Math</span>
+                            </label>
+                            <input type="text" id="fm-date" class="fm-date-input" placeholder="Date">
+                        </div>
+                    </div>
+                    <!-- Editor -->
+                    <div class="editor-body">
+                        <textarea id="editor" spellcheck="false" placeholder="Start writing... (paste or drop images here)"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview pane -->
+            <div id="preview-pane">
+                <div class="preview-toolbar">
+                    <span id="preview-label">Preview</span>
+                    <button id="btn-refresh-preview" class="btn-icon" title="Refresh Preview">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    </button>
+                </div>
+                <iframe id="preview-frame" src="about:blank"></iframe>
+            </div>
+        </div>
+
+        <!-- Status bar -->
+        <footer id="status-bar">
+            <span id="status-save">Ready</span>
+            <span class="status-sep"></span>
+            <span id="status-words">0 words</span>
+            <span class="status-right" id="status-time"></span>
+        </footer>
+    </div>
+
+    <!-- New Post Modal -->
+    <div id="modal-overlay" class="modal-overlay" style="display:none">
+        <div class="modal">
+            <h2 id="modal-title">New Post</h2>
+            <div id="modal-body"></div>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="btn">Cancel</button>
+                <button id="modal-confirm" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish Modal -->
+    <div id="publish-overlay" class="modal-overlay" style="display:none">
+        <div class="modal modal-wide">
+            <h2>Publish Changes</h2>
+            <div class="publish-form">
+                <label for="commit-message">Commit message</label>
+                <input type="text" id="commit-message" placeholder="blog: update posts">
+            </div>
+            <div id="diff-preview" class="diff-preview">Loading diff...</div>
+            <div class="modal-actions">
+                <button id="publish-cancel" class="btn">Cancel</button>
+                <button id="publish-confirm" class="btn btn-accent">Publish</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

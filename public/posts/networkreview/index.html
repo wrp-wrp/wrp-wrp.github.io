@@ -2,7 +2,7 @@
 <html lang="en-us"
   dir="ltr">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -41,7 +41,11 @@
 <meta property="og:url" content="http://localhost:1313/posts/networkreview/">
   <meta property="og:site_name" content="rprp&#39;s blog">
   <meta property="og:title" content="NetWork Review Notes">
-  <meta property="og:description" content="按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。">
+  <meta property="og:description" content="按层整理的计算机网络复习笔记 # 本文按网络分层（物理层、链路层、网络层、传输层、应用层）整理要点，并在物理层补充常见线路编码与带通调制的简介，便于复习与查阅。
+upd: 计网考试考了 81 分， 这告诉我们学会课程是绝对不如做考研题的。
+体系结构与参考模型 # OSI 七层模型 vs TCP/IP 五层模型 TCP/IP 五层模型各层传输单元 计算机网络性能指标 # 分组经历的四种时延 (Packet Delay) # 一个分组从一台主机（或路由器）传输到另一台主机（或路由器）的过程中，总时延 ($d_{nodal}$) 主要由四部分组成：
+$$ d_{nodal} = d_{proc} &#43; d_{queue} &#43; d_{trans} &#43; d_{prop} $$
+处理时延 (Processing Delay, $d_{proc}$) 定义：检查分组首部和决定将该分组导向何处所需要的时间。包括检查比特级差错。 量级：通常是微秒级。 排队时延 (Queueing Delay, $d_{queue}$) 定义：分组在链路上等待传输时，在路由器缓冲队列中排队等待的时间。 特点：取决于网络的拥塞程度，是最不确定、变化最大的时延分量。 传输时延 (Transmission Delay, $d_{trans}$) 定义：将分组的所有比特推向链路所需要的时间。也叫发送时延。 公式：$d_{trans} = L / R$ $L$：分组长度 (bits) $R$：链路带宽 (bps) 传播时延 (Propagation Delay, $d_{prop}$) 定义：比特在物理链路（介质）中从一端传播到另一端所需要的时间。 公式：$d_{prop} = d / s$ $d$：链路长度 (m) $s$：信号传播速度 (m/s, 光纤中约为 $2 \times 10^8$ m/s) 易混淆点：">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -277,7 +281,6 @@
         <article class="post-article">
             <header class="single-intro-container">
                 <h1 class="single-title">NetWork Review Notes</h1>
-                <p class="single-summary">按网络层次（物理/链路/网络/传输/应用）整理的计算机网络复习笔记，包含常见物理层线路编码与调制简介。</p>
                 
                 <div class="single-subsummary">
                     
