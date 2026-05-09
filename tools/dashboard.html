@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>blog dashboard — rprp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --bg: #fdfdfb;
+  --fg: #242424;
+  --fg-2: #606060;
+  --rule: rgba(0,0,0,0.08);
+  --rule-strong: rgba(0,0,0,0.18);
+  --accent: #b8341c;
+  --accent-soft: rgba(184,52,28,0.08);
+  --serif: "Iowan Old Style","Source Serif Pro",Georgia,"Songti SC",serif;
+  --mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --card-bg: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16161a;
+    --fg: #dadada;
+    --fg-2: #a0a0a0;
+    --rule: rgba(255,255,255,0.10);
+    --rule-strong: rgba(255,255,255,0.22);
+    --accent: #ee6a4f;
+    --accent-soft: rgba(238,106,79,0.10);
+    --card-bg: #1d1d22;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  font-family: var(--serif);
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 2rem 1.6rem 3rem; }
+.h-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 0.8rem; margin-bottom: 1.4rem; }
+.h-row h1 { margin: 0; font-size: 1.6rem; letter-spacing: -0.01em; }
+.h-row .meta { font-family: var(--mono); font-size: 0.78rem; color: var(--fg-2); }
+.h-row a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.h-row a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* metric cards */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.9rem; margin: 0 0 1.8rem; }
+.metric { padding: 0.8rem 1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--card-bg); }
+.metric .label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--fg-2); margin: 0; }
+.metric .val { margin: 0.2rem 0 0; font-size: 1.7rem; font-weight: 600; letter-spacing: -0.01em; }
+.metric .sub { margin: 0.15rem 0 0; font-family: var(--mono); font-size: 0.74rem; color: var(--fg-2); }
+
+/* sections */
+.grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.6rem; }
+@media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+.panel { border: 1px solid var(--rule); border-radius: 8px; background: var(--card-bg); padding: 1rem 1.1rem; margin-bottom: 1.3rem; }
+.panel h2 { margin: 0 0 0.7rem; font-size: 1.05rem; letter-spacing: -0.005em; padding-bottom: 0.45rem; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: baseline; }
+.panel h2 .hint { font-family: var(--mono); font-size: 0.7rem; color: var(--fg-2); font-weight: 400; }
+
+/* heatmap */
+.heatmap { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; margin: 0.6rem 0 0.4rem; }
+.heatmap-cell { aspect-ratio: 1/1; border-radius: 2px; background: var(--rule); }
+.heatmap-cell[data-c="1"] { background: var(--accent-soft); }
+.heatmap-cell[data-c="2"] { background: rgba(184,52,28,0.35); }
+.heatmap-cell[data-c="3"], .heatmap-cell[data-c="4"], .heatmap-cell[data-c="5"] { background: var(--accent); }
+.heatmap-axis { font-family: var(--mono); font-size: 0.68rem; color: var(--fg-2); display: flex; justify-content: space-between; }
+
+/* tag bars */
+.tagbar-row { display: grid; grid-template-columns: 110px 1fr 38px; align-items: center; gap: 0.6rem; padding: 0.18rem 0; }
+.tagbar-name { font-family: var(--mono); font-size: 0.78rem; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tagbar-track { height: 7px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+.tagbar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.tagbar-count { font-family: var(--mono); font-size: 0.78rem; color: var(--fg-2); text-align: right; }
+
+/* posts list */
+.post-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 0.7rem; align-items: center; padding: 0.42rem 0; border-bottom: 1px dashed var(--rule); }
+.post-row:last-child { border-bottom: none; }
+.post-date { font-family: var(--mono); font-size: 0.74rem; color: var(--fg-2); }
+.post-title { font-size: 0.94rem; }
+.post-title a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.post-title a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.post-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--fg-2); display: flex; gap: 0.5rem; align-items: center; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge-draft  { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+.badge-hidden { background: rgba(130,80,223,0.10); color: #8250df; border: 1px solid #8250df; }
+.badge-pub    { background: var(--rule); color: var(--fg-2); }
+
+/* inbox */
+.inbox-list { list-style: none; padding: 0; margin: 0; }
+.inbox-item { display: grid; grid-template-columns: 18px 1fr auto; gap: 0.55rem; align-items: start; padding: 0.32rem 0; border-bottom: 1px dashed var(--rule); }
+.inbox-item:last-child { border-bottom: none; }
+.inbox-text { font-size: 0.92rem; line-height: 1.4; }
+.inbox-item.done .inbox-text { text-decoration: line-through; color: var(--fg-2); }
+.inbox-form { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+.inbox-form input { flex: 1; font-family: var(--serif); padding: 0.4rem 0.6rem; background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 5px; font-size: 0.9rem; }
+.inbox-form button, .btn {
+  font-family: var(--mono); font-size: 0.78rem;
+  padding: 0.4rem 0.8rem;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--rule); border-radius: 5px;
+  cursor: pointer;
+}
+.inbox-form button:hover, .btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* commits */
+.commit-row { display: grid; grid-template-columns: 60px 80px 1fr; gap: 0.7rem; align-items: center; padding: 0.32rem 0; border-bottom: 1px dashed var(--rule); }
+.commit-row:last-child { border-bottom: none; }
+.commit-hash { font-family: var(--mono); font-size: 0.74rem; color: var(--accent); }
+.commit-date { font-family: var(--mono); font-size: 0.72rem; color: var(--fg-2); }
+.commit-msg { font-size: 0.9rem; }
+
+/* dirty git status */
+.git-clean { font-family: var(--mono); font-size: 0.85rem; color: #1a7f37; }
+.git-dirty { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); }
+
+.sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 720px) { .sub-grid { grid-template-columns: 1fr; } }
+
+/* generic empty */
+.empty { font-family: var(--mono); font-size: 0.84rem; color: var(--fg-2); padding: 0.4rem 0; }
+
+#error-banner {
+  display: none;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  margin-bottom: 1.2rem;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="error-banner">
+    <strong>data.js not loaded.</strong> Run <code>scripts/blog-workflow.sh stats</code> (or <code>scripts/stats.sh</code>) from the repo root to generate <code>tools/data.js</code>, then refresh.
+  </div>
+  <div class="h-row">
+    <h1>blog dashboard</h1>
+    <div class="meta" id="meta-row">loading…</div>
+  </div>
+
+  <div class="metrics" id="metrics-row"></div>
+
+  <div class="panel">
+    <h2>Activity — last 24 months <span class="hint" id="activity-axis"></span></h2>
+    <div class="heatmap" id="heatmap"></div>
+    <div class="heatmap-axis"><span id="hm-start"></span><span id="hm-end"></span></div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="panel">
+        <h2>Drafts <span class="hint" id="drafts-hint"></span></h2>
+        <div id="drafts"></div>
+      </div>
+
+      <div class="panel">
+        <h2>All posts <span class="hint" id="posts-hint"></span></h2>
+        <div id="posts"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Tags <span class="hint" id="tags-hint"></span></h2>
+        <div id="tags"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Inbox <span class="hint">inbox.md · ideas / TODOs</span></h2>
+        <ul class="inbox-list" id="inbox"></ul>
+        <div class="inbox-form">
+          <input id="inbox-input" placeholder="capture a thought…" />
+          <button id="inbox-add">+ add</button>
+        </div>
+        <div class="empty" id="inbox-form-hint">
+          Adding here only copies an <kbd>append-to-inbox.md</kbd> snippet to your clipboard
+          (browsers can't write files directly). Or run <code>scripts/blog-workflow.sh inbox "..."</code>.
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Git <span class="hint" id="git-hint"></span></h2>
+        <div id="git-status"></div>
+        <div id="recent-commits"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js" onerror="document.getElementById('error-banner').style.display='block';"></script>
+<script>
+(function() {
+  'use strict';
+  const D = window.__BLOG_DATA;
+  if (!D) {
+    document.getElementById('error-banner').style.display = 'block';
+    return;
+  }
+
+  // meta row
+  document.getElementById('meta-row').textContent =
+    `generated ${D.generatedAt}`;
+
+  // metrics
+  const metrics = [
+    { label: 'Listed', val: D.publishedCount, sub: 'on home & archive' },
+    { label: 'Drafts', val: D.draftCount, sub: D.totalDraftWords + ' words in flight' },
+    { label: 'Hidden', val: D.hiddenCount || 0, sub: 'reachable by URL only' },
+    { label: 'Words', val: numFmt(D.totalWords), sub: 'across all listed' },
+    { label: 'Tags', val: Object.keys(D.tagCounts).length, sub: 'unique' },
+    { label: 'Git status', val: D.git.dirty === 0 ? '✓' : D.git.dirty,
+      sub: D.git.dirty === 0 ? 'clean' : 'changes pending' },
+  ];
+  document.getElementById('metrics-row').innerHTML = metrics.map(m =>
+    `<div class="metric"><p class="label">${m.label}</p><p class="val">${m.val}</p><p class="sub">${m.sub}</p></div>`
+  ).join('');
+
+  // heatmap (24 months)
+  const hm = document.getElementById('heatmap');
+  hm.innerHTML = D.months24.map(ym => {
+    const c = D.monthCounts[ym] || 0;
+    const cap = Math.min(c, 5);
+    return `<span class="heatmap-cell" data-c="${cap}" title="${ym}: ${c} post${c === 1 ? '' : 's'}"></span>`;
+  }).join('');
+  document.getElementById('hm-start').textContent = D.months24[0] || '';
+  document.getElementById('hm-end').textContent = D.months24[D.months24.length - 1] || '';
+  document.getElementById('activity-axis').textContent =
+    `${D.publishedCount} posts · peak ${peakMonth(D)}`;
+
+  // drafts
+  const drafts = D.posts.filter(p => p.draft);
+  document.getElementById('drafts-hint').textContent = drafts.length + ' in flight';
+  document.getElementById('drafts').innerHTML = drafts.length === 0
+    ? `<div class="empty">No drafts. Create one with <code>scripts/blog-workflow.sh new &lt;slug&gt;</code>.</div>`
+    : drafts.map(renderPostRow).join('');
+
+  // hidden (published but unlisted)
+  const hidden = D.posts.filter(p => p.hidden && !p.draft);
+  if (hidden.length > 0) {
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+    panel.innerHTML = `<h2>Hidden <span class="hint">unlisted but reachable</span></h2>` +
+      hidden.map(renderPostRow).join('');
+    document.querySelector('.grid > div:first-child').insertBefore(
+      panel, document.querySelectorAll('.grid > div:first-child > .panel')[1]
+    );
+  }
+
+  // all posts
+  document.getElementById('posts-hint').textContent = D.posts.length + ' total';
+  document.getElementById('posts').innerHTML = D.posts.map(renderPostRow).join('') || `<div class="empty">No posts yet.</div>`;
+
+  // tags (sorted desc)
+  const tagsSorted = Object.entries(D.tagCounts).sort((a, b) => b[1] - a[1]);
+  document.getElementById('tags-hint').textContent = tagsSorted.length + ' tags';
+  if (tagsSorted.length === 0) {
+    document.getElementById('tags').innerHTML = `<div class="empty">No tags yet.</div>`;
+  } else {
+    const max = tagsSorted[0][1];
+    document.getElementById('tags').innerHTML = tagsSorted.map(([t, c]) => `
+      <div class="tagbar-row">
+        <span class="tagbar-name" title="${esc(t)}">${esc(t)}</span>
+        <span class="tagbar-track"><span class="tagbar-fill" style="width:${(c / max * 100).toFixed(1)}%"></span></span>
+        <span class="tagbar-count">${c}</span>
+      </div>
+    `).join('');
+  }
+
+  // inbox
+  renderInbox();
+
+  // git
+  document.getElementById('git-hint').textContent = D.git.dirty + ' files changed';
+  let gitHtml = '';
+  if (D.git.dirty === 0) {
+    gitHtml = `<div class="git-clean">working tree clean</div>`;
+  } else {
+    gitHtml = `<div class="git-dirty">${D.git.dirty} pending change${D.git.dirty === 1 ? '' : 's'}</div>`;
+    gitHtml += `<pre style="margin: 0.5rem 0 0; font-family: var(--mono); font-size: 0.78rem; color: var(--fg-2); max-height: 160px; overflow-y: auto; white-space: pre-wrap;">${D.git.lines.map(esc).join('\n')}</pre>`;
+  }
+  document.getElementById('git-status').innerHTML = gitHtml;
+
+  if (D.recent && D.recent.length) {
+    document.getElementById('recent-commits').innerHTML =
+      '<div style="margin-top: 0.7rem; font-family: var(--mono); font-size: 0.7rem; color: var(--fg-2); text-transform: uppercase; letter-spacing: 0.1em;">recent commits</div>'
+      + D.recent.map(c =>
+        `<div class="commit-row">
+          <span class="commit-hash">${esc(c.hash)}</span>
+          <span class="commit-date">${esc(c.date)}</span>
+          <span class="commit-msg">${esc(c.msg)}</span>
+        </div>`).join('');
+  }
+
+  // ---- helpers ----
+  function renderPostRow(p) {
+    const date = p.date || '—';
+    const url = p.draft
+      ? '#'
+      : '/' + (p.path.replace(/^content\//, '').replace(/\/index\.md$/, '/').replace(/\.md$/, '/'));
+    const link = p.draft
+      ? `<span>${esc(p.title)}</span>`
+      : `<a href="${url}" target="_blank">${esc(p.title)}</a>`;
+    return `<div class="post-row">
+      <span class="post-date">${esc(date)}</span>
+      <span class="post-title">${link}</span>
+      <span class="post-meta">
+        ${p.draft
+          ? '<span class="badge badge-draft">draft</span>'
+          : (p.hidden
+              ? '<span class="badge badge-hidden">hidden</span>'
+              : '<span class="badge badge-pub">pub</span>')}
+        <span>${numFmt(p.wordCount)}w</span>
+        ${p.imageCount > 0 ? `<span>${p.imageCount}🖼</span>` : ''}
+      </span>
+    </div>`;
+  }
+
+  function renderInbox() {
+    const list = D.inbox || [];
+    const ul = document.getElementById('inbox');
+    if (list.length === 0) {
+      ul.innerHTML = `<li class="empty">Inbox empty. Capture ideas with <code>scripts/blog-workflow.sh inbox "..."</code>.</li>`;
+      return;
+    }
+    ul.innerHTML = list.map((it, i) =>
+      `<li class="inbox-item ${it.done ? 'done' : ''}">
+        <span>${it.done ? '✓' : '·'}</span>
+        <span class="inbox-text">${esc(it.text)}</span>
+        <span class="post-meta">#${i + 1}</span>
+      </li>`
+    ).join('');
+  }
+
+  document.getElementById('inbox-add').addEventListener('click', () => {
+    const v = document.getElementById('inbox-input').value.trim();
+    if (!v) return;
+    const snippet = `- [ ] ${v}\n`;
+    const cmd = `echo '- [ ] ${v.replace(/'/g, "'\\''")}' >> inbox.md`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(() => {
+        alert(`Copied to clipboard. Paste in repo root:\n\n${cmd}`);
+      });
+    } else {
+      alert(`Append manually to inbox.md:\n\n${snippet}`);
+    }
+    document.getElementById('inbox-input').value = '';
+  });
+  document.getElementById('inbox-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('inbox-add').click();
+  });
+
+  function peakMonth(D) {
+    let best = ['—', 0];
+    for (const [k, v] of Object.entries(D.monthCounts)) {
+      if (v > best[1]) best = [k, v];
+    }
+    return `${best[0]} (${best[1]})`;
+  }
+  function numFmt(n) { return (n || 0).toLocaleString(); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+})();
+</script>
+</body>
+</html>

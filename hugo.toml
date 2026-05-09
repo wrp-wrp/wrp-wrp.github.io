@@ -64,6 +64,14 @@ name = "posts"
 url = "/posts"
 
 [[params.menu]]
+name = "archive"
+url = "/archive"
+
+[[params.menu]]
+name = "tags"
+url = "/tags"
+
+[[params.menu]]
 name = "about"
 url = "/about"
 

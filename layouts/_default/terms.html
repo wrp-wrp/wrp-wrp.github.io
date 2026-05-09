@@ -1,0 +1,42 @@
+{{ define "main" }}
+
+<div class="list-container">
+
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+
+    {{ $visiblePages := where .Site.RegularPages "Params.hidden" "ne" true }}
+    {{ $tagCounts := dict }}
+    {{ range $visiblePages }}
+        {{ range .Params.tags }}
+            {{ $cur := index $tagCounts . | default 0 }}
+            {{ $tagCounts = merge $tagCounts (dict . (add $cur 1)) }}
+        {{ end }}
+    {{ end }}
+
+    <div class="archive-stats">
+        <span class="archive-stat"><span class="archive-stat-value">{{ len $tagCounts }}</span> tags</span>
+        <span class="archive-stat"><span class="archive-stat-value">{{ len $visiblePages }}</span> posts</span>
+    </div>
+
+    <div class="tag-cloud">
+        {{ range $tag, $count := $tagCounts }}
+            {{ $size := 1 }}
+            {{ if ge $count 2 }}{{ $size = 2 }}{{ end }}
+            {{ if ge $count 3 }}{{ $size = 3 }}{{ end }}
+            {{ if ge $count 4 }}{{ $size = 4 }}{{ end }}
+            {{ if ge $count 6 }}{{ $size = 5 }}{{ end }}
+            <a class="tag-size-{{ $size }}" href="{{ printf "/tags/%s/" (urlize $tag) | relURL }}">
+                {{ $tag }}<span class="tag-count">{{ $count }}</span>
+            </a>
+        {{ end }}
+    </div>
+
+    {{ if eq (len $tagCounts) 0 }}
+    <p class="search-panel-empty">No tags yet. Add <code>tags = [...]</code> to your posts' frontmatter.</p>
+    {{ end }}
+
+</div>
+{{ end }}

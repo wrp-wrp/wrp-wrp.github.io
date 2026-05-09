@@ -4,6 +4,8 @@
 
 {{ $homeCollection := .Site.Params.homeCollection | default "posts" }}
 {{ $pages := where .Site.RegularPages "Section" $homeCollection }}
+{{/* exclude posts marked hidden = true (kept on disk + reachable by URL, just not listed) */}}
+{{ $pages = where $pages "Params.hidden" "ne" true }}
 {{ $pages = sort $pages "Date" "desc" }}
 {{ $featuredPosts := first 3 $pages }}
 {{ $avatarPath := .Site.Params.homeAvatarPath | default "" }}
@@ -17,12 +19,39 @@
 {{ end }}
 {{ $paginator := .Paginate $pages $paginationSize }}
 
+{{/* ---- Build a 12-month activity bucket ---- */}}
+{{ $now := now }}
+{{ $months := slice }}
+{{ $monthCounts := dict }}
+{{ range seq 11 -1 0 }}
+    {{ $offset := . }}
+    {{ $month := $now.AddDate 0 (mul -1 $offset) 0 }}
+    {{ $key := $month.Format "2006-01" }}
+    {{ $months = $months | append $key }}
+{{ end }}
+{{ range $pages }}
+    {{ $key := .Date.Format "2006-01" }}
+    {{ if in $months $key }}
+        {{ $cur := index $monthCounts $key | default 0 }}
+        {{ $monthCounts = merge $monthCounts (dict $key (add $cur 1)) }}
+    {{ end }}
+{{ end }}
+
+{{/* ---- Tag frequency for topics strip ---- */}}
+{{ $tagCounts := dict }}
+{{ range $pages }}
+    {{ range .Params.tags }}
+        {{ $cur := index $tagCounts . | default 0 }}
+        {{ $tagCounts = merge $tagCounts (dict . (add $cur 1)) }}
+    {{ end }}
+{{ end }}
+
 <section class="home-hero">
     <div class="home-hero-main">
         <div class="home-identity">
             <div>
                 {{ with .Site.Params.homeIntroTitle }}
-                <p class="home-kicker">Research Notes and Technical Reports</p>
+                <p class="home-kicker">Research Notes & Technical Reports</p>
                 <h1 class="home-hero-title">{{ . }}</h1>
                 {{ end }}
             </div>
@@ -40,9 +69,13 @@
 
         <div class="home-hero-links">
             <a href="{{ "/posts/" | relURL }}">Posts</a>
-            <span>|</span>
+            <span>·</span>
+            <a href="{{ "/archive/" | relURL }}">Archive</a>
+            <span>·</span>
+            <a href="{{ "/tags/" | relURL }}">Tags</a>
+            <span>·</span>
             <a href="{{ "/about/" | relURL }}">About</a>
-            <span>|</span>
+            <span>·</span>
             <a href="{{ "/resume/" | relURL }}">Resume</a>
         </div>
 
@@ -51,7 +84,7 @@
             {{- $total := len . -}}
             {{- range $index, $item := . -}}
             <a href="{{ trim $item.url " " | safeURL }}" target="_blank" rel="noopener noreferrer me"
-                title="{{ ($item.title | default $item.name) | title }}">{{ ($item.title | default $item.name) | title }}</a>{{ if lt (add $index 1) $total }} | {{ end }}
+                title="{{ ($item.title | default $item.name) | title }}">{{ ($item.title | default $item.name) | title }}</a>{{ if lt (add $index 1) $total }} · {{ end }}
             {{- end -}}
         </p>
         {{ end }}
@@ -62,6 +95,20 @@
             <p class="home-meta-label">Posts</p>
             <p class="home-meta-value">{{ len $pages }}</p>
         </div>
+
+        <div class="home-meta-card">
+            <p class="home-meta-label">Last 12 months</p>
+            <div class="home-activity">
+                {{ range $months }}
+                    {{ $c := index $monthCounts . | default 0 }}
+                    {{ $cap := $c }}
+                    {{ if gt $cap 5 }}{{ $cap = 5 }}{{ end }}
+                    <span class="home-activity-cell" data-count="{{ $cap }}" title="{{ . }}: {{ $c }} post{{ if ne $c 1 }}s{{ end }}"></span>
+                {{ end }}
+            </div>
+            <p class="home-activity-caption">{{ index $months 0 }} → {{ index $months 11 }}</p>
+        </div>
+
         <div class="home-meta-card">
             <p class="home-meta-label">Research Focus</p>
             <ul class="home-focus-list">
@@ -70,6 +117,7 @@
                 {{ end }}
             </ul>
         </div>
+
         {{ if gt (len $pages) 0 }}
         {{ with index $pages 0 }}
         <div class="home-meta-card">
@@ -85,7 +133,7 @@
 <section class="home-featured">
     <div class="home-section-head">
         <h2>Recent Notes</h2>
-        <a href="{{ "/posts/" | relURL }}">View all</a>
+        <a href="{{ "/posts/" | relURL }}">View all →</a>
     </div>
 
     <div class="home-featured-grid">
@@ -101,6 +149,27 @@
             <p class="home-post-summary">{{ . | plainify | truncate 130 }}</p>
             {{ end }}
         </article>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+
+{{ if gt (len $tagCounts) 0 }}
+<section class="home-featured">
+    <div class="home-section-head">
+        <h2>Topics</h2>
+        <a href="{{ "/tags/" | relURL }}">All tags →</a>
+    </div>
+    <div class="tag-cloud">
+        {{ range $tag, $count := $tagCounts }}
+        {{ $size := 1 }}
+        {{ if ge $count 2 }}{{ $size = 2 }}{{ end }}
+        {{ if ge $count 3 }}{{ $size = 3 }}{{ end }}
+        {{ if ge $count 4 }}{{ $size = 4 }}{{ end }}
+        {{ if ge $count 6 }}{{ $size = 5 }}{{ end }}
+        <a class="tag-size-{{ $size }}" href="{{ printf "/tags/%s/" (urlize $tag) | relURL }}">
+            {{ $tag }}<span class="tag-count">{{ $count }}</span>
+        </a>
         {{ end }}
     </div>
 </section>

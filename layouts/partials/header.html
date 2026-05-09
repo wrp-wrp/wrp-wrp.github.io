@@ -1,0 +1,48 @@
+{{/* Custom header — extends theme/typo with search + theme toggle */}}
+
+<div class="header">
+
+    {{ if or (not (.Param "hideHeader")) .IsHome }}
+
+    <h1 class="header-title">
+        <a href="{{ site.BaseURL }}">{{ site.Title }}</a>
+    </h1>
+
+    <div class="header-menu">
+        {{ $currentPage := . }}
+        {{ with site.Params.menu }}
+        {{ range . }}
+        <p class="small {{ if eq .name (lower $currentPage.Name) }} bold {{end}}">
+            <a href="{{ .url }}" {{ if and (isset . "newTab") .newTab }}target="_blank" rel="noopener noreferrer" {{ end }}>
+                /{{.name }}
+            </a>
+        </p>
+        {{ end }}
+        {{ end }}
+    </div>
+
+    <div class="header-tools">
+        <button id="search-trigger" class="search-trigger" aria-label="Search posts">
+            <span>⌕ search</span>
+            <span class="kbd">/</span>
+        </button>
+        <button id="theme-toggle" class="theme-switch-btn" aria-label="Toggle dark mode" title="Toggle theme">
+            <span id="theme-toggle-icon">◐</span>
+        </button>
+    </div>
+
+    {{ end }}
+
+</div>
+
+{{/* Search modal */}}
+<div id="search-modal" class="search-modal" aria-hidden="true">
+    <div class="search-panel">
+        <div id="pagefind-search"></div>
+        <div class="search-panel-empty" id="search-fallback" style="display:none;">
+            Search index not built yet. Run <code>scripts/blog-workflow.sh build</code> then
+            <code>npx pagefind --site public</code>, or
+            <code>scripts/blog-workflow.sh build-search</code>.
+        </div>
+    </div>
+</div>

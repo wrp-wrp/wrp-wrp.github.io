@@ -1,0 +1,69 @@
+{{ define "main" }}
+
+{{ partial "breadcrumbs.html" . }}
+
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+{{ $pages := where .Site.RegularPages "Section" "posts" }}
+{{ $pages = where $pages "Params.hidden" "ne" true }}
+{{ $pages = sort $pages "Date" "desc" }}
+
+{{/* Stats */}}
+{{ $tagSet := dict }}
+{{ range $pages }}
+    {{ range .Params.tags }}
+        {{ $tagSet = merge $tagSet (dict . true) }}
+    {{ end }}
+{{ end }}
+{{ $totalWords := 0 }}
+{{ range $pages }}
+    {{ $totalWords = add $totalWords .WordCount }}
+{{ end }}
+
+<div class="archive-stats">
+    <span class="archive-stat"><span class="archive-stat-value">{{ len $pages }}</span> posts</span>
+    <span class="archive-stat"><span class="archive-stat-value">{{ $totalWords }}</span> words</span>
+    <span class="archive-stat"><span class="archive-stat-value">{{ len $tagSet }}</span> tags</span>
+    {{ if gt (len $pages) 0 }}
+    {{ with index $pages 0 }}
+    <span class="archive-stat">latest: <span class="archive-stat-value">{{ .Date | time.Format "2 Jan 2006" }}</span></span>
+    {{ end }}
+    {{ end }}
+</div>
+
+{{/* Group by year */}}
+{{ $byYear := dict }}
+{{ range $pages }}
+    {{ $year := .Date.Format "2006" }}
+    {{ $arr := index $byYear $year | default (slice) }}
+    {{ $arr = $arr | append . }}
+    {{ $byYear = merge $byYear (dict $year $arr) }}
+{{ end }}
+
+{{ $years := slice }}
+{{ range $year, $_ := $byYear }}
+    {{ $years = $years | append $year }}
+{{ end }}
+{{ $years = sort $years "value" "desc" }}
+
+{{ range $years }}
+    {{ $year := . }}
+    {{ $items := index $byYear $year }}
+    <h2 class="archive-year">{{ $year }} <span class="tag-count">· {{ len $items }}</span></h2>
+    {{ range $items }}
+    <div class="post-line">
+        <p class="line-date">{{ .Date | time.Format "Jan 2" }}</p>
+        <div>
+            <p class="line-title">
+                <a href="{{ .RelPermalink }}">{{ or .Params.title_en .Title }}</a>
+            </p>
+            {{ with or .Params.summary_en .Summary }}
+            <p class="line-summary">{{ . | plainify | truncate 120 }}</p>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+{{ end }}
+
+{{ end }}
