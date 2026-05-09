@@ -2,7 +2,10 @@
 
 {{ partial "breadcrumbs.html" . }}
 
-<h1>{{ .Title }}</h1>
+<div class="post-layout">
+<div class="post-main-column">
+
+<h1 class="single-title">{{ .Title }}</h1>
 {{ .Content }}
 
 {{ $pages := where .Site.RegularPages "Section" "posts" }}
@@ -65,5 +68,8 @@
     </div>
     {{ end }}
 {{ end }}
+
+</div>
+</div>
 
 {{ end }}
