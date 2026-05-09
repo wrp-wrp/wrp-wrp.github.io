@@ -1,0 +1,21 @@
+# Hugo build output (CI rebuilds it)
+public/
+resources/_gen/
+.hugo_build.lock
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local state
+node_modules/
+
+# Dashboard data is regenerated on demand — don't commit
+tools/data.js
