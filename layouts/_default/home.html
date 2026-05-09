@@ -24,8 +24,8 @@
 {{ $months := slice }}
 {{ $monthCounts := dict }}
 {{ range seq 11 -1 0 }}
-    {{ $offset := . }}
-    {{ $month := $now.AddDate 0 (mul -1 $offset) 0 }}
+    {{ $offset := int . }}
+    {{ $month := $now.AddDate 0 (int (mul -1 $offset)) 0 }}
     {{ $key := $month.Format "2006-01" }}
     {{ $months = $months | append $key }}
 {{ end }}
