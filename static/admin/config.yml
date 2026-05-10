@@ -1,0 +1,59 @@
+backend:
+  name: github
+  repo: wrp-wrp/wrp-wrp.github.io
+  branch: master
+
+site_url: https://wrp-wrp.github.io
+display_url: https://wrp-wrp.github.io
+logo_url: https://wrp-wrp.github.io/favicon-32x32.png
+
+publish_mode: simple
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+locale: zh_Hans
+
+collections:
+  - name: posts
+    label: 文章
+    label_singular: 文章
+    folder: content/posts
+    create: true
+    delete: true
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    format: toml-frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} · {{year}}-{{month}}-{{day}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - label: 草稿
+        field: draft
+        pattern: true
+      - label: 已发布
+        field: draft
+        pattern: false
+    fields:
+      - { name: title, label: 标题, widget: string }
+      - { name: title_en, label: 英文标题 (可选), widget: string, required: false }
+      - { name: date, label: 日期, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { name: summary, label: 摘要, widget: text, required: false }
+      - { name: summary_en, label: 英文摘要 (可选), widget: text, required: false }
+      - { name: tags, label: 标签, widget: list, required: false, default: [] }
+      - { name: categories, label: 分类, widget: list, required: false, default: [] }
+      - { name: math, label: 启用数学公式 (KaTeX), widget: boolean, default: true, required: false }
+      - { name: draft, label: 草稿, widget: boolean, default: false, required: false }
+      - { name: hidden, label: 隐藏 (URL 仍可访问，但不出现在列表), widget: boolean, default: false, required: false }
+      - { name: body, label: 正文, widget: markdown }
+
+  - name: inbox
+    label: 灵感箱
+    files:
+      - name: inbox
+        label: inbox.md
+        file: inbox.md
+        format: frontmatter
+        fields:
+          - { name: body, label: 想法, widget: markdown }

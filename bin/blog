@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Thin alias for scripts/blog-workflow.sh.
+# Usage: bin/blog new <slug> | bin/blog publish | bin/blog serve | ...
+# Add this dir to PATH so you can just run `blog new ...` from anywhere:
+#   export PATH="$HOME/Github-local/wrp-wrp.github.io/bin:$PATH"
+set -euo pipefail
+exec "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/blog-workflow.sh" "$@"

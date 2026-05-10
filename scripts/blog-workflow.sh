@@ -105,7 +105,27 @@ run_new() {
   local slug="${1:-}"
   [[ -n "${slug}" ]] || die "Missing slug. Example: scripts/blog-workflow.sh new anns-notes"
   hugo new "posts/${slug}/index.md"
-  log "Created post: content/posts/${slug}/index.md"
+  local file="content/posts/${slug}/index.md"
+  log "Created post: ${file}"
+
+  # Auto-open in preferred editor.
+  # Override via BLOG_EDITOR env var (e.g. BLOG_EDITOR='open -a "iA Writer"').
+  if [[ -n "${BLOG_EDITOR:-}" ]]; then
+    eval "${BLOG_EDITOR} \"${file}\"" || true
+  elif command -v open >/dev/null 2>&1; then
+    if [[ -d "/Applications/Typora.app" ]]; then
+      open -a Typora "${file}" || true
+      log "Opened in Typora."
+    elif [[ -d "/Applications/iA Writer.app" ]]; then
+      open -a "iA Writer" "${file}" || true
+      log "Opened in iA Writer."
+    elif [[ -d "/Applications/Obsidian.app" ]]; then
+      open -a Obsidian "${file}" || true
+      log "Opened in Obsidian."
+    else
+      log "(No supported markdown editor found in /Applications. Set BLOG_EDITOR to override.)"
+    fi
+  fi
 }
 
 run_serve() {
