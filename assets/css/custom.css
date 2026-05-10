@@ -36,8 +36,9 @@
     --code-border-dark: rgba(255, 255, 255, 0.08);
     --content-secondary-dark: rgb(160, 160, 160);
     --font-serif: "Literata", "Source Serif Pro", "Iowan Old Style",
-        "Apple Garamond", "Palatino Linotype", Georgia, "Songti SC", "STSong",
-        "Noto Serif SC", serif;
+        "Apple Garamond", "Palatino Linotype", Georgia,
+        "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN",
+        "Songti SC", "STSong", serif;
     --font-sans: -apple-system, "SF Pro Display", "Inter", "Helvetica Neue",
         "PingFang SC", "Microsoft Yahei", system-ui, sans-serif;
 }
@@ -1450,4 +1451,43 @@ body {
 
     /* Tag cloud breathes */
     .tag-cloud { gap: 0.4rem 0.6rem; }
+}
+
+/* ---------- 16. CJK typography ---------- */
+
+.single-content p,
+.single-content li,
+.single-content blockquote {
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+}
+
+.single-content h1,
+.single-content h2,
+.single-content h3,
+.single-content h4 {
+    letter-spacing: 0.005em;
+    line-height: 1.4;
+}
+
+@supports (text-spacing-trim: trim-start) {
+    .single-content p,
+    .single-content li,
+    .single-content blockquote,
+    .single-content h1,
+    .single-content h2,
+    .single-content h3 {
+        text-spacing-trim: trim-start;
+        text-autospace: ideograph-alpha ideograph-numeric;
+    }
+}
+
+.single-content > p:first-of-type.no-dropcap::first-letter,
+.cjk-start .single-content > p:first-of-type::first-letter {
+    font-size: inherit !important;
+    float: none !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    font-weight: inherit !important;
+    color: inherit !important;
 }
