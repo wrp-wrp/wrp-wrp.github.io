@@ -1164,6 +1164,8 @@ footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
         overflow-x: hidden !important;
         width: 100% !important;
         margin: 0 !important;
+    }
+    body.single-page {
         padding: 0 !important;
     }
 
@@ -1293,4 +1295,159 @@ footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
 @media screen and (max-width: 768px) {
     .post-layout { padding: 0 1rem !important; }
+}
+
+/* ---------- 15. Universal mobile guardrails ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+/* Tablet & phone — keep theme width but enforce gutters via padding (border-box safe) */
+@media screen and (max-width: 1024px) {
+    body {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
+}
+
+/* Phone-specific tightening */
+@media screen and (max-width: 640px) {
+    body {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        font-size: 16px;
+    }
+
+    .header {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        align-items: center !important;
+    }
+
+    .header-title { flex: 1 1 auto; }
+
+    .header-menu {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 0.4rem 0.5rem !important;
+        order: 3;
+        width: 100%;
+        margin-top: 0.4rem;
+    }
+
+    .header-menu p {
+        margin: 0 !important;
+        font-size: 0.78rem !important;
+        line-height: 1.4 !important;
+    }
+
+    .header-menu p a {
+        font-size: 0.78rem !important;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .header-tools {
+        flex: 0 0 auto;
+        margin-left: auto;
+        order: 2;
+    }
+
+    .home-hero {
+        grid-template-columns: 1fr !important;
+        gap: 1.2rem !important;
+        margin: 1rem 0 1.6rem !important;
+    }
+
+    .home-hero-meta {
+        padding-left: 0 !important;
+        border-left: none !important;
+        border-top: 1px solid var(--rule);
+        padding-top: 1.2rem !important;
+        min-width: 0 !important;
+    }
+
+    .home-hero-title {
+        font-size: clamp(1.7rem, 8vw, 2.2rem) !important;
+        line-height: 1.1 !important;
+    }
+
+    .home-hero-description p {
+        max-width: 100%;
+        font-size: 1rem;
+    }
+
+    .home-hero-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.8rem;
+    }
+
+    .home-hero-links span { display: none; }
+
+    .home-identity {
+        grid-template-columns: minmax(0, 1fr) 64px !important;
+        gap: 0.7rem !important;
+    }
+
+    .home-avatar {
+        width: 64px !important;
+        height: 64px !important;
+        margin-left: 0 !important;
+    }
+
+    .home-featured-grid { grid-template-columns: 1fr !important; }
+
+    .home-post-line,
+    .post-line {
+        grid-template-columns: 1fr !important;
+        gap: 0.2rem !important;
+    }
+
+    /* Single-page (post / archive / about) — already has post-layout, just trim padding */
+    body.single-page header,
+    body.single-page .breadcrumbs,
+    body.single-page footer {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        max-width: 100% !important;
+    }
+
+    .post-layout {
+        padding: 0 1rem !important;
+        gap: 0 !important;
+    }
+
+    /* Code/pre never overflow horizontally */
+    pre,
+    .single-content pre,
+    .single-content table,
+    .katex-display {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Images shouldn't blow out container */
+    img,
+    figure,
+    video,
+    iframe {
+        max-width: 100% !important;
+        height: auto;
+    }
+
+    /* Tag cloud breathes */
+    .tag-cloud { gap: 0.4rem 0.6rem; }
 }
