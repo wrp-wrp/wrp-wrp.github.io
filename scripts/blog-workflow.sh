@@ -111,20 +111,17 @@ run_new() {
   # Auto-open in preferred editor.
   # Override via BLOG_EDITOR env var (e.g. BLOG_EDITOR='open -a "iA Writer"').
   if [[ -n "${BLOG_EDITOR:-}" ]]; then
-    eval "${BLOG_EDITOR} \"${file}\"" || true
+    eval "${BLOG_EDITOR} \"${file}\"" \
+      && log "Opened with BLOG_EDITOR." \
+      || log "(BLOG_EDITOR command failed.)"
   elif command -v open >/dev/null 2>&1; then
-    if [[ -d "/Applications/Typora.app" ]]; then
-      open -a Typora "${file}" || true
-      log "Opened in Typora."
-    elif [[ -d "/Applications/iA Writer.app" ]]; then
-      open -a "iA Writer" "${file}" || true
-      log "Opened in iA Writer."
-    elif [[ -d "/Applications/Obsidian.app" ]]; then
-      open -a Obsidian "${file}" || true
-      log "Opened in Obsidian."
-    else
-      log "(No supported markdown editor found in /Applications. Set BLOG_EDITOR to override.)"
-    fi
+    for app in "Typora" "iA Writer" "Obsidian" "MacDown" "MWeb"; do
+      if open -a "${app}" "${file}" 2>/dev/null; then
+        log "Opened in ${app}."
+        return 0
+      fi
+    done
+    log "(No supported markdown editor found. Set BLOG_EDITOR to override, e.g.\n      BLOG_EDITOR='open -a \"iA Writer\"' )"
   fi
 }
 
