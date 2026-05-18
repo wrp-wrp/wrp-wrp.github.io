@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>流水线技术</title>
+  <link rel="stylesheet" href="review-subpage.css">
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>本页目录</strong>
+      <nav>
+        <a href="#classify">1. 流水线分类</a>
+<a href="#metrics">2. 流水线性能三件套</a>
+<a href="#mips">3. MIPS 五段流水线</a>
+<a href="#depend">4. 相关与冲突</a>
+<a href="#data">5. 数据冲突：RAW、WAR、WAW</a>
+<a href="#branch">6. 控制冲突与分支处理</a>
+<a href="#nonlinear">7. 非线性流水线调度</a>
+<a href="#exam">8. 考前抓手</a>
+<a href="#pipeline-problems">9. 公式与习题精讲</a>
+<a href="#original-exercises">10. 原题练习区</a>
+        <a href="#self-test">自测问题</a>
+        <a href="#source">原 PDF 页面截图</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="links">
+          <a class="button-link" href="index.html">返回总复习页</a>
+          <a class="button-link" href="basic.html">上一页：计算机体系结构基本概念</a>
+          <a class="button-link" href="ilp.html">下一页：指令级并行</a>
+        </div>
+      </div>
+      <header class="hero-panel">
+        <div class="hero-copy">
+          <span class="study-label">计算机系统结构复习</span>
+          <h1>流水线技术</h1>
+          <p class="subtitle">把流水线当成“时空图 + 三类冲突 + 性能公式 + 非线性调度”来复习。考试重点通常不是背概念，而是会画、会算、会判断停顿。</p>
+          <div class="meta-row">
+            <span class="meta">来源：郭越龙 胡书博——流水线技术.pdf</span>
+            <span class="meta">吞吐率</span><span class="meta">加速比</span><span class="meta">效率</span><span class="meta">RAW/WAR/WAW</span><span class="meta">结构冲突</span><span class="meta">控制冲突</span><span class="meta">非线性调度</span>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-stat"><span>10</span><strong>复习段落</strong></div>
+          <div class="hero-stat"><span>15</span><strong>讲义截图</strong></div>
+          <div class="hero-stat"><span>5</span><strong>自测问题</strong></div>
+        </div>
+      </header>
+      
+      <div class="study-map">
+        <article class="study-card primary">
+          <span class="study-label">怎么用本页</span>
+          <h2>先看主线，再背公式，最后做题</h2>
+          <p>每个专题页都按“概念框架、公式变量、典型题型、原讲义对照、自测问题”组织。复习时从左侧目录跳转，遇到计算题直接回到高亮公式段。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">本页材料</span>
+          <strong>10 个复习段落</strong>
+          <p>15 页原讲义截图可展开核对，适合考前查原表、原图和例题。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">重点标签</span>
+          <div class="tag-list compact"><span class="tag">吞吐率</span><span class="tag">加速比</span><span class="tag">效率</span><span class="tag">RAW/WAR/WAW</span><span class="tag">结构冲突</span><span class="tag">控制冲突</span><span class="tag">非线性调度</span></div>
+        </article>
+      </div>
+      <div class="path-strip">
+        <a href="#classify" class="path-card"><span>01</span><strong>1. 流水线分类</strong></a>
+<a href="#metrics" class="path-card"><span>02</span><strong>2. 流水线性能三件套</strong></a>
+<a href="#mips" class="path-card"><span>03</span><strong>3. MIPS 五段流水线</strong></a>
+<a href="#depend" class="path-card"><span>04</span><strong>4. 相关与冲突</strong></a>
+      </div>
+
+      
+      <div class="source-strip">
+        <div>
+          <span class="study-label">原资料预览</span>
+          <strong>郭越龙 胡书博——流水线技术.pdf</strong>
+          <p>正文已经把知识点重新组织；这里保留讲义页面缩略图，方便你在需要时回看原版题目、图和表。</p>
+        </div>
+        <div class="source-preview-grid">
+          <figure class="source-thumb"><img src="assets/pdf-pages/pipeline/page-01.png" alt="流水线技术 原 PDF 预览第 1 页"><figcaption>第 1 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/pipeline/page-02.png" alt="流水线技术 原 PDF 预览第 2 页"><figcaption>第 2 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/pipeline/page-03.png" alt="流水线技术 原 PDF 预览第 3 页"><figcaption>第 3 页</figcaption></figure>
+        </div>
+      </div>
+
+      <section id="classify">
+<h2>1. 流水线分类</h2>
+
+<table>
+  <thead><tr><th>分类角度</th><th>类型</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td>功能连接是否固定</td><td>静态流水线</td><td>同一时刻各段只能按一种功能连接方式工作。</td></tr>
+    <tr><td>功能连接是否固定</td><td>动态流水线</td><td>同一时刻不同段可以按不同功能连接方式工作，控制更复杂。</td></tr>
+    <tr><td>是否有反馈回路</td><td>线性流水线</td><td>任务依次经过各段，每段最多经过一次。</td></tr>
+    <tr><td>是否有反馈回路</td><td>非线性流水线</td><td>存在反馈回路，一个任务可能多次使用某些功能段。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="metrics">
+<h2>2. 流水线性能三件套</h2>
+
+<p>流水线性能题先判断是否是简单线性流水线。如果各段时间相等，用等时公式；如果各段时间不等，用最长段作为节拍。</p>
+<div class="formula">等时线性流水线完成 n 个任务的时间：Tk = (k + n - 1) × Δt</div>
+<div class="formula">不等时线性流水线完成 n 个任务的时间：Tk = Σti + (n - 1) × max(t1, t2, ..., tk)</div>
+<div class="formula">吞吐率 TP = n / Tk；加速比 S = 顺序时间 / 流水时间；效率 E = n 个任务实际占用的时空面积 / 流水线总时空面积</div>
+<div class="callout"><strong>题目提醒</strong>资料里特别提醒：这些公式适用于简单线性流水线。非线性流水线、超标量或复杂停顿场景要画时空图求解。</div>
+
+</section>
+<section id="mips">
+<h2>3. MIPS 五段流水线</h2>
+
+<table>
+  <thead><tr><th>阶段</th><th>名称</th><th>主要工作</th></tr></thead>
+  <tbody>
+    <tr><td>IF</td><td>取指</td><td>用 PC 访问指令存储器，取出指令，通常 PC + 4。</td></tr>
+    <tr><td>ID</td><td>译码/读寄存器</td><td>译码、读寄存器、生成控制信号，部分实现会在此处理分支。</td></tr>
+    <tr><td>EX</td><td>执行</td><td>ALU 运算、地址计算、条件判断。</td></tr>
+    <tr><td>MEM</td><td>访存</td><td>Load/Store 访问数据存储器。</td></tr>
+    <tr><td>WB</td><td>写回</td><td>把结果写回寄存器堆。</td></tr>
+  </tbody>
+</table>
+<p>画时空图时要把每条指令在每个周期处于哪个阶段标清楚，再根据相关关系判断是否插入气泡、重定向或清空。</p>
+
+</section>
+<section id="depend">
+<h2>4. 相关与冲突</h2>
+
+<div class="grid">
+  <article class="card accent-blue"><h3>相关 dependency</h3><p>指令之间存在语义关系，包括数据相关、名相关、控制相关。相关是“原因”。</p></article>
+  <article class="card accent-red"><h3>冲突 hazard</h3><p>由于相关或资源不足，下一条指令无法在预定周期执行。冲突是“流水线中的后果”。</p></article>
+</div>
+<table>
+  <thead><tr><th>冲突类型</th><th>来源</th><th>解决思路</th></tr></thead>
+  <tbody>
+    <tr><td>结构冲突</td><td>同一周期多条指令争用同一硬件资源。</td><td>资源重复、分离指令/数据存储、插入停顿。</td></tr>
+    <tr><td>数据冲突</td><td>指令之间读写寄存器或内存的顺序受约束。</td><td>数据重定向、插入气泡、编译器调度、寄存器重命名。</td></tr>
+    <tr><td>控制冲突</td><td>分支、跳转改变 PC，后续取指方向不确定。</td><td>分支预测、分支延迟槽、提前判断、错误路径清空。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="data">
+<h2>5. 数据冲突：RAW、WAR、WAW</h2>
+
+<table>
+  <thead><tr><th>名称</th><th>必须保持的顺序</th><th>直觉记忆</th><th>MIPS 五段流水线中</th></tr></thead>
+  <tbody>
+    <tr><td>RAW 写后读</td><td>前一条先写，后一条再读。</td><td>真正的数据依赖，最常见。</td><td>会发生，常用重定向解决。</td></tr>
+    <tr><td>WAR 读后写</td><td>前一条先读，后一条再写。</td><td>名相关，不是真数据流。</td><td>读在 ID、写在 WB，通常不会发生。</td></tr>
+    <tr><td>WAW 写后写</td><td>前一条先写，后一条再写。</td><td>输出相关。</td><td>五段顺序写回时通常不发生，乱序/多功能部件中要注意。</td></tr>
+  </tbody>
+</table>
+<p>重定向一般从 EX/MEM、MEM/WB 流水寄存器把结果送回 ALU 输入端。但 Load-Use 情况下，数据到 MEM 后才可用，紧接着的下一条指令 EX 阶段太早，通常仍需插入 1 个气泡。</p>
+
+</section>
+<section id="branch">
+<h2>6. 控制冲突与分支处理</h2>
+
+<ul>
+  <li>分支越早确定，错误取指造成的损失越小。</li>
+  <li>静态预测在编译或固定规则下完成，如总预测不跳转。</li>
+  <li>动态预测根据运行历史调整，和后面的 BHT、BTB 内容衔接。</li>
+  <li>分支延迟槽是把分支后必定会执行或可安全执行的指令放进延迟周期。</li>
+</ul>
+<div class="callout"><strong>做时空图的口令</strong>先画无冲突理想图，再标出相关，最后逐个决定重定向、停顿、清空。不要一开始就在脑子里硬算。</div>
+
+</section>
+<section id="nonlinear">
+<h2>7. 非线性流水线调度</h2>
+
+<p>非线性流水线因为存在反馈，同一任务可能重复使用某段，所以不能随便每周期输入新任务。调度目标是在不发生功能段冲突的前提下，让平均启动间隔尽量小。</p>
+<div class="steps">
+  <div class="step">根据预约表找禁止表 F：同一功能段中任意两个被占用时刻的差值都是禁止延迟。</div>
+  <div class="step">把禁止表写成初始冲突向量 C0：若延迟 i 被禁止，则对应位为 1。</div>
+  <div class="step">根据冲突向量画状态转移图：允许延迟才能转移，转移后更新冲突向量。</div>
+  <div class="step">在状态图中找平均延迟最小的循环，得到最优或较优调度方案。</div>
+</div>
+<p>资料例题中的禁止表为 <code>F = {1, 5, 6, 8}</code>，对应初始冲突向量 <code>C0 = 10110001</code>。考试遇到类似题，按这四步机械推进即可。</p>
+
+</section>
+<section id="exam" class="check-section">
+<h2>8. 考前抓手</h2>
+
+<div class="tag-list">
+  <span class="tag">会用 TP/S/E 公式</span><span class="tag">会画五段流水线时空图</span><span class="tag">会判断 RAW/WAR/WAW</span><span class="tag">知道 Load-Use 要停顿</span><span class="tag">会做非线性调度四步</span>
+</div>
+
+</section>
+<section id="pipeline-problems" class="focus-section">
+<h2>9. 公式与习题精讲</h2>
+
+<h3>线性流水线公式总表</h3>
+<table>
+  <thead><tr><th>场景</th><th>公式</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>等时 k 段，n 个任务</td><td>Tk = (k + n - 1)Δt</td><td>kΔt 是第一个任务完成时间，后续每 Δt 完成一个。</td></tr>
+    <tr><td>不等时 k 段</td><td>Tk = Σti + (n - 1)max(ti)</td><td>节拍由最慢段决定。</td></tr>
+    <tr><td>吞吐率</td><td>TP = n / Tk</td><td>n 趋于无穷大时，最大 TP = 1/Δt 或 1/max(ti)。</td></tr>
+    <tr><td>加速比</td><td>S = T顺序 / T流水</td><td>等时顺序时间通常为 nkΔt。</td></tr>
+    <tr><td>效率</td><td>E = 有效时空面积 / 总时空面积</td><td>等时理想线性流水线 E = n / (k + n - 1)。</td></tr>
+  </tbody>
+</table>
+<div class="card accent-blue">
+  <h3>例题模板：等时流水线</h3>
+  <p>5 段流水线，每段 10ns，处理 20 个任务。</p>
+  <div class="formula">Tk = (5 + 20 - 1) x 10ns = 240ns</div>
+  <div class="formula">TP = 20 / 240ns = 83.33 M任务/s</div>
+  <div class="formula">T顺序 = 20 x 5 x 10ns = 1000ns，S = 1000/240 = 4.17</div>
+  <div class="formula">E = 20 / (5 + 20 - 1) = 0.833</div>
+</div>
+<h3>MIPS 五段流水线时空图题</h3>
+<div class="steps">
+  <div class="step">先画理想五段：IF、ID、EX、MEM、WB，每条指令比上一条晚一个周期开始。</div>
+  <div class="step">标出数据相关：重点看前一条写的寄存器，后一条是否马上读。</div>
+  <div class="step">能重定向则从 EX/MEM 或 MEM/WB 送回 ALU；Load-Use 通常仍需插入 1 个气泡。</div>
+  <div class="step">遇到分支，按题目给定的分支判定阶段计算清空或延迟周期。资料中改进分支延迟可做到只需 1 个周期。</div>
+  <div class="step">循环题要分清“每轮周期数”和“首尾补偿周期”。先求每轮，再乘循环次数，最后加收尾。</div>
+</div>
+<h3>非线性流水线调度例题</h3>
+<p>资料例题预约表得到禁止表 <code>F = {1, 5, 6, 8}</code>，初始冲突向量 <code>C0 = 10110001</code>。</p>
+<div class="steps">
+  <div class="step">同一功能段中任意两个占用时刻相减，得到禁止延迟集合 F。</div>
+  <div class="step">把 F 写成冲突向量：延迟 i 禁止，对应位为 1；允许则为 0。</div>
+  <div class="step">从当前状态选择允许延迟 j。按教材位序移动当前冲突向量，再与 C0 作 OR，得到新状态。</div>
+  <div class="step">在状态图中找平均延迟最小的循环。资料例题中方案 (3,4) 的平均间隔为 3.5，吞吐率较高。</div>
+</div>
+<div class="callout"><strong>考试提醒</strong>非线性流水线不能直接套等时线性公式，必须用预约表、禁止表、冲突向量和状态图。</div>
+
+</section>
+<section id="original-exercises" class="focus-section">
+<h2>10. 原题练习区</h2>
+
+<div class="exercise-bank">
+  <article class="exercise-card">
+    <div class="problem-meta"><span>例 3.1</span><a href="assets/pdf-pages/pipeline/page-05.png">原题截图：p.5</a></div>
+    <h3>静态多功能流水线：乘加表达式</h3>
+    <div class="problem-body">
+      <p>要在图示静态流水线上计算 Π(i=1..4)(Ai + Bi)，流水线输出可以直接返回输入端或暂存于相应流水寄存器中。试计算吞吐率、加速比和效率。</p>
+      <p>练习重点：先安排 4 次加法，再安排乘法树，最后由时空图统计总时间和阴影面积。</p>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>原资料时空图给出 18Δt 内输出 7 个结果，所以 TP = 7/(18Δt)。不用流水线时总时间为 (4 x 6 + 3 x 4)Δt = 36Δt，所以 S = 36/18 = 2。</p>
+      <p>效率按阴影面积与总时空面积计算：E = (4 x 6 + 3 x 4)/(8 x 18) = 0.25。</p>
+    </details>
+  </article>
+  <article class="exercise-card">
+    <div class="problem-meta"><span>例 3.2</span><a href="assets/pdf-pages/pipeline/page-06.png">原题截图：p.6</a></div>
+    <h3>动态多功能流水线：求和乘积</h3>
+    <div class="problem-body">
+      <p>一条动态多功能流水线由 5 段组成：加法使用 1、3、4、5 段；乘法使用 1、2、5 段；第 4 段时间为 2Δt，其余各段时间均为 Δt，且输出可直接返回输入端或暂存于流水寄存器中。</p>
+      <p>若计算 Σ(i=1..4)(Ai x Bi)，试计算吞吐率、加速比和效率。</p>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>原资料时空图给出 16Δt 内输出 7 个结果，所以 TP = 7/(16Δt)。不用流水线时，一次求积需 3Δt，一次求和需 5Δt，总时间为 (4 x 3 + 3 x 5)Δt = 27Δt。</p>
+      <p>加速比 S = 27/16 ≈ 1.69；效率 E = (4 x 3 + 3 x 5)/(5 x 16) ≈ 0.338。</p>
+    </details>
+  </article>
+  <article class="exercise-card">
+    <div class="problem-meta"><span>例 3.11</span><a href="assets/pdf-pages/pipeline/page-10.png">原题截图：p.10</a><a href="assets/pdf-pages/pipeline/page-11.png">解答截图：p.11</a><a href="assets/pdf-pages/pipeline/page-12.png">调度截图：p.12</a></div>
+    <h3>MIPS 五段流水线：循环、定向与调度</h3>
+    <div class="problem-body">
+      <p>在 MIPS 五段流水线中运行如下循环，R3 初始值为 R2 + 396；假设所有存储器访问都命中 Cache。</p>
+      <pre><code>LOOP: LW   R1, 0(R2)
+      ADDI R1, R1, #1
+      SW   0(R2), R1
+      ADDI R2, R2, #4
+      SUB  R4, R3, R2
+      BNZ  R4, LOOP</code></pre>
+      <ol>
+        <li>没有任何定向硬件支持时，画出循环流水线时空图，并求总周期数。</li>
+        <li>有正常定向路径且采用“预测分支失败”策略时，画出时空图，并求总周期数。</li>
+        <li>有正常定向路径时，对循环指令重新排序，不能增加指令条数，画出时空图并计算总周期数。</li>
+      </ol>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>循环次数为 396/4 = 99。无定向时，原资料给出每轮 15 个时钟周期，总周期数为 15 x 99 + 3 = 1488。</p>
+      <p>有定向且预测分支失败时，每轮 9 个时钟周期，总周期数为 9 x 99 + 3 = 894。</p>
+      <p>调度思路：把独立指令提前，尽量让 SW 填入分支延迟位置；具体重排序列见原资料 p.12。</p>
+    </details>
+  </article>
+  <article class="exercise-card">
+    <div class="problem-meta"><span>非线性流水线调度</span><a href="assets/pdf-pages/pipeline/page-14.png">预约表：p.14</a><a href="assets/pdf-pages/pipeline/page-15.png">解答：p.15</a></div>
+    <h3>预约表、禁止表与最优调度</h3>
+    <div class="problem-body">
+      <p>给定 5 个功能段的非线性流水线预约表：S1 在时间 1、9 使用；S2 在时间 2、3、8 使用；S3 在时间 4 使用；S4 在时间 5、6 使用；S5 在时间 7、8 使用。</p>
+      <p>求禁止表 F、初始冲突向量 C0，画状态转移图，并给出平均启动间隔最小的调度方案。</p>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>同一功能段内使用时间差构成禁止表：F = {1, 5, 6, 8}。</p>
+      <p>初始冲突向量 C0 = 10110001。根据状态图，方案 (3,4) 的平均启动间隔为 3.5 个时钟周期，是较优方案。</p>
+    </details>
+  </article>
+</div>
+
+</section>
+      
+      <section id="self-test" class="self-test-section">
+        <h2>自测问题</h2>
+        <p>合上正文后先试着口答，再展开看答案。能把这些问题讲清楚，本章主线基本就稳了。</p>
+        <div class="quiz-grid">
+          
+        <details class="quiz-card">
+          <summary><span>01</span>相关和冲突有什么区别？</summary>
+          <p>相关是指令之间的语义依赖或名字关系；冲突是由于相关或资源不足导致流水线不能按预定周期推进。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>02</span>MIPS 五段流水线中 RAW 为什么最常见？</summary>
+          <p>后一条指令需要读取前一条尚未写回的结果，是真正的数据流依赖，可用重定向和停顿处理。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>03</span>为什么 Load-use 即使用重定向也常需要停顿？</summary>
+          <p>Load 的数据通常到 MEM 末尾才可用，紧随其后的使用者在 EX 阶段需要该数据，时间上来不及。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>04</span>非线性流水线调度题的核心步骤是什么？</summary>
+          <p>根据预约表找禁止向量，构造冲突向量和状态图，再选平均启动间隔最小且合法的循环。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>05</span>流水线效率为什么会小于 1？</summary>
+          <p>启动/排空、停顿、功能段不均衡和冲突都会让部分功能段处于空闲状态。</p>
+        </details>
+
+        </div>
+      </section>
+
+      
+<section id="source">
+  <h2>原 PDF 页面截图</h2>
+  <p>下面是原资料的页面渲染图，正文复习完后可以展开对照图、公式和例题。</p>
+  <details class="source-gallery">
+    <summary>展开 15 页原讲义截图</summary>
+    <div class="page-grid">
+      <figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-01.png" alt="流水线技术 原 PDF 第 1 页"><figcaption>原 PDF 第 1 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-02.png" alt="流水线技术 原 PDF 第 2 页"><figcaption>原 PDF 第 2 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-03.png" alt="流水线技术 原 PDF 第 3 页"><figcaption>原 PDF 第 3 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-04.png" alt="流水线技术 原 PDF 第 4 页"><figcaption>原 PDF 第 4 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-05.png" alt="流水线技术 原 PDF 第 5 页"><figcaption>原 PDF 第 5 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-06.png" alt="流水线技术 原 PDF 第 6 页"><figcaption>原 PDF 第 6 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-07.png" alt="流水线技术 原 PDF 第 7 页"><figcaption>原 PDF 第 7 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-08.png" alt="流水线技术 原 PDF 第 8 页"><figcaption>原 PDF 第 8 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-09.png" alt="流水线技术 原 PDF 第 9 页"><figcaption>原 PDF 第 9 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-10.png" alt="流水线技术 原 PDF 第 10 页"><figcaption>原 PDF 第 10 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-11.png" alt="流水线技术 原 PDF 第 11 页"><figcaption>原 PDF 第 11 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-12.png" alt="流水线技术 原 PDF 第 12 页"><figcaption>原 PDF 第 12 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-13.png" alt="流水线技术 原 PDF 第 13 页"><figcaption>原 PDF 第 13 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-14.png" alt="流水线技术 原 PDF 第 14 页"><figcaption>原 PDF 第 14 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/pipeline/page-15.png" alt="流水线技术 原 PDF 第 15 页"><figcaption>原 PDF 第 15 页</figcaption></figure>
+    </div>
+  </details>
+</section>
+
+      <p class="footer">本页由本地 PDF 资料整理生成，用作《计算机系统结构》课程复习网页。</p>
+    </main>
+  </div>
+</body>
+</html>

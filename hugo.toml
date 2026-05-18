@@ -68,6 +68,10 @@ name = "archive"
 url = "/archive"
 
 [[params.menu]]
+name = "resources"
+url = "/resources"
+
+[[params.menu]]
 name = "tags"
 url = "/tags"
 

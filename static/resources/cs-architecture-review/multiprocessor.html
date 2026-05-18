@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>多处理器</title>
+  <link rel="stylesheet" href="review-subpage.css">
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>本页目录</strong>
+      <nav>
+        <a href="#background">1. 单处理器瓶颈与分类</a>
+<a href="#challenge">2. 两个整体挑战</a>
+<a href="#communication">3. 通信机制</a>
+<a href="#coherence">4. Cache 一致性</a>
+<a href="#msi">5. MSI 协议</a>
+<a href="#sync">6. 同步机制</a>
+<a href="#performance">7. 同步性能问题</a>
+<a href="#exam">8. 考前抓手</a>
+<a href="#mp-formulas">9. 公式与习题精讲</a>
+<a href="#original-exercises">10. 原题练习区</a>
+        <a href="#self-test">自测问题</a>
+        <a href="#source">原 PDF 页面截图</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="links">
+          <a class="button-link" href="index.html">返回总复习页</a>
+          <a class="button-link" href="network.html">上一页：互联网络</a>
+          
+        </div>
+      </div>
+      <header class="hero-panel">
+        <div class="hero-copy">
+          <span class="study-label">计算机系统结构复习</span>
+          <h1>多处理器</h1>
+          <p class="subtitle">多处理器不是简单地“核越多越快”。并行性比例、通信延迟、Cache 一致性和同步开销共同决定最终速度。</p>
+          <div class="meta-row">
+            <span class="meta">来源：夏子隽——多处理器.pdf</span>
+            <span class="meta">MIMD</span><span class="meta">NUMA</span><span class="meta">消息传递</span><span class="meta">Cache 一致性</span><span class="meta">MSI</span><span class="meta">同步机制</span>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-stat"><span>10</span><strong>复习段落</strong></div>
+          <div class="hero-stat"><span>4</span><strong>讲义截图</strong></div>
+          <div class="hero-stat"><span>5</span><strong>自测问题</strong></div>
+        </div>
+      </header>
+      
+      <div class="study-map">
+        <article class="study-card primary">
+          <span class="study-label">怎么用本页</span>
+          <h2>先看主线，再背公式，最后做题</h2>
+          <p>每个专题页都按“概念框架、公式变量、典型题型、原讲义对照、自测问题”组织。复习时从左侧目录跳转，遇到计算题直接回到高亮公式段。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">本页材料</span>
+          <strong>10 个复习段落</strong>
+          <p>4 页原讲义截图可展开核对，适合考前查原表、原图和例题。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">重点标签</span>
+          <div class="tag-list compact"><span class="tag">MIMD</span><span class="tag">NUMA</span><span class="tag">消息传递</span><span class="tag">Cache 一致性</span><span class="tag">MSI</span><span class="tag">同步机制</span></div>
+        </article>
+      </div>
+      <div class="path-strip">
+        <a href="#background" class="path-card"><span>01</span><strong>1. 单处理器瓶颈与分类</strong></a>
+<a href="#challenge" class="path-card"><span>02</span><strong>2. 两个整体挑战</strong></a>
+<a href="#communication" class="path-card"><span>03</span><strong>3. 通信机制</strong></a>
+<a href="#coherence" class="path-card"><span>04</span><strong>4. Cache 一致性</strong></a>
+      </div>
+
+      
+      <div class="source-strip">
+        <div>
+          <span class="study-label">原资料预览</span>
+          <strong>夏子隽——多处理器.pdf</strong>
+          <p>正文已经把知识点重新组织；这里保留讲义页面缩略图，方便你在需要时回看原版题目、图和表。</p>
+        </div>
+        <div class="source-preview-grid">
+          <figure class="source-thumb"><img src="assets/pdf-pages/multiprocessor/page-1.png" alt="多处理器 原 PDF 预览第 1 页"><figcaption>第 1 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/multiprocessor/page-2.png" alt="多处理器 原 PDF 预览第 2 页"><figcaption>第 2 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/multiprocessor/page-3.png" alt="多处理器 原 PDF 预览第 3 页"><figcaption>第 3 页</figcaption></figure>
+        </div>
+      </div>
+
+      <section id="background">
+<h2>1. 单处理器瓶颈与分类</h2>
+
+<p>单处理器瓶颈来自性能提升边际效应降低：时钟频率受功耗和散热限制，指令级并行也有边际收益。多处理器通过多个处理器并行工作来继续提升性能。</p>
+<table>
+  <thead><tr><th>分类</th><th>特点</th><th>关键词</th></tr></thead>
+  <tbody>
+    <tr><td>Flynn 分类</td><td>现代多处理器大多属于 MIMD。</td><td>多指令流、多数据流。</td></tr>
+    <tr><td>共享全局地址空间</td><td>逻辑地址空间统一，物理上可能分布。</td><td>NUMA，远程访问延迟不均。</td></tr>
+    <tr><td>分布式独立地址空间</td><td>各结点地址空间独立，远程数据需显式传递。</td><td>消息传递，集群。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="challenge">
+<h2>2. 两个整体挑战</h2>
+
+<div class="grid">
+  <article class="card accent-red"><h3>并行性有限</h3><p>程序中总有一部分难以并行，Amdahl 定律给出整体加速上限。</p><div class="formula">Speedup = 1 / ((1 - f) + f / s)</div></article>
+  <article class="card accent-amber"><h3>通信开销较大</h3><p>远程访问、同步等待、缓存一致性事务都会增加额外周期，抵消并行收益。</p><div class="formula">实际 CPI = 本地 CPI + 通信/同步停顿周期</div></article>
+</div>
+
+</section>
+<section id="communication">
+<h2>3. 通信机制</h2>
+
+<table>
+  <thead><tr><th>机制</th><th>如何通信</th><th>优缺点</th></tr></thead>
+  <tbody>
+    <tr><td>共享存储器</td><td>通过 Load/Store 访问共享地址空间。</td><td>编程直观，但依赖 Cache 一致性协议。</td></tr>
+    <tr><td>消息传递</td><td>显式 Send/Receive。</td><td>硬件较简单、适合分布式系统，但编程复杂度更高。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="coherence">
+<h2>4. Cache 一致性</h2>
+
+<p>多个处理器各自有私有 Cache，同一主存块可能有多个副本。某处理器写了自己的副本后，其他副本可能变旧，这就是一致性问题。</p>
+<table>
+  <thead><tr><th>协议</th><th>核心思想</th><th>适用印象</th></tr></thead>
+  <tbody>
+    <tr><td>监听式协议 Snooping</td><td>所有 Cache 监听总线请求，发现相关块就改变本地状态。</td><td>广播式，适合较小规模共享总线。</td></tr>
+    <tr><td>写作废</td><td>写共享块时让其他副本无效。</td><td>MSI 属于典型写作废协议。</td></tr>
+    <tr><td>写更新</td><td>写共享块时广播新值给其他副本。</td><td>延迟低但带宽消耗大。</td></tr>
+    <tr><td>目录式协议</td><td>目录记录每个块被哪些处理器缓存，按目录点对点协调。</td><td>减少广播，适合大规模系统。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="msi">
+<h2>5. MSI 协议</h2>
+
+<table>
+  <thead><tr><th>状态</th><th>含义</th><th>关键词</th></tr></thead>
+  <tbody>
+    <tr><td>M Modified</td><td>唯一最新副本，尚未写回主存。</td><td>独占、脏、替换要写回。</td></tr>
+    <tr><td>S Shared</td><td>可有多个副本，与主存一致。</td><td>共享、干净。</td></tr>
+    <tr><td>I Invalid</td><td>该副本无效，不能使用。</td><td>失效、需重新取块。</td></tr>
+  </tbody>
+</table>
+<p>总线事务重点记三个：读缺失 <code>RdMiss</code>、写缺失 <code>WtMiss</code>、作废 <code>Invalidate</code>。状态转换题要先判断本地读写还是总线事务，再改状态。</p>
+
+</section>
+<section id="sync">
+<h2>6. 同步机制</h2>
+
+<p>Cache 一致性保证副本值一致，同步机制保证共享资源访问顺序正确。同步一般用硬件原子操作构建。</p>
+<table>
+  <thead><tr><th>原子操作</th><th>作用</th><th>记忆</th></tr></thead>
+  <tbody>
+    <tr><td>Atomic Exchange</td><td>交换寄存器与内存值，可实现锁。</td><td>拿自己的值去换锁。</td></tr>
+    <tr><td>Test-and-Set</td><td>测试并设置，整个过程不可分割。</td><td>看一眼并立刻占住。</td></tr>
+    <tr><td>LL/SC</td><td>Load-Linked 后 Store-Conditional，中途无人修改才写成功。</td><td>先订阅，再提交。</td></tr>
+  </tbody>
+</table>
+<div class="grid">
+  <article class="card accent-green"><h3>旋转锁</h3><p>不断检查锁变量直到可用。锁持有时间短时可用，竞争激烈会浪费周期和总线带宽。</p></article>
+  <article class="card accent-purple"><h3>栅栏同步</h3><p>所有处理器到达同一点后才继续执行。可用 sense reversing 处理重复使用栅栏的问题。</p></article>
+</div>
+
+</section>
+<section id="performance">
+<h2>7. 同步性能问题</h2>
+
+<ul>
+  <li>总线争用：多个处理器争同一把锁，会产生大量一致性事务。</li>
+  <li>串行化开销：同步要求某些访问按顺序发生，限制并行。</li>
+  <li>局部副本优化：旋转锁可先在本地 Cache 副本上等待，减少反复访问总线。</li>
+  <li>资料例子提到 10 个处理器竞争锁可能产生 120 次事务和 12000 周期开销，说明同步不是免费的。</li>
+</ul>
+
+</section>
+<section id="exam" class="check-section">
+<h2>8. 考前抓手</h2>
+
+<div class="tag-list">
+  <span class="tag">Amdahl 并行上限</span><span class="tag">共享存储 vs 消息传递</span><span class="tag">监听式 vs 目录式</span><span class="tag">MSI 三状态</span><span class="tag">原子操作构建锁</span><span class="tag">同步开销</span>
+</div>
+
+</section>
+<section id="mp-formulas" class="focus-section">
+<h2>9. 公式与习题精讲</h2>
+
+<h3>并行加速比</h3>
+<div class="formula">Speedup = 1 / ((1 - f) + f / p)</div>
+<p>f 是可并行部分比例，p 是处理器数量或并行部分理论加速比。即使 p 很大，Speedup 也不会超过 1/(1 - f)。</p>
+<div class="card accent-blue">
+  <h3>例题模板</h3>
+  <p>若 90% 程序可并行，用 8 个处理器：</p>
+  <div class="formula">Speedup = 1 / (0.1 + 0.9/8) = 4.71</div>
+  <p>不是 8 倍，因为 10% 串行部分限制了上限。</p>
+</div>
+<h3>远程访问与 CPI</h3>
+<div class="formula">CPI = 基础 CPI + 每条指令远程访问次数 x 远程访问额外延迟</div>
+<div class="formula">CPI = 基础 CPI + 通信发生比例 x 通信开销周期</div>
+<p>题目给“每 k 条指令发生一次远程访问”时，通信发生比例就是 1/k。若给本地和远程访问延迟差，要加的是额外延迟。</p>
+<h3>MSI 状态题</h3>
+<table>
+  <thead><tr><th>事件</th><th>常见状态变化</th><th>解释</th></tr></thead>
+  <tbody>
+    <tr><td>本地读 I</td><td>I -> S，发 RdMiss</td><td>读缺失，取来共享副本。</td></tr>
+    <tr><td>本地写 I</td><td>I -> M，发 WtMiss</td><td>写缺失，需要独占并作废其他副本。</td></tr>
+    <tr><td>本地写 S</td><td>S -> M，发 Invalidate</td><td>已有共享副本，写前作废其他共享者。</td></tr>
+    <tr><td>监听到他人 RdMiss 且本地 M</td><td>M -> S，并提供/写回数据</td><td>他人要读，脏数据需要被看见。</td></tr>
+    <tr><td>监听到他人写缺失或作废且本地 S/M</td><td>S/M -> I</td><td>他人要写，本地副本失效。</td></tr>
+  </tbody>
+</table>
+<h3>同步开销题</h3>
+<ul>
+  <li>旋转锁适合临界区很短的情况；等待时间长时，会浪费处理器周期。</li>
+  <li>多个处理器同时争锁会造成总线争用和大量一致性事务。</li>
+  <li>本地自旋优化：先在本地 Cache 副本上循环等待，锁释放时由一致性协议使副本失效，再重新竞争。</li>
+  <li>栅栏同步题重点看计数器是否能区分轮次；sense reversing 用每个处理器的私有 sense 解决复用问题。</li>
+</ul>
+<div class="formula">同步后实际执行时间 = 理想并行执行时间 + 锁等待时间 + 一致性事务时间 + 栅栏等待时间</div>
+
+</section>
+<section id="original-exercises" class="focus-section">
+<h2>10. 原题练习区</h2>
+
+<div class="exercise-bank">
+  <article class="exercise-card">
+    <div class="problem-meta"><span>课程例 8.1</span><span>来源：第十章多处理器概念课件</span></div>
+    <h3>Amdahl 定律：100 个处理器达到 80 倍加速</h3>
+    <div class="problem-body">
+      <p>假设想用 100 个处理器达到 80 的加速比，求原计算程序中串行部分最多可占多大的比例。</p>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>令并行比例为 f：80 = 1 / ((1 - f) + f/100)。解得 f = 0.9975。</p>
+      <p>串行部分最多为 1 - f = 0.0025，即 0.25%。</p>
+    </details>
+  </article>
+  <article class="exercise-card">
+    <div class="problem-meta"><span>课程例 8.2</span><span>来源：第十章多处理器概念课件</span></div>
+    <h3>远程访问延迟对 CPI 的影响</h3>
+    <div class="problem-body">
+      <p>一台 32 台处理器的多处理机，远程存储器访问时间为 200ns。除通信外，所有其它访问均命中局部存储器。发出远程请求时本处理器挂起。处理器时钟频率为 2GHz，基本 CPI 为 0.5。求没有远程访问与有 0.2% 指令需要远程访问时，前者比后者快多少。</p>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>2GHz 的时钟周期为 0.5ns，远程访问开销为 200ns/0.5ns = 400 个时钟周期。</p>
+      <p>有远程访问时 CPI = 0.5 + 0.2% x 400 = 1.3。没有远程访问时 CPI = 0.5，所以前者速度是后者的 1.3/0.5 = 2.6 倍。</p>
+    </details>
+  </article>
+</div>
+
+</section>
+      
+      <section id="self-test" class="self-test-section">
+        <h2>自测问题</h2>
+        <p>合上正文后先试着口答，再展开看答案。能把这些问题讲清楚，本章主线基本就稳了。</p>
+        <div class="quiz-grid">
+          
+        <details class="quiz-card">
+          <summary><span>01</span>集中式共享存储器和分布式存储器的核心差别是什么？</summary>
+          <p>前者多个处理器共享单一主存地址空间；后者存储器分布到各结点，访问本地和远程代价不同。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>02</span>共享地址空间和消息传递分别如何通信？</summary>
+          <p>共享地址空间通过读写共享变量通信；消息传递通过显式发送/接收消息通信。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>03</span>Cache 一致性要解决什么问题？</summary>
+          <p>多个处理器私有 Cache 中同一内存块副本可能不一致，需要保证读写看到符合协议的最新值。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>04</span>监听式协议和目录式协议的核心思路是什么？</summary>
+          <p>监听式靠总线广播和各 Cache 监听；目录式为每个内存块维护共享者/拥有者目录并点对点协调。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>05</span>同步机制为什么会影响性能？</summary>
+          <p>锁等待、总线争用、一致性事务和栅栏等待都会增加额外执行时间，抵消部分并行收益。</p>
+        </details>
+
+        </div>
+      </section>
+
+      
+<section id="source">
+  <h2>原 PDF 页面截图</h2>
+  <p>下面是原资料的页面渲染图，正文复习完后可以展开对照图、公式和例题。</p>
+  <details class="source-gallery">
+    <summary>展开 4 页原讲义截图</summary>
+    <div class="page-grid">
+      <figure><img loading="lazy" src="assets/pdf-pages/multiprocessor/page-1.png" alt="多处理器 原 PDF 第 1 页"><figcaption>原 PDF 第 1 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/multiprocessor/page-2.png" alt="多处理器 原 PDF 第 2 页"><figcaption>原 PDF 第 2 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/multiprocessor/page-3.png" alt="多处理器 原 PDF 第 3 页"><figcaption>原 PDF 第 3 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/multiprocessor/page-4.png" alt="多处理器 原 PDF 第 4 页"><figcaption>原 PDF 第 4 页</figcaption></figure>
+    </div>
+  </details>
+</section>
+
+      <p class="footer">本页由本地 PDF 资料整理生成，用作《计算机系统结构》课程复习网页。</p>
+    </main>
+  </div>
+</body>
+</html>

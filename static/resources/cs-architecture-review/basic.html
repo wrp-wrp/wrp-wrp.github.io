@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>计算机体系结构基本概念</title>
+  <link rel="stylesheet" href="review-subpage.css">
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>本页目录</strong>
+      <nav>
+        <a href="#overview">1. 本章定位</a>
+<a href="#flynn">2. Flynn 分类</a>
+<a href="#amdahl">3. Amdahl 定律</a>
+<a href="#cpu">4. CPU 时间、CPI 与平均 CPI</a>
+<a href="#mips">5. MIPS 与 MFLOPS</a>
+<a href="#benchmark">6. 性能评价原则</a>
+<a href="#trend">7. 未来趋势与墙</a>
+<a href="#basic-formulas">8. 公式与习题精讲</a>
+<a href="#original-exercises">9. 原题练习区</a>
+        <a href="#self-test">自测问题</a>
+        <a href="#source">原 PDF 页面截图</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="links">
+          <a class="button-link" href="index.html">返回总复习页</a>
+          <a class="button-link" href="overview.html">上一页：总览串讲复习子页面</a>
+          <a class="button-link" href="pipeline.html">下一页：流水线技术</a>
+        </div>
+      </div>
+      <header class="hero-panel">
+        <div class="hero-copy">
+          <span class="study-label">计算机系统结构复习</span>
+          <h1>计算机体系结构基本概念</h1>
+          <p class="subtitle">这一页负责打地基：性能是什么意思，怎么计算加速比，CPU 时间、CPI、MIPS、MFLOPS 各自怎么用，以及为什么基准测试要谨慎比较。</p>
+          <div class="meta-row">
+            <span class="meta">来源：焦柄豪——计算机体系结构基本概念.pdf</span>
+            <span class="meta">Amdahl</span><span class="meta">CPU 时间</span><span class="meta">CPI</span><span class="meta">MIPS</span><span class="meta">MFLOPS</span><span class="meta">性能评价</span>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-stat"><span>9</span><strong>复习段落</strong></div>
+          <div class="hero-stat"><span>7</span><strong>讲义截图</strong></div>
+          <div class="hero-stat"><span>5</span><strong>自测问题</strong></div>
+        </div>
+      </header>
+      
+      <div class="study-map">
+        <article class="study-card primary">
+          <span class="study-label">怎么用本页</span>
+          <h2>先看主线，再背公式，最后做题</h2>
+          <p>每个专题页都按“概念框架、公式变量、典型题型、原讲义对照、自测问题”组织。复习时从左侧目录跳转，遇到计算题直接回到高亮公式段。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">本页材料</span>
+          <strong>9 个复习段落</strong>
+          <p>7 页原讲义截图可展开核对，适合考前查原表、原图和例题。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">重点标签</span>
+          <div class="tag-list compact"><span class="tag">Amdahl</span><span class="tag">CPU 时间</span><span class="tag">CPI</span><span class="tag">MIPS</span><span class="tag">MFLOPS</span><span class="tag">性能评价</span></div>
+        </article>
+      </div>
+      <div class="path-strip">
+        <a href="#overview" class="path-card"><span>01</span><strong>1. 本章定位</strong></a>
+<a href="#flynn" class="path-card"><span>02</span><strong>2. Flynn 分类</strong></a>
+<a href="#amdahl" class="path-card"><span>03</span><strong>3. Amdahl 定律</strong></a>
+<a href="#cpu" class="path-card"><span>04</span><strong>4. CPU 时间、CPI 与平均 CPI</strong></a>
+      </div>
+
+      
+      <div class="source-strip">
+        <div>
+          <span class="study-label">原资料预览</span>
+          <strong>焦柄豪——计算机体系结构基本概念.pdf</strong>
+          <p>正文已经把知识点重新组织；这里保留讲义页面缩略图，方便你在需要时回看原版题目、图和表。</p>
+        </div>
+        <div class="source-preview-grid">
+          <figure class="source-thumb"><img src="assets/pdf-pages/basic/page-1.png" alt="计算机体系结构基本概念 原 PDF 预览第 1 页"><figcaption>第 1 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/basic/page-2.png" alt="计算机体系结构基本概念 原 PDF 预览第 2 页"><figcaption>第 2 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/basic/page-3.png" alt="计算机体系结构基本概念 原 PDF 预览第 3 页"><figcaption>第 3 页</figcaption></figure>
+        </div>
+      </div>
+
+      <section id="overview">
+<h2>1. 本章定位</h2>
+
+<p>基本概念章是后续所有计算题的入口。流水线、Cache、多处理器看起来题型不同，但最终常常会回到执行时间、CPI、吞吐率、加速比这些量。</p>
+<div class="grid three">
+  <article class="card accent-blue"><h3>响应时间</h3><p>单个任务从开始到完成的时间，个人用户最关心。越短表示性能越好。</p></article>
+  <article class="card accent-teal"><h3>吞吐率</h3><p>单位时间完成的任务数量，服务器和批处理系统更关心。越大表示系统处理能力越强。</p></article>
+  <article class="card accent-amber"><h3>加速比</h3><p>改进前执行时间除以改进后执行时间，用来衡量优化带来的整体收益。</p></article>
+</div>
+
+</section>
+<section id="flynn">
+<h2>2. Flynn 分类</h2>
+
+<table>
+  <thead><tr><th>类型</th><th>含义</th><th>复习要求</th></tr></thead>
+  <tbody>
+    <tr><td>SISD</td><td>单指令流、单数据流，传统单处理器模型。</td><td>了解。</td></tr>
+    <tr><td>SIMD</td><td>单指令流、多数据流，同一操作作用于多个数据。</td><td>能和向量处理、GPU 直觉联系起来。</td></tr>
+    <tr><td>MISD</td><td>多指令流、单数据流，现实中少见。</td><td>了解即可。</td></tr>
+    <tr><td>MIMD</td><td>多指令流、多数据流，现代多处理器和集群常见。</td><td>后面多处理器章节会用到。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="amdahl">
+<h2>3. Amdahl 定律</h2>
+
+<p>Amdahl 定律的核心直觉是：优化收益不仅取决于局部优化有多快，还取决于这个局部在总执行时间中占多大比例。</p>
+<div class="formula">Speedup = 1 / ((1 - f) + f / s)</div>
+<table>
+  <thead><tr><th>符号</th><th>含义</th><th>做题提醒</th></tr></thead>
+  <tbody>
+    <tr><td>f</td><td>可改进部分原来占总执行时间的比例。</td><td>题目说“某部件占总时间 40%”，通常就是 f = 0.4。</td></tr>
+    <tr><td>s</td><td>可改进部分自身被加速的倍数。</td><td>题目说“速度提高到原来的 5 倍”，通常就是 s = 5。</td></tr>
+    <tr><td>1 - f</td><td>不可改进部分。</td><td>这部分决定加速比上限，千万不能丢。</td></tr>
+  </tbody>
+</table>
+<div class="steps">
+  <div class="step">先把总时间归一化为 1。</div>
+  <div class="step">把原时间拆成不可改进部分 <code>1 - f</code> 和可改进部分 <code>f</code>。</div>
+  <div class="step">改进后可改进部分变成 <code>f / s</code>。</div>
+  <div class="step">总加速比就是 <code>1 / 改进后总时间</code>。</div>
+</div>
+
+</section>
+<section id="cpu">
+<h2>4. CPU 时间、CPI 与平均 CPI</h2>
+
+<div class="formula">CPU 时间 = IC × CPI × 时钟周期时间 = IC × CPI / 时钟频率</div>
+<p>这个公式最适合分析处理器或存储优化对程序执行时间的影响。后面 Cache 题经常把存储器停顿周期加到 CPI 里。</p>
+<table>
+  <thead><tr><th>指标</th><th>含义</th><th>常见计算</th></tr></thead>
+  <tbody>
+    <tr><td>IC</td><td>Instruction Count，执行的指令条数。</td><td>和算法、编译器、ISA 有关。</td></tr>
+    <tr><td>CPI</td><td>Cycles Per Instruction，每条指令平均时钟周期数。</td><td>不同类型指令 CPI 不同，用加权平均。</td></tr>
+    <tr><td>时钟周期时间</td><td>一个时钟周期的长度。</td><td>等于 1 / 时钟频率。</td></tr>
+  </tbody>
+</table>
+<div class="formula">平均 CPI = Σ(某类指令比例 × 该类指令 CPI)</div>
+<div class="callout"><strong>做题常见坑</strong>频率提高不一定代表程序更快，因为 CPI 和 IC 可能变化；MIPS 高也不一定代表性能更好，因为不同 ISA 的指令工作量可能不同。</div>
+
+</section>
+<section id="mips">
+<h2>5. MIPS 与 MFLOPS</h2>
+
+<table>
+  <thead><tr><th>指标</th><th>公式</th><th>适用范围</th></tr></thead>
+  <tbody>
+    <tr><td>MIPS</td><td>指令条数 / (执行时间 × 10^6)</td><td>同一程序、同类机器下可参考；跨 ISA 容易误导。</td></tr>
+    <tr><td>MFLOPS</td><td>浮点操作次数 / (执行时间 × 10^6)</td><td>更适合浮点密集型程序；不同程序浮点操作复杂度也可能不同。</td></tr>
+  </tbody>
+</table>
+<p>如果题目要求比较真实性能，优先使用执行时间；如果只是给定指令数和时间求指标，再套 MIPS/MFLOPS。</p>
+
+</section>
+<section id="benchmark">
+<h2>6. 性能评价原则</h2>
+
+<ul>
+  <li>评价计算机性能时，应尽量使用真实程序或代表性基准程序。</li>
+  <li>同一系统对不同应用的表现可能差别很大，不能只看单一指标。</li>
+  <li>比较优化方案时，要明确比较的是响应时间、吞吐率、能耗还是成本。</li>
+  <li>如果多个测试程序合成一个结果，注意算术平均、几何平均的含义差异。</li>
+</ul>
+<p>基准程序可以分为真实应用程序、核心程序、小型基准程序和合成基准程序。越接近真实负载，评价越可信；越小越容易分析，但也越可能偏离真实表现。</p>
+
+</section>
+<section id="trend">
+<h2>7. 未来趋势与墙</h2>
+
+<p>资料中还提到体系结构发展的若干“墙”和机遇。它们不是本章计算重点，但能帮助理解为什么后续章节要研究存储层次、功耗、互联和并行。</p>
+<table>
+  <thead><tr><th>趋势/问题</th><th>含义</th><th>关联章节</th></tr></thead>
+  <tbody>
+    <tr><td>存储墙</td><td>处理器速度提升快于存储器访问速度，访存成为瓶颈。</td><td>Cache、主存、虚拟存储。</td></tr>
+    <tr><td>功耗墙</td><td>频率继续提升会带来功耗和散热压力。</td><td>多核、多处理器、能效设计。</td></tr>
+    <tr><td>带宽墙</td><td>数据搬运能力限制系统吞吐。</td><td>主存带宽、I/O、互联网络。</td></tr>
+    <tr><td>应用墙</td><td>硬件能力增长需要应用并行性和软件生态配合。</td><td>指令级并行、多处理器。</td></tr>
+    <tr><td>硬件设计大众化与云计算</td><td>工具链和云资源降低硬件创新门槛。</td><td>体系结构未来机会。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="basic-formulas" class="focus-section">
+<h2>8. 公式与习题精讲</h2>
+
+<h3>Amdahl 多部件改进通式</h3>
+<div class="formula">S = 1 / ((1 - Σfi) + Σ(fi / si))</div>
+<p>fi 是第 i 个可改进部件在原总执行时间中的比例，si 是该部件自身加速比。若题目反求某个比例，把目标总加速比代入即可。</p>
+<div class="card accent-blue">
+  <h3>例题模板：反求可改进比例</h3>
+  <p>部件1、2、3加速比分别为 30、20、10。若 f1 = 0.3，f2 = 0.3，要求总加速比 S = 10，求 f3。</p>
+  <div class="formula">0.1 = (1 - 0.3 - 0.3 - f3) + 0.3/30 + 0.3/20 + f3/10</div>
+  <div class="formula">0.1 = 0.425 - 0.9f3，所以 f3 = 0.325 / 0.9 = 65/180 ≈ 0.36</div>
+</div>
+<div class="card accent-teal">
+  <h3>例题模板：改进后不可加速部分占比</h3>
+  <p>若 f1 = 0.3，f2 = 0.3，f3 = 0.2，三部分分别加速 30、20、10 倍，则改进后总时间为：</p>
+  <div class="formula">Tnew = 0.3T/30 + 0.3T/20 + 0.2T/10 + 0.2T = 0.245T</div>
+  <div class="formula">不可加速部分在改进后时间中占比 = 0.2T / 0.245T ≈ 0.82</div>
+</div>
+<h3>平均 CPI 例题套路</h3>
+<div class="formula">CPIavg = Σ(CPIi x ICi/IC)</div>
+<p>注意：CPI 公式中的比例是“指令条数比例”，而 Amdahl 里 fi 是“时间比例”。两者不能混用。</p>
+<div class="card accent-amber">
+  <h3>例题模板：比较两种优化方案</h3>
+  <p>FP 指令占 25%，非 FP 占 75%；FPSQR 占全部指令 2%，它属于 FP。改进前 CPI_FP = 4.0，CPI_非FP = 1.33，CPI_FPSQR = 20。</p>
+  <p>先由改进前平均 CPI 反求普通 FP 指令 CPI：</p>
+  <div class="formula">4 x 0.25 + 1.33 x 0.75 = 20 x 0.02 + CPI_非FPSQR x 0.98</div>
+  <div class="formula">CPI_非FPSQR = 80/49</div>
+  <p>方案一：只把 FPSQR 的 CPI 从 20 降到 2。</p>
+  <div class="formula">CPI1 = 2 x 0.02 + (80/49) x 0.98 = 1.64</div>
+  <p>方案二：把所有 FP 指令 CPI 从 4 降到 2。</p>
+  <div class="formula">CPI2 = 2 x 0.25 + 1.33 x 0.75 ≈ 1.50</div>
+  <p>所以方案二更好。</p>
+</div>
+<h3>MIPS/MFLOPS 计算</h3>
+<div class="formula">MIPS = 指令条数 / (执行时间 x 10^6) = 时钟频率 / (CPI x 10^6)</div>
+<div class="formula">MFLOPS = 浮点操作次数 / (执行时间 x 10^6)</div>
+<p>如果题目问“哪个机器更快”，优先比较执行时间；如果题目明确给指令数/浮点操作数和时间，再计算 MIPS/MFLOPS。</p>
+
+</section>
+<section id="original-exercises" class="focus-section">
+<h2>9. 原题练习区</h2>
+
+<div class="exercise-bank">
+  <article class="exercise-card">
+    <div class="problem-meta"><span>原题 1.4.1</span><a href="assets/pdf-pages/basic/page-6.png">原题截图：p.6</a></div>
+    <h3>Amdahl 定律：三个部件同时改进</h3>
+    <div class="problem-body">
+      <p>计算机系统有三个部件可以改进，三个部件的加速比分别为：部件加速比1 = 30，部件加速比2 = 20，部件加速比3 = 10。</p>
+      <ol>
+        <li>如果部件1和部件2的可改进比例均为30%，那么当部件3的可改进比例为多少时，系统总加速比才可以达到10？</li>
+        <li>如果三个部件的可改进比例分别为30%、30%和20%，三个部件同时改进，那么系统中不可加速部分的执行时间在总执行时间中的比例是多少？</li>
+      </ol>
+    </div>
+    <details class="solution-toggle"><summary>展开提示/答案</summary>
+      <p>把原总时间归一化。多部件 Amdahl 写成：S = 1 / ((1 - f1 - f2 - f3) + f1/s1 + f2/s2 + f3/s3)。</p>
+      <p>第1问列式：0.1 = (1 - 0.3 - 0.3 - f3) + 0.3/30 + 0.3/20 + f3/10，解得 f3 = 65/180 ≈ 0.36。</p>
+      <p>第2问改进后总时间为 0.3T/30 + 0.3T/20 + 0.2T/10 + 0.2T = 0.245T，不可加速部分占比 0.2T/0.245T ≈ 0.82。</p>
+    </details>
+  </article>
+  <article class="exercise-card">
+    <div class="problem-meta"><span>原题 1.4.2</span><a href="assets/pdf-pages/basic/page-6.png">原题截图：p.6</a><a href="assets/pdf-pages/basic/page-7.png">答案截图：p.7</a></div>
+    <h3>CPU 时间与平均 CPI：比较两种设计</h3>
+    <div class="problem-body">
+      <p>FP 操作比例为25%，FP 操作平均 CPI = 4.0，其他指令平均 CPI = 1.33；FPSQR 操作比例为2%，FPSQR 的 CPI = 20。</p>
+      <p>有两种设计方案：方案一把 FPSQR 操作的 CPI 减为2；方案二把所有 FP 操作的 CPI 减为2。试利用 CPU 性能公式比较两种设计。</p>
+    </div>
+    <details class="solution-toggle"><summary>展开提示/答案</summary>
+      <p>先用改进前平均 CPI 反推出非 FPSQR 的 FP 指令 CPI：4 x 0.25 + 1.33 x 0.75 = 20 x 0.02 + CPI非FPSQR x 0.98，得 CPI非FPSQR = 80/49。</p>
+      <p>方案一：CPI = 2 x 0.02 + (80/49) x 0.98 = 1.64。</p>
+      <p>方案二：CPI = 2 x 0.25 + 1.33 x 0.75 ≈ 1.50。CPI 更小，所以方案二更好。</p>
+    </details>
+  </article>
+</div>
+
+</section>
+      
+      <section id="self-test" class="self-test-section">
+        <h2>自测问题</h2>
+        <p>合上正文后先试着口答，再展开看答案。能把这些问题讲清楚，本章主线基本就稳了。</p>
+        <div class="quiz-grid">
+          
+        <details class="quiz-card">
+          <summary><span>01</span>响应时间和吞吐率分别适合评价什么场景？</summary>
+          <p>响应时间适合评价单个任务完成快慢；吞吐率适合评价服务器或批处理系统单位时间完成多少任务。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>02</span>CPU 时间公式中 IC、CPI、时钟周期分别由什么影响？</summary>
+          <p>IC 受算法/编译器/ISA 影响，CPI 受微结构和存储停顿影响，时钟周期受实现工艺和关键路径影响。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>03</span>为什么 MIPS 不能直接跨机器比较？</summary>
+          <p>不同 ISA 的一条指令工作量不同，MIPS 只看每秒执行指令数，可能掩盖真实执行时间。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>04</span>Amdahl 多部件题怎么列式？</summary>
+          <p>把总时间归一为 1，不可改进部分保留，每个可改进部分写成 fi/si，改进后总时间取倒数。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>05</span>Flynn 分类中现代多处理器主要属于哪类？</summary>
+          <p>多数现代多处理器属于 MIMD，即多指令流、多数据流。</p>
+        </details>
+
+        </div>
+      </section>
+
+      
+<section id="source">
+  <h2>原 PDF 页面截图</h2>
+  <p>下面是原资料的页面渲染图，正文复习完后可以展开对照图、公式和例题。</p>
+  <details class="source-gallery">
+    <summary>展开 7 页原讲义截图</summary>
+    <div class="page-grid">
+      <figure><img loading="lazy" src="assets/pdf-pages/basic/page-1.png" alt="计算机体系结构基本概念 原 PDF 第 1 页"><figcaption>原 PDF 第 1 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/basic/page-2.png" alt="计算机体系结构基本概念 原 PDF 第 2 页"><figcaption>原 PDF 第 2 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/basic/page-3.png" alt="计算机体系结构基本概念 原 PDF 第 3 页"><figcaption>原 PDF 第 3 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/basic/page-4.png" alt="计算机体系结构基本概念 原 PDF 第 4 页"><figcaption>原 PDF 第 4 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/basic/page-5.png" alt="计算机体系结构基本概念 原 PDF 第 5 页"><figcaption>原 PDF 第 5 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/basic/page-6.png" alt="计算机体系结构基本概念 原 PDF 第 6 页"><figcaption>原 PDF 第 6 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/basic/page-7.png" alt="计算机体系结构基本概念 原 PDF 第 7 页"><figcaption>原 PDF 第 7 页</figcaption></figure>
+    </div>
+  </details>
+</section>
+
+      <p class="footer">本页由本地 PDF 资料整理生成，用作《计算机系统结构》课程复习网页。</p>
+    </main>
+  </div>
+</body>
+</html>

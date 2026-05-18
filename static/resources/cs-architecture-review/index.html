@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>计算机系统结构复习串讲整理版</title>
+  <style>
+    :root {
+      --bg: #f3f6fa;
+      --paper: #ffffff;
+      --ink: #16202f;
+      --muted: #667085;
+      --line: #d9e1ec;
+      --blue: #225c9c;
+      --blue-dark: #143b66;
+      --blue-soft: #e8f1fb;
+      --teal: #0f766e;
+      --teal-soft: #e7f6f3;
+      --orange: #a65f00;
+      --orange-soft: #fff3df;
+      --purple: #6d4fb3;
+      --purple-soft: #f0ecff;
+      --green: #25764a;
+      --green-soft: #edf8f2;
+      --yellow-soft: #fff8e6;
+      --red: #a13b3b;
+      --red-soft: #fff0f0;
+      --shadow: 0 18px 48px rgba(22, 32, 47, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, #eaf2fb 0, #f6f8fb 360px, var(--bg) 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      line-height: 1.68;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 28px;
+      width: min(1320px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    aside {
+      position: sticky;
+      top: 24px;
+      height: calc(100vh - 48px);
+      align-self: start;
+      overflow: auto;
+      padding: 20px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    aside strong {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--blue-dark);
+      font-size: 16px;
+    }
+
+    nav a {
+      display: block;
+      padding: 9px 10px;
+      color: #344054;
+      font-size: 14px;
+      line-height: 1.35;
+      border-radius: 8px;
+    }
+
+    nav a:hover {
+      background: var(--blue-soft);
+      text-decoration: none;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 40px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,251,255,0.96) 100%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 28px 24px auto;
+      width: 220px;
+      height: 140px;
+      background:
+        linear-gradient(90deg, rgba(34,92,156,0.16), rgba(15,118,110,0.12));
+      clip-path: polygon(0 18%, 72% 18%, 72% 0, 100% 50%, 72% 100%, 72% 82%, 0 82%);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: #10233f;
+      font-size: 40px;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-copy {
+      min-width: 0;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 16px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 96px;
+    }
+
+    .stat .num {
+      display: block;
+      color: var(--blue-dark);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat .label {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 18px 20px;
+      background: var(--blue-soft);
+      border: 1px solid #cfe0f3;
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue-dark);
+    }
+
+    section {
+      margin-top: 26px;
+      padding: 32px 38px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 30px rgba(23, 32, 51, 0.05);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      color: var(--blue);
+      font-size: 24px;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .section-lead {
+      max-width: 780px;
+      color: #344054;
+      font-size: 16px;
+    }
+
+    h3 {
+      margin: 28px 0 10px;
+      color: var(--blue-dark);
+      font-size: 18px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul,
+    ol {
+      margin: 10px 0 14px 1.35em;
+      padding: 0;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .card {
+      padding: 16px 18px;
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--blue-dark);
+    }
+
+    .flow-map {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 12px;
+      margin: 22px 0 10px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 16px 14px;
+      min-height: 130px;
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8fa4bc;
+      font-weight: 700;
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .flow-step .index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 10px;
+      color: white;
+      background: var(--blue);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue-dark);
+      line-height: 1.3;
+    }
+
+    .flow-step span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .concept-stack {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .concept-row {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr) 220px;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    .concept-row .label {
+      color: white;
+      background: var(--blue);
+      border-radius: 999px;
+      padding: 6px 10px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .concept-row:nth-child(2) .label {
+      background: var(--teal);
+    }
+
+    .concept-row:nth-child(3) .label {
+      background: var(--orange);
+    }
+
+    .concept-row .example {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pipeline-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(90px, 1fr));
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .stage {
+      padding: 14px 10px;
+      text-align: center;
+      background: var(--purple-soft);
+      border: 1px solid #d9d0ff;
+      border-radius: 8px;
+    }
+
+    .stage strong {
+      display: block;
+      color: var(--purple);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .stage span {
+      display: block;
+      margin-top: 6px;
+      color: #594f6d;
+      font-size: 13px;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .decision {
+      padding: 16px;
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .decision .q {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .decision strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue-dark);
+    }
+
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .formula-card {
+      padding: 18px;
+      background: var(--yellow-soft);
+      border: 1px solid #f0dca7;
+      border-radius: 8px;
+    }
+
+    .formula-card code {
+      display: block;
+      color: #10233f;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: normal;
+    }
+
+    .formula-card span {
+      display: block;
+      margin-top: 8px;
+      color: #67542a;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .priority-board {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .priority-panel {
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fbfcff;
+    }
+
+    .priority-panel h3 {
+      margin-top: 0;
+    }
+
+    .priority-panel.urgent {
+      background: var(--green-soft);
+      border-color: #c8e5d4;
+    }
+
+    .priority-panel.secondary {
+      background: var(--orange-soft);
+      border-color: #f0d7ad;
+    }
+
+    table {
+      width: 100%;
+      margin: 16px 0 20px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      vertical-align: middle;
+      border: 1px solid var(--line);
+    }
+
+    th {
+      color: #10233f;
+      background: var(--blue-soft);
+      text-align: left;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) td {
+      background: #fafcff;
+    }
+
+    .formula {
+      margin: 14px 0;
+      padding: 14px 16px;
+      color: #10233f;
+      background: var(--yellow-soft);
+      border: 1px solid #f1dfad;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      line-height: 1.55;
+      overflow-x: auto;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 0 6px 6px 0;
+      padding: 3px 8px;
+      color: var(--blue-dark);
+      background: var(--blue-soft);
+      border: 1px solid #cfe0f3;
+      border-radius: 999px;
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .priority {
+      background: var(--green-soft);
+      border-color: #cfe8d9;
+    }
+
+    .footer {
+      margin-top: 26px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        display: block;
+        width: min(100% - 24px, 760px);
+        padding-top: 14px;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        margin-bottom: 18px;
+      }
+
+      .hero,
+      section {
+        padding: 24px 20px;
+      }
+
+      .hero-grid,
+      .priority-board {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-map,
+      .decision-grid,
+      .formula-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-step::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -16px;
+        transform: translateX(50%);
+      }
+
+      .concept-row {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero-stats,
+      .pipeline-strip {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .layout {
+        display: block;
+        width: auto;
+        padding: 0;
+      }
+
+      aside {
+        display: none;
+      }
+
+      .hero,
+      section {
+        box-shadow: none;
+        border-radius: 0;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>目录</strong>
+      <nav>
+        <a href="#mainline">1. 一条主线</a>
+        <a href="#subpages">专题子页面入口</a>
+        <a href="#concepts">2. 基本概念与定量分析</a>
+        <a href="#pipeline">3. 流水线与指令级并行</a>
+        <a href="#memory">4. 存储系统</a>
+        <a href="#io">5. I/O 与 RAID</a>
+        <a href="#network">6. 互联网络</a>
+        <a href="#multiprocessor">7. 多处理器</a>
+        <a href="#formula">8. 高频公式速查</a>
+        <a href="#checklist">9. 考试重点清单</a>
+        <a href="#order">10. 建议复习顺序</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1>计算机系统结构复习地图</h1>
+            <p class="subtitle">把课程从“很多章节”压成一张路线图：先看整体，再抓公式，最后刷重点题型。</p>
+            <div class="notice">
+              <strong>阅读抓手</strong>
+              按“系统目标 → 定量评价 → 处理器 → 存储 → I/O → 互联 → 并行”的顺序阅读。遇到计算题，优先回到公式区和考试重点清单。
+            </div>
+            <div class="notice">
+              <strong>iPad 阅读建议</strong>
+              Safari 打开本网页可以看到原题截图、展开答案和章节跳转；如果只想离线批注，也可以下载 <a href="cs-architecture-review-ipad.pdf">PDF 平板版</a>。
+            </div>
+          </div>
+          <div class="hero-stats" aria-label="复习概览">
+            <div class="stat"><span class="num">8</span><span class="label">个专题子页面覆盖全部复习资料</span></div>
+            <div class="stat"><span class="num">70</span><span class="label">个公式块和例题模板集中速查</span></div>
+            <div class="stat"><span class="num">22</span><span class="label">道原资料题卡，题干和答案可展开练习</span></div>
+            <div class="stat"><span class="num">119</span><span class="label">页原 PDF 截图保留讲义对照</span></div>
+          </div>
+        </div>
+      </header>
+
+      <section id="subpages">
+        <h2>专题子页面入口</h2>
+        <p class="section-lead">每个子页面都按“主线、概念、公式、习题套路、例题模板、易混点、自测问题、原 PDF 截图”整理，可以直接作为复习网页使用。</p>
+        <div class="grid">
+          <div class="card"><strong><a href="overview.html">总览串讲复习子页面</a></strong><p>整门课的复习路线、章节关系、全课公式与题型总表。</p></div>
+          <div class="card"><strong><a href="basic.html">基本概念复习子页面</a></strong><p>Amdahl 反求比例、平均 CPI 例题、MIPS/MFLOPS 和性能评价。</p></div>
+          <div class="card"><strong><a href="pipeline.html">流水线技术复习子页面</a></strong><p>TP/S/E 公式、时空图套路、Load-Use、非线性调度例题。</p></div>
+          <div class="card"><strong><a href="ilp.html">指令级并行复习子页面</a></strong><p>BHT 状态题、BTB 延迟题、多指令流出技术比较。</p></div>
+          <div class="card"><strong><a href="memory.html">存储系统复习子页面</a></strong><p>AMAT、两级 Cache、伪相联、预取、主存带宽、TLB/脏块写回。</p></div>
+          <div class="card"><strong><a href="io.html">I/O 外存系统复习子页面</a></strong><p>可靠度公式、混联系统、RAID 容量、小写和故障恢复。</p></div>
+          <div class="card"><strong><a href="network.html">互联网络复习子页面</a></strong><p>互连函数公式、超立方体距离、Omega 网络寻径题。</p></div>
+          <div class="card"><strong><a href="multiprocessor.html">多处理器复习子页面</a></strong><p>Amdahl 并行加速、远程访问 CPI、MSI 状态题和同步开销。</p></div>
+        </div>
+      </section>
+
+      <section id="mainline">
+        <h2>1. 一条主线看完整门课</h2>
+        <p class="section-lead">计算机系统结构这门课，本质上是在回答一个问题：计算机怎样设计，才能在性能、成本、功耗、可靠性和可编程性之间取得平衡？</p>
+        <div class="flow-map" aria-label="课程主线流程图">
+          <div class="flow-step"><span class="index">1</span><strong>定义系统结构</strong><span>先分清“做什么”“怎么做”“怎么造”。</span></div>
+          <div class="flow-step"><span class="index">2</span><strong>定量评价</strong><span>用执行时间、CPI、吞吐率判断好坏。</span></div>
+          <div class="flow-step"><span class="index">3</span><strong>加速指令执行</strong><span>流水线、冲突处理、分支预测、ILP。</span></div>
+          <div class="flow-step"><span class="index">4</span><strong>缓解内存瓶颈</strong><span>Cache、主存带宽、虚拟存储器。</span></div>
+          <div class="flow-step"><span class="index">5</span><strong>连接外设和节点</strong><span>I/O、RAID、互联网络。</span></div>
+          <div class="flow-step"><span class="index">6</span><strong>走向并行系统</strong><span>多处理器、一致性、同步。</span></div>
+        </div>
+        <ul>
+          <li>先定义计算机系统结构：它研究计算机“做什么”和“怎样高效做”。</li>
+          <li>再用定量方法判断什么叫“高效”：执行时间、吞吐率、CPI、Amdahl 定律等。</li>
+          <li>然后分别研究关键子系统：ISA、处理器流水线、存储层次、I/O、互联网络和多处理器。</li>
+          <li>最后回到工程权衡：性能提升往往伴随硬件复杂度、成本、功耗或通信开销的增加。</li>
+        </ul>
+        <table>
+          <thead>
+            <tr><th>课程模块</th><th>核心问题</th><th>复习关键词</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ISA</td><td>软件如何控制硬件</td><td>指令类型、寻址方式、指令格式、寄存器</td></tr>
+            <tr><td>处理器微结构</td><td>指令如何更快执行</td><td>流水线、冲突、分支预测、ILP</td></tr>
+            <tr><td>存储系统</td><td>CPU 和内存速度差距如何缓解</td><td>Cache、局部性、平均访问时间、主存带宽</td></tr>
+            <tr><td>I/O 系统</td><td>外存如何更可靠、更高效</td><td>可靠性、可用性、RAID</td></tr>
+            <tr><td>互联网络</td><td>节点之间如何连接和传输</td><td>互联函数、静态/动态网络、寻路</td></tr>
+            <tr><td>多处理器</td><td>多个处理器如何协同</td><td>共享存储、消息传递、Cache 一致性、同步</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="concepts">
+        <h2>2. 基本概念与定量分析</h2>
+        <h3>2.1 系统结构、组成与实现</h3>
+        <div class="concept-stack" aria-label="系统结构、组成、实现三层关系">
+          <div class="concept-row">
+            <span class="label">系统结构</span>
+            <strong>定义软件看得见的功能接口，回答“做什么”。</strong>
+            <span class="example">例：规定有 ADD 指令。</span>
+          </div>
+          <div class="concept-row">
+            <span class="label">计算机组成</span>
+            <strong>定义这些功能的逻辑实现，回答“怎么做”。</strong>
+            <span class="example">例：ALU 执行加法，寄存器写回。</span>
+          </div>
+          <div class="concept-row">
+            <span class="label">计算机实现</span>
+            <strong>把逻辑落到物理电路，回答“怎么造出来”。</strong>
+            <span class="example">例：CMOS 电路实现加法器。</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>概念</th><th>含义</th><th>例子</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>计算机系统结构</td><td>规定软件可见的功能和接口，回答“做什么”。</td><td>有一条 ADD R1,R2,R3 指令。</td></tr>
+            <tr><td>计算机组成</td><td>规定系统结构的逻辑实现，回答“怎么做”。</td><td>控制器产生信号，ALU 执行加法，结果写回寄存器。</td></tr>
+            <tr><td>计算机实现</td><td>规定组成的物理实现，回答“怎么造出来”。</td><td>用 CMOS 电路实现 32 位加法器。</td></tr>
+          </tbody>
+        </table>
+        <p><strong>一句话记忆：</strong>系统结构定义功能，计算机组成实现逻辑，计算机实现落到物理电路。</p>
+
+        <h3>2.2 什么叫高效</h3>
+        <p>不同场景关注的效率指标不同。个人用户通常关心单个程序执行时间，数据中心或服务器场景更关注单位时间完成任务数，也就是吞吐率。</p>
+        <div>
+          <span class="tag">执行时间</span>
+          <span class="tag">吞吐率</span>
+          <span class="tag">成本</span>
+          <span class="tag">功耗</span>
+          <span class="tag">可靠性</span>
+        </div>
+
+        <h3>2.3 四个定量设计原则</h3>
+        <div class="grid">
+          <div class="card"><strong>以经常性事件为重点</strong>优化最常发生的部分，通常收益最大。先找瓶颈，不要平均用力。</div>
+          <div class="card"><strong>Amdahl 定律</strong>整体加速受限于被优化部分在总执行时间中的占比。</div>
+          <div class="card"><strong>CPU 性能公式</strong>CPU 时间 = IC × CPI × 时钟周期时间。</div>
+          <div class="card"><strong>局部性原理</strong>程序倾向于再次访问刚访问过的数据，或访问其附近数据。</div>
+        </div>
+      </section>
+
+      <section id="pipeline">
+        <h2>3. 处理器：流水线与指令级并行</h2>
+        <h3>3.1 流水线的基本思想</h3>
+        <p>流水线把一条指令的执行过程拆成若干阶段，使多条指令在不同阶段重叠执行。典型五段流水线为 IF、ID、EX、MEM、WB。</p>
+        <div class="pipeline-strip" aria-label="五级流水线">
+          <div class="stage"><strong>IF</strong><span>取指</span></div>
+          <div class="stage"><strong>ID</strong><span>译码</span></div>
+          <div class="stage"><strong>EX</strong><span>执行</span></div>
+          <div class="stage"><strong>MEM</strong><span>访存</span></div>
+          <div class="stage"><strong>WB</strong><span>写回</span></div>
+        </div>
+        <div class="notice">
+          <strong>类比</strong>
+          非流水线像一篓衣服洗完、脱水、晾干后再处理下一篓；流水线则让洗、脱水、晾干同时处理不同衣篓。启动后，吞吐率明显提高。
+        </div>
+        <table>
+          <thead>
+            <tr><th>指标</th><th>含义</th><th>考试常见问法</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>吞吐率</td><td>单位时间完成的任务数量。</td><td>给出流水段时间和任务数，求完成率。</td></tr>
+            <tr><td>加速比</td><td>顺序处理时间与流水线处理时间之比。</td><td>比较非流水线和流水线总时间。</td></tr>
+            <tr><td>效率</td><td>设备实际使用时间占总运行时间的比例。</td><td>常要求计算各段或整体效率。</td></tr>
+          </tbody>
+        </table>
+
+        <h3>3.2 流水线的现实问题</h3>
+        <ul>
+          <li>瓶颈问题：各段时间不等时，最长流水段决定输入节拍。</li>
+          <li>额外开销：流水寄存器延迟、时钟偏移等会降低理想收益。</li>
+          <li>冲突问题：指令之间的资源、数据或控制依赖导致停顿。</li>
+        </ul>
+        <table>
+          <thead>
+            <tr><th>冲突类型</th><th>原因</th><th>典型解决思路</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>结构冲突</td><td>多条指令争用同一硬件资源。</td><td>增加资源、错开访问、调整流水线结构。</td></tr>
+            <tr><td>数据冲突</td><td>后一条指令依赖前一条指令结果。</td><td>暂停、数据转发、编译器调度。</td></tr>
+            <tr><td>控制冲突</td><td>分支导致下一条指令地址不确定。</td><td>分支预测、延迟槽、提前判断分支。</td></tr>
+          </tbody>
+        </table>
+        <p>复习时要把“相关”和“冲突”区分开：相关是指令间客观存在的依赖关系，冲突是这种依赖在某个具体流水线实现中造成的执行阻塞。</p>
+
+        <h3>3.3 非线性流水线调度</h3>
+        <p>非线性流水线中，一个任务可能多次经过某些功能段，因此新任务不能任意间隔进入流水线，否则会发生功能段使用冲突。</p>
+        <ul>
+          <li>会看预约表：判断同一任务在哪些时刻使用哪些功能段。</li>
+          <li>会求禁止表：找出不能作为启动间隔的距离。</li>
+          <li>会画状态图：根据允许间隔转移状态。</li>
+          <li>会找调度方案：比较平均启动距离和吞吐率。</li>
+        </ul>
+
+        <h3>3.4 指令级并行 ILP</h3>
+        <p>指令级并行指无关指令之间可以重叠或并行执行。流水线是 ILP 的基础形式，进一步提升性能则需要动态预测和多流出技术。</p>
+        <table>
+          <thead>
+            <tr><th>技术</th><th>解决的问题</th><th>关键词</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>动态分支预测</td><td>减少控制冲突造成的流水线清空。</td><td>BHT 预测方向，BTB 提供目标地址。</td></tr>
+            <tr><td>超标量</td><td>每周期发射多条指令，数量可变。</td><td>硬件动态调度，复杂度高。</td></tr>
+            <tr><td>VLIW</td><td>编译器把多条可并行指令打包。</td><td>硬件较简单，依赖编译器。</td></tr>
+            <tr><td>超流水线</td><td>一个周期内分时发射多条指令。</td><td>区别于同一时刻多流出。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="memory">
+        <h2>4. 存储系统</h2>
+        <h3>4.1 为什么需要层次化存储</h3>
+        <p>理想存储器应该容量大、速度快、价格低，但现实中三者无法同时满足。因此系统采用寄存器、Cache、主存、磁盘等层次化结构，用小而快的上层存储缓存热点数据。</p>
+        <ul>
+          <li>时间局部性：刚访问的数据，很可能不久后再次访问。</li>
+          <li>空间局部性：访问某个地址后，很可能接着访问附近地址。</li>
+        </ul>
+
+        <h3>4.2 Cache 的四个设计问题</h3>
+        <div class="decision-grid" aria-label="Cache 设计四问">
+          <div class="decision"><span class="q">Q1</span><strong>放在哪里？</strong><span>映像规则：直接、全相联、组相联。</span></div>
+          <div class="decision"><span class="q">Q2</span><strong>怎么找到？</strong><span>查找算法：在候选位置比较标记。</span></div>
+          <div class="decision"><span class="q">Q3</span><strong>满了换谁？</strong><span>替换算法：随机、FIFO、LRU。</span></div>
+          <div class="decision"><span class="q">Q4</span><strong>写时怎么办？</strong><span>写直达/写回，写分配/不写分配。</span></div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>问题</th><th>名称</th><th>常见方法</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>主存块放到 Cache 哪里</td><td>映像规则</td><td>直接映像、全相联映像、组相联映像。</td></tr>
+            <tr><td>如何找到目标块</td><td>查找算法</td><td>候选位置中并行或串行查找标记。</td></tr>
+            <tr><td>Cache 满了换哪块</td><td>替换算法</td><td>随机、FIFO、LRU。</td></tr>
+            <tr><td>写访问怎么处理</td><td>写策略</td><td>写直达、写回；按写分配、不按写分配。</td></tr>
+          </tbody>
+        </table>
+        <div class="formula">平均访问时间 AMAT = 命中时间 + 失效率 × 失效开销</div>
+        <p>提高 Cache 性能的思路也顺着这个公式展开：降低失效率、减少失效开销、减少命中时间。</p>
+
+        <h3>4.3 主存系统与带宽</h3>
+        <p>主存性能主要看延迟和带宽。延迟是发出请求到获得第一个数据的时间，带宽是单位时间能传输的数据量。</p>
+        <table>
+          <thead>
+            <tr><th>结构</th><th>特点</th><th>复习要点</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>单体多字存储器</td><td>一个存储器一次读出多个连续字。</td><td>提高一次访存的数据量，但请求并行性有限。</td></tr>
+            <tr><td>多体交叉存储器</td><td>主存分成多个独立存储体，可以并行访问。</td><td>重点区分高位交叉和低位交叉。</td></tr>
+            <tr><td>低位交叉编址</td><td>连续地址分散到不同存储体。</td><td>更利于连续访问并行化，常用于提高带宽。</td></tr>
+          </tbody>
+        </table>
+
+        <h3>4.4 虚拟存储器</h3>
+        <p>虚拟存储器属于主存-辅存层次。它在物理主存有限的情况下，为程序提供逻辑上更大的地址空间，并由操作系统和硬件协同完成地址转换、页面调入和置换。</p>
+      </section>
+
+      <section id="io">
+        <h2>5. I/O 系统与 RAID</h2>
+        <p>课程中的 I/O 系统重点偏向存储 I/O。对外存而言，可靠性非常重要，因为程序可以重装，但用户数据一旦丢失往往难以恢复。</p>
+        <table>
+          <thead>
+            <tr><th>指标</th><th>含义</th><th>常见计算</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>可靠性</td><td>系统从初始点开始连续提供服务的能力，常用 MTTF 衡量。</td><td>失效率通常是 MTTF 的倒数。</td></tr>
+            <tr><td>可用性</td><td>系统正常工作时间在总时间中的比例。</td><td>Availability = MTTF / (MTTF + MTTR)。</td></tr>
+            <tr><td>系统可靠度</td><td>多个部件组合后的可靠程度。</td><td>串联相乘；并联为 1 - 全部失效概率。</td></tr>
+          </tbody>
+        </table>
+        <h3>RAID 的核心思想</h3>
+        <ul>
+          <li>通过数据交叉存放提高并行访问能力。</li>
+          <li>通过冗余信息提高可靠性。</li>
+          <li>分类时关注两个维度：数据交叉粒度，以及冗余数据的计算和存放方式。</li>
+        </ul>
+      </section>
+
+      <section id="network">
+        <h2>6. 互联网络</h2>
+        <p>互联网络研究计算机部件、处理器节点或计算机系统之间如何连接。目标是在成本、延迟、能耗等约束下传输尽可能多的数据，避免网络成为瓶颈。</p>
+        <table>
+          <thead>
+            <tr><th>组成</th><th>作用</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>互连结构</td><td>描述节点之间有哪些物理连接，也就是“路怎么修”。</td></tr>
+            <tr><td>开关元件</td><td>负责接收、选择、转发数据路径。</td></tr>
+            <tr><td>控制方式</td><td>协调路径选择、资源分配和冲突处理。</td></tr>
+          </tbody>
+        </table>
+        <h3>需要掌握的网络描述指标</h3>
+        <ul>
+          <li>网络规模：网络中节点数量。</li>
+          <li>结点度：一个节点直接连接的边数。</li>
+          <li>结点距离：两个节点之间最短路径长度。</li>
+          <li>网络直径：任意两个节点最短距离的最大值。</li>
+          <li>等分宽度：把网络分成两半时需要切断的最少边数。</li>
+        </ul>
+        <p>静态互联网络的连接运行时不变；动态互联网络由交换开关构成，连接状态可按程序需求改变。课程重点之一是多级混洗-交换网络的寻路算法。</p>
+      </section>
+
+      <section id="multiprocessor">
+        <h2>7. 多处理器</h2>
+        <p>随着单核性能提升受限，多处理器和多核系统成为开发并行性的主要方向。大多数现代多处理机属于 Flynn 分类中的 MIMD。</p>
+        <div class="notice">
+          <strong>新增复习子页面</strong>
+          已根据《夏子隽——多处理器.pdf》整理出更直观的专题页，包含多处理器主线、通信机制、Cache 一致性、MSI 状态图、同步机制和原 PDF 截图。<a href="multiprocessor.html">打开多处理器复习子页面</a>
+        </div>
+        <table>
+          <thead>
+            <tr><th>分类角度</th><th>类型</th><th>通信特点</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>存储结构</td><td>集中式共享存储器</td><td>多个处理器共享一个主存。</td></tr>
+            <tr><td>存储结构</td><td>分布式存储器多处理机</td><td>存储器分布在各个处理器或节点上。</td></tr>
+            <tr><td>地址空间</td><td>统一共享地址空间</td><td>通过共享变量通信。</td></tr>
+            <tr><td>地址空间</td><td>多个独立地址空间</td><td>通过显式消息传递通信。</td></tr>
+          </tbody>
+        </table>
+        <h3>两个性能挑战</h3>
+        <ul>
+          <li>程序并行性有限：可并行部分占比决定整体加速上限，可用 Amdahl 定律分析。</li>
+          <li>通信开销较大：通信延迟会增加 CPI，抵消一部分并行收益。</li>
+        </ul>
+        <h3>Cache 一致性与同步</h3>
+        <p>多处理器系统中，每个处理器可能有私有 Cache。多个处理器缓存并修改同一内存块时，就可能出现不同处理器看到不同数据的情况，这就是 Cache 一致性问题。</p>
+        <table>
+          <thead>
+            <tr><th>机制</th><th>核心思想</th><th>适用印象</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>监听式协议</td><td>各 Cache 监听总线上其他处理器的内存操作。</td><td>广播式，适合规模较小的共享总线系统。</td></tr>
+            <tr><td>目录式协议</td><td>用目录记录每个块被哪些处理器缓存，并点对点协调。</td><td>可扩展性更好，适合较大规模系统。</td></tr>
+            <tr><td>同步机制</td><td>用原子操作构建锁、信号量等机制，协调共享资源访问。</td><td>保证正确性，但会带来额外开销。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="formula">
+        <h2>8. 高频公式速查</h2>
+        <div class="formula-grid">
+          <div class="formula-card"><code>CPU 时间 = IC × CPI × 时钟周期时间</code><span>评价程序在处理器上的总执行时间。</span></div>
+          <div class="formula-card"><code>加速比 = 改进前时间 / 改进后时间</code><span>比较优化前后的整体效果。</span></div>
+          <div class="formula-card"><code>Amdahl：Speedup = 1 / ((1 - f) + f / s)</code><span>f 是可改进部分占比，s 是该部分加速倍数。</span></div>
+          <div class="formula-card"><code>AMAT = 命中时间 + 失效率 × 失效开销</code><span>Cache 性能分析最常用入口。</span></div>
+          <div class="formula-card"><code>可用性 = MTTF / (MTTF + MTTR)</code><span>衡量系统正常服务时间占比。</span></div>
+          <div class="formula-card"><code>串联可靠度 = R1 × R2 × ...</code><span>任一部件失效，串联系统就失效。</span></div>
+          <div class="formula-card"><code>并联可靠度 = 1 - ∏(1 - Ri)</code><span>所有冗余部件都失效，系统才失效。</span></div>
+        </div>
+      </section>
+
+      <section id="checklist">
+        <h2>9. 考试重点清单</h2>
+        <div class="priority-board">
+          <div class="priority-panel urgent">
+            <h3>优先级最高</h3>
+            <p>
+              <span class="tag priority">流水线性能计算</span>
+              <span class="tag priority">流水线冲突与时空图</span>
+              <span class="tag priority">非线性流水线调度</span>
+              <span class="tag priority">Cache 策略与 AMAT</span>
+              <span class="tag priority">多体交叉主存</span>
+            </p>
+          </div>
+          <div class="priority-panel secondary">
+            <h3>第二梯队</h3>
+            <p>
+              <span class="tag">Amdahl 定律</span>
+              <span class="tag">CPU 性能公式</span>
+              <span class="tag">BHT / BTB</span>
+              <span class="tag">RAID 与可靠性</span>
+              <span class="tag">互联网络寻路</span>
+              <span class="tag">Cache 一致性</span>
+              <span class="tag">同步机制</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="order">
+        <h2>10. 建议复习顺序</h2>
+        <ol>
+          <li>第一遍：读本页面，先建立全局框架，知道每章在解决什么问题。</li>
+          <li>第二遍：回教材和 PPT，重点做流水线、Cache、主存、互联网络的例题。</li>
+          <li>第三遍：按公式和考点清单查漏补缺，专门练容易混淆的概念和计算流程。</li>
+          <li>考前最后半天：只看公式速查、冲突类型、Cache 策略、互联网络和多处理器概念表。</li>
+        </ol>
+        <div class="notice">
+          <strong>最后一句话</strong>
+          计算机系统结构就是用定量方法指导设计，在指令执行、存储访问、I/O、互联和并行处理之间不断减少瓶颈、开发并行性、提高整体效率。
+        </div>
+      </section>
+
+      <p class="footer">THE END</p>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I/O 与外存系统</title>
+  <link rel="stylesheet" href="review-subpage.css">
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>本页目录</strong>
+      <nav>
+        <a href="#io">1. I/O 系统做什么</a>
+<a href="#depend">2. 可靠性、可用性、可信性</a>
+<a href="#reliability">3. 串联、并联与混联系统</a>
+<a href="#raid">4. RAID 分级速查</a>
+<a href="#write">5. RAID 写操作直觉</a>
+<a href="#impl">6. RAID 实现方式</a>
+<a href="#exam">7. 考前抓手</a>
+<a href="#io-formulas">8. 公式与习题精讲</a>
+<a href="#original-exercises">9. 原题练习区</a>
+        <a href="#self-test">自测问题</a>
+        <a href="#source">原 PDF 页面截图</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="links">
+          <a class="button-link" href="index.html">返回总复习页</a>
+          <a class="button-link" href="memory.html">上一页：存储系统</a>
+          <a class="button-link" href="network.html">下一页：互联网络</a>
+        </div>
+      </div>
+      <header class="hero-panel">
+        <div class="hero-copy">
+          <span class="study-label">计算机系统结构复习</span>
+          <h1>I/O 与外存系统</h1>
+          <p class="subtitle">本章重点是可靠性与 RAID。复习时把 I/O 性能指标、可靠度公式、RAID 各级特点放在一起记，计算题就会清楚很多。</p>
+          <div class="meta-row">
+            <span class="meta">来源：刘皓源——第八章IO-外存系统.pdf</span>
+            <span class="meta">I/O 性能</span><span class="meta">可靠性</span><span class="meta">可用性</span><span class="meta">串联系统</span><span class="meta">并联系统</span><span class="meta">RAID</span>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-stat"><span>9</span><strong>复习段落</strong></div>
+          <div class="hero-stat"><span>12</span><strong>讲义截图</strong></div>
+          <div class="hero-stat"><span>5</span><strong>自测问题</strong></div>
+        </div>
+      </header>
+      
+      <div class="study-map">
+        <article class="study-card primary">
+          <span class="study-label">怎么用本页</span>
+          <h2>先看主线，再背公式，最后做题</h2>
+          <p>每个专题页都按“概念框架、公式变量、典型题型、原讲义对照、自测问题”组织。复习时从左侧目录跳转，遇到计算题直接回到高亮公式段。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">本页材料</span>
+          <strong>9 个复习段落</strong>
+          <p>12 页原讲义截图可展开核对，适合考前查原表、原图和例题。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">重点标签</span>
+          <div class="tag-list compact"><span class="tag">I/O 性能</span><span class="tag">可靠性</span><span class="tag">可用性</span><span class="tag">串联系统</span><span class="tag">并联系统</span><span class="tag">RAID</span></div>
+        </article>
+      </div>
+      <div class="path-strip">
+        <a href="#io" class="path-card"><span>01</span><strong>1. I/O 系统做什么</strong></a>
+<a href="#depend" class="path-card"><span>02</span><strong>2. 可靠性、可用性、可信性</strong></a>
+<a href="#reliability" class="path-card"><span>03</span><strong>3. 串联、并联与混联系统</strong></a>
+<a href="#raid" class="path-card"><span>04</span><strong>4. RAID 分级速查</strong></a>
+      </div>
+
+      
+      <div class="source-strip">
+        <div>
+          <span class="study-label">原资料预览</span>
+          <strong>刘皓源——第八章IO-外存系统.pdf</strong>
+          <p>正文已经把知识点重新组织；这里保留讲义页面缩略图，方便你在需要时回看原版题目、图和表。</p>
+        </div>
+        <div class="source-preview-grid">
+          <figure class="source-thumb"><img src="assets/pdf-pages/io/page-01.png" alt="I/O 与外存系统 原 PDF 预览第 1 页"><figcaption>第 1 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/io/page-02.png" alt="I/O 与外存系统 原 PDF 预览第 2 页"><figcaption>第 2 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/io/page-03.png" alt="I/O 与外存系统 原 PDF 预览第 3 页"><figcaption>第 3 页</figcaption></figure>
+        </div>
+      </div>
+
+      <section id="io">
+<h2>1. I/O 系统做什么</h2>
+
+<p>I/O 系统完成计算机和外界的信息交换，也为计算机提供大容量外部存储器。课程重点偏向存储 I/O 系统。</p>
+<ul>
+  <li>I/O 系统包括 I/O 设备，以及 I/O 设备与处理机之间的连接。</li>
+  <li>I/O 系统性能会影响 CPU 性能，性能不匹配时可能成为整个系统瓶颈。</li>
+  <li>评价参数包括连接特性、容量、响应时间、吞吐率、I/O 操作对 CPU 的打扰情况。</li>
+  <li>用户感受到的响应时间通常包含 I/O 响应时间和 CPU 处理时间。</li>
+</ul>
+
+</section>
+<section id="depend">
+<h2>2. 可靠性、可用性、可信性</h2>
+
+<table>
+  <thead><tr><th>概念</th><th>含义</th><th>常用指标</th></tr></thead>
+  <tbody>
+    <tr><td>可靠性 Reliability</td><td>系统从某个初始参考点开始连续提供服务的能力。</td><td>MTTF；失效率 = 1 / MTTF。</td></tr>
+    <tr><td>可用性 Availability</td><td>系统正常工作时间在正常服务间隔中的比例。</td><td>MTTF / (MTTF + MTTR)。</td></tr>
+    <tr><td>可信性 Dependability</td><td>服务质量，即多大程度上可合理认为服务可靠。</td><td>通常不可直接度量。</td></tr>
+  </tbody>
+</table>
+<div class="formula">Availability = MTTF / (MTTF + MTTR)</div>
+
+</section>
+<section id="reliability">
+<h2>3. 串联、并联与混联系统</h2>
+
+<div class="grid">
+  <article class="card accent-red"><h3>串联系统</h3><p>所有组件都正常，系统才正常。任意一个组件失效，系统失效。</p><div class="formula">Rs = R1 × R2 × ... × Rn</div></article>
+  <article class="card accent-green"><h3>并联系统</h3><p>只要至少一个组件正常，系统就正常。全部组件失效，系统才失效。</p><div class="formula">Rs = 1 - Π(1 - Ri)</div></article>
+</div>
+<p>混联系统先判断结构：RAID 0+1 可理解为先条带再镜像，RAID 1+0 可理解为先镜像再条带。资料里用串并联系统、并串联系统公式来解释两者可靠性差异。</p>
+
+</section>
+<section id="raid">
+<h2>4. RAID 分级速查</h2>
+
+<table>
+  <thead><tr><th>级别</th><th>核心思想</th><th>性能/可靠性印象</th></tr></thead>
+  <tbody>
+    <tr><td>RAID 0</td><td>条带化，无冗余。</td><td>性能高，可靠性差，任一盘坏可能丢数据。</td></tr>
+    <tr><td>RAID 1</td><td>镜像，数据有一份备份。</td><td>读快，写需写两份，可靠性高，成本高。</td></tr>
+    <tr><td>RAID 2</td><td>位交叉，汉明码校验。</td><td>概念性强，商业应用少。</td></tr>
+    <tr><td>RAID 3</td><td>位交叉，单独奇偶校验盘。</td><td>细粒度，适合大块连续传输。</td></tr>
+    <tr><td>RAID 4</td><td>块交叉，单独奇偶校验盘。</td><td>小写会集中访问校验盘，可能成为瓶颈。</td></tr>
+    <tr><td>RAID 5</td><td>块交叉，奇偶校验分布在所有盘。</td><td>消除 RAID4 单校验盘热点，常用。</td></tr>
+    <tr><td>RAID 6</td><td>P + Q 双校验。</td><td>可容忍两个磁盘故障，校验开销更大。</td></tr>
+    <tr><td>RAID 10</td><td>先镜像 RAID1，再条带 RAID0。</td><td>可靠性通常优于 RAID01，性能也较好。</td></tr>
+    <tr><td>RAID 01</td><td>先条带 RAID0，再镜像 RAID1。</td><td>条带组中一盘故障会影响整个组，容错较弱。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="write">
+<h2>5. RAID 写操作直觉</h2>
+
+<p>RAID4/5 的小写操作常见计算是“读旧数据、读旧校验、写新数据、写新校验”，也就是 2 次读和 2 次写。原因是奇偶校验需要根据旧值和新值更新。</p>
+<div class="formula">新校验 = 旧校验 xor 旧数据 xor 新数据</div>
+<p>如果是整条带写，可以重新计算整条带校验，开销模型会不同。做题时先看题目说的是小写、整条带写还是磁盘故障恢复。</p>
+
+</section>
+<section id="impl">
+<h2>6. RAID 实现方式</h2>
+
+<table>
+  <thead><tr><th>方式</th><th>特点</th></tr></thead>
+  <tbody>
+    <tr><td>软件方式</td><td>阵列管理由主机软件完成，成本低但占用主机资源。</td></tr>
+    <tr><td>阵列卡方式</td><td>RAID 管理固化在 I/O 控制卡上，减少主机负担。</td></tr>
+    <tr><td>子系统方式</td><td>独立外部存储子系统，可服务多种主机平台。</td></tr>
+  </tbody>
+</table>
+
+</section>
+<section id="exam" class="check-section">
+<h2>7. 考前抓手</h2>
+
+<div class="steps">
+  <div class="step">可靠度题先画结构：串联相乘，并联算“不是全部失效”。</div>
+  <div class="step">RAID 题先判断条带粒度和冗余位置：无冗余、镜像、专用校验盘、分布式校验。</div>
+  <div class="step">比较 RAID10 和 RAID01 时，用“先镜像再条带”更可靠这个直觉。</div>
+</div>
+
+</section>
+<section id="io-formulas" class="focus-section">
+<h2>8. 公式与习题精讲</h2>
+
+<h3>可靠度公式</h3>
+<table>
+  <thead><tr><th>结构</th><th>公式</th><th>做题判断</th></tr></thead>
+  <tbody>
+    <tr><td>串联系统</td><td>R = R1 x R2 x ... x Rn</td><td>任一部件坏，系统坏。</td></tr>
+    <tr><td>并联系统</td><td>R = 1 - (1 - R1)(1 - R2)...(1 - Rn)</td><td>全部部件坏，系统才坏。</td></tr>
+    <tr><td>同失效率串联</td><td>λs = Σλi，MTTF = 1/λs</td><td>指数分布下可用。</td></tr>
+    <tr><td>n 个相同部件并联</td><td>MTTF = (1/λ)(1 + 1/2 + ... + 1/n)</td><td>资料并联系统推导结果。</td></tr>
+    <tr><td>可用性</td><td>Availability = MTTF/(MTTF + MTTR)</td><td>MTTR 越小，可用性越高。</td></tr>
+  </tbody>
+</table>
+<h3>混联系统</h3>
+<p>设单元可靠度为 Ri(t)，每串 n 个单元，再并联 m 组，是串并联系统：</p>
+<div class="formula">R(t) = 1 - {1 - [Ri(t)]^n}^m</div>
+<p>每组 m 个并联单元，再串联 n 组，是并串联系统：</p>
+<div class="formula">R(t) = {1 - [1 - Ri(t)]^m}^n</div>
+<p>资料对应：RAID 0+1 是串并联系统，RAID 1+0 是并串联系统。</p>
+<h3>RAID 容量与小写</h3>
+<table>
+  <thead><tr><th>RAID</th><th>可用容量粗略公式</th><th>可靠性/写开销</th></tr></thead>
+  <tbody>
+    <tr><td>RAID0</td><td>nD</td><td>无冗余，任一盘坏会影响数据。</td></tr>
+    <tr><td>RAID1</td><td>nD/2</td><td>镜像，读可并行，写两份。</td></tr>
+    <tr><td>RAID5</td><td>(n - 1)D</td><td>分布式奇偶校验，可容忍 1 盘故障。</td></tr>
+    <tr><td>RAID6</td><td>(n - 2)D</td><td>双校验，可容忍 2 盘故障。</td></tr>
+    <tr><td>RAID10</td><td>nD/2</td><td>先镜像再条带，通常比 RAID01 更可靠。</td></tr>
+  </tbody>
+</table>
+<div class="formula">RAID4/5 小写：读旧数据 + 读旧校验 + 写新数据 + 写新校验 = 2 次读 + 2 次写</div>
+<div class="formula">新校验 = 旧校验 xor 旧数据 xor 新数据</div>
+<h3>故障恢复题</h3>
+<p>单盘故障时，缺失数据可由同一条带的其他数据和校验异或恢复：</p>
+<div class="formula">丢失盘数据 = 校验 xor 其他所有数据盘数据</div>
+
+</section>
+<section id="original-exercises" class="focus-section">
+<h2>9. 原题练习区</h2>
+
+<div class="exercise-bank">
+  <article class="exercise-card">
+    <div class="problem-meta"><span>RAID 可靠性习题</span><a href="assets/pdf-pages/io/page-11.png">原题截图：p.11</a><a href="assets/pdf-pages/io/page-12.png">解答：p.12</a></div>
+    <h3>RAID10 镜像磁盘阵列的系统可靠度</h3>
+    <div class="problem-body">
+      <p>一个镜像磁盘冗余阵列由 4 个磁盘配置为 RAID10 级，其结构如图，采用双控制器 RC 结构，任何一个阵列控制器失效不影响系统工作。已知各部分可靠度为：阵列控制器 R1 = 0.9，通道适配器 R2 = 0.95，磁盘 R3 = 0.95。</p>
+      <ol>
+        <li>写出系统可靠性的表达式。</li>
+        <li>画出系统可靠性框图。</li>
+        <li>计算 R 的数值，保留小数点后两位。</li>
+      </ol>
+    </div>
+    <details class="solution-toggle"><summary>展开答案要点</summary>
+      <p>可靠性模型：两个控制器并联、通道适配器串联、三组镜像磁盘串联。</p>
+      <p>表达式：R = [1 - (1 - R1)^2] x R2 x [1 - (1 - R3)^2]^3。</p>
+      <p>代入：R = [1 - (1 - 0.9)^2] x 0.95 x [1 - (1 - 0.95)^2]^3 ≈ 0.93。</p>
+    </details>
+  </article>
+</div>
+
+</section>
+      
+      <section id="self-test" class="self-test-section">
+        <h2>自测问题</h2>
+        <p>合上正文后先试着口答，再展开看答案。能把这些问题讲清楚，本章主线基本就稳了。</p>
+        <div class="quiz-grid">
+          
+        <details class="quiz-card">
+          <summary><span>01</span>可靠性、可用性、可信性分别是什么意思？</summary>
+          <p>可靠性强调连续无故障服务能力，可用性强调正常服务时间比例，可信性描述服务质量信任程度。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>02</span>串联系统和并联系统可靠度怎么计算？</summary>
+          <p>串联可靠度相乘；并联可靠度等于 1 减去所有部件都失效的概率。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>03</span>RAID 的两个核心收益是什么？</summary>
+          <p>通过数据条带化提高并行性能，通过镜像或校验冗余提高可靠性。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>04</span>RAID5 小写为什么常有 4 次 I/O？</summary>
+          <p>需要读旧数据、读旧校验、写新数据、写新校验，用旧校验 xor 旧数据 xor 新数据得到新校验。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>05</span>RAID10 通常为什么比 RAID01 更可靠？</summary>
+          <p>RAID10 先镜像再条带，每组镜像中只要保留一个盘即可；RAID01 一侧条带失效后容错能力下降更明显。</p>
+        </details>
+
+        </div>
+      </section>
+
+      
+<section id="source">
+  <h2>原 PDF 页面截图</h2>
+  <p>下面是原资料的页面渲染图，正文复习完后可以展开对照图、公式和例题。</p>
+  <details class="source-gallery">
+    <summary>展开 12 页原讲义截图</summary>
+    <div class="page-grid">
+      <figure><img loading="lazy" src="assets/pdf-pages/io/page-01.png" alt="I/O 与外存系统 原 PDF 第 1 页"><figcaption>原 PDF 第 1 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-02.png" alt="I/O 与外存系统 原 PDF 第 2 页"><figcaption>原 PDF 第 2 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-03.png" alt="I/O 与外存系统 原 PDF 第 3 页"><figcaption>原 PDF 第 3 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-04.png" alt="I/O 与外存系统 原 PDF 第 4 页"><figcaption>原 PDF 第 4 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-05.png" alt="I/O 与外存系统 原 PDF 第 5 页"><figcaption>原 PDF 第 5 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-06.png" alt="I/O 与外存系统 原 PDF 第 6 页"><figcaption>原 PDF 第 6 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-07.png" alt="I/O 与外存系统 原 PDF 第 7 页"><figcaption>原 PDF 第 7 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-08.png" alt="I/O 与外存系统 原 PDF 第 8 页"><figcaption>原 PDF 第 8 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-09.png" alt="I/O 与外存系统 原 PDF 第 9 页"><figcaption>原 PDF 第 9 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-10.png" alt="I/O 与外存系统 原 PDF 第 10 页"><figcaption>原 PDF 第 10 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-11.png" alt="I/O 与外存系统 原 PDF 第 11 页"><figcaption>原 PDF 第 11 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/io/page-12.png" alt="I/O 与外存系统 原 PDF 第 12 页"><figcaption>原 PDF 第 12 页</figcaption></figure>
+    </div>
+  </details>
+</section>
+
+      <p class="footer">本页由本地 PDF 资料整理生成，用作《计算机系统结构》课程复习网页。</p>
+    </main>
+  </div>
+</body>
+</html>

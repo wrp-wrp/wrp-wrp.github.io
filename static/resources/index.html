@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resources · rprp's blog</title>
+  <style>
+    :root {
+      --bg: #f4f7fa;
+      --paper: #ffffff;
+      --ink: #162033;
+      --muted: #667085;
+      --line: #d8e1ec;
+      --blue: #205f9c;
+      --blue-dark: #143b66;
+      --blue-soft: #e8f2fb;
+      --teal: #0f766e;
+      --teal-soft: #e7f6f3;
+      --amber: #9a620d;
+      --amber-soft: #fff3df;
+      --shadow: 0 14px 34px rgba(22, 32, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(32, 95, 156, 0.10), rgba(15, 118, 110, 0.08), rgba(154, 98, 13, 0.08)) 0 0 / 100% 8px no-repeat,
+        linear-gradient(180deg, #eaf2fb 0, var(--bg) 360px);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      width: min(1040px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      color: var(--blue-dark);
+      font-weight: 900;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav a,
+    .action {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(22, 32, 51, 0.05);
+    }
+
+    .nav a:hover,
+    .action:hover {
+      background: var(--blue-soft);
+      text-decoration: none;
+    }
+
+    header {
+      padding: 34px 38px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0;
+      color: #10233f;
+      font-size: 38px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .panel {
+      padding: 22px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 26px rgba(22, 32, 51, 0.05);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      color: var(--blue-dark);
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 9px;
+      color: #344054;
+      background: #f6f9fc;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .primary {
+      color: #ffffff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .primary:hover {
+      background: var(--blue-dark);
+    }
+
+    .stats {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat {
+      padding: 14px 16px;
+      background: #f7fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--blue-dark);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: var(--teal-soft);
+      border: 1px solid #c7e8e2;
+      border-left: 5px solid var(--teal);
+      border-radius: 8px;
+      color: #23433f;
+    }
+
+    @media (max-width: 760px) {
+      .topbar,
+      .grid {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      header,
+      .panel {
+        padding: 22px 18px;
+      }
+
+      h1 {
+        font-size: 31px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="/">rprp's blog</a>
+      <nav class="nav" aria-label="Site">
+        <a href="/">/home</a>
+        <a href="/posts">/posts</a>
+        <a href="/archive">/archive</a>
+        <a href="/tags">/tags</a>
+      </nav>
+    </div>
+
+    <header>
+      <h1>Resources</h1>
+      <p class="subtitle">Course notes and study tools that are easier to use as standalone pages than ordinary posts.</p>
+    </header>
+
+    <main class="grid">
+      <section class="panel">
+        <h2>计算机系统结构复习地图</h2>
+        <p>面向《计算机系统结构》课程复习：章节串讲、公式速查、原题练习卡、答案提示和原 PDF 截图对照都已经整理到同一个网页包里。</p>
+        <div class="meta">
+          <span class="tag">8 个专题页</span>
+          <span class="tag">22 道原题题卡</span>
+          <span class="tag">70 个公式块</span>
+          <span class="tag">119 页讲义截图</span>
+        </div>
+        <div class="actions">
+          <a class="action primary" href="/resources/cs-architecture-review/">打开复习网页</a>
+          <a class="action" href="/resources/cs-architecture-review/cs-architecture-review-ipad.pdf">下载 iPad PDF</a>
+        </div>
+        <div class="note">iPad 上建议用 Safari 打开复习网页，可以正常查看原题截图、章节跳转和展开式答案；PDF 版更适合离线批注。</div>
+      </section>
+
+      <aside class="panel">
+        <h2>Resource Index</h2>
+        <div class="stats">
+          <div class="stat"><strong>1</strong><span>current resource pack</span></div>
+          <div class="stat"><strong>26 MB</strong><span>review assets with screenshots</span></div>
+          <div class="stat"><strong>offline</strong><span>static files, no login needed</span></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

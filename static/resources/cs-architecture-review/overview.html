@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>总览串讲复习子页面</title>
+  <link rel="stylesheet" href="review-subpage.css">
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>本页目录</strong>
+      <nav>
+        <a href="#mainline">1. 一条主线</a>
+<a href="#definitions">2. 三个层次：结构、组成、实现</a>
+<a href="#quant">3. 定量分析是全课工具箱</a>
+<a href="#order">4. 建议复习路线</a>
+<a href="#formula-index">5. 全课公式与题型总表</a>
+        <a href="#self-test">自测问题</a>
+        <a href="#source">原 PDF 页面截图</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="links">
+          <a class="button-link" href="index.html">返回总复习页</a>
+          
+          <a class="button-link" href="basic.html">下一页：计算机体系结构基本概念</a>
+        </div>
+      </div>
+      <header class="hero-panel">
+        <div class="hero-copy">
+          <span class="study-label">计算机系统结构复习</span>
+          <h1>总览串讲复习子页面</h1>
+          <p class="subtitle">把整门课压成一条复习主线：先明确系统结构研究什么，再用定量方法评价性能，最后逐个拆解处理器、存储、I/O、互联网络和多处理器。</p>
+          <div class="meta-row">
+            <span class="meta">来源：计算机系统结构复习串讲.pdf</span>
+            <span class="meta">全局框架</span><span class="meta">章节关系</span><span class="meta">复习顺序</span><span class="meta">考前总览</span>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-stat"><span>5</span><strong>复习段落</strong></div>
+          <div class="hero-stat"><span>12</span><strong>讲义截图</strong></div>
+          <div class="hero-stat"><span>5</span><strong>自测问题</strong></div>
+        </div>
+      </header>
+      
+      <div class="study-map">
+        <article class="study-card primary">
+          <span class="study-label">怎么用本页</span>
+          <h2>先看主线，再背公式，最后做题</h2>
+          <p>每个专题页都按“概念框架、公式变量、典型题型、原讲义对照、自测问题”组织。复习时从左侧目录跳转，遇到计算题直接回到高亮公式段。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">本页材料</span>
+          <strong>5 个复习段落</strong>
+          <p>12 页原讲义截图可展开核对，适合考前查原表、原图和例题。</p>
+        </article>
+        <article class="study-card">
+          <span class="study-label">重点标签</span>
+          <div class="tag-list compact"><span class="tag">全局框架</span><span class="tag">章节关系</span><span class="tag">复习顺序</span><span class="tag">考前总览</span></div>
+        </article>
+      </div>
+      <div class="path-strip">
+        <a href="#mainline" class="path-card"><span>01</span><strong>1. 一条主线</strong></a>
+<a href="#definitions" class="path-card"><span>02</span><strong>2. 三个层次：结构、组成、实现</strong></a>
+<a href="#quant" class="path-card"><span>03</span><strong>3. 定量分析是全课工具箱</strong></a>
+<a href="#order" class="path-card"><span>04</span><strong>4. 建议复习路线</strong></a>
+      </div>
+
+      
+      <div class="source-strip">
+        <div>
+          <span class="study-label">原资料预览</span>
+          <strong>计算机系统结构复习串讲.pdf</strong>
+          <p>正文已经把知识点重新组织；这里保留讲义页面缩略图，方便你在需要时回看原版题目、图和表。</p>
+        </div>
+        <div class="source-preview-grid">
+          <figure class="source-thumb"><img src="assets/pdf-pages/overview/page-01.png" alt="总览串讲复习子页面 原 PDF 预览第 1 页"><figcaption>第 1 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/overview/page-02.png" alt="总览串讲复习子页面 原 PDF 预览第 2 页"><figcaption>第 2 页</figcaption></figure>
+<figure class="source-thumb"><img src="assets/pdf-pages/overview/page-03.png" alt="总览串讲复习子页面 原 PDF 预览第 3 页"><figcaption>第 3 页</figcaption></figure>
+        </div>
+      </div>
+
+      <section id="mainline">
+<h2>1. 一条主线</h2>
+
+<p>计算机系统结构这门课可以统一理解成一个问题：如何设计一个计算系统，让它在功能、性能、成本、功耗、可靠性和可编程性之间取得合理平衡。所有章节都围绕这个目标展开。</p>
+<div class="grid three">
+  <article class="card accent-blue"><h3>先定义接口</h3><p>ISA 规定软件能看到什么：指令、寄存器、寻址方式、异常和中断等。它是软件和硬件之间的契约。</p></article>
+  <article class="card accent-teal"><h3>再提高执行效率</h3><p>流水线、分支预测、多指令流出等技术都在开发指令级并行，目标是降低 CPI、提高吞吐率。</p></article>
+  <article class="card accent-amber"><h3>最后处理系统瓶颈</h3><p>存储墙、I/O 可靠性、互联网络带宽、多处理器同步，都是系统层面的性能和正确性问题。</p></article>
+</div>
+<div class="callout"><strong>复习时不要把章节割裂</strong>流水线和指令级并行解决“CPU 内部怎么快”；Cache 和主存解决“数据怎么跟得上”；I/O 和互联解决“系统怎么连起来”；多处理器解决“多个计算单元怎么协作”。</div>
+
+</section>
+<section id="definitions">
+<h2>2. 三个层次：结构、组成、实现</h2>
+
+<table>
+  <thead><tr><th>层次</th><th>关心的问题</th><th>例子</th></tr></thead>
+  <tbody>
+    <tr><td>计算机系统结构</td><td>机器对程序员和编译器呈现什么功能，属于“做什么”。</td><td>是否有 ADD 指令，指令格式、寄存器数量、寻址方式。</td></tr>
+    <tr><td>计算机组成</td><td>这些功能用什么逻辑部件和控制流程实现，属于“怎么做”。</td><td>ALU、寄存器堆、控制信号、数据通路。</td></tr>
+    <tr><td>计算机实现</td><td>组成方案如何落到具体电路、工艺、物理结构上，属于“做出来”。</td><td>CMOS 门电路、版图、32 位加法器实现。</td></tr>
+  </tbody>
+</table>
+<p>考试如果要求解释三者关系，抓住“系统结构是软件可见接口，组成是逻辑实现，实现是物理实现”就不容易跑偏。</p>
+
+</section>
+<section id="quant">
+<h2>3. 定量分析是全课工具箱</h2>
+
+<p>系统结构设计不能只凭直觉，需要用执行时间、吞吐率、CPI、失效率、可靠度等指标做比较。后面每一章的计算题，本质上都是把具体问题转化成这些指标。</p>
+<div class="grid">
+  <article class="card accent-green"><h3>以经常性事件为重点</h3><p>优化高频路径最划算。哪一部分占总时间比例越大，优化它对总性能的影响越明显。</p></article>
+  <article class="card accent-purple"><h3>Amdahl 定律</h3><p>加速比受可改进部分比例限制。可并行部分少时，处理器数量再多也不会得到理想加速。</p></article>
+  <article class="card accent-blue"><h3>CPU 性能公式</h3><p>从 IC、CPI、时钟周期时间三个量拆解 CPU 时间，方便定位优化来自哪里。</p></article>
+  <article class="card accent-teal"><h3>局部性原理</h3><p>时间局部性和空间局部性是 Cache、预取、存储层次能有效工作的基础。</p></article>
+</div>
+<div class="formula">CPU 时间 = IC × CPI × 时钟周期时间</div>
+<div class="formula">Amdahl 加速比 = 1 / ((1 - f) + f / s)</div>
+
+</section>
+<section id="order">
+<h2>4. 建议复习路线</h2>
+
+<div class="steps">
+  <div class="step"><strong>第一轮看地图。</strong>先通读总览，知道每章在系统中解决哪个瓶颈，不急着背细节。</div>
+  <div class="step"><strong>第二轮抓计算。</strong>集中做流水线性能、Cache 平均访问时间、可靠度、互联网络寻径、多处理器 Amdahl/CPI。</div>
+  <div class="step"><strong>第三轮补概念。</strong>把容易混的概念放表里对照：吞吐率和响应时间、相关和冲突、写回和写直达、RAID10和RAID01。</div>
+  <div class="step"><strong>考前回到清单。</strong>只看每页的“考前抓手”和公式，不再陷入长篇解释。</div>
+</div>
+
+</section>
+<section id="formula-index" class="focus-section">
+<h2>5. 全课公式与题型总表</h2>
+
+<table>
+  <thead><tr><th>章节</th><th>必会公式</th><th>典型题型</th></tr></thead>
+  <tbody>
+    <tr><td>基本概念</td><td>CPU 时间 = IC x CPI x 时钟周期；Speedup = 1 / ((1 - f) + f / s)</td><td>Amdahl 反求比例；平均 CPI；MIPS/MFLOPS。</td></tr>
+    <tr><td>流水线</td><td>Tk = (k + n - 1)Δt；TP = n/Tk；S = T顺序/T流水；E = 有效时空面积/总时空面积</td><td>等时/不等时流水线；时空图；非线性调度。</td></tr>
+    <tr><td>指令级并行</td><td>CPI流水线 = CPI理想 + 各类停顿；理想 CPI 约为 1/流出宽度</td><td>BHT 状态更新；BTB 延迟；超标量/VLIW/超流水线比较。</td></tr>
+    <tr><td>存储系统</td><td>AMAT = Hit Time + Miss Rate x Miss Penalty；两级 AMAT = H1 + MR1(H2 + MR2P2)</td><td>地址字段；Cache 策略；两级 Cache；主存带宽；TLB/脏块写回。</td></tr>
+    <tr><td>I/O 外存</td><td>串联 R = ΠRi；并联 R = 1 - Π(1 - Ri)；Availability = MTTF/(MTTF+MTTR)</td><td>可靠度；RAID 小写；RAID10/01 对比。</td></tr>
+    <tr><td>互联网络</td><td>超立方体距离 = 汉明距离；Omega 级数 = log2N；开关数 = (N/2)log2N</td><td>互连函数变换；最短路；Omega 寻径。</td></tr>
+    <tr><td>多处理器</td><td>并行加速比 = 1 / ((1 - f) + f / p)；CPI = 本地 CPI + 通信/同步停顿</td><td>并行上限；远程访问；MSI 状态；同步开销。</td></tr>
+  </tbody>
+</table>
+<div class="callout"><strong>考前使用方法</strong>先看每个子页面的“公式与题型”，把变量含义背熟；再展开原 PDF 截图对照手写图和例题。</div>
+
+</section>
+      
+      <section id="self-test" class="self-test-section">
+        <h2>自测问题</h2>
+        <p>合上正文后先试着口答，再展开看答案。能把这些问题讲清楚，本章主线基本就稳了。</p>
+        <div class="quiz-grid">
+          
+        <details class="quiz-card">
+          <summary><span>01</span>计算机系统结构、计算机组成、计算机实现三者怎么区分？</summary>
+          <p>系统结构回答“对软件承诺什么功能”，组成回答“用什么逻辑部件实现”，实现回答“落到什么物理电路/工艺”。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>02</span>为什么全课反复强调定量分析？</summary>
+          <p>因为系统设计需要比较执行时间、CPI、吞吐率、失效率、可靠度等指标，避免只凭直觉判断优化是否值得。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>03</span>Amdahl 定律最重要的提醒是什么？</summary>
+          <p>局部优化收益受该部分原始时间占比限制，优化低频部分通常不会显著提高整体性能。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>04</span>程序局部性和存储层次有什么关系？</summary>
+          <p>时间局部性和空间局部性让热点数据更可能在上层存储命中，因此 Cache/主存/辅存层次才有效。</p>
+        </details>
+
+
+        <details class="quiz-card">
+          <summary><span>05</span>考前最建议按什么顺序复习？</summary>
+          <p>先看总览主线，再集中公式计算，最后用各专题的概念对照和自测题查漏补缺。</p>
+        </details>
+
+        </div>
+      </section>
+
+      
+<section id="source">
+  <h2>原 PDF 页面截图</h2>
+  <p>下面是原资料的页面渲染图，正文复习完后可以展开对照图、公式和例题。</p>
+  <details class="source-gallery">
+    <summary>展开 12 页原讲义截图</summary>
+    <div class="page-grid">
+      <figure><img loading="lazy" src="assets/pdf-pages/overview/page-01.png" alt="总览串讲复习子页面 原 PDF 第 1 页"><figcaption>原 PDF 第 1 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-02.png" alt="总览串讲复习子页面 原 PDF 第 2 页"><figcaption>原 PDF 第 2 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-03.png" alt="总览串讲复习子页面 原 PDF 第 3 页"><figcaption>原 PDF 第 3 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-04.png" alt="总览串讲复习子页面 原 PDF 第 4 页"><figcaption>原 PDF 第 4 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-05.png" alt="总览串讲复习子页面 原 PDF 第 5 页"><figcaption>原 PDF 第 5 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-06.png" alt="总览串讲复习子页面 原 PDF 第 6 页"><figcaption>原 PDF 第 6 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-07.png" alt="总览串讲复习子页面 原 PDF 第 7 页"><figcaption>原 PDF 第 7 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-08.png" alt="总览串讲复习子页面 原 PDF 第 8 页"><figcaption>原 PDF 第 8 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-09.png" alt="总览串讲复习子页面 原 PDF 第 9 页"><figcaption>原 PDF 第 9 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-10.png" alt="总览串讲复习子页面 原 PDF 第 10 页"><figcaption>原 PDF 第 10 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-11.png" alt="总览串讲复习子页面 原 PDF 第 11 页"><figcaption>原 PDF 第 11 页</figcaption></figure>
+<figure><img loading="lazy" src="assets/pdf-pages/overview/page-12.png" alt="总览串讲复习子页面 原 PDF 第 12 页"><figcaption>原 PDF 第 12 页</figcaption></figure>
+    </div>
+  </details>
+</section>
+
+      <p class="footer">本页由本地 PDF 资料整理生成，用作《计算机系统结构》课程复习网页。</p>
+    </main>
+  </div>
+</body>
+</html>
