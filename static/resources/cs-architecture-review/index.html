@@ -640,6 +640,7 @@
       <nav>
         <a href="#mainline">1. 一条主线</a>
         <a href="#subpages">专题子页面入口</a>
+        <a href="#qa">互动问答补充</a>
         <a href="#concepts">2. 基本概念与定量分析</a>
         <a href="#pipeline">3. 流水线与指令级并行</a>
         <a href="#memory">4. 存储系统</a>
@@ -668,7 +669,7 @@
             </div>
           </div>
           <div class="hero-stats" aria-label="复习概览">
-            <div class="stat"><span class="num">8</span><span class="label">个专题子页面覆盖全部复习资料</span></div>
+            <div class="stat"><span class="num">9</span><span class="label">个专题子页面覆盖全部复习资料与问答补充</span></div>
             <div class="stat"><span class="num">70</span><span class="label">个公式块和例题模板集中速查</span></div>
             <div class="stat"><span class="num">22</span><span class="label">道原资料题卡，题干和答案可展开练习</span></div>
             <div class="stat"><span class="num">119</span><span class="label">页原 PDF 截图保留讲义对照</span></div>
@@ -688,7 +689,20 @@
           <div class="card"><strong><a href="io.html">I/O 外存系统复习子页面</a></strong><p>可靠度公式、混联系统、RAID 容量、小写和故障恢复。</p></div>
           <div class="card"><strong><a href="network.html">互联网络复习子页面</a></strong><p>互连函数公式、超立方体距离、Omega 网络寻径题。</p></div>
           <div class="card"><strong><a href="multiprocessor.html">多处理器复习子页面</a></strong><p>Amdahl 并行加速、远程访问 CPI、MSI 状态题和同步开销。</p></div>
+          <div class="card"><strong><a href="qa.html">互动问答补充页</a></strong><p>把问答里反复卡住的地方整理成考试判定表：MIPS 停顿、分支预测、BTB/BHT、Cache/TLB、RAID、互连网络和同步。</p></div>
         </div>
+      </section>
+
+      <section id="qa" class="focus-section">
+        <h2>互动问答补充</h2>
+        <p class="section-lead">这部分不是原讲义摘要，而是复习过程中针对“看不懂题目在问什么、考试到底怎么下笔”的补丁。建议在刷题时打开，直接查判定表和例题卡。</p>
+        <div class="grid">
+          <div class="card accent-green"><strong>MIPS 停顿判断</strong><p>把“有没有定向、IF 后还是 ID 后停、分支预测失败怎么加拍”压成一张做题流程。</p></div>
+          <div class="card accent-blue"><strong>Cache/TLB 与 AMAT</strong><p>解释什么时候减命中时间、TLB miss 是并进 Cache miss penalty 还是额外加。</p></div>
+          <div class="card accent-purple"><strong>分支预测与 BTB</strong><p>区分 BHT/BHD 管跳不跳、BTB 管跳去哪，以及 branch folding 的直觉。</p></div>
+          <div class="card accent-amber"><strong>互连/RAID/同步</strong><p>整理 Illiac、PM2、STARAN、RAID10/01、LL/SC、屏障同步等容易混的术语。</p></div>
+        </div>
+        <p><a class="button-link" href="qa.html">打开互动问答补充页</a></p>
       </section>
 
       <section id="mainline">
