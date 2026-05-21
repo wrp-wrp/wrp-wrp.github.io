@@ -3,24 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>仿真试卷 · 计算机系统结构复习</title>
+  <title>练习库 · 计算机系统结构复习</title>
   <link rel="stylesheet" href="review-subpage.css">
 </head>
 <body>
   <div class="layout">
     <aside>
-      <strong>试卷目录</strong>
+      <strong>练习目录</strong>
       <nav>
-        <a href="#instructions">答题说明</a>
-        <a href="#q1">1. MIPS 流水线</a>
-        <a href="#q2">2. BTB 与分支预测</a>
-        <a href="#q3">3. Cache 写事务</a>
-        <a href="#q4">4. Cache/TLB CPI</a>
-        <a href="#q5">5. RAID10 可靠性</a>
-        <a href="#q6">6. Omega 网络</a>
-        <a href="#q7">7. 远程访存 CPI</a>
-        <a href="#q8">8. ILP 简答</a>
-        <a href="#answer-rules">做题判定表</a>
+        <a href="#how">怎么练</a>
+        <a href="#paper-a">新参数整卷</a>
+        <a href="#short-papers">12 套短卷</a>
+        <a href="#speed-drills">120 道速测</a>
+        <a href="#wrongbook">错题复盘表</a>
       </nav>
     </aside>
 
@@ -29,6 +24,7 @@
         <div class="links">
           <a class="button-link" href="index.html">返回总复习页</a>
           <a class="button-link" href="qa.html">问答补充页</a>
+          <a class="button-link" href="pipeline.html">流水线专题</a>
           <a class="button-link" href="memory.html">存储专题</a>
           <a class="button-link" href="network.html">互连网络专题</a>
         </div>
@@ -36,210 +32,494 @@
 
       <header class="hero-panel">
         <div class="hero-copy">
-          <span class="study-label">仿真 A 卷</span>
-          <h1>计算机系统结构仿真试卷（一）</h1>
-          <p class="subtitle">按期末卷风格组织：8 题 100 分。先独立写过程，再展开参考答案。重点不是押题，而是训练“看到题目知道套哪条决策树”。</p>
+          <span class="study-label">刷题与自测</span>
+          <h1>计算机系统结构练习库</h1>
+          <p class="subtitle">这里不是把刚做过的 A 卷原题换个排版，而是用同一批考法生成新参数、新场景的练习。整卷练节奏，短卷练题型，速测题检查知识点是否真的记住。</p>
           <div class="meta-row">
-            <span class="meta">100 分</span><span class="meta">建议 120 分钟</span><span class="meta">计算题写过程</span><span class="meta">答案可折叠</span>
+            <span class="meta">1 套新参数整卷</span><span class="meta">12 套短卷</span><span class="meta">120 道速测</span><span class="meta">答案折叠</span>
           </div>
         </div>
         <div class="hero-aside">
-          <div class="hero-stat"><span>8</span><strong>题型模块</strong></div>
-          <div class="hero-stat"><span>100</span><strong>总分</strong></div>
-          <div class="hero-stat"><span>先做</span><strong>再展开答案</strong></div>
+          <div class="hero-stat"><span>1</span><strong>新整卷</strong></div>
+          <div class="hero-stat"><span>12</span><strong>短卷</strong></div>
+          <div class="hero-stat"><span>120</span><strong>速测题</strong></div>
         </div>
       </header>
 
-      <section id="instructions" class="focus-section">
-        <h2>答题说明</h2>
-        <ol>
-          <li>每道计算题都先写“基本项 + 额外开销项”，不要只写最后数字。</li>
-          <li>遇到百分比先化成小数，遇到 GHz/ns 先换成周期数。</li>
-          <li>流水线题先数循环次数，再区分“每轮间隔”和“最后一轮尾巴”。</li>
-          <li>Cache/TLB 题先判断 TLB 是并入 miss penalty，还是对所有访存额外加。</li>
-        </ol>
+      <section id="how" class="focus-section">
+        <h2>怎么练</h2>
+        <div class="steps">
+          <div class="step">先做“120 道速测”，不要展开答案。每题只判断自己能不能在 20 秒内想出规则。</div>
+          <div class="step">再做“12 套短卷”，每套 20 分钟。做完立刻对答案，把卡住的题标到错题表。</div>
+          <div class="step">最后做“新参数整卷”，训练考试节奏。计算题必须写中间公式，否则对答案时不知道是哪一步错。</div>
+        </div>
+        <div class="callout"><strong>本页故意不复刻刚做过的原题</strong>参数、置换、比例和场景都换过。题型相同，是为了练做题流程；数字不同，是为了防止靠记答案过关。</div>
       </section>
 
-      <section id="q1">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>15 分</span><span>流水线时空图</span><a href="qa.html#pipeline-stall">复习判定表</a></div>
-          <h2>1. MIPS 流水线循环</h2>
-          <div class="problem-body">
-            <p>在经典 5 段 MIPS 流水线上运行如下循环，R3 初值为 R2 + 396。所有访存均命中 Cache，同一周期对同一寄存器的写和读可通过寄存器定向。</p>
-            <pre><code>LOOP:  LW   R1, 0(R2)
-       ADDI R1, R1, #1
-       SW   0(R2), R1
-       ADDI R2, R2, #4
-       SUB  R4, R3, R2
-       BNZ  R4, LOOP</code></pre>
+      <section id="paper-a">
+        <h2>新参数整卷</h2>
+        <p class="section-lead">建议限时 100-120 分钟。答案折叠在每题下面，先写完过程再展开。</p>
+        <div class="exercise-bank">
+          <div class="exercise-card">
+            <div class="problem-meta"><span>12 分</span><span>定量分析</span></div>
+            <h3>1. CPI、MIPS 与 Amdahl</h3>
             <ol>
-              <li>无其他定向硬件，分支采用排空流水线策略，求总周期数。</li>
-              <li>有正常定向路径，分支采用预测分支失败策略，求总周期数。</li>
-              <li>有正常定向路径，采用单周期延迟分支和指令调度，给出一种调度后序列并求总周期数。</li>
+              <li>一台 800MHz 机器执行程序，整数指令占 55%，CPI=1；访存指令占 30%，CPI=3；浮点指令占 15%，CPI=4。求有效 CPI 和 MIPS。</li>
+              <li>若把访存指令的 CPI 从 3 降到 1.5，求加速比。</li>
             </ol>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>有效 CPI = `0.55×1 + 0.30×3 + 0.15×4 = 2.05`。MIPS = `800 / 2.05 = 390.24`。</p>
+              <p>改进后 CPI = `0.55×1 + 0.30×1.5 + 0.15×4 = 1.60`，加速比 = `2.05 / 1.60 = 1.28`。</p>
+            </details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>循环次数：`396 / 4 = 99`。</p>
+
+          <div class="exercise-card">
+            <div class="problem-meta"><span>10 分</span><span>BTB 与分支预测</span></div>
+            <h3>2. 分支目标缓冲</h3>
+            <p>条件分支占 8%，基本 CPI 为 1。BTB 命中率 85%，BTB 不命中开销 3 拍；BTB 命中后预测精度 92%，预测错误开销 7 拍。求实际 CPI。若 BTB 命中率提高到 95%，重新计算。</p>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>额外 CPI = `0.08 × [(1-H)×3 + H×(1-0.92)×7]`。</p>
+              <p>H=0.85：`1 + 0.08×(0.15×3 + 0.85×0.08×7) = 1.07408`。</p>
+              <p>H=0.95：`1 + 0.08×(0.05×3 + 0.95×0.08×7) = 1.05456`。</p>
+            </details>
+          </div>
+
+          <div class="exercise-card">
+            <div class="problem-meta"><span>12 分</span><span>写策略事务数</span></div>
+            <h3>3. Cache 写事务</h3>
+            <p>一台机器 92% 访存命中 Cache，其中 25% 是写。Cache 块 64B，一次内存事务 32B，写失效采用写分配。</p>
             <ol>
-              <li>无定向时，`LW -> ADDI`、`ADDI -> SW`、`SUB -> BNZ` 都需要等，按课件时空图每轮第 1 条到下轮第 1 条间隔 15 拍。末轮 BNZ 在 ID 后还要 EX/MEM/WB 三拍，所以总周期 `15×99 + 3 = 1488`。</li>
-              <li>有正常定向后，每轮间隔为 9 拍；末轮尾巴仍加 3 拍。总周期 `9×99 + 3 = 894`。</li>
-              <li>一种调度：`LW R1,0(R2); ADDI R2,R2,#4; SUB R4,R3,R2; ADDI R1,R1,#1; BNZ R4,LOOP; SW R1,-4(R2)`。每轮间隔 6 拍，末轮最后的 `SW` 在 ID 后还要 4 拍，总周期 `6×99 + 4 = 598`。</li>
+              <li>写直达时，一次访存平均产生多少下级事务？</li>
+              <li>写回时，30% 被替换块是脏块，一次访存平均产生多少下级事务？</li>
             </ol>
-          </details>
-        </div>
-      </section>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>调入或写回整块要 `64/32 = 2` 次事务。</p>
+              <p>写直达：`0.92×0.25×1 + 0.08×0.75×2 + 0.08×0.25×3 = 0.41`。</p>
+              <p>写回：命中 0，下级事务只在 miss 时发生：`0.08 × (2 + 0.30×2) = 0.208`。</p>
+            </details>
+          </div>
 
-      <section id="q2">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>10 分</span><span>分支预测</span><a href="qa.html#branch">复习判定表</a></div>
-          <h2>2. BTB 与分支预测 CPI</h2>
-          <div class="problem-body">
-            <p>条件转移指令占全部指令 5%，其他指令基本 CPI 为 1。流水线只对条件转移指令使用 BTB。BTB 命中率为 80%，BTB 不命中的开销为 4 拍；BTB 命中后，分支方向预测精度为 90%，预测错误开销为 8 拍。</p>
+          <div class="exercise-card">
+            <div class="problem-meta"><span>16 分</span><span>Cache/TLB CPI</span></div>
+            <h3>4. 写回、脏块和 TLB</h3>
+            <p>基本 CPI 为 1.6，每条指令平均访问存储器 1.25 次。Cache 块 40B，主存固定延迟 30 拍，传输速率 8B/拍；Cache miss 率 2%，25% 被替换块为脏块，写回法。</p>
             <ol>
-              <li>求程序实际 CPI。</li>
-              <li>若 BTB 命中率提高到 90%，其他条件不变，求程序实际 CPI。</li>
+              <li>理想 TLB 下实际 CPI 是多少？</li>
+              <li>若 Cache miss 产生的地址有 0.1% 发生 TLB miss，额外 30 拍，按“并入 miss penalty”口径计算实际 CPI。</li>
             </ol>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>一次块读开销 = `30 + 40/8 = 35` 拍。写回平均事务倍数 = `1 + 0.25 = 1.25`，所以 penalty = `43.75`。</p>
+              <p>理想 TLB：`CPI = 1.6 + 1.25×0.02×43.75 = 2.69375`。</p>
+              <p>实际 TLB：`penalty = 1.25×(35 + 0.001×30) = 43.7875`，CPI = `1.6 + 1.25×0.02×43.7875 = 2.6946875`。</p>
+            </details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <div class="formula">CPI = 1 + 0.05 × [(1-H)×4 + H×(1-0.9)×8]</div>
-            <p>H=0.8：`CPI = 1 + 0.05×(0.2×4 + 0.8×0.1×8) = 1.072`。</p>
-            <p>H=0.9：`CPI = 1 + 0.05×(0.1×4 + 0.9×0.1×8) = 1.056`。</p>
-          </details>
-        </div>
-      </section>
 
-      <section id="q3">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>15 分</span><span>Cache 写策略</span><a href="qa.html#cache-design">复习判定表</a></div>
-          <h2>3. Cache 写事务次数</h2>
-          <div class="problem-body">
-            <p>一台计算机执行程序时，90% 访存能够命中 Cache，其中 30% 是写操作。最后一级 Cache 块大小为 128B，一次内存读写事务存取 64B 数据。写失效时采用写分配法。</p>
+          <div class="exercise-card">
+            <div class="problem-meta"><span>10 分</span><span>RAID 与可靠性</span></div>
+            <h3>5. RAID10 变体</h3>
+            <p>4 块磁盘组成 RAID10，两组镜像再条带。系统只有一个必要控制器，可靠度 0.98；每块磁盘可靠度 0.96。忽略其他部件。写出可靠度表达式并计算。</p>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>一组镜像可靠度 = `1-(1-0.96)^2 = 0.9984`。两组都要正常，再乘控制器。</p>
+              <div class="formula">R = 0.98 × [1-(1-0.96)^2]^2 = 0.9769，约 97.69%</div>
+            </details>
+          </div>
+
+          <div class="exercise-card">
+            <div class="problem-meta"><span>10 分</span><span>互连函数</span></div>
+            <h3>6. 互连网络函数</h3>
+            <p>N=32，处理器编号 0 到 31。求 `Cube2(19)`、`PM2+3(29)`、`σ(6)`。其中 σ 为 5 位二进制循环左移一位。</p>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>`19 = 10011B`，第 2 位取反得 `10111B = 23`。</p>
+              <p>`PM2+3(29) = 29 + 8 mod 32 = 5`。</p>
+              <p>`6 = 00110B`，循环左移得 `01100B = 12`。</p>
+            </details>
+          </div>
+
+          <div class="exercise-card">
+            <div class="problem-meta"><span>10 分</span><span>远程访问</span></div>
+            <h3>7. NUMA 远程访问</h3>
+            <p>处理器频率 2.5GHz，基本 CPI 为 1.2。远程访问耗时 180ns，0.4% 指令需要远程访问且处理器挂起。求实际 CPI，以及只有本地访问时比它快多少。</p>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>2.5GHz 周期 = 0.4ns；远程访问开销 = `180/0.4 = 450` 拍。</p>
+              <p>实际 CPI = `1.2 + 0.004×450 = 3.0`。只有本地访问 CPI=1.2，所以速度比 = `3.0/1.2 = 2.5` 倍。</p>
+            </details>
+          </div>
+
+          <div class="exercise-card">
+            <div class="problem-meta"><span>20 分</span><span>流水线与 ILP</span></div>
+            <h3>8. 停顿判断与多发射</h3>
             <ol>
-              <li>采用写直达 Cache 机制时，一次访存指令导致的平均实际访存事务次数是多少？</li>
-              <li>采用写回法 Cache 机制时，任意时刻 Cache 中 20% 的块为脏块，一次访存指令导致的平均实际访存事务次数是多少？</li>
+              <li>有正常定向时，`LW R1,0(R2)` 后紧跟 `ADD R3,R1,R4`，停几拍？</li>
+              <li>`ADD R1,R2,R3` 后紧跟 `SW 0(R5),R1`，在有 store-data 定向时停几拍？</li>
+              <li>`SUB R4,R3,R2` 后紧跟 `BNZ R4,L`，按本课常见口径停几拍？</li>
+              <li>3 段标量流水线执行 20 条指令需多少个 Δt？若 4 发射超标量且没有相关冲突，近似需多少个 Δt？</li>
             </ol>
+            <details class="solution-toggle"><summary>参考答案</summary>
+              <p>1 拍；0 拍；1 拍。3 段标量流水线时间为 `(3+20-1)Δt = 22Δt`。4 发射时 20 条指令分 5 组，近似 `(3+5-1)Δt = 7Δt`。</p>
+            </details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>块 128B，事务 64B，所以调入或写回整块都需要 2 次事务。</p>
-            <p>写直达：读命中 0；写命中 1；读 miss 2；写 miss 写分配为 2 次读入整块 + 1 次写直达。平均事务数：</p>
-            <div class="formula">0.9×0.3×1 + 0.1×0.7×2 + 0.1×0.3×3 = 0.50</div>
-            <p>写回：命中不访问下级；miss 时一定读入新块 2 次，若替换脏块还要写回旧块 2 次，脏块概率 20%。</p>
-            <div class="formula">0.1 × (2 + 0.2×2) = 0.24</div>
-          </details>
         </div>
       </section>
 
-      <section id="q4">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>20 分</span><span>Cache/TLB CPI</span><a href="qa.html#cache-tlb">复习判定表</a></div>
-          <h2>4. Cache/TLB 与写回脏块</h2>
-          <div class="problem-body">
-            <p>某处理器在 100% 命中内部 Cache 时 CPI 为 1.4。Cache miss 时从外部主存取块。Cache 块大小 64B，物理分布在 8 个独立存储体上；每个存储体需要 32 拍固定延迟准备数据；总线最高传输速率为 8B/拍，8 个存储体可并行传输给处理器。处理器无写缓冲，写操作采用写回机制。Cache 中 50% 的块为脏块，20% 的指令是访存指令。64KB 与 128KB 直接映像混合 Cache 的 miss 率分别为 1.5% 和 1%。</p>
+      <section id="short-papers">
+        <h2>12 套短卷</h2>
+        <p class="section-lead">每套 4 题，建议 20 分钟。题目短，但覆盖做题流程。</p>
+        <div class="exercise-bank">
+          <div class="exercise-card">
+            <h3>短卷 1：单位、CPI、Amdahl</h3>
             <ol>
-              <li>理想 TLB 情况下，分别求两种 Cache 的实际 CPI。</li>
-              <li>若 CPU 在 Cache miss 时产生的地址有 0.2% 未在 TLB 找到，TLB miss 额外 40 拍，分别求实际 CPI。</li>
+              <li>2.5GHz 的时钟周期是多少 ns？</li>
+              <li>基本 CPI=1.2，0.4% 指令远程访问，远程访问 180ns，2.5GHz。实际 CPI？</li>
+              <li>某程序 35% 时间可被加速 4 倍，总加速比？</li>
+              <li>600MHz、平均 CPI=1.5，MIPS 是多少？</li>
             </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>0.4ns；3.0；`1/(0.65+0.35/4)=1.36`；400 MIPS。</p></details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>一次调入 64B 块：固定延迟 32 拍 + 传输 64B/8B = 8 拍，共 40 拍。写回且 50% 脏块，所以平均 1.5 次块事务。</p>
-            <p>理想 TLB：平均 miss penalty = `1.5×40 = 60`。每条指令访存次数 = `1 + 20% = 1.2`。</p>
-            <div class="formula">64KB: 1.4 + 1.2×0.015×60 = 2.48</div>
-            <div class="formula">128KB: 1.4 + 1.2×0.010×60 = 2.12</div>
-            <p>实际 TLB：这份题的口径是把 TLB miss 并进 Cache miss penalty。</p>
-            <div class="formula">平均 miss penalty = 1.5 × (40 + 0.002×40) = 60.12</div>
-            <div class="formula">64KB: 1.4 + 1.2×0.015×60.12 = 2.48216</div>
-            <div class="formula">128KB: 1.4 + 1.2×0.010×60.12 = 2.12144</div>
-          </details>
-        </div>
-      </section>
 
-      <section id="q5">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>10 分</span><span>RAID 可靠性</span><a href="qa.html#memory-io">复习判定表</a></div>
-          <h2>5. RAID10 可靠性</h2>
-          <div class="problem-body">
-            <p>一个 RAID10 系统由 4 块磁盘组成：磁盘 1、2 构成一组镜像，磁盘 3、4 构成一组镜像，两组之间条带化。系统采用双阵列控制器，任意一个控制器失效不影响系统工作；通道适配器只有一个。已知阵列控制器可靠度 R1=0.9，通道适配器可靠度 R2=0.95，磁盘可靠度 R3=0.95。</p>
+          <div class="exercise-card">
+            <h3>短卷 2：流水线停顿</h3>
             <ol>
-              <li>画出可靠性框图的串并联关系。</li>
-              <li>写出系统可靠度表达式。</li>
-              <li>计算可靠度，保留两位百分数。</li>
+              <li>有正常定向：`LW R2,0(R1); ADD R3,R2,R4` 停几拍？</li>
+              <li>有正常定向：`ADD R2,R3,R4; SUB R5,R2,R6` 停几拍？</li>
+              <li>有 store-data 定向：`ADD R2,R3,R4; SW 0(R1),R2` 停几拍？</li>
+              <li>按本课口径：`SUB R7,R1,R2; BNZ R7,L` 停几拍？</li>
             </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>1；0；0；1。</p></details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>控制器并联，通道适配器串联，两个镜像磁盘组串联。每个镜像组可靠度为 `1-(1-R3)^2`。</p>
-            <div class="formula">R = [1-(1-R1)^2] × R2 × [1-(1-R3)^2]^2</div>
-            <p>代入：`R = 0.99 × 0.95 × 0.9975² = 0.9358`，即 93.58%。</p>
-          </details>
-        </div>
-      </section>
 
-      <section id="q6">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>10 分</span><span>Omega 网络</span><a href="qa.html#network-sync">复习判定表</a></div>
-          <h2>6. Omega 网络寻径</h2>
-          <div class="problem-body">
-            <p>Omega 网络又称多级混洗-交换网络，N=8。</p>
+          <div class="exercise-card">
+            <h3>短卷 3：BTB 和循环预测</h3>
             <ol>
-              <li>Omega 网络的 2×2 开关模块通常采用什么控制方式？级间互连通常采用什么连接方式？</li>
-              <li>若采用源地址与目的地址异或寻径法，分析置换 `π=(0)(1,2)(3)(5,6)(4)(7)` 能否无阻塞完成传输。</li>
+              <li>分支占 12%，BTB 命中 90%，不命中 2 拍，命中后预测错率 6%，错预测 6 拍。额外 CPI？</li>
+              <li>一位预测器初始预测不跳，一个循环 20 次，前 19 次跳，最后 1 次不跳。本轮预测准确率？</li>
+              <li>BTB miss 和预测错误能不能简单相加？</li>
+              <li>BTB 主要保存什么？</li>
             </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>`0.12×(0.1×2+0.9×0.06×6)=0.06288`；18/20=90%；不能，通常 BTB 命中后才谈预测路径错误；分支 PC 标识和目标地址。</p></details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>开关模块通常采用单元控制；级间互连采用均匀洗牌，也就是 perfect shuffle。</p>
-            <p>置换中非平凡连接为 `1->2, 2->1, 5->6, 6->5`。写成 3 位二进制后，四条连接的源目的异或均为 `011`，控制路径高度相似。继续按图逐级检查开关占用，会出现同一级同一 2×2 开关同一出口被多条连接争用，因此不能无阻塞同时完成。</p>
-            <p>考试写法：列出非平凡连接、写出异或控制码、说明发生开关出口冲突，结论“不能无阻塞完成”。</p>
-          </details>
+
+          <div class="exercise-card">
+            <h3>短卷 4：两级 Cache</h3>
+            <ol>
+              <li>L1 命中时间 1，L1 miss 率 5%，L2 命中时间 12，L2 局部 miss 率 20%，内存开销 80。AMAT？</li>
+              <li>若基本 CPI 已含 L1 命中，平均每条指令访存 1.3 次，存储停顿/指令是多少？</li>
+              <li>L1 miss 40 次，L2 miss 10 次，总访存 2000 次。L2 局部 miss 率？</li>
+              <li>L2 全局 miss 率？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>`1+0.05×(12+0.2×80)=2.4`；`(2.4-1)×1.3=1.82`；25%；0.5%。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 5：写策略事务</h3>
+            <ol>
+              <li>Cache 块 64B，事务 16B，调入整块要几次事务？</li>
+              <li>写回写命中会不会立刻写主存？</li>
+              <li>写直达写命中会产生什么事务？</li>
+              <li>写回、miss 率 6%、脏块 25%，块 64B、事务 16B，平均下级事务数？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>4 次；不会，只置 dirty；写下一级一次；`0.06×(4+0.25×4)=0.30`。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 6：TLB 口径</h3>
+            <ol>
+              <li>题目说“Cache miss 产生的地址有 0.2% TLB miss”，TLB 开销通常并到哪里？</li>
+              <li>题目说“CPU 产生指令地址或数据地址有 0.2% TLB miss”，要不要算取指？</li>
+              <li>页表和 TLB 的关系是什么？</li>
+              <li>TLB miss 一定会导致页失效吗？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>并到 Cache miss penalty；要；TLB 是页表项的高速缓存；不一定，可能只是页表项不在 TLB。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 7：RAID 与可靠性</h3>
+            <ol>
+              <li>两个可靠度 0.98 的部件并联，可靠度？</li>
+              <li>三个必要部件可靠度分别 0.9、0.95、0.99，串联系统可靠度？</li>
+              <li>RAID5 相比 RAID4 主要改进什么？</li>
+              <li>RAID10 与 RAID01 哪个通常更可靠？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>`1-0.02²=0.9996`；`0.9×0.95×0.99=0.84645`；校验分布到各盘，缓解专用校验盘瓶颈；RAID10。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 8：互连函数</h3>
+            <ol>
+              <li>N=32，`Cube0(18)`？</li>
+              <li>N=32，`PM2-2(1)`？</li>
+              <li>5 位编号 `00101` 与 `10111` 在超立方体中的距离？</li>
+              <li>Omega 网络每级常用什么级间连接？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>19；`1-4 mod 32=29`；异或 `10010`，距离 2；均匀洗牌/perfect shuffle。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 9：Omega 路由</h3>
+            <ol>
+              <li>N=8 的 Omega 网络有几级？</li>
+              <li>目的地址 5 的二进制是多少？</li>
+              <li>若两条连接在同一级同一开关要走同一出口，会怎样？</li>
+              <li>源地址异或目的地址为 000 说明什么？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>3 级；101；阻塞；源和目的相同或不需要改变路径。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 10：多处理器与一致性</h3>
+            <ol>
+              <li>监听协议适合大规模还是小规模共享总线？</li>
+              <li>目录协议按什么维护目录项？</li>
+              <li>32 处理器全位向量共享者字段至少几位？</li>
+              <li>MSI 中 M 状态下主存一定最新吗？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>小规模；按内存块；32 位；不一定，Cache 最新，主存可能旧。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 11：同步</h3>
+            <ol>
+              <li>LL/SC 中 LL 盯住的是寄存器还是内存地址？</li>
+              <li>SC 成功通常表示什么？</li>
+              <li>旋转锁为什么支持 Cache 一致性后更快？</li>
+              <li>sense-reversing 屏障为什么 0/1 两个值够用？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>内存地址；LL 到 SC 之间没人写该地址，写入成功；可在本地 Cache 里反复读锁副本；每轮只需要和上一轮区分，进程不能跳过未完成屏障。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>短卷 12：ILP 与多发射</h3>
+            <ol>
+              <li>3 段标量流水线执行 12 条指令需多少 Δt？</li>
+              <li>4 发射且可完全打包为 3 条长指令，约需多少 Δt？</li>
+              <li>超标量和 VLIW 的主要区别是谁决定并行发射？</li>
+              <li>寄存器重命名能消除 RAW 吗？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>`3+12-1=14Δt`；`3+3-1=5Δt`；超标量主要硬件动态决定，VLIW 主要编译器静态打包；不能，RAW 是真相关。</p></details>
+          </div>
         </div>
       </section>
 
-      <section id="q7">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>10 分</span><span>远程访存</span><a href="qa.html#units">复习判定表</a></div>
-          <h2>7. 多处理器远程访问 CPI</h2>
-          <div class="problem-body">
-            <p>一台包含 16 个处理器的多处理机，远程存储器访问时间为 200ns。除远程访问外，其他访问均命中本地存储器。发出远程请求时本处理器挂起。处理器频率为 2GHz，基本 CPI 为 1。若 0.5% 的指令需要远程访问，问仅有本地访问时比有远程访问时快多少？</p>
+      <section id="speed-drills">
+        <h2>120 道速测</h2>
+        <p class="section-lead">每组 10 题。建议先看题目在纸上写答案，再展开该组答案。</p>
+        <div class="exercise-bank">
+          <div class="exercise-card">
+            <h3>1. 单位与定量分析</h3>
+            <ol>
+              <li>4GHz 的周期是多少 ns？</li>
+              <li>250ns 在 2GHz 下是多少拍？</li>
+              <li>10<sup>-6</sup>s 是什么单位？</li>
+              <li>CPU 时间公式写出三个乘积项。</li>
+              <li>频率 1GHz、CPI=2，对应多少 MIPS？</li>
+              <li>Amdahl 中 f 是改进前比例还是改进后比例？</li>
+              <li>40% 时间加速 10 倍，最大总加速比是多少？</li>
+              <li>基本 CPI=1，2% 指令各多停 5 拍，实际 CPI？</li>
+              <li>“前者比后者快多少”通常用哪个 CPI 比哪个 CPI？</li>
+              <li>MTTF 是平均失效前时间还是平均修复时间？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>0.25ns；500 拍；微秒；IC×CPI×时钟周期；500 MIPS；改进前；`1/(0.6+0.04)=1.5625`；1.1；后者 CPI / 前者 CPI；平均失效前时间。</p></details>
           </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>2GHz 的周期为 `1/2GHz = 0.5ns`。远程访问开销为 `200ns / 0.5ns = 400` 拍。</p>
-            <div class="formula">CPI_remote = 1 + 0.005 × 400 = 3</div>
-            <p>本地访问 CPI 为 1，同频率下速度与 CPI 成反比，所以仅本地访问的机器速度是有远程访问时的 `3/1 = 3` 倍。</p>
-          </details>
+
+          <div class="exercise-card">
+            <h3>2. 流水线停顿</h3>
+            <ol>
+              <li>RAW 是读后写、写后读还是写后写？</li>
+              <li>有正常定向时，ALU 结果给下一条 ALU 用通常停几拍？</li>
+              <li>有正常定向时，Load 结果给下一条 ALU 用通常停几拍？</li>
+              <li>Load 后隔一条再用，通常停几拍？</li>
+              <li>没有定向时，消费者为什么要等更久？</li>
+              <li>分支排空策略为什么慢？</li>
+              <li>预测分支失败就是默认预测什么？</li>
+              <li>延迟槽里应放什么指令？</li>
+              <li>最后一轮循环为什么还要加尾巴？</li>
+              <li>时空图横轴和纵轴分别是什么？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>写后读；0；1；0；要等写回寄存器；分支没确定前不取后续有效指令；不跳/顺序执行；无论跳不跳都能安全执行的指令；最后一条还没走完后续阶段；时间和流水段/指令。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>3. ILP、超标量、VLIW</h3>
+            <ol>
+              <li>ILP 中文是什么？</li>
+              <li>超标量靠硬件还是编译器动态发射？</li>
+              <li>VLIW 靠谁把多条操作打包？</li>
+              <li>超流水线提高什么频率？</li>
+              <li>资源重复的典型例子说两个。</li>
+              <li>时间重叠的典型例子是什么？</li>
+              <li>寄存器重命名主要消除哪两类假相关？</li>
+              <li>保留站属于哪种动态调度思想？</li>
+              <li>ILP 越高，分支预测要求怎样？</li>
+              <li>多发射的理想 CPI 下限约是多少？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>指令级并行；硬件；编译器；流水线启动频率；多个 ALU、多端口寄存器/分离 Cache；流水线；WAR、WAW；Tomasulo；更高；约 1/发射宽度。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>4. 分支预测与 BTB</h3>
+            <ol>
+              <li>BHT/BHD 管跳不跳还是跳去哪？</li>
+              <li>BTB 管跳不跳还是跳去哪？</li>
+              <li>BTB 用什么作为标识查表？</li>
+              <li>BTB miss 时是否已经使用 BTB 目标路径？</li>
+              <li>一位预测器为什么循环常错两次？</li>
+              <li>branch folding 除目标地址外还缓存什么？</li>
+              <li>无条件跳转适合放 BTB 吗？</li>
+              <li>预测错后错误路径指令怎么办？</li>
+              <li>BTB 命中率提高只影响哪一项开销？</li>
+              <li>预测精度提高只影响哪一项开销？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>跳不跳；跳去哪；分支指令 PC；没有；第一轮入口和最后退出；目标指令；适合；清空/作废；BTB 不命中项；BTB 命中后的错预测项。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>5. Cache/TLB</h3>
+            <ol>
+              <li>直接映像地址字段包含哪三类？</li>
+              <li>组相联地址字段中的组号由什么决定？</li>
+              <li>块内偏移位数由什么决定？</li>
+              <li>L2 局部 miss 率分母是什么？</li>
+              <li>L2 全局 miss 率分母是什么？</li>
+              <li>AMAT 问平均访问时间时要不要减 L1 命中时间？</li>
+              <li>问“停顿时间”且基本 CPI 已含命中访问时要不要减？</li>
+              <li>TLB 是什么的 Cache？</li>
+              <li>TLB hit 后得到虚拟页号还是物理页号？</li>
+              <li>页失效和 TLB miss 哪个通常更贵？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>Tag/Index/Offset；组数；块大小；L1 miss 次数；总访存次数；不要；要；页表项；物理页号；页失效。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>6. 写策略与主存带宽</h3>
+            <ol>
+              <li>写命中策略有哪两种？</li>
+              <li>写不命中策略有哪两种？</li>
+              <li>写分配是什么意思？</li>
+              <li>不写分配是什么意思？</li>
+              <li>写直达常配写分配还是不写分配？</li>
+              <li>写回常配写分配还是不写分配？</li>
+              <li>写回法什么时候写回主存？</li>
+              <li>脏位 dirty 表示什么？</li>
+              <li>写缓冲主要服务哪种写策略？</li>
+              <li>victim buffer 主要减少哪类失效？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>写直达、写回；写分配、不写分配；miss 时先把块调入 Cache 再写；直接写下级不调入 Cache；不写分配；写分配；脏块被替换/一致性要求/刷回时；Cache 中块被改过且内存旧；写直达；冲突失效。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>7. I/O 与 RAID</h3>
+            <ol>
+              <li>可靠性 R 是概率还是时间？</li>
+              <li>可用性 A 的公式？</li>
+              <li>串联系统可靠度怎么合成？</li>
+              <li>并联系统可靠度怎么合成？</li>
+              <li>RAID0 有冗余吗？</li>
+              <li>RAID1 的关键词是什么？</li>
+              <li>RAID5 的关键词是什么？</li>
+              <li>RAID6 可容忍几块盘失效？</li>
+              <li>RAID10 是先镜像还是先条带？</li>
+              <li>RAID5 小写常见四个动作是什么？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>概率；`MTTF/(MTTF+MTTR)`；相乘；`1-全坏概率`；没有；镜像；分布式校验；两块；先镜像再条带；读旧数据、读旧校验、写新数据、写新校验。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>8. 互连网络</h3>
+            <ol>
+              <li>静态互连网络有没有中间可变开关？</li>
+              <li>动态互连网络的连接状态能不能变？</li>
+              <li>环的结点度通常是多少？</li>
+              <li>n 维超立方体结点度是多少？</li>
+              <li>超立方体距离怎么求？</li>
+              <li>PM2+i 的公式？</li>
+              <li>Cubei 的动作？</li>
+              <li>shuffle 常见动作？</li>
+              <li>Omega 的 2×2 开关基础状态有哪些？</li>
+              <li>多级互联网络相比交叉开关的主要好处？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>没有；能；2；n；编号异或后 1 的个数；`x+2^i mod N`；第 i 位取反；循环移位；直连、交换；硬件开销低。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>9. Omega 路由</h3>
+            <ol>
+              <li>N=16 的 Omega 网络有几级？</li>
+              <li>每级有多少个 2×2 开关？</li>
+              <li>总开关数公式？</li>
+              <li>目的地址逐位寻径看谁的二进制位？</li>
+              <li>异或寻径先算什么？</li>
+              <li>源目的相同的异或结果？</li>
+              <li>阻塞发生在输入端相同还是开关出口冲突？</li>
+              <li>Omega 是阻塞网络还是非阻塞网络？</li>
+              <li>perfect shuffle 是级内交换还是级间连接？</li>
+              <li>STARAN 级控制常实现什么功能？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>4；8；`N/2 × log2N`；目的地址；源地址异或目的地址；0；开关出口冲突；阻塞网络；级间连接；交换功能。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>10. 多处理器与一致性</h3>
+            <ol>
+              <li>UMA 访问所有内存延迟是否大致相同？</li>
+              <li>NUMA 中本地和远程访问哪个慢？</li>
+              <li>监听协议依赖什么共享介质？</li>
+              <li>目录协议更适合什么规模？</li>
+              <li>Cache 一致性关注同一地址还是不同地址顺序？</li>
+              <li>存储一贯性关注什么？</li>
+              <li>Invalidate 写时做什么？</li>
+              <li>Update 写时做什么？</li>
+              <li>MSI 的 S 表示什么？</li>
+              <li>MSI 的 I 表示什么？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>是；远程；总线；较大规模；同一地址多副本；不同地址读写呈现顺序；作废其他副本；广播新值；共享干净副本；无效副本。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>11. 同步与原子操作</h3>
+            <ol>
+              <li>LL 的英文全称？</li>
+              <li>SC 的英文全称？</li>
+              <li>LL/SC 能实现原子交换吗？</li>
+              <li>SC 失败后通常怎么办？</li>
+              <li>旋转锁忙等时 CPU 是否一直退出等待？</li>
+              <li>支持 Cache 一致性后，等待者可以在哪里反复读锁？</li>
+              <li>屏障同步要求多少进程到达后释放？</li>
+              <li>counterlock 保护什么？</li>
+              <li>release 变量控制什么？</li>
+              <li>sense reversing 中 local_sense 是共享还是私有？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>Load Linked；Store Conditional；能；重试；不是，会反复检查；本地 Cache；全部；计数器更新的原子性；是否放行；每个进程私有。</p></details>
+          </div>
+
+          <div class="exercise-card">
+            <h3>12. 综合判定</h3>
+            <ol>
+              <li>题目问“平均访存时间”优先用哪个公式？</li>
+              <li>题目问“每条指令停顿”还要乘什么？</li>
+              <li>题目问“事务次数”先看块大小还是先看 CPI？</li>
+              <li>题目问“可靠性框图”先找串联还是先代数？</li>
+              <li>题目问“无阻塞完成吗”要检查什么？</li>
+              <li>题目问“目录维护多少”按处理器数还是块数？</li>
+              <li>题目问“前者快多少”最后比较时间还是可靠度？</li>
+              <li>题目问“局部不命中率”先找分母还是分子？</li>
+              <li>题目出现“写分配”说明讨论读还是写 miss？</li>
+              <li>题目出现“远程请求处理器挂起”说明要加什么？</li>
+            </ol>
+            <details class="solution-toggle"><summary>答案</summary><p>AMAT；每条指令访存次数；块大小和事务大小；先找串并联结构；每级开关出口是否冲突；块数；执行时间/CPI；分母；写 miss；远程访问停顿周期。</p></details>
+          </div>
         </div>
       </section>
 
-      <section id="q8">
-        <div class="exercise-card">
-          <div class="problem-meta"><span>10 分</span><span>ILP 概念</span><a href="qa.html#pipeline-ilp">复习判定表</a></div>
-          <h2>8. 提高指令级并行性的技术途径</h2>
-          <div class="problem-body">
-            <p>阐述提高指令级并行性的两种技术途径：时间重叠和资源重复。结合流水线技术说明这两种途径如何提升系统性能。除指令级并行之外，还可以从哪些方向提高处理器或系统性能？</p>
-          </div>
-          <details class="solution-toggle">
-            <summary>参考答案</summary>
-            <p>时间重叠：把一条指令的执行拆成多个阶段，不同指令在不同阶段同时推进。流水线就是典型例子：第 1 条在执行时，第 2 条可译码，第 3 条可取指，从而提高吞吐率。</p>
-            <p>资源重复：复制功能部件，使多条指令或多个操作可同时执行。超标量、多发射、多 ALU、多端口寄存器、独立取指/数据 Cache 都属于这个方向。</p>
-            <p>流水线同时用了两者：阶段之间时间重叠，阶段硬件如取指、译码、执行、访存、写回相当于资源分工。除 ILP 外，还可以用存储层次优化、分支预测、预取、多核/线程级并行、向量/SIMD、提高主频、改进 I/O 与互连等方式提高性能。</p>
-          </details>
-        </div>
-      </section>
-
-      <section id="answer-rules" class="focus-section">
-        <h2>做题判定表</h2>
+      <section id="wrongbook" class="focus-section">
+        <h2>错题复盘表</h2>
         <table>
-          <thead><tr><th>题型</th><th>先找什么</th><th>最常用公式/动作</th></tr></thead>
+          <thead><tr><th>错题类型</th><th>复盘问题</th><th>下次做题第一步</th></tr></thead>
           <tbody>
-            <tr><td>BTB</td><td>BTB 命中率、预测精度、两种开销</td><td>`分支比例 × [(1-H)×miss开销 + H×错预测率×错预测开销]`</td></tr>
-            <tr><td>写事务</td><td>读/写比例、命中率、块大小、事务大小、写策略</td><td>列四格：读命中、写命中、读 miss、写 miss。</td></tr>
-            <tr><td>Cache/TLB</td><td>每条指令访存次数、miss penalty、TLB 是否并入</td><td>`CPI = 基本 CPI + 访存次数 × miss率 × penalty`</td></tr>
-            <tr><td>RAID</td><td>哪些是串联必要部件，哪些是并联冗余</td><td>串联相乘，并联用 `1 - 全坏概率`。</td></tr>
-            <tr><td>Omega</td><td>源/目的二进制、每级开关出口</td><td>画路径或列每级开关，查是否抢同一出口。</td></tr>
+            <tr><td>BTB/分支</td><td>我是把 BTB miss 和预测错混在一起了吗？</td><td>先写 `miss 项 + 命中后错预测项`。</td></tr>
+            <tr><td>写事务</td><td>我有没有把“调入整块”和“写一个事务”混掉？</td><td>先列读命中、写命中、读 miss、写 miss 四格。</td></tr>
+            <tr><td>Cache/TLB</td><td>TLB 是并入 miss penalty 还是全访存额外加？</td><td>圈出题目里 TLB miss 的触发对象。</td></tr>
+            <tr><td>流水线</td><td>我是不会看依赖，还是不会数尾巴？</td><td>先标生产者和消费者，再数循环次数和最后尾巴。</td></tr>
+            <tr><td>互连网络</td><td>我只是算了目的地，还是检查了开关冲突？</td><td>逐级列开关出口占用。</td></tr>
+            <tr><td>可靠性</td><td>我把并联冗余当串联必要部件了吗？</td><td>先画“全好才好”还是“至少一个好”。</td></tr>
           </tbody>
         </table>
       </section>
