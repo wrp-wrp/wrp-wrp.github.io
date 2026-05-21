@@ -33,7 +33,6 @@
 
       <header class="hero-panel">
         <div class="hero-copy">
-          <span class="study-label">刷题与自测</span>
           <h1>计算机系统结构练习库</h1>
           <p class="subtitle">这里不是把刚做过的 A 卷原题换个排版，而是用同一批考法生成新参数、新场景的完整卷。完整卷练考试节奏，速测题检查知识点是否真的记住。</p>
           <div class="meta-row">
@@ -55,6 +54,33 @@
           <div class="step">再用“120 道速测”查漏。速测题不是卷子，只用来检查规则有没有记住。</div>
         </div>
         <div class="callout"><strong>本页故意不复刻刚做过的原题</strong>参数、置换、比例和场景都换过。题型相同，是为了练做题流程；数字不同，是为了防止靠记答案过关。</div>
+        <div class="practice-dashboard" aria-label="练习路径">
+          <article>
+            <span>01</span>
+            <strong>整卷模拟</strong>
+            <p>先做完整卷 1-10，练“读题、列式、写单位、控时间”。不要一上来翻答案。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>详细复盘</strong>
+            <p>再做完整卷 11-20。每题答案拆成识别、公式、代入、结论、易错点和评分点。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>速测补洞</strong>
+            <p>最后刷 120 道速测，只检查概念和决策树有没有记住。</p>
+          </article>
+        </div>
+        <div class="topic-strip" aria-label="覆盖专题">
+          <span>流水线停顿</span>
+          <span>BTB/BHT</span>
+          <span>Cache/TLB</span>
+          <span>写策略事务</span>
+          <span>RAID/可靠性</span>
+          <span>Omega/互连函数</span>
+          <span>目录一致性</span>
+          <span>ILP/多发射</span>
+        </div>
       </section>
 
       <section id="paper-a">
@@ -405,7 +431,19 @@
       <section id="deep-papers">
         <h2>完整卷 11-20：详细答案版</h2>
         <p class="section-lead">这 10 套是专门给复盘用的。每套 8 大题，题目不重复前面的参数；答案都按“识别题型、公式、代入、结论、易错点”展开。</p>
-        <div class="exercise-bank" id="detailed-paper-bank"></div>
+        <div class="paper-toolbar">
+          <div>
+            <strong>详细卷导航</strong>
+            <p>先选一套卷子做题，再逐题展开答案。答案会额外给出“考场写法”和“评分点”。</p>
+          </div>
+          <div class="paper-actions">
+            <button type="button" id="expand-current">展开本卷答案</button>
+            <button type="button" id="collapse-current">收起答案</button>
+          </div>
+        </div>
+        <div class="paper-tabs" id="paper-tabs" aria-label="详细卷列表"></div>
+        <div class="paper-status" id="paper-status"></div>
+        <div class="exercise-bank detailed-paper-bank" id="detailed-paper-bank"></div>
       </section>
 
       <section id="speed-drills">

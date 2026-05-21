@@ -1051,56 +1051,262 @@
   const mount = document.getElementById("detailed-paper-bank");
   if (!mount) return;
 
-  const labeledParagraph = (text) => {
-    const p = document.createElement("p");
-    const splitAt = text.indexOf("：");
-    if (splitAt > 0 && splitAt < 8) {
-      const strong = document.createElement("strong");
-      strong.textContent = text.slice(0, splitAt + 1);
-      p.append(strong, document.createTextNode(text.slice(splitAt + 1)));
-    } else {
-      p.textContent = text;
+  const tabsMount = document.getElementById("paper-tabs");
+  const statusMount = document.getElementById("paper-status");
+  const expandButton = document.getElementById("expand-current");
+  const collapseButton = document.getElementById("collapse-current");
+  let activePaper = 0;
+
+  const storageKey = (paperIndex, questionIndex) =>
+    `cs-architecture-review:${papers[paperIndex].title}:q${questionIndex + 1}`;
+
+  const readState = (key) => {
+    try {
+      return localStorage.getItem(key) || "";
+    } catch (_error) {
+      return "";
     }
-    return p;
   };
 
-  papers.forEach((paper) => {
-    const card = document.createElement("div");
-    card.className = "exercise-card";
+  const writeState = (key, value) => {
+    try {
+      if (value) {
+        localStorage.setItem(key, value);
+      } else {
+        localStorage.removeItem(key);
+      }
+    } catch (_error) {
+      // The page still works as a static practice bank if localStorage is blocked.
+    }
+  };
 
+  const appendInlineFragments = (target, text) => {
+    text.split(/(`[^`]+`)/g).filter(Boolean).forEach((part) => {
+      if (part.startsWith("`") && part.endsWith("`")) {
+        const code = document.createElement("code");
+        code.textContent = part.slice(1, -1);
+        target.append(code);
+      } else {
+        target.append(document.createTextNode(part));
+      }
+    });
+  };
+
+  const strategyFor = (topic) => {
+    if (/Cache|TLB/.test(topic)) {
+      return "先判断题目要的是 AMAT、CPI 还是事务数；再拆 miss penalty：固定延迟、传输时间、脏块写回、TLB 是否并入；最后乘 miss 率和每条指令访存次数。";
+    }
+    if (/写策略|写直达|写回/.test(topic)) {
+      return "先把访问分成读/写、命中/不命中四格；写命中看写直达或写回，写不命中看写分配或不写分配，再把整块调入和脏块写回换成事务数。";
+    }
+    if (/流水|MIPS/.test(topic)) {
+      return "先写无停顿理想周期，再逐条找真正会用到上一条结果的地方；有定向时 ALU 结果通常可转发，load 立刻被用常停 1 拍，分支另算控制罚。";
+    }
+    if (/BTB|BHT|分支/.test(topic)) {
+      return "把条件分支比例放在最外层；BTB 未命中只算目标地址没找到的代价，BTB 命中后才进入方向预测是否错误的代价。";
+    }
+    if (/RAID|MTT|可靠/.test(topic)) {
+      return "先画串并联关系：必要部件相乘，冗余部件用 1-全坏概率；RAID 先确认是条带、镜像还是校验，再算容量和容错。";
+    }
+    if (/Omega|互连|Cube|PM2/.test(topic)) {
+      return "先把编号补齐到 log2N 位；Cube 是翻某一位，PM2 是加减 2^i 取模，Omega 路由要逐级看控制位和开关出口冲突。";
+    }
+    if (/目录|MSI|一致性|LL\/SC|同步|锁/.test(topic)) {
+      return "先写当前状态和拥有者/共享者，再写请求会发给谁、谁被作废或降级，最后写新状态；同步题把每次事件折算成每条指令的额外 CPI。";
+    }
+    if (/ILP|超标量|VLIW|超流水/.test(topic)) {
+      return "先区分并行性来自硬件动态发现、编译器静态打包，还是流水级切细；计算时用组数或小周期，不要直接套机器宽度。";
+    }
+    if (/远程|NUMA/.test(topic)) {
+      return "先把 ns 换成时钟周期：周期时间=1/频率；远程额外 CPI=远程访问比例×远程访问周期数。";
+    }
+    return "先标出题型和单位，再写公式、代入数字、给结论；最后补一句易错点，考试卷面会更稳。";
+  };
+
+  const rubricFor = (topic) => {
+    if (/Cache|TLB/.test(topic)) {
+      return ["地址字段或访问口径写清楚", "miss penalty 的固定延迟、传输、写回/TLB 分开列", "乘上 miss 率和每条指令访存次数", "最后写 CPI/AMAT/事务数并保留单位"];
+    }
+    if (/流水|MIPS/.test(topic)) {
+      return ["画出或说明理想流水线周期", "逐条指出 RAW 或控制相关", "说明定向能否消除停顿", "把数据停顿和分支罚周期加到总周期"];
+    }
+    if (/BTB|BHT|分支/.test(topic)) {
+      return ["区分 BTB 命中率和方向预测准确率", "列出 BTB miss 开销", "列出预测错误开销", "乘分支比例得到 CPI 增量"];
+    }
+    if (/RAID|可靠|MTT/.test(topic)) {
+      return ["写出 RAID 结构或可靠性框图", "容量/容错规则说清楚", "串并联可靠度表达式正确", "数值结果带百分比或小时单位"];
+    }
+    if (/Omega|互连|Cube|PM2/.test(topic)) {
+      return ["编号补齐二进制位数", "写出使用的互连函数或寻径规则", "逐级计算或检查开关出口", "说明是否冲突/最终连接到谁"];
+    }
+    return ["识别题型", "写出公式或状态变化规则", "代入数字或逐步推演", "给出结论和易错点"];
+  };
+
+  const makeAnswerStep = (line) => {
+    const step = document.createElement("div");
+    step.className = "answer-step";
+    const splitAt = line.indexOf("：");
+    const hasLabel = splitAt > 0 && splitAt <= 8;
+
+    const label = document.createElement("span");
+    label.className = "answer-label";
+    label.textContent = hasLabel ? line.slice(0, splitAt) : "说明";
+
+    const body = document.createElement("p");
+    appendInlineFragments(body, hasLabel ? line.slice(splitAt + 1) : line);
+    step.append(label, body);
+    return step;
+  };
+
+  const getCompletion = (paperIndex) =>
+    papers[paperIndex].questions.reduce((count, _question, questionIndex) => {
+      return count + (readState(storageKey(paperIndex, questionIndex)) ? 1 : 0);
+    }, 0);
+
+  const renderTabs = () => {
+    if (!tabsMount) return;
+    tabsMount.textContent = "";
+    papers.forEach((paper, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = index === activePaper ? "paper-tab active" : "paper-tab";
+      button.setAttribute("aria-pressed", String(index === activePaper));
+      button.dataset.paperIndex = String(index);
+      button.innerHTML = `<strong>${paper.title.replace("完整卷 ", "卷 ")}</strong><span>${getCompletion(index)}/8 已标记</span>`;
+      button.addEventListener("click", () => renderPaper(index));
+      tabsMount.append(button);
+    });
+  };
+
+  const renderPaper = (paperIndex) => {
+    activePaper = paperIndex;
+    const paper = papers[paperIndex];
+    mount.textContent = "";
+
+    const topics = [...new Set(paper.questions.map((question) => question.topic))];
+    if (statusMount) {
+      statusMount.innerHTML = `<strong>${paper.title}</strong><span>8 大题</span><span>约 100 分</span><span>${topics.slice(0, 4).join(" / ")} 等专题</span>`;
+    }
+
+    const paperShell = document.createElement("article");
+    paperShell.className = "detailed-paper";
+
+    const header = document.createElement("div");
+    header.className = "paper-header";
     const title = document.createElement("h3");
     title.textContent = paper.title;
-    card.append(title);
+    const intro = document.createElement("p");
+    intro.textContent = "建议先按考试状态完整写一遍，再逐题展开答案。右侧状态只保存在本机浏览器，用来帮你复盘。";
+    header.append(title, intro);
 
-    const problemList = document.createElement("ol");
-    paper.questions.forEach((question) => {
-      const li = document.createElement("li");
-      const strong = document.createElement("strong");
-      strong.textContent = `（${question.score}分）${question.topic}：`;
-      li.append(strong, document.createTextNode(question.prompt));
-      problemList.append(li);
+    const topicList = document.createElement("div");
+    topicList.className = "topic-strip compact";
+    topics.forEach((topic) => {
+      const chip = document.createElement("span");
+      chip.textContent = topic;
+      topicList.append(chip);
     });
-    card.append(problemList);
+    header.append(topicList);
+    paperShell.append(header);
 
-    const details = document.createElement("details");
-    details.className = "solution-toggle";
-    const summary = document.createElement("summary");
-    summary.textContent = "详细答案";
-    details.append(summary);
+    const questionList = document.createElement("div");
+    questionList.className = "question-list";
 
-    const answerList = document.createElement("ol");
-    paper.questions.forEach((question) => {
-      const li = document.createElement("li");
-      const heading = document.createElement("p");
-      const strong = document.createElement("strong");
-      strong.textContent = question.topic;
-      heading.append(strong);
-      li.append(heading);
-      question.answer.forEach((line) => li.append(labeledParagraph(line)));
-      answerList.append(li);
+    paper.questions.forEach((question, questionIndex) => {
+      const card = document.createElement("article");
+      card.className = "question-card";
+
+      const qHeader = document.createElement("div");
+      qHeader.className = "question-header";
+      const meta = document.createElement("div");
+      meta.className = "question-meta";
+      meta.innerHTML = `<span class="question-number">题 ${questionIndex + 1}</span><span class="score-badge">${question.score} 分</span><span class="topic-badge">${question.topic}</span>`;
+
+      const stateLabel = document.createElement("label");
+      stateLabel.className = "state-select";
+      stateLabel.append(document.createTextNode("状态"));
+      const select = document.createElement("select");
+      select.innerHTML = '<option value="">未做</option><option value="done">已做</option><option value="wrong">错题</option><option value="solid">掌握</option>';
+      select.value = readState(storageKey(paperIndex, questionIndex));
+      select.addEventListener("change", () => {
+        writeState(storageKey(paperIndex, questionIndex), select.value);
+        renderTabs();
+      });
+      stateLabel.append(select);
+      qHeader.append(meta, stateLabel);
+
+      const prompt = document.createElement("p");
+      prompt.className = "prompt-text";
+      appendInlineFragments(prompt, question.prompt);
+
+      const details = document.createElement("details");
+      details.className = "solution-toggle structured-solution";
+      const summary = document.createElement("summary");
+      summary.textContent = "展开详细答案与评分点";
+      details.append(summary);
+
+      const panel = document.createElement("div");
+      panel.className = "solution-panel";
+      const strategy = document.createElement("div");
+      strategy.className = "strategy-box";
+      strategy.innerHTML = "<strong>考场写法</strong>";
+      const strategyText = document.createElement("p");
+      strategyText.textContent = strategyFor(question.topic);
+      strategy.append(strategyText);
+
+      const steps = document.createElement("div");
+      steps.className = "answer-steps";
+      question.answer.forEach((line) => steps.append(makeAnswerStep(line)));
+
+      const rubric = document.createElement("div");
+      rubric.className = "rubric-box";
+      const rubricTitle = document.createElement("strong");
+      rubricTitle.textContent = "评分点";
+      const rubricList = document.createElement("ol");
+      rubricFor(question.topic).forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        rubricList.append(li);
+      });
+      rubric.append(rubricTitle, rubricList);
+
+      panel.append(strategy, steps, rubric);
+      details.append(panel);
+      card.append(qHeader, prompt, details);
+      questionList.append(card);
     });
-    details.append(answerList);
-    card.append(details);
-    mount.append(card);
-  });
+
+    paperShell.append(questionList);
+    mount.append(paperShell);
+    renderTabs();
+  };
+
+  const setAllSolutions = (open) => {
+    mount.querySelectorAll("details.structured-solution").forEach((details) => {
+      details.open = open;
+    });
+  };
+
+  expandButton?.addEventListener("click", () => setAllSolutions(true));
+  collapseButton?.addEventListener("click", () => setAllSolutions(false));
+
+  const normalizeSpeedAnswers = () => {
+    document.querySelectorAll("#speed-drills .solution-toggle > p").forEach((paragraph) => {
+      const raw = paragraph.textContent.trim().replace(/。$/, "");
+      const parts = raw.split("；").map((part) => part.trim()).filter(Boolean);
+      if (parts.length < 3) return;
+
+      const list = document.createElement("ol");
+      list.className = "speed-answer-list";
+      parts.forEach((part) => {
+        const li = document.createElement("li");
+        appendInlineFragments(li, part);
+        list.append(li);
+      });
+      paragraph.replaceWith(list);
+    });
+  };
+
+  normalizeSpeedAnswers();
+  renderPaper(0);
 })();
