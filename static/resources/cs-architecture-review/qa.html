@@ -24,7 +24,8 @@
         <a href="#network-sync">11. 互连网络与同步</a>
         <a href="#multiprocessor">12. 多处理器与一致性</a>
         <a href="#exam-sheet">13. 考试清单</a>
-        <a href="#mini-drills">14. 小题自测</a>
+        <a href="#recent-exam">14. 最近真题补丁</a>
+        <a href="#mini-drills">15. 小题自测</a>
       </nav>
     </aside>
     <main>
@@ -34,6 +35,7 @@
           <a class="button-link" href="pipeline.html">流水线专题</a>
           <a class="button-link" href="memory.html">存储专题</a>
           <a class="button-link" href="network.html">互连网络专题</a>
+          <a class="button-link" href="mock-exam.html">仿真试卷</a>
         </div>
       </div>
 
@@ -47,7 +49,7 @@
           </div>
         </div>
         <div class="hero-aside">
-          <div class="hero-stat"><span>14</span><strong>复习专题</strong></div>
+          <div class="hero-stat"><span>15</span><strong>复习专题</strong></div>
           <div class="hero-stat"><span>80+</span><strong>判定规则</strong></div>
           <div class="hero-stat"><span>考前</span><strong>可直接查</strong></div>
         </div>
@@ -244,6 +246,10 @@
           </tbody>
         </table>
         <div class="callout"><strong>预测分支失败</strong>就是预测不跳。循环分支前若干轮通常实际跳回循环开头，所以会错取 BNZ 后面的顺序指令；如果顺序下一条是 `halt`，图里就会出现一个被冲掉的 `halt IF`。</div>
+        <h3>BTB 命中后才谈预测错误</h3>
+        <p>BTB 是“我知不知道这条分支的目标地址”。如果 BTB 不命中，流水线通常只能先顺序取指，之后发现这是分支再付出 BTB miss 开销；这时还没用 BTB 给出的目标路径，所以不再额外算“BTB 命中后的预测错误”。</p>
+        <div class="formula">CPI = 基本 CPI + 分支比例 × [(1 - BTB 命中率) × BTB 不命中开销 + BTB 命中率 × (1 - 预测精度) × 预测错误开销]</div>
+        <p>例如条件分支 5%，基本 CPI=1，BTB 命中率 80%，不命中 4 拍，预测精度 90%，预测错 8 拍：额外 CPI = `0.05 × (0.2×4 + 0.8×0.1×8) = 0.072`，总 CPI = 1.072。若 BTB 命中率升到 90%，总 CPI = 1.056。</p>
         <h3>一位预测器为什么循环会错两次</h3>
         <p>一个循环 10 次，前 9 次跳，最后 1 次不跳。一位预测器只记上一次结果。上轮循环退出时留下“不跳”，所以下轮第一次会错；本轮前面一直跳，最后退出时又会错。成功率 90%，预测准确率却是 8/10 = 80%。</p>
         <h3>Branch Folding</h3>
@@ -280,6 +286,16 @@
         <div class="formula">写回且 50% 脏块：平均 miss penalty = 1.5 × 48.04 = 72.06</div>
         <div class="formula">CPI = 基本 CPI + 每条指令访存次数 × Cache miss 率 × miss penalty</div>
         <p>如果额外统计指令 TLB miss，每条指令再加 `1 × 0.2% × 20 = 0.04`；如果所有 1.2 次访存都查 TLB，则额外加 `1.2 × 0.2% × 20 = 0.048`。</p>
+        <h3>64B 块、8 个存储体、总线 8B/拍那类题</h3>
+        <p>先别急着把 8 个存储体乘起来。题目说“每个存储体固定延迟 32 拍准备数据，8 个存储体能完全并行传输”，意思是准备阶段并行，所以固定延迟还是 32 拍；传输阶段受总线限制，64B / 8B 每拍 = 8 拍。因此一次调入 64B 块的读事务开销是 `32 + 8 = 40` 拍。</p>
+        <table>
+          <thead><tr><th>情况</th><th>miss penalty</th><th>CPI 口径</th></tr></thead>
+          <tbody>
+            <tr><td>理想 TLB，写回，50% 脏块</td><td>平均 `1.5 × 40 = 60` 拍</td><td>`CPI = 1.4 + 1.2 × miss率 × 60`</td></tr>
+            <tr><td>TLB miss 只在 Cache miss 取块地址时算，TLB miss 率 0.2%，额外 40 拍</td><td>平均 `1.5 × (40 + 0.002 × 40) = 60.12` 拍</td><td>`CPI = 1.4 + 1.2 × miss率 × 60.12`</td></tr>
+          </tbody>
+        </table>
+        <p>所以 64KB miss 率 1.5% 时，理想 TLB 的 CPI 是 `1.4 + 1.2×0.015×60 = 2.48`；实际 TLB 按这份卷子的标准口径是 `2.48216`。128KB miss 率 1% 时，对应是 `2.12` 和 `2.12144`。</p>
         <h3>局部不命中率与全局不命中率</h3>
         <table>
           <thead><tr><th>概念</th><th>定义</th><th>例子</th></tr></thead>
@@ -331,6 +347,18 @@
             <tr><td>写不命中怎么办</td><td>写分配、不写分配</td><td>写回常配写分配；写直达常配不写分配。</td></tr>
           </tbody>
         </table>
+        <h3>读写事务决策树</h3>
+        <p>读没有“写回/写直达”的选择：读命中就直接从 Cache 读，读不命中就从下一级把整块调入 Cache。写才分两层判断：先看写命中还是写不命中；写命中看写直达/写回，写不命中看写分配/不写分配。</p>
+        <table>
+          <thead><tr><th>访问</th><th>命中</th><th>写直达</th><th>写回</th></tr></thead>
+          <tbody>
+            <tr><td>读</td><td>命中</td><td colspan="2">0 次下级事务，直接读 Cache。</td></tr>
+            <tr><td>读</td><td>不命中</td><td colspan="2">从下级读入整块。块 128B、事务 64B 时，就是 2 次读事务。</td></tr>
+            <tr><td>写</td><td>命中</td><td>写 Cache，同时写下级；若一次事务 64B，通常按 1 次写事务。</td><td>只写 Cache，置 dirty，暂时 0 次下级事务。</td></tr>
+            <tr><td>写</td><td>不命中，写分配</td><td>先读入整块，再写 Cache 和下级；128B 块加 64B 事务时通常是 2 读 + 1 写。</td><td>先读入整块；若被替换块脏，还要先写回旧块。</td></tr>
+          </tbody>
+        </table>
+        <p>例：90% 访存命中，30% 是写，块 128B，事务 64B，写失效采用写分配。写直达平均事务数为 `0.9×0.3×1 + 0.1×0.7×2 + 0.1×0.3×3 = 0.50`。写回且 20% 脏块时，只有 miss 才访问下级：`0.1 × (2 + 0.2×2) = 0.24`。</p>
         <h3>三类失效 3C</h3>
         <table>
           <thead><tr><th>类型</th><th>为什么发生</th><th>常见降低方法</th></tr></thead>
@@ -403,6 +431,10 @@
         <div class="formula">指数分布且独立时：系统失效率 = 各串联必要部件失效率之和；MTTF = 1 / 系统失效率</div>
         <p>串联系统任何一个必要部件坏就坏，因此失效率相加；并联系统要所有副本都坏才失败，可靠度通常写成 `1 - 全坏概率`。</p>
         <p>例：10 块盘每块 MTTF 为 1,000,000 小时，外加控制器 500,000 小时、电源和风扇各 200,000 小时、SCSI 线 1,000,000 小时。失效率为 `10/1000000 + 1/500000 + 1/200000 + 1/200000 + 1/1000000 = 23/1000000`，所以 MTTF 约为 `1000000/23 = 43500` 小时。</p>
+        <h3>RAID10 可靠性真题怎么写</h3>
+        <p>4 块盘 RAID10 可以看成“两组镜像再条带”。一组镜像里两块盘至少有一块好即可，所以一组可靠度是 `1 - (1 - R3)^2`；两组都要好，所以平方。双控制器是并联，通道适配器是串联必要部件。</p>
+        <div class="formula">R = [1 - (1 - R1)^2] × R2 × [1 - (1 - R3)^2]^2</div>
+        <p>代入 R1=0.9、R2=0.95、R3=0.95：`R = 0.99 × 0.95 × 0.9975² = 0.9358`，保留两位百分数就是 93.58%。画可靠性框图时就是：控制器并联，接一个通道适配器，再接两个镜像磁盘组串联。</p>
         <h3>RAID 容量与小写</h3>
         <table>
           <thead><tr><th>级别</th><th>可用容量粗算</th><th>小写代价</th></tr></thead>
@@ -475,6 +507,16 @@
         <p>2×2 开关最基础的两种状态是直连和交换。直连就是上进上出、下进下出；交换就是上进下出、下进上出。有些课件扩展成更多模式，但做基础路由题先认这两个。</p>
         <h3>Omega 网络寻径</h3>
         <p>Omega 网络常按目的地址二进制位逐级决定 2×2 开关走上出口还是下出口。N=8 时有 3 级，目标地址有 3 位；每级看一位。若多个输入在同一级同一个开关想走同一个出口，就发生阻塞。</p>
+        <h3>目的地址逐位寻径 vs 源地址异或目的地址寻径</h3>
+        <p>这两种写法不是在说两张完全不同的网，而是在说“控制每一级开关时看哪串控制位”。直接看目的地址，适合课件里标准 Omega 的逐级目标位路由；看 `源地址 ⊕ 目的地址`，是在一些混洗/立方体式路由题里用差异位决定每级是否交换。</p>
+        <table>
+          <thead><tr><th>方法</th><th>控制位含义</th><th>做题动作</th></tr></thead>
+          <tbody>
+            <tr><td>目的地址逐位寻径</td><td>第 k 级看目的地址某一位，决定走上出口或下出口。</td><td>从输入端沿图走，逐级按目标位选出口；若两路抢同一出口则阻塞。</td></tr>
+            <tr><td>源地址 ⊕ 目的地址寻径</td><td>异或结果中为 1 的位表示源和目的在这一位不同，需要在相应级改变路径。</td><td>先把源和目的写成二进制，异或得到控制码，再逐级检查开关冲突。</td></tr>
+          </tbody>
+        </table>
+        <p>真题给 `π=(0)(1,2)(3)(5,6)(4)(7)` 时，只有 1→2、2→1、5→6、6→5 四条非平凡连接。按异或：`001⊕010=011`，`010⊕001=011`，`101⊕110=011`，`110⊕101=011`。它们的控制码相同，容易在同一级争同一开关出口；所以要画每条路径或列每级开关占用，不能只看最终目的是否不同。</p>
         <table>
           <thead><tr><th>动态网络</th><th>优点</th><th>代价</th></tr></thead>
           <tbody>
@@ -587,8 +629,20 @@
         </ol>
       </section>
 
+      <section id="recent-exam" class="focus-section">
+        <h2>14. 最近真题补丁</h2>
+        <p class="section-lead">这块专门对应最近几次卡住的真题问法：不是新知识，而是“考试卷上它到底想让你算什么”。</p>
+        <div class="grid">
+          <div class="card accent-blue"><h3>BTB CPI</h3><p>BTB 不命中先算“不知道目标地址”的开销；只有 BTB 命中且用了预测路径后，才算预测错误开销。</p></div>
+          <div class="card accent-green"><h3>写事务数</h3><p>读 miss 调入整块；写命中由写直达/写回决定；写 miss 再看写分配。事务大小小于块大小时，整块要拆成多次事务。</p></div>
+          <div class="card accent-purple"><h3>TLB 口径</h3><p>卷子若说“Cache 不命中时产生的地址有 0.2% TLB miss”，就把 TLB 额外拍数并进 miss penalty；若说每次取指/数据访问查 TLB，才按所有访存额外加。</p></div>
+          <div class="card accent-amber"><h3>Omega/RAID</h3><p>Omega 题要列每级开关是否争出口；RAID10 可靠性先化简镜像对，再和控制器、适配器串并联组合。</p></div>
+        </div>
+        <p>我也单独做了一套按 A 卷结构组织的整卷练习：<a class="button-link" href="mock-exam.html">打开仿真试卷</a></p>
+      </section>
+
       <section id="mini-drills" class="self-test-section">
-        <h2>14. 小题自测</h2>
+        <h2>15. 小题自测</h2>
         <ol>
           <li>`LW R1,0(R2)` 后紧跟 `ADD R3,R1,R4`，有正常定向时停几拍？</li>
           <li>`SUB R4,R3,R2` 后紧跟 `BNZ R4,LOOP`，本课口径停几拍？</li>

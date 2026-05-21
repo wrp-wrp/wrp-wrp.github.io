@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>仿真试卷 · 计算机系统结构复习</title>
+  <link rel="stylesheet" href="review-subpage.css">
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <strong>试卷目录</strong>
+      <nav>
+        <a href="#instructions">答题说明</a>
+        <a href="#q1">1. MIPS 流水线</a>
+        <a href="#q2">2. BTB 与分支预测</a>
+        <a href="#q3">3. Cache 写事务</a>
+        <a href="#q4">4. Cache/TLB CPI</a>
+        <a href="#q5">5. RAID10 可靠性</a>
+        <a href="#q6">6. Omega 网络</a>
+        <a href="#q7">7. 远程访存 CPI</a>
+        <a href="#q8">8. ILP 简答</a>
+        <a href="#answer-rules">做题判定表</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div class="links">
+          <a class="button-link" href="index.html">返回总复习页</a>
+          <a class="button-link" href="qa.html">问答补充页</a>
+          <a class="button-link" href="memory.html">存储专题</a>
+          <a class="button-link" href="network.html">互连网络专题</a>
+        </div>
+      </div>
+
+      <header class="hero-panel">
+        <div class="hero-copy">
+          <span class="study-label">仿真 A 卷</span>
+          <h1>计算机系统结构仿真试卷（一）</h1>
+          <p class="subtitle">按期末卷风格组织：8 题 100 分。先独立写过程，再展开参考答案。重点不是押题，而是训练“看到题目知道套哪条决策树”。</p>
+          <div class="meta-row">
+            <span class="meta">100 分</span><span class="meta">建议 120 分钟</span><span class="meta">计算题写过程</span><span class="meta">答案可折叠</span>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-stat"><span>8</span><strong>题型模块</strong></div>
+          <div class="hero-stat"><span>100</span><strong>总分</strong></div>
+          <div class="hero-stat"><span>先做</span><strong>再展开答案</strong></div>
+        </div>
+      </header>
+
+      <section id="instructions" class="focus-section">
+        <h2>答题说明</h2>
+        <ol>
+          <li>每道计算题都先写“基本项 + 额外开销项”，不要只写最后数字。</li>
+          <li>遇到百分比先化成小数，遇到 GHz/ns 先换成周期数。</li>
+          <li>流水线题先数循环次数，再区分“每轮间隔”和“最后一轮尾巴”。</li>
+          <li>Cache/TLB 题先判断 TLB 是并入 miss penalty，还是对所有访存额外加。</li>
+        </ol>
+      </section>
+
+      <section id="q1">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>15 分</span><span>流水线时空图</span><a href="qa.html#pipeline-stall">复习判定表</a></div>
+          <h2>1. MIPS 流水线循环</h2>
+          <div class="problem-body">
+            <p>在经典 5 段 MIPS 流水线上运行如下循环，R3 初值为 R2 + 396。所有访存均命中 Cache，同一周期对同一寄存器的写和读可通过寄存器定向。</p>
+            <pre><code>LOOP:  LW   R1, 0(R2)
+       ADDI R1, R1, #1
+       SW   0(R2), R1
+       ADDI R2, R2, #4
+       SUB  R4, R3, R2
+       BNZ  R4, LOOP</code></pre>
+            <ol>
+              <li>无其他定向硬件，分支采用排空流水线策略，求总周期数。</li>
+              <li>有正常定向路径，分支采用预测分支失败策略，求总周期数。</li>
+              <li>有正常定向路径，采用单周期延迟分支和指令调度，给出一种调度后序列并求总周期数。</li>
+            </ol>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>循环次数：`396 / 4 = 99`。</p>
+            <ol>
+              <li>无定向时，`LW -> ADDI`、`ADDI -> SW`、`SUB -> BNZ` 都需要等，按课件时空图每轮第 1 条到下轮第 1 条间隔 15 拍。末轮 BNZ 在 ID 后还要 EX/MEM/WB 三拍，所以总周期 `15×99 + 3 = 1488`。</li>
+              <li>有正常定向后，每轮间隔为 9 拍；末轮尾巴仍加 3 拍。总周期 `9×99 + 3 = 894`。</li>
+              <li>一种调度：`LW R1,0(R2); ADDI R2,R2,#4; SUB R4,R3,R2; ADDI R1,R1,#1; BNZ R4,LOOP; SW R1,-4(R2)`。每轮间隔 6 拍，末轮最后的 `SW` 在 ID 后还要 4 拍，总周期 `6×99 + 4 = 598`。</li>
+            </ol>
+          </details>
+        </div>
+      </section>
+
+      <section id="q2">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>10 分</span><span>分支预测</span><a href="qa.html#branch">复习判定表</a></div>
+          <h2>2. BTB 与分支预测 CPI</h2>
+          <div class="problem-body">
+            <p>条件转移指令占全部指令 5%，其他指令基本 CPI 为 1。流水线只对条件转移指令使用 BTB。BTB 命中率为 80%，BTB 不命中的开销为 4 拍；BTB 命中后，分支方向预测精度为 90%，预测错误开销为 8 拍。</p>
+            <ol>
+              <li>求程序实际 CPI。</li>
+              <li>若 BTB 命中率提高到 90%，其他条件不变，求程序实际 CPI。</li>
+            </ol>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <div class="formula">CPI = 1 + 0.05 × [(1-H)×4 + H×(1-0.9)×8]</div>
+            <p>H=0.8：`CPI = 1 + 0.05×(0.2×4 + 0.8×0.1×8) = 1.072`。</p>
+            <p>H=0.9：`CPI = 1 + 0.05×(0.1×4 + 0.9×0.1×8) = 1.056`。</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="q3">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>15 分</span><span>Cache 写策略</span><a href="qa.html#cache-design">复习判定表</a></div>
+          <h2>3. Cache 写事务次数</h2>
+          <div class="problem-body">
+            <p>一台计算机执行程序时，90% 访存能够命中 Cache，其中 30% 是写操作。最后一级 Cache 块大小为 128B，一次内存读写事务存取 64B 数据。写失效时采用写分配法。</p>
+            <ol>
+              <li>采用写直达 Cache 机制时，一次访存指令导致的平均实际访存事务次数是多少？</li>
+              <li>采用写回法 Cache 机制时，任意时刻 Cache 中 20% 的块为脏块，一次访存指令导致的平均实际访存事务次数是多少？</li>
+            </ol>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>块 128B，事务 64B，所以调入或写回整块都需要 2 次事务。</p>
+            <p>写直达：读命中 0；写命中 1；读 miss 2；写 miss 写分配为 2 次读入整块 + 1 次写直达。平均事务数：</p>
+            <div class="formula">0.9×0.3×1 + 0.1×0.7×2 + 0.1×0.3×3 = 0.50</div>
+            <p>写回：命中不访问下级；miss 时一定读入新块 2 次，若替换脏块还要写回旧块 2 次，脏块概率 20%。</p>
+            <div class="formula">0.1 × (2 + 0.2×2) = 0.24</div>
+          </details>
+        </div>
+      </section>
+
+      <section id="q4">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>20 分</span><span>Cache/TLB CPI</span><a href="qa.html#cache-tlb">复习判定表</a></div>
+          <h2>4. Cache/TLB 与写回脏块</h2>
+          <div class="problem-body">
+            <p>某处理器在 100% 命中内部 Cache 时 CPI 为 1.4。Cache miss 时从外部主存取块。Cache 块大小 64B，物理分布在 8 个独立存储体上；每个存储体需要 32 拍固定延迟准备数据；总线最高传输速率为 8B/拍，8 个存储体可并行传输给处理器。处理器无写缓冲，写操作采用写回机制。Cache 中 50% 的块为脏块，20% 的指令是访存指令。64KB 与 128KB 直接映像混合 Cache 的 miss 率分别为 1.5% 和 1%。</p>
+            <ol>
+              <li>理想 TLB 情况下，分别求两种 Cache 的实际 CPI。</li>
+              <li>若 CPU 在 Cache miss 时产生的地址有 0.2% 未在 TLB 找到，TLB miss 额外 40 拍，分别求实际 CPI。</li>
+            </ol>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>一次调入 64B 块：固定延迟 32 拍 + 传输 64B/8B = 8 拍，共 40 拍。写回且 50% 脏块，所以平均 1.5 次块事务。</p>
+            <p>理想 TLB：平均 miss penalty = `1.5×40 = 60`。每条指令访存次数 = `1 + 20% = 1.2`。</p>
+            <div class="formula">64KB: 1.4 + 1.2×0.015×60 = 2.48</div>
+            <div class="formula">128KB: 1.4 + 1.2×0.010×60 = 2.12</div>
+            <p>实际 TLB：这份题的口径是把 TLB miss 并进 Cache miss penalty。</p>
+            <div class="formula">平均 miss penalty = 1.5 × (40 + 0.002×40) = 60.12</div>
+            <div class="formula">64KB: 1.4 + 1.2×0.015×60.12 = 2.48216</div>
+            <div class="formula">128KB: 1.4 + 1.2×0.010×60.12 = 2.12144</div>
+          </details>
+        </div>
+      </section>
+
+      <section id="q5">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>10 分</span><span>RAID 可靠性</span><a href="qa.html#memory-io">复习判定表</a></div>
+          <h2>5. RAID10 可靠性</h2>
+          <div class="problem-body">
+            <p>一个 RAID10 系统由 4 块磁盘组成：磁盘 1、2 构成一组镜像，磁盘 3、4 构成一组镜像，两组之间条带化。系统采用双阵列控制器，任意一个控制器失效不影响系统工作；通道适配器只有一个。已知阵列控制器可靠度 R1=0.9，通道适配器可靠度 R2=0.95，磁盘可靠度 R3=0.95。</p>
+            <ol>
+              <li>画出可靠性框图的串并联关系。</li>
+              <li>写出系统可靠度表达式。</li>
+              <li>计算可靠度，保留两位百分数。</li>
+            </ol>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>控制器并联，通道适配器串联，两个镜像磁盘组串联。每个镜像组可靠度为 `1-(1-R3)^2`。</p>
+            <div class="formula">R = [1-(1-R1)^2] × R2 × [1-(1-R3)^2]^2</div>
+            <p>代入：`R = 0.99 × 0.95 × 0.9975² = 0.9358`，即 93.58%。</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="q6">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>10 分</span><span>Omega 网络</span><a href="qa.html#network-sync">复习判定表</a></div>
+          <h2>6. Omega 网络寻径</h2>
+          <div class="problem-body">
+            <p>Omega 网络又称多级混洗-交换网络，N=8。</p>
+            <ol>
+              <li>Omega 网络的 2×2 开关模块通常采用什么控制方式？级间互连通常采用什么连接方式？</li>
+              <li>若采用源地址与目的地址异或寻径法，分析置换 `π=(0)(1,2)(3)(5,6)(4)(7)` 能否无阻塞完成传输。</li>
+            </ol>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>开关模块通常采用单元控制；级间互连采用均匀洗牌，也就是 perfect shuffle。</p>
+            <p>置换中非平凡连接为 `1->2, 2->1, 5->6, 6->5`。写成 3 位二进制后，四条连接的源目的异或均为 `011`，控制路径高度相似。继续按图逐级检查开关占用，会出现同一级同一 2×2 开关同一出口被多条连接争用，因此不能无阻塞同时完成。</p>
+            <p>考试写法：列出非平凡连接、写出异或控制码、说明发生开关出口冲突，结论“不能无阻塞完成”。</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="q7">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>10 分</span><span>远程访存</span><a href="qa.html#units">复习判定表</a></div>
+          <h2>7. 多处理器远程访问 CPI</h2>
+          <div class="problem-body">
+            <p>一台包含 16 个处理器的多处理机，远程存储器访问时间为 200ns。除远程访问外，其他访问均命中本地存储器。发出远程请求时本处理器挂起。处理器频率为 2GHz，基本 CPI 为 1。若 0.5% 的指令需要远程访问，问仅有本地访问时比有远程访问时快多少？</p>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>2GHz 的周期为 `1/2GHz = 0.5ns`。远程访问开销为 `200ns / 0.5ns = 400` 拍。</p>
+            <div class="formula">CPI_remote = 1 + 0.005 × 400 = 3</div>
+            <p>本地访问 CPI 为 1，同频率下速度与 CPI 成反比，所以仅本地访问的机器速度是有远程访问时的 `3/1 = 3` 倍。</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="q8">
+        <div class="exercise-card">
+          <div class="problem-meta"><span>10 分</span><span>ILP 概念</span><a href="qa.html#pipeline-ilp">复习判定表</a></div>
+          <h2>8. 提高指令级并行性的技术途径</h2>
+          <div class="problem-body">
+            <p>阐述提高指令级并行性的两种技术途径：时间重叠和资源重复。结合流水线技术说明这两种途径如何提升系统性能。除指令级并行之外，还可以从哪些方向提高处理器或系统性能？</p>
+          </div>
+          <details class="solution-toggle">
+            <summary>参考答案</summary>
+            <p>时间重叠：把一条指令的执行拆成多个阶段，不同指令在不同阶段同时推进。流水线就是典型例子：第 1 条在执行时，第 2 条可译码，第 3 条可取指，从而提高吞吐率。</p>
+            <p>资源重复：复制功能部件，使多条指令或多个操作可同时执行。超标量、多发射、多 ALU、多端口寄存器、独立取指/数据 Cache 都属于这个方向。</p>
+            <p>流水线同时用了两者：阶段之间时间重叠，阶段硬件如取指、译码、执行、访存、写回相当于资源分工。除 ILP 外，还可以用存储层次优化、分支预测、预取、多核/线程级并行、向量/SIMD、提高主频、改进 I/O 与互连等方式提高性能。</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="answer-rules" class="focus-section">
+        <h2>做题判定表</h2>
+        <table>
+          <thead><tr><th>题型</th><th>先找什么</th><th>最常用公式/动作</th></tr></thead>
+          <tbody>
+            <tr><td>BTB</td><td>BTB 命中率、预测精度、两种开销</td><td>`分支比例 × [(1-H)×miss开销 + H×错预测率×错预测开销]`</td></tr>
+            <tr><td>写事务</td><td>读/写比例、命中率、块大小、事务大小、写策略</td><td>列四格：读命中、写命中、读 miss、写 miss。</td></tr>
+            <tr><td>Cache/TLB</td><td>每条指令访存次数、miss penalty、TLB 是否并入</td><td>`CPI = 基本 CPI + 访存次数 × miss率 × penalty`</td></tr>
+            <tr><td>RAID</td><td>哪些是串联必要部件，哪些是并联冗余</td><td>串联相乘，并联用 `1 - 全坏概率`。</td></tr>
+            <tr><td>Omega</td><td>源/目的二进制、每级开关出口</td><td>画路径或列每级开关，查是否抢同一出口。</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
