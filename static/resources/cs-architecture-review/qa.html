@@ -12,13 +12,16 @@
       <strong>本页目录</strong>
       <nav>
         <a href="#howto">1. 怎么用本页</a>
-        <a href="#pipeline-stall">2. MIPS 停顿判断</a>
-        <a href="#branch">3. 分支预测与 BTB</a>
-        <a href="#cache-tlb">4. Cache/TLB 计算</a>
-        <a href="#memory-io">5. 写缓冲、Victim Buffer、RAID</a>
-        <a href="#network-sync">6. 互连网络与同步</a>
-        <a href="#multiprocessor">7. 多处理器与一致性</a>
-        <a href="#mini-drills">8. 小题自测</a>
+        <a href="#units">2. 单位与速算</a>
+        <a href="#pipeline-stall">3. MIPS 停顿判断</a>
+        <a href="#pipeline-ilp">4. 流水线与 ILP 术语</a>
+        <a href="#branch">5. 分支预测与 BTB</a>
+        <a href="#cache-tlb">6. Cache/TLB 计算</a>
+        <a href="#cache-design">7. Cache 设计题</a>
+        <a href="#memory-io">8. I/O、可靠性与 RAID</a>
+        <a href="#network-sync">9. 互连网络与同步</a>
+        <a href="#multiprocessor">10. 多处理器与一致性</a>
+        <a href="#mini-drills">11. 小题自测</a>
       </nav>
     </aside>
     <main>
@@ -37,12 +40,12 @@
           <h1>计算机系统结构：问答补充与考试判定表</h1>
           <p class="subtitle">把复习时反复追问的“为什么、怎么判断、考试写哪一步”抽出来，做成独立题型卡。它不替代讲义，而是补上讲义里默认你已经懂的那一层直觉。</p>
           <div class="meta-row">
-            <span class="meta">MIPS 停顿</span><span class="meta">分支预测</span><span class="meta">BTB/BHT</span><span class="meta">Cache/TLB</span><span class="meta">RAID</span><span class="meta">互连网络</span><span class="meta">LL/SC</span>
+            <span class="meta">单位速算</span><span class="meta">MIPS 停顿</span><span class="meta">分支预测</span><span class="meta">BTB/BHT</span><span class="meta">Cache/TLB</span><span class="meta">RAID</span><span class="meta">互连网络</span><span class="meta">LL/SC</span>
           </div>
         </div>
         <div class="hero-aside">
-          <div class="hero-stat"><span>8</span><strong>问答专题</strong></div>
-          <div class="hero-stat"><span>20+</span><strong>判定规则</strong></div>
+          <div class="hero-stat"><span>11</span><strong>问答专题</strong></div>
+          <div class="hero-stat"><span>40+</span><strong>判定规则</strong></div>
           <div class="hero-stat"><span>考前</span><strong>可直接查</strong></div>
         </div>
       </header>
@@ -57,8 +60,24 @@
         </div>
       </section>
 
+      <section id="units" class="focus-section">
+        <h2>2. 单位与速算</h2>
+        <p class="section-lead">这类题不是难，是容易被单位绊倒。先把 Hz、周期、ns、us 这几个互相换清楚。</p>
+        <table>
+          <thead><tr><th>写法</th><th>含义</th><th>常用换算</th></tr></thead>
+          <tbody>
+            <tr><td>2GHz</td><td>每秒 2 × 10<sup>9</sup> 个时钟周期</td><td>周期 = 1 / 2GHz = 0.5ns</td></tr>
+            <tr><td>1ns</td><td>10<sup>-9</sup>s，纳秒</td><td>2GHz 的半个周期是 0.25ns；一个周期是 0.5ns</td></tr>
+            <tr><td>10<sup>-6</sup>s</td><td>微秒</td><td>1us = 1000ns</td></tr>
+            <tr><td>200ns / 0.5ns</td><td>把访存时间换成周期数</td><td>远程访问开销 = 400 个时钟周期</td></tr>
+          </tbody>
+        </table>
+        <div class="formula">CPI = 基本 CPI + 远程访问率 × 远程访问开销周期数</div>
+        <p>例如基本 CPI 为 0.5，0.2% 指令需要远程访问，远程访问 200ns，处理器 2GHz，则实际 CPI = 0.5 + 0.002 × 400 = 1.3。</p>
+      </section>
+
       <section id="pipeline-stall">
-        <h2>2. MIPS 停顿判断</h2>
+        <h2>3. MIPS 停顿判断</h2>
         <p>先固定五段：IF 取指，ID 读寄存器，EX 计算，MEM 访存，WB 写回。判断停顿时只问一句：后面的指令要用的值，前面的指令准备好了吗？</p>
         <table>
           <thead><tr><th>场景</th><th>有正常定向</th><th>无定向</th><th>人话解释</th></tr></thead>
@@ -82,10 +101,36 @@
         </table>
         <div class="formula">调度后：LW R1,0(R2); ADDI R2,R2,#4; SUB R4,R3,R2; ADDI R1,R1,#1; BNZ R4,LOOP; SW R1,-4(R2)</div>
         <p>为什么 `SW` 变成 `-4(R2)`：因为 `R2` 已提前加 4，当前 `R2 - 4` 才是本轮原来的地址。</p>
+        <h3>考试画时空图的步骤</h3>
+        <ol>
+          <li>先一条指令一行，默认每条下一拍进入 IF。</li>
+          <li>遇到后者读前者写的同一个寄存器，判断有没有定向；没有就等到前者 WB 后，后者才能 ID 读到。</li>
+          <li>有定向时，ALU 结果通常不等 WB；Load-use 仍要等 1 拍；分支若在 ID 判断，条件寄存器太早用，通常还要停。</li>
+          <li>分支处理看题目：排空流水线就是等分支确定再取下一轮；预测分支失败就是先取顺序下一条，发现实际跳转后冲掉。</li>
+          <li>最后一轮通常还要把最后一条真正执行完，所以会出现 `每轮周期 × (循环次数) + 尾巴`。</li>
+        </ol>
+        <div class="callout"><strong>IF 后停还是 ID 后停</strong>本质上是同一个等待被画在不同阶段。课件有时把指令卡在 IF，有时卡在 ID。你考试只要保证“读寄存器那一拍不能早于数据可用”，周期数对，通常就能得分。</div>
+      </section>
+
+      <section id="pipeline-ilp">
+        <h2>4. 流水线与 ILP 术语</h2>
+        <p>ILP 是 instruction-level parallelism，指令级并行。它问的是：一串指令里，有多少条可以重叠或并行执行。</p>
+        <table>
+          <thead><tr><th>概念</th><th>直白解释</th><th>图上怎么看</th></tr></thead>
+          <tbody>
+            <tr><td>指令流出/发射</td><td>处理器把指令送去执行单元，等于“这条指令正式开工”。</td><td>n 流出表示一拍最多发射 n 条。</td></tr>
+            <tr><td>标量流水</td><td>每拍最多启动 1 条指令。</td><td>同一列通常只有一条新 IF。</td></tr>
+            <tr><td>超标量</td><td>硬件一拍可发射多条普通指令。</td><td>同一时刻多条指令并列进入执行。</td></tr>
+            <tr><td>超长指令字 VLIW</td><td>编译器把多条可并行小指令打包成一条长指令。</td><td>题中常说 12 条小指令组装成 3 条长指令。</td></tr>
+            <tr><td>超流水线</td><td>把流水级切得更细，用更短时钟周期启动指令。</td><td>每 1/n 个原周期启动一条，但单条经过更多小阶段。</td></tr>
+          </tbody>
+        </table>
+        <div class="formula">普通 k 段流水执行 n 条任务：T = (k + n - 1) Δt</div>
+        <p>如果题目把 12 条小指令按 ILP=4 打成 3 条长指令，那这里的 n 就从 12 变成 3，所以 `T = (3 + 3 - 1)Δt = 5Δt`。这不是说原来 12 条消失了，而是 4 条一组被包装成 1 条长指令。</p>
       </section>
 
       <section id="branch">
-        <h2>3. 分支预测、BHT/BHD 与 BTB</h2>
+        <h2>5. 分支预测、BHT/BHD 与 BTB</h2>
         <div class="grid">
           <div class="card accent-blue"><h3>BHT/BHD</h3><p>管“跳不跳”。它记录分支过去的方向历史，用来预测 taken 或 not taken。</p></div>
           <div class="card accent-purple"><h3>BTB</h3><p>管“跳去哪”。它用分支指令 PC 作标识，保存目标地址，有些实现也顺便保存预测位。</p></div>
@@ -103,10 +148,11 @@
         <p>一个循环 10 次，前 9 次跳，最后 1 次不跳。一位预测器只记上一次结果。上轮循环退出时留下“不跳”，所以下轮第一次会错；本轮前面一直跳，最后退出时又会错。成功率 90%，预测准确率却是 8/10 = 80%。</p>
         <h3>Branch Folding</h3>
         <p>普通 BTB 只存目标地址；改进版还可以缓存目标地址处的一条或多条指令。这样预测跳转时，不必再去目标地址取指，可以直接把目标指令送入流水线。无条件分支在理想情况下可做到零延迟。</p>
+        <div class="callout"><strong>“所有指令和保存的标识都不要”</strong>这句话说的是预测错后，把错误路径上已经取来的指令作废，同时 BTB/预取缓冲里与这次错误预测对应的标识项也可以删掉或更新。不是删除程序里的指令。</div>
       </section>
 
       <section id="cache-tlb">
-        <h2>4. Cache/TLB 计算</h2>
+        <h2>6. Cache/TLB 计算</h2>
         <h3>两级 Cache：什么时候减命中时间</h3>
         <div class="formula">AMAT = L1 命中时间 + L1 不命中率 × (L2 命中时间 + L2 局部不命中率 × L2 不命中开销)</div>
         <p>如果题目问平均访存时间，不减 L1 命中时间。若题目问“每次访问导致的停顿时间”，且基本 CPI 已经包含正常 L1 命中访问，则要用 AMAT 减去 L1 命中时间。</p>
@@ -124,10 +170,43 @@
         <div class="formula">写回且 50% 脏块：平均 miss penalty = 1.5 × 48.04 = 72.06</div>
         <div class="formula">CPI = 基本 CPI + 每条指令访存次数 × Cache miss 率 × miss penalty</div>
         <p>如果额外统计指令 TLB miss，每条指令再加 `1 × 0.2% × 20 = 0.04`；如果所有 1.2 次访存都查 TLB，则额外加 `1.2 × 0.2% × 20 = 0.048`。</p>
+        <h3>分离 Cache 和混合 Cache</h3>
+        <p>分离 Cache 要把指令访问和数据访问分开加权。若 75% 是取指，25% 是数据访问，则总体平均时间按 75% 与 25% 加权。混合 Cache 若题目说 load/store 会额外增加 1 个周期，就只给数据访问那 25% 加这个额外周期。</p>
+        <div class="formula">分离 Cache 平均时间 = 0.75 × 指令 Cache 时间 + 0.25 × 数据 Cache 时间</div>
+        <div class="formula">混合 Cache 数据访问 = 命中时间 + 结构冲突额外周期 + miss 率 × miss penalty</div>
+      </section>
+
+      <section id="cache-design">
+        <h2>7. Cache 设计题</h2>
+        <h3>关联度题怎么比较</h3>
+        <p>提高关联度一般会降低失效率，但会增加命中时间，也可能拉长处理器时钟周期。题目问“哪个平均访存时间小”，就比较：</p>
+        <div class="formula">平均访存时间 = 命中时间 + 失效率 × 失效开销</div>
+        <table>
+          <thead><tr><th>设计</th><th>好处</th><th>代价</th></tr></thead>
+          <tbody>
+            <tr><td>直接映像</td><td>命中时间短，硬件简单。</td><td>冲突失效多。</td></tr>
+            <tr><td>组相联</td><td>冲突失效少。</td><td>比较器更多，命中时间可能增加。</td></tr>
+            <tr><td>全相联</td><td>位置最灵活。</td><td>硬件代价大，查找慢。</td></tr>
+          </tbody>
+        </table>
+        <h3>伪相联 Cache</h3>
+        <p>先按直接映像位置查；如果没中，再去另一个候选位置查。第二个位置命中叫伪命中，要多花额外周期，但比真正 miss 便宜。</p>
+        <div class="formula">平均时间 = 直接命中时间 + 伪命中率 × 伪命中额外周期 + 真失效率 × 真失效开销</div>
+        <h3>块大小、总线宽度、多体交叉</h3>
+        <table>
+          <thead><tr><th>改动</th><th>影响</th><th>做题口径</th></tr></thead>
+          <tbody>
+            <tr><td>块变大</td><td>空间局部性变好，失效率可能下降；但 miss 时要搬更多字。</td><td>miss penalty 常乘以块内字数。</td></tr>
+            <tr><td>总线/存储器宽度加倍</td><td>一次可传更多字。</td><td>块传输拍数减半。</td></tr>
+            <tr><td>多体交叉存储</td><td>多个存储体交错工作，连续取多个字更快。</td><td>题目给访问时间时，按“首字延迟 + 后续交错传输”算。</td></tr>
+          </tbody>
+        </table>
+        <h3>写回法什么时候写回</h3>
+        <p>写回法不是每次 store 都写主存，而是在脏块被替换、别的处理器请求该块、一致性协议要求回写、或系统主动刷回时才写回。平时只改 Cache 并置 dirty 位。</p>
       </section>
 
       <section id="memory-io">
-        <h2>5. 写缓冲、Victim Buffer、RAID</h2>
+        <h2>8. I/O、可靠性与 RAID</h2>
         <div class="grid">
           <div class="card accent-teal"><h3>Write Buffer</h3><p>写直达 Cache 中，CPU 把写请求先放进写缓冲，不必等主存写完。读失效时要先检查写缓冲，避免读到旧值。</p></div>
           <div class="card accent-amber"><h3>Victim Buffer</h3><p>写回 Cache 中，被替换出去的脏块先放到 victim buffer。读失效时也要查它，因为要读的块可能刚被挤出去。</p></div>
@@ -148,10 +227,11 @@
         <h3>可靠性公式</h3>
         <div class="formula">指数分布且独立时：系统失效率 = 各串联必要部件失效率之和；MTTF = 1 / 系统失效率</div>
         <p>串联系统任何一个必要部件坏就坏，因此失效率相加；并联系统要所有副本都坏才失败，可靠度通常写成 `1 - 全坏概率`。</p>
+        <p>例：10 块盘每块 MTTF 为 1,000,000 小时，外加控制器 500,000 小时、电源和风扇各 200,000 小时、SCSI 线 1,000,000 小时。失效率为 `10/1000000 + 1/500000 + 1/200000 + 1/200000 + 1/1000000 = 23/1000000`，所以 MTTF 约为 `1000000/23 = 43500` 小时。</p>
       </section>
 
       <section id="network-sync">
-        <h2>6. 互连网络与同步</h2>
+        <h2>9. 互连网络与同步</h2>
         <h3>互连网络怎么分类</h3>
         <table>
           <thead><tr><th>类别</th><th>直观含义</th><th>例子</th></tr></thead>
@@ -164,6 +244,27 @@
         </table>
         <h3>PM2 和 Illiac</h3>
         <p>`PM2±i(x) = x ± 2^i mod N`。在 4×4、N=16 的 Illiac 网络里，垂直方向常对应 `±4 mod 16`，水平方向螺线常对应 `±1 mod 16`。判断要连一条还是两条边，可看函数是否互为逆或是否自反。</p>
+        <h3>函数题要背什么</h3>
+        <table>
+          <thead><tr><th>函数</th><th>考试动作</th><th>要不要反算</th></tr></thead>
+          <tbody>
+            <tr><td>Cube<sub>i</sub></td><td>把二进制编号的第 i 位取反。</td><td>自反，算一次即可，双向互连。</td></tr>
+            <tr><td>PM2<sub>+i</sub></td><td>`x + 2^i mod N`。</td><td>通常还要看 PM2<sub>-i</sub>，方向相反。</td></tr>
+            <tr><td>PM2<sub>-i</sub></td><td>`x - 2^i mod N`。</td><td>和 PM2<sub>+i</sub>互为逆。</td></tr>
+            <tr><td>σ</td><td>循环左移或右移，按课件定义。</td><td>通常要反算谁能连到目标点。</td></tr>
+          </tbody>
+        </table>
+        <h3>STARAN、多级立方体、Omega</h3>
+        <p>它们都属于多级互联网络，图上都是若干级 2×2 开关。区别主要看级间连线和控制方式。</p>
+        <table>
+          <thead><tr><th>网络</th><th>核心特征</th><th>容易混的点</th></tr></thead>
+          <tbody>
+            <tr><td>STARAN</td><td>多级立方体网络，可做级控制，也可做部分级控制。</td><td>级控制常实现交换功能，部分级控制常实现移数功能。</td></tr>
+            <tr><td>间接二进制 n 方体</td><td>也是多级立方体思想，用 2×2 开关间接连接输入输出。</td><td>和 STARAN 的图可能相似，重点看题目给的控制/连线定义。</td></tr>
+            <tr><td>Omega</td><td>每级后接 perfect shuffle，按目标地址位逐级选择上/下出口。</td><td>考试常考按目标二进制位寻径。</td></tr>
+          </tbody>
+        </table>
+        <p>2×2 开关最基础的两种状态是直连和交换。直连就是上进上出、下进下出；交换就是上进下出、下进上出。有些课件扩展成更多模式，但做基础路由题先认这两个。</p>
         <h3>LL/SC、旋转锁、屏障</h3>
         <table>
           <thead><tr><th>机制</th><th>一句话</th><th>易错点</th></tr></thead>
@@ -173,10 +274,14 @@
             <tr><td>屏障同步</td><td>所有进程都到达后，大家一起继续。</td><td>sense reversing 用 0/1 就够，因为不能跨两轮屏障乱跑。</td></tr>
           </tbody>
         </table>
+        <h3>旋转锁争用题的一问和二问</h3>
+        <p>第一问通常问“所有处理器最终都获得一次锁，总共多少总线事务”。它按锁竞争人数从 n、n-1、...、1 递减求和。第二问问“如果总线公平且要处理完已有请求，处理 10 个请求大概多久”，它更关心时间排队，不只是总事务数。</p>
+        <div class="formula">n 个处理器逐个获得锁的事务数常写成 Σ(2i + 1) = n² + 2n</div>
+        <p>这里 `i 次 LL + i 次 SC + 1 次释放锁` 的意思是：当前还有 i 个处理器竞争时，它们都可能读锁、都尝试 SC，最后胜者执行完后释放锁。它是教材的总线事务估算模型，不是在模拟真实精确时序。</p>
       </section>
 
       <section id="multiprocessor">
-        <h2>7. 多处理器与 Cache 一致性</h2>
+        <h2>10. 多处理器与 Cache 一致性</h2>
         <p>多处理机是一台系统里有多个处理器。分布式共享存储器则是内存物理上分散在各节点，但逻辑上仍像一个共享地址空间。</p>
         <table>
           <thead><tr><th>协议</th><th>怎么知道别人改了数据</th><th>适用规模</th></tr></thead>
@@ -191,10 +296,14 @@
           <li>写直达：写 Cache 同时写内存，内存值始终较新；写某块时作废其他 Cache 副本。</li>
           <li>写回：只改 Cache，标记 dirty，内存可能旧；替换、干预或一致性需要时再写回。</li>
         </ul>
+        <h3>目录到底维护多少东西</h3>
+        <p>目录按“内存块”维护，不是按处理器维护。若每个内存块都有一个目录项，那么目录项数量大致等于主存块数。每个目录项至少要能回答：这个块当前状态是什么、哪些处理器有副本、如果是独占/修改状态 owner 是谁。</p>
+        <div class="formula">目录空间约 = 主存块数 × 每块目录项大小</div>
+        <p>32 个处理器最直观的共享者记录方式是 32 位 bit vector；如果块很多，这部分目录开销会很大，所以大规模机器会用更复杂的压缩目录或链式目录。</p>
       </section>
 
       <section id="mini-drills" class="self-test-section">
-        <h2>8. 小题自测</h2>
+        <h2>11. 小题自测</h2>
         <ol>
           <li>`LW R1,0(R2)` 后紧跟 `ADD R3,R1,R4`，有正常定向时停几拍？</li>
           <li>`SUB R4,R3,R2` 后紧跟 `BNZ R4,LOOP`，本课口径停几拍？</li>
@@ -202,8 +311,12 @@
           <li>BHT/BHD 和 BTB 分别回答哪两个问题？</li>
           <li>写回法下 50% 脏块，为什么一次 Cache miss 平均要 1.5 次块传输？</li>
           <li>RAID10 和 RAID01 的结构顺序分别是什么？</li>
+          <li>2GHz 的一个时钟周期是多少 ns？</li>
+          <li>LL/SC 盯住的是寄存器 R1，还是 R1 指向的内存单元？</li>
+          <li>PM2<sub>+3</sub>(13)，N=16，结果是多少？</li>
+          <li>目录协议中 32 个处理器用全位向量记录共享者，至少需要几位？</li>
         </ol>
-        <div class="callout"><strong>答案</strong>1 拍；1 拍；98 次；BHT/BHD 管跳不跳，BTB 管跳去哪；读新块 1 次 + 平均 0.5 次写回旧脏块；RAID10 是先镜像再条带，RAID01 是先条带再镜像。</div>
+        <div class="callout"><strong>答案</strong>1 拍；1 拍；98 次；BHT/BHD 管跳不跳，BTB 管跳去哪；读新块 1 次 + 平均 0.5 次写回旧脏块；RAID10 是先镜像再条带，RAID01 是先条带再镜像；0.5ns；R1 指向的内存单元；5；32 位。</div>
       </section>
     </main>
   </div>
