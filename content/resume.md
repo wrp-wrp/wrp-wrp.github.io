@@ -19,15 +19,15 @@ draft = false
 
 ## Research Interests
 
-Database Systems, Approximate Nearest Neighbor Search (ANNS), Streaming Algorithms, Vector Indexes.
+Vector Search, Cloud Storage, Database Systems.
 
 ## Research Experience
 
 **Research Intern** | *Database Group (Prof. Shuhao Zhang), HUST*  
 *Nov. 2024 – Present*
-- Investigating **ANNS in streaming scenarios**; identified recall degradation caused by data distribution shifts.
-- Contributed to a benchmark paper on streaming vector search (5th Author, under review at **SIGMOD**).
-- Proposed a novel optimization for graph-based ANNS to address high update overhead and connectivity issues; currently drafting the paper and conducting experiments.
+- Investigating **ANNS in streaming scenarios**, including recall degradation caused by data distribution shifts.
+- Contributed to **CandorBench**, a benchmark paper on streaming vector search (5th Author, accepted to **SIGMOD**).
+- Worked on graph-based ANNS optimization to address high update overhead and connectivity issues.
 - Developed high-performance C++ systems for vector stream processing.
 
 **Research Intern** | *Prof. Yao Wan's Lab, HUST*  

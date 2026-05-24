@@ -9,12 +9,13 @@ math = true
 
 Hi, I'm an undergraduate student in the **Turing Class** (CS Honors Program) at **Huazhong University of Science and Technology (HUST)**.
 
-My primary research interests lie in **Database Systems**, with a specific focus on **Approximate Nearest Neighbor Search (ANNS)**, streaming algorithms, and high-dimensional vector indexing. I am currently a Research Assistant in the Database Group at HUST, working under Prof. Shuhao Zhang.
+My current research interests lie in **Vector Search** and **Cloud Storage**. I am a Research Assistant in the Database Group at HUST, working under Prof. Shuhao Zhang.
 
 ### 🔭 Research & Engineering
-- **Vector Search**: Investigating ANNS in streaming scenarios. I've identified key issues with recall degradation due to distribution shifts and am working on graph-based optimization algorithms.
+- **Vector Search**: Investigating ANNS in streaming scenarios, including recall degradation under distribution shifts and graph-based optimization algorithms.
+- **Cloud Storage**: Exploring storage systems and data management problems for modern cloud workloads.
 - **System Building**: I enjoy building high-performance systems using **C++** (6+ years of experience).
-- **Publications**: Contributed to a benchmark paper on streaming vector search (under review at SIGMOD).
+- **Publications**: Contributed to **CandorBench**, a benchmark paper on streaming vector search, accepted to **SIGMOD**.
 
 ### 🏆 Competitive Programming
 I have a strong background in algorithms and competitive programming:

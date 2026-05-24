@@ -994,7 +994,7 @@ DNS 采用分层树状结构：
         $$ D_{cs} = \\max \\left\\{ \\frac{N F}{u_s}, \\frac{F}{d_{min}} \\right\\} $$
         随着 $N$ 增加，分发时间线性增长。
     *   **P2P 架构**：
-        $$ D_{p2p} = \\max \\left\{ \\frac{F}{u_s}, \\frac{F}{d_{min}}, \\frac{N F}{u_s + \\sum_{i=1}^N u_i} \\right\} $$
+        $$ D_{p2p} = \\max \\left\\{ \\frac{F}{u_s}, \\frac{F}{d_{min}}, \\frac{N F}{u_s + \\sum_{i=1}^N u_i} \\right\\} $$
         具有**自扩展性 (Self-scalability)**。当 $N$ 很大时，分子分母都含 $N$，分发时间趋于常数。
 #### BitTorrent 协议详解
 BitTorrent 是最流行的 P2P 文件分发协议，其核心理念是 **“人人为我，我为人人”**。

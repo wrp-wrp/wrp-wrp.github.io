@@ -21,7 +21,7 @@
 
 /* ---------- 0. Token overrides ---------- */
 :root {
-    --main-width: 760px;
+    --main-width: 1040px;
     --reading-width: 720px;
     --accent: #b8341c;
     --accent-soft: rgba(184, 52, 28, 0.08);
@@ -666,12 +666,11 @@ blockquote p {
 }
 
 /* ---------- 6. Side TOC ---------- */
-body.single-page,
 body.single-page .content,
 body.single-page .main {
-    max-width: none !important;
+    max-width: 100% !important;
     width: 100% !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     padding: 0 !important;
     display: block !important;
 }
@@ -679,20 +678,23 @@ body.single-page .main {
 body.single-page header,
 body.single-page .breadcrumbs,
 body.single-page footer {
-    max-width: 780px !important;
-    margin: 0 auto !important;
-    padding-left: var(--main-padding) !important;
-    padding-right: var(--main-padding) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 .post-layout {
     display: flex !important;
     justify-content: center !important;
     align-items: flex-start !important;
-    gap: 60px !important;
+    gap: 52px !important;
     width: 100% !important;
+    max-width: 100% !important;
     margin: 1.4rem auto 3rem !important;
-    padding: 0 40px !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
 }
 
@@ -1163,8 +1165,6 @@ footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 @media screen and (max-width: 1139px) {
     html, body {
         overflow-x: hidden !important;
-        width: 100% !important;
-        margin: 0 !important;
     }
     body.single-page {
         padding: 0 !important;
@@ -1309,6 +1309,10 @@ html,
 body {
     max-width: 100%;
     overflow-x: clip;
+}
+
+body {
+    max-width: var(--main-width);
 }
 
 /* Tablet & phone — keep theme width but enforce gutters via padding (border-box safe) */
