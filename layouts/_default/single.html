@@ -23,8 +23,9 @@
                 <p class="single-summary">{{ . | markdownify }}</p>
                 {{- end }}
 
-                {{- /* Info bar */}}
-                {{ if or (or (.Param "author") (.Param "authorAvatarPath")) (or .Date (.Param "readTime")) }}
+                {{- /* Publication metadata belongs to posts, not evergreen pages such as About or Resume. */}}
+                {{ $showPublicationDate := or (eq .Section "posts") (.Param "showDate") }}
+                {{ if or (or (.Param "author") (.Param "authorAvatarPath")) (or $showPublicationDate (.Param "readTime")) }}
                 <div class="single-subsummary">
                     {{ with $.Param "authorAvatarPath" }}
                     <img src="{{ . }}" alt="Author Avatar" />
@@ -34,13 +35,15 @@
                         <p class="author"> {{- .}} </p>
                         {{ end }}
                         <p class="single-date">
+                            {{- if $showPublicationDate }}
                             {{- with .Date }}
                             <time datetime="{{ . | time.Format " 2006-01-02T15:04:05-07:00" }}">{{ . | time.Format
                                 (default
                                 ":date_long" $.Site.Params.singleDateFormat) }}</time>
                             {{- end }}
+                            {{- end }}
                             {{- if .Param "readTime" }}
-                            {{ if .Date }} · {{ end }} {{ .ReadingTime }} min read
+                            {{ if $showPublicationDate }} · {{ end }} {{ .ReadingTime }} min read
                             {{- end }}
                         </p>
                     </div>

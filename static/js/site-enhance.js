@@ -27,7 +27,13 @@
         // theme: 'light' | 'dark'
         document.body.classList.remove('light', 'dark');
         document.body.classList.add(theme);
-        if (themeIcon) themeIcon.textContent = theme === 'dark' ? '☾' : '☀';
+        if (themeIcon) themeIcon.textContent = theme === 'dark' ? 'ink' : 'paper';
+        if (themeToggle) {
+            themeToggle.setAttribute(
+                'aria-label',
+                theme === 'dark' ? 'Switch to paper theme' : 'Switch to ink theme'
+            );
+        }
         try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) {}
     }
 
