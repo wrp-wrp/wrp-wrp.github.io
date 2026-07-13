@@ -2,6 +2,12 @@
 {{ $files := slice "css/reset.css" "css/vars.css" "css/utils.css" "css/fonts.css" "css/main.css" "css/custom.css"
 "css/colors/default.css" }}
 
+{{/* CJK webfonts via the author-recognized ZSFT FontsAPI (cn-font-split, on-demand subsets). */}}
+{{/* 285 = Noto Serif SC (Source Han Serif) for body CJK; 292 = LXGW WenKai for quotes. */}}
+<link rel="preconnect" href="https://fontsapi.zeoseven.com" crossorigin>
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/285/main/result.css">
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/292/main/result.css">
+
 {{ range $files }}
 {{ $res := resources.Get . }}
 {{ if $res }}

@@ -13,6 +13,7 @@
     --accent: #a8523c;
     --accent-deep: #813929;
     --accent-soft: rgba(168, 82, 60, 0.09);
+    --selection: rgba(168, 82, 60, 0.24);
     --rule: rgba(71, 60, 47, 0.18);
     --rule-strong: rgba(71, 60, 47, 0.34);
     --background-light: var(--paper);
@@ -23,7 +24,8 @@
     --main-width: 1120px;
     --reading-width: 720px;
     --main-padding: 1.75rem;
-    --font-serif: "Literata", "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+    --font-serif: "Literata", "Noto Serif CJK", "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+    --font-quote: "Iowan Old Style", "LXGW WenKai", "霞鹜文楷", "Kaiti SC", "STKaiti", serif;
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
 
@@ -36,6 +38,7 @@
     --accent: #d17a5c;
     --accent-deep: #e59a7e;
     --accent-soft: rgba(209, 122, 92, 0.12);
+    --selection: rgba(209, 122, 92, 0.32);
     --rule: rgba(238, 231, 219, 0.14);
     --rule-strong: rgba(238, 231, 219, 0.28);
     --background-dark: var(--paper);
@@ -122,7 +125,7 @@ a:focus-visible {
 
 ::selection {
     color: var(--ink);
-    background: var(--accent-soft);
+    background: var(--selection);
 }
 
 h1,
@@ -688,6 +691,12 @@ body.single-page footer {
     padding: 0.15rem 0 0.15rem 1.2rem;
     border-left: 2px solid var(--accent);
     color: var(--ink-soft);
+    font-family: var(--font-quote);
+    font-size: 1.04rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.85;
+    letter-spacing: 0.018em;
 }
 
 .single-content pre,
@@ -704,20 +713,127 @@ pre {
 }
 
 .single-content table {
+    width: max-content !important;
+    max-width: 100% !important;
+    margin: 1.7rem 0;
+    border: 0;
     border-top: 1px solid var(--rule-strong);
     border-bottom: 1px solid var(--rule-strong);
+    border-radius: 0;
+}
+
+.single-content th,
+.single-content td {
+    padding: 0.55rem 1.6rem 0.55rem 0;
+    line-height: 1.55;
+}
+
+.single-content th:last-child,
+.single-content td:last-child {
+    padding-right: 0.2rem;
 }
 
 .single-content th {
+    background: transparent;
     color: var(--accent-deep);
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule-strong);
+}
+
+.single-content tbody tr {
+    border-top: 1px solid var(--rule);
+}
+
+.single-content tbody tr:first-child {
+    border-top: 0;
 }
 
 .single-content img,
 .single-content figure img {
     border: 1px solid var(--rule);
     border-radius: 0;
+}
+
+.single-content figcaption {
+    margin: 0.7rem 0 1.1rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.single-content h4 {
+    margin: 1.8rem 0 0.5rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+/* Footnotes */
+.single-content .footnotes {
+    margin-top: 3rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--rule-strong);
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+}
+
+.single-content .footnotes > hr {
+    display: none;
+}
+
+.single-content .footnotes ol {
+    max-width: 68ch;
+    padding-left: 1.2rem;
+}
+
+.single-content .footnotes li {
+    margin-bottom: 0.45rem;
+    line-height: 1.7;
+}
+
+.single-content .footnotes li::marker {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+}
+
+.single-content .footnotes p {
+    margin: 0.2rem 0;
+}
+
+.single-content a.footnote-ref {
+    padding: 0 0.14em;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    text-decoration: none;
+}
+
+.single-content a.footnote-backref {
+    margin-left: 0.3rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    text-decoration: none;
+}
+
+/* End-of-article fleuron */
+.single-content::after {
+    content: "❦";
+    display: block;
+    margin-top: 2.7rem;
+    color: var(--accent);
+    font-size: 1.05rem;
+    line-height: 1;
+    text-align: center;
 }
 
 @media screen and (min-width: 1140px) {
