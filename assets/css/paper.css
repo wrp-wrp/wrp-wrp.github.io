@@ -958,6 +958,20 @@ body.single-page footer {
     color: var(--accent);
 }
 
+/* Touch scrolling --------------------------------------------------------- */
+/* Horizontally-scrollable blocks (math, tables, code, the nav strip) default
+   to touch-action: auto, which lets a mostly-vertical read-swipe that starts on
+   one of them get captured as a horizontal pan — the page then won't scroll and
+   appears to "bounce back". pan-x keeps their own horizontal scroll while letting
+   vertical gestures fall through to the page. */
+.single-content .katex-display,
+.single-content .table-outer,
+.single-content table,
+.single-content pre,
+.header-menu {
+    touch-action: pan-x;
+}
+
 /* Responsive -------------------------------------------------------------- */
 @media (max-width: 1080px) {
     .header {
