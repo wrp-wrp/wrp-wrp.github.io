@@ -30,6 +30,9 @@ Currently focused on vector search and cloud storage, while sharing notes from c
 homeAvatarPath = "images/home-avatar.jpg"
 homeAvatarAlt = "rprp avatar"
 homeResearchAreas = ["Vector Search", "Cloud Storage"]
+homeLocation = "Wuhan, China"
+homeAffiliation = "HUST"
+homeEmail = "rprp@hust.edu.cn"
 
 # Collection to display on home
 homeCollectionTitle = 'Posts'
@@ -39,6 +42,14 @@ homeCollection = 'posts'
 paginationSize = 100
 listSummaries = false
 listDateFormat = '2 Jan 2006'
+
+[[params.homeFocus]]
+title = "Vector Search"
+description = "Exploring approximate nearest-neighbor search, vector indexes, quantization, and practical engineering trade-offs."
+
+[[params.homeFocus]]
+title = "Cloud Storage"
+description = "Notes on storage systems, data formats, retrieval pipelines, and building reliable services at scale."
 
 # Breadcrumbs
 [params.breadcrumbs]

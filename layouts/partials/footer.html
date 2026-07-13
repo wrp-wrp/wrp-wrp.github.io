@@ -1,0 +1,12 @@
+{{ $showFooter := default true .Site.Params.showFooter }}
+{{ if $showFooter }}
+<div class="footer-rule" aria-hidden="true"><span>01</span></div>
+<div class="footer-content">
+    <p>&copy; {{ now.Year }} rprp · wrp-wrp</p>
+    {{ if not .Site.Params.footerContent }}
+    <p>Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/tomfran/typo">tomfran/typo</a></p>
+    {{ else }}
+    <p>{{ .Site.Params.footerContent | markdownify }}</p>
+    {{ end }}
+</div>
+{{ end }}

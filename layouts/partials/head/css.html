@@ -16,6 +16,12 @@
 {{ end }}
 {{ end }}
 
+{{/* Project-level visual system always loads last so it can unify theme defaults. */}}
+{{ $paper := resources.Get "css/paper.css" }}
+{{ if $paper }}
+{{ $CSS_resources = $CSS_resources | append $paper }}
+{{ end }}
+
 {{ if $CSS_resources }}
 {{ $combined := $CSS_resources | resources.Concat "assets/combined.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $combined.RelPermalink }}" media="all">
