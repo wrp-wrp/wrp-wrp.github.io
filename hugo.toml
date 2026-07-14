@@ -104,6 +104,14 @@ url = "/chat"
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+    # Server-side math: goldmark passes $…$/$$…$$ through untouched so the
+    # render-passthrough hook can typeset it at build time (no client-side KaTeX
+    # reflow — see layouts/_default/_markup/render-passthrough.html).
+    [markup.goldmark.extensions.passthrough]
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        block = [['$$', '$$'], ['\[', '\]']]
+        inline = [['$', '$'], ['\(', '\)']]
   [markup.highlight]
     style = 'algol'
 
