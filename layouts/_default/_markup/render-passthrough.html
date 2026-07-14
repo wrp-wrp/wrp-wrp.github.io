@@ -1,7 +1,14 @@
 {{- /* Server-side math rendering. Typesets $…$ (inline) and $$…$$ (block) with
        KaTeX at build time, so the browser never re-lays-out the page when a
        client-side renderer finishes — the cause of mobile scroll jumping.
-       Written without `try` to stay compatible with the CI Hugo (0.134);
-       transform.ToMath exists since 0.132. */ -}}
-{{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") -}}
-{{- transform.ToMath .Inner $opts -}}
+       throwOnError:false mirrors the old client-side auto-render: a malformed
+       formula renders in red instead of failing the whole build.
+       Needs Hugo ≥ 0.141 for `try` (CI pinned to 0.152.2 in hugo.yml). */ -}}
+{{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") "throwOnError" false -}}
+{{- with try (transform.ToMath .Inner $opts) -}}
+  {{- with .Err -}}
+    {{- warnf "render-passthrough: math render issue in %q: %s" $.Inner . -}}
+  {{- else -}}
+    {{- .Value -}}
+  {{- end -}}
+{{- end -}}
