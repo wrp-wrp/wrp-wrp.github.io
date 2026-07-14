@@ -1,11 +1,7 @@
 {{- /* Server-side math rendering. Typesets $…$ (inline) and $$…$$ (block) with
        KaTeX at build time, so the browser never re-lays-out the page when a
-       client-side renderer finishes — the cause of mobile scroll jumping. */ -}}
+       client-side renderer finishes — the cause of mobile scroll jumping.
+       Written without `try` to stay compatible with the CI Hugo (0.134);
+       transform.ToMath exists since 0.132. */ -}}
 {{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") -}}
-{{- with try (transform.ToMath .Inner $opts) -}}
-  {{- with .Err -}}
-    {{- errorf "render-passthrough: failed to render math %q: %s" $.Inner . -}}
-  {{- else -}}
-    {{- .Value -}}
-  {{- end -}}
-{{- end -}}
+{{- transform.ToMath .Inner $opts -}}
