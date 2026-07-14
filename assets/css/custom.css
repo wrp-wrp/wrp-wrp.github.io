@@ -1154,8 +1154,11 @@ footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* ---------- 14. Mobile fallbacks ---------- */
 @media screen and (max-width: 1139px) {
+    /* clip (not hidden): hidden forces the other axis to `auto`, turning <body>
+       into a nested scroll container that breaks touch scrolling on mobile
+       ("拖不动"). clip contains the same horizontal overflow without that. */
     html, body {
-        overflow-x: hidden !important;
+        overflow-x: clip !important;
     }
     body.single-page {
         padding: 0 !important;
@@ -1168,7 +1171,7 @@ footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
-        overflow-x: hidden !important;
+        overflow-x: clip !important;
     }
 
     .post-layout {
