@@ -1,0 +1,13 @@
+[Unit]
+Description=Create and verify an encrypted JP node migration backup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/node-migration-backup
+UMask=0077
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=true
+PrivateTmp=true
