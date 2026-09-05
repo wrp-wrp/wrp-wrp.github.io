@@ -5,22 +5,16 @@
 {{ partial "breadcrumbs.html" . }}
 {{ end }}
 
-<div class="post-layout {{ if .Param "autonumber" }}autonumber{{ end }}">
-
-    {{- /* Table of Contents - Side Display */}}
-    {{- if .Param "toc" }}
-    <aside class="side-toc">
-        <p class="side-toc-title">目录</p>
-        {{ .TableOfContents }}
-    </aside>
-    {{- end }}
+{{ $hasTOC := and (.Param "toc") (gt (len .Fragments.Headings) 0) }}
+{{ $contentLanguage := .Param "contentLanguage" | default site.Language.LanguageCode }}
+<div class="post-layout {{ if $hasTOC }}has-toc{{ end }} {{ if .Param "autonumber" }}autonumber{{ end }}">
 
     <div class="post-main-column">
         <article class="post-article" data-pagefind-body>
             <header class="single-intro-container">
-                <h1 class="single-title">{{ .Title }}</h1>
+                <h1 class="single-title" data-pagefind-meta="title">{{ .Title }}</h1>
                 {{- with .Param "summary" }}
-                <p class="single-summary">{{ . | markdownify }}</p>
+                <p class="single-summary" lang="{{ $contentLanguage }}">{{ . | markdownify }}</p>
                 {{- end }}
 
                 {{- /* Publication metadata belongs to posts, not evergreen pages such as About or Resume. */}}
@@ -51,6 +45,13 @@
                 {{- end}}
             </header>
 
+            {{ if $hasTOC }}
+            <details class="side-toc" lang="{{ $contentLanguage }}" data-pagefind-ignore>
+                <summary class="side-toc-title">{{ if hasPrefix $contentLanguage "zh" }}目录{{ else }}On this page{{ end }}</summary>
+                <div class="toc-content" lang="{{ $contentLanguage }}">{{ .TableOfContents }}</div>
+            </details>
+            {{ end }}
+
             {{- if .Param "showTags" }}
             <div class="single-tags">
                 {{- range $tag := .Params.tags }}
@@ -61,7 +62,7 @@
             </div>
             {{- end }}
 
-            <div class="single-content" id="post-content">
+            <div class="single-content" id="post-content" lang="{{ $contentLanguage }}">
                 {{ .Content }}
             </div>
         </article>
@@ -81,7 +82,7 @@
         {{ end }}
 
         {{/* Integration with ScrollSpy */}}
-        {{ if .Param "toc" }}
+        {{ if $hasTOC }}
         <script defer src="{{ "js/toc.js" | relURL }}"></script>
         {{ end }}
     </div>

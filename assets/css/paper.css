@@ -5,11 +5,12 @@
    ========================================================================== */
 
 :root {
-    --paper: #f5f0e6;
-    --paper-raised: #f8f4eb;
-    --paper-code: #eee7da;
+    --paper: #f8f5ee;
+    --paper-raised: #fcfaf5;
+    --paper-code: #f0ece3;
+    --paper-wash: rgba(248, 245, 238, 0.82);
     --ink: #292722;
-    --ink-soft: #6f675c;
+    --ink-soft: #625d54;
     --accent: #a8523c;
     --accent-deep: #813929;
     --accent-soft: rgba(168, 82, 60, 0.09);
@@ -75,13 +76,17 @@ body.single-page {
     padding: 0 !important;
     color: var(--ink);
     background-color: var(--paper);
-    background-image: url("/images/paper-texture.jpg");
+    background-image: linear-gradient(var(--paper-wash), var(--paper-wash)), url("/images/paper-texture.jpg");
     background-repeat: repeat;
     background-size: 860px 860px;
     font-family: var(--font-serif);
     font-size: 17px;
     line-height: 1.68;
     text-rendering: optimizeLegibility;
+}
+
+body.single-page {
+    --paper-wash: rgba(248, 245, 238, 0.94);
 }
 
 body.dark {
@@ -158,12 +163,12 @@ hr {
     grid-template-columns: minmax(190px, 1fr) auto auto;
     align-items: end;
     gap: 1.35rem;
-    margin: 0 0 3.35rem !important;
+    margin: 0 0 2.5rem !important;
     padding: 2.15rem 0 1.15rem !important;
     border-bottom: 1px solid var(--rule-strong);
 }
 
-.header-title {
+.header .header-title {
     margin: 0 !important;
     font-family: var(--font-serif);
     font-size: clamp(1.65rem, 3vw, 2.15rem) !important;
@@ -189,8 +194,8 @@ hr {
 .header-menu p {
     margin: 0 !important;
     color: var(--ink-soft);
-    font-family: var(--font-mono);
-    font-size: 0.75rem !important;
+    font-family: var(--font-sans);
+    font-size: 0.875rem !important;
     line-height: 1;
 }
 
@@ -244,13 +249,20 @@ hr {
 }
 
 /* Homepage ---------------------------------------------------------------- */
-.home-hero {
+.home-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.14fr) minmax(320px, 0.86fr);
-    gap: clamp(3rem, 6vw, 5.6rem);
+    grid-template-areas: "intro focus" "notes notes";
+    gap: 2.2rem clamp(3rem, 6vw, 5.6rem);
     align-items: stretch;
-    min-height: 440px;
-    margin: 0 0 3.2rem;
+}
+
+.home-hero {
+    display: block;
+    grid-area: intro;
+    min-width: 0;
+    min-height: 300px;
+    margin: 0 !important;
 }
 
 .home-hero-main {
@@ -269,7 +281,7 @@ hr {
 
 .home-hero-title {
     margin: 0 !important;
-    font-size: clamp(4.6rem, 8.4vw, 7.2rem) !important;
+    font-size: clamp(3.7rem, 6.7vw, 5.75rem) !important;
     font-weight: 700;
     line-height: 0.88;
     letter-spacing: -0.07em;
@@ -331,6 +343,7 @@ hr {
 }
 
 .home-focus-panel {
+    grid-area: focus;
     min-width: 0;
     padding: 0.55rem 0 0.2rem 2.55rem;
     border-left: 1px dashed var(--rule-strong);
@@ -340,11 +353,11 @@ hr {
     display: grid;
     grid-template-columns: 2rem minmax(0, 1fr);
     gap: 0.85rem;
-    padding: 0 0 1.55rem;
+    padding: 0 0 1rem;
 }
 
 .home-focus-item + .home-focus-item {
-    padding-top: 1.55rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--rule);
 }
 
@@ -369,7 +382,7 @@ hr {
 }
 
 .home-profile-meta {
-    margin: 1.4rem 0 0 2.85rem;
+    margin: 1rem 0 0 2.85rem;
     font-family: var(--font-mono);
     font-size: 0.69rem;
 }
@@ -396,6 +409,7 @@ hr {
 }
 
 .home-notes {
+    grid-area: notes;
     margin: 0 0 2.2rem;
 }
 
@@ -423,7 +437,7 @@ hr {
     margin-bottom: 0.72rem;
     color: var(--ink-soft);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     text-decoration: none;
 }
 
@@ -449,12 +463,12 @@ hr {
 .home-note-action {
     color: var(--ink-soft);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
 }
 
 .home-note-copy h3 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.16rem;
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.005em;
@@ -463,8 +477,8 @@ hr {
 .home-note-copy p {
     margin: 0.2rem 0 0;
     color: var(--ink-soft);
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
 }
 
 .home-note-action {
@@ -512,17 +526,40 @@ hr {
     padding: 0;
     color: var(--ink-soft);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     text-align: left;
 }
 
 .line-title {
-    font-size: 1rem;
+    font-size: 1.12rem;
 }
 
 .line-summary {
     color: var(--ink-soft);
-    font-size: 0.82rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.post-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin: 0.8rem 0 1.8rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+}
+
+.post-navigation a {
+    padding: 0.45rem 0;
+    border-bottom: 1px solid transparent;
+    text-decoration: none;
+}
+
+.post-navigation a[aria-current],
+.post-navigation a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
 }
 
 .tag-cloud {
@@ -605,12 +642,22 @@ body.single-page footer {
     font-style: italic;
 }
 
+.single-summary:lang(zh) {
+    font-style: normal;
+}
+
+.single-subsummary {
+    margin: 0.75rem 0 0;
+    padding: 0;
+    border: 0;
+}
+
 .single-subsummary,
 .single-date,
 .single-tags {
     color: var(--ink-soft);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.8rem;
 }
 
 .single-tags a {
@@ -663,11 +710,19 @@ body.single-page footer {
 }
 
 .single-content h2 {
-    margin-top: 2.7rem;
-    padding-top: 0.65rem;
-    border-top: 1px solid var(--rule);
+    margin-top: 2.4rem;
+    padding: 0;
+    border: 0;
     font-size: 1.55rem;
     line-height: 1.28;
+}
+
+.single-content > hr {
+    margin: 2rem 0;
+}
+
+.single-content > hr + h2 {
+    margin-top: 1.2rem;
 }
 
 .single-content h3 {
@@ -840,7 +895,32 @@ pre {
 }
 
 @media screen and (min-width: 1140px) {
+    .post-layout.has-toc .post-main-column {
+        flex: 1 1 100% !important;
+        min-width: 0;
+    }
+
+    .post-layout.has-toc .post-article {
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        column-gap: clamp(2rem, 3.5vw, 3rem);
+        align-items: start;
+    }
+
+    .post-layout.has-toc .post-article > :not(.side-toc) {
+        grid-column: 2;
+        min-width: 0;
+    }
+
+    .post-layout.has-toc .single-comments,
+    .post-layout.has-toc .back-to-top {
+        margin-left: calc(220px + clamp(2rem, 3.5vw, 3rem));
+    }
+
     .side-toc {
+        grid-column: 1;
+        grid-row: 1 / span 4;
+        align-self: start;
         flex: 0 0 220px !important;
         top: 2rem !important;
         padding-right: 1.1rem !important;
@@ -848,16 +928,57 @@ pre {
     }
 }
 
+.side-toc {
+    font-family: var(--font-sans);
+}
+
 .side-toc-title {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--accent);
+    cursor: pointer;
+    min-height: 44px;
+    margin: 0;
+    padding: 0.75rem 0;
+    line-height: 1.5;
+}
+
+.side-toc-title::marker {
     color: var(--accent);
 }
 
+.side-toc .toc-content {
+    padding-top: 0.6rem;
+}
+
+@media (max-width: 1139px) {
+    .side-toc {
+        padding: 0.2rem 1rem !important;
+        border-radius: 0 !important;
+    }
+
+    .side-toc[open] {
+        padding-bottom: 1rem !important;
+    }
+}
+
 .side-toc nav a {
+    font-size: 0.875rem !important;
+    line-height: 1.6 !important;
+    padding: 0.4rem 0.6rem !important;
     border-left-color: transparent !important;
     color: var(--ink-soft) !important;
     word-break: normal !important;
     overflow-wrap: normal !important;
     hyphens: none;
+}
+
+.side-toc nav li {
+    margin: 0;
+    padding: 0;
 }
 
 .side-toc nav a:hover,
@@ -891,7 +1012,29 @@ pre {
 
 /* Search ------------------------------------------------------------------ */
 .search-modal {
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.search-modal[open] {
+    display: flex;
+}
+
+.search-modal::backdrop {
     background: rgba(30, 25, 20, 0.58);
+}
+
+html.search-open {
+    overflow: hidden;
 }
 
 .search-panel {
@@ -900,6 +1043,53 @@ pre {
     color: var(--ink);
     background: var(--paper-raised);
     box-shadow: 0 22px 60px rgba(35, 25, 15, 0.18);
+    max-height: calc(100dvh - 8vh - 2rem);
+}
+
+.search-panel [hidden] {
+    display: none !important;
+}
+
+.search-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.search-panel-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.search-close,
+#search-retry {
+    min-height: 44px;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.search-close .kbd {
+    margin-left: 0.4rem;
+    color: var(--ink-soft);
+}
+
+.search-fallback-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin: 1rem 0;
+}
+
+.search-status {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
 }
 
 .search-panel #pagefind-search {
@@ -961,6 +1151,21 @@ body.single-page footer {
     color: var(--accent);
 }
 
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.3rem;
+    margin-top: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+}
+
+.footer-links a {
+    padding: 0.5rem 0;
+    border: 0;
+    text-decoration: none;
+}
+
 /* Touch scrolling --------------------------------------------------------- */
 /* Horizontally-scrollable blocks (math, tables, code, the nav strip) default
    to touch-action: auto, which lets a mostly-vertical read-swipe that starts on
@@ -994,9 +1199,9 @@ body.single-page footer {
         grid-row: 1;
     }
 
-    .home-hero {
+    .home-layout {
         grid-template-columns: minmax(0, 1fr) minmax(285px, 0.75fr);
-        gap: 3rem;
+        column-gap: 3rem;
     }
 }
 
@@ -1005,15 +1210,24 @@ body.single-page footer {
         --main-padding: 1.25rem;
     }
 
+    .home-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 2.2rem;
+    }
+
     .home-hero {
-        grid-template-columns: 1fr !important;
-        gap: 2.2rem !important;
+        min-height: 0;
     }
 
     .home-focus-panel {
         padding: 1.7rem 0 0;
         border-top: 1px dashed var(--rule-strong);
         border-left: 0;
+    }
+
+    .home-notes {
+        margin-bottom: 0;
     }
 
     .home-profile-meta {
@@ -1037,7 +1251,7 @@ body.single-page footer {
     .side-toc {
         width: 100% !important;
         margin: 0 0 2rem !important;
-        padding: 1rem 1.1rem !important;
+        padding: 0.2rem 1rem !important;
         border: 1px solid var(--rule) !important;
         border-radius: 0 !important;
         background: var(--paper-code) !important;
@@ -1068,23 +1282,30 @@ body.single-page footer {
         grid-column: 1 / -1;
         grid-row: 2;
         justify-content: flex-start;
-        gap: 0.9rem !important;
+        flex-wrap: wrap;
+        gap: 0.15rem 0.9rem !important;
         width: 100%;
         margin: 0 !important;
         padding: 0.25rem 0 0.35rem !important;
-        overflow-x: auto;
-        scrollbar-width: none;
-    }
-
-    .header-menu::-webkit-scrollbar {
-        display: none;
+        overflow: visible;
     }
 
     .header-menu p,
     .header-menu p a {
         flex: 0 0 auto;
-        font-size: 0.7rem !important;
+        font-size: 0.875rem !important;
         white-space: nowrap;
+    }
+
+    .header-menu a {
+        min-height: 32px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem !important;
+    }
+
+    .search-trigger,
+    .theme-switch-btn {
+        min-height: 36px;
     }
 
     .header-tools {
@@ -1096,7 +1317,7 @@ body.single-page footer {
     }
 
     .home-hero-title {
-        font-size: clamp(4rem, 24vw, 5.6rem) !important;
+        font-size: clamp(2.9rem, 14.4vw, 3.7rem) !important;
     }
 
     .home-hero-subtitle {

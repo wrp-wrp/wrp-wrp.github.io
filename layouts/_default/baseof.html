@@ -31,7 +31,7 @@
     {{ partial "footer.html" . }}
   </footer>
 
-  {{ if .Param "math" }}
+  {{ if .Store.Get "hasMath" }}
   {{ partialCached "math.html" . }}
   {{ end }}
 </body>

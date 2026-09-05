@@ -34,20 +34,21 @@
     }
 
     :root {
-      --paper: #f5f0e6;
-      --paper-raised: #f8f4eb;
-      --paper-code: #eee7da;
+      --paper: #f8f5ee;
+      --paper-raised: #fcfaf5;
+      --paper-code: #f0ece3;
       --ink: #292722;
-      --ink-soft: #6f675c;
+      --ink-soft: #625d54;
       --accent: #a8523c;
       --accent-deep: #813929;
       --accent-soft: rgba(168, 82, 60, 0.09);
       --rule: rgba(71, 60, 47, 0.18);
       --rule-strong: rgba(71, 60, 47, 0.34);
-      --texture: url("/images/paper-texture.jpg");
+      --texture: linear-gradient(rgba(248, 245, 238, 0.82), rgba(248, 245, 238, 0.82)), url("/images/paper-texture.jpg");
       --font-serif: "Literata", "Noto Serif CJK", "Noto Serif SC", "Songti SC", Georgia, serif;
       --font-heading: "Literata", "LXGW WenKai", "霞鹜文楷", "Noto Serif CJK", "Noto Serif SC", "Songti SC", Georgia, serif;
       --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "Cascadia Code", "Consolas", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
       color-scheme: light;
     }
 
@@ -135,8 +136,8 @@
 
     .nav a {
       color: var(--ink-soft);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
       padding-bottom: 0.24rem;
       border-bottom: 1px solid transparent;
       transition: color 150ms ease, border-color 150ms ease;
@@ -306,6 +307,9 @@
     .foot p { margin: 0.65rem 0 0; }
     .foot a { color: var(--accent); }
 
+    .foot-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.3rem; margin-top: 0.65rem; font-family: var(--font-sans); font-size: 0.8125rem; }
+    .foot-links a { padding: 0.5rem 0; color: var(--ink-soft); }
+
     /* Responsive ---------------------------------------------------------- */
     @media (max-width: 820px) {
       .wrap { width: calc(100% - 2rem); padding: 1.5rem 0 2.5rem; }
@@ -319,13 +323,11 @@
   <div class="wrap">
     <div class="masthead">
       <a class="brand" href="/">rprp's blog</a>
-      <nav class="nav" aria-label="Site">
-        <a href="/">/home</a>
-        <a href="/posts">/posts</a>
-        <a href="/archive">/archive</a>
-        <a href="/resources" aria-current="page">/resources</a>
-        <a href="/tags">/tags</a>
-        <a href="/about">/about</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/posts/">Posts</a>
+        <a href="/resources/" aria-current="page">Resources</a>
+        <a href="/about/">About</a>
       </nav>
     </div>
 
@@ -369,6 +371,12 @@
 
     <footer class="foot">
       <div class="foot-rule"><span>&#10086;</span></div>
+      <nav class="foot-links" aria-label="More pages">
+        <a href="/archive/">Archive</a>
+        <a href="/tags/">Tags</a>
+        <a href="/resume/">Resume</a>
+        <a href="/chat/">Message Board</a>
+      </nav>
       <p>&copy; 2026 rprp &middot; wrp-wrp</p>
     </footer>
   </div>

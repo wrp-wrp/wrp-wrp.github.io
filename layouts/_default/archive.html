@@ -8,6 +8,8 @@
 <h1 class="single-title">{{ .Title }}</h1>
 {{ .Content }}
 
+{{ partial "post-navigation.html" . }}
+
 {{ $pages := where .Site.RegularPages "Section" "posts" }}
 {{ $pages = where $pages "Params.hidden" "ne" true }}
 {{ $pages = sort $pages "Date" "desc" }}

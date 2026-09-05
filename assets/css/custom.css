@@ -1077,7 +1077,7 @@ body.single-page footer {
     padding: 8vh 1rem 2rem;
 }
 
-.search-modal.open { display: flex; }
+.search-modal[open] { display: flex; }
 
 .search-panel {
     width: min(680px, 100%);

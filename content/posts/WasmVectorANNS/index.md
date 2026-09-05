@@ -6,11 +6,10 @@ title = 'WebAssembly and Vector Index for On-Device ANNS: Quantization Appears S
 summary = "在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，走 diskann 路线看起来足够了。"
 title_en = "WebAssembly and Vector Index for On-Device ANNS: Quantization Appears Sufficient"
 summary_en = "Under strict on-device ANNS memory limits, a quantized index with graph search and lightweight reranking appears to be a practical path."
+contentLanguage = 'zh-CN'
 tags = ["WASM", "向量检索", "ANNS", "量化", "HNSW"]
 categories = ["技术调研"]
 +++
-
-# WASM + Vector Index 端侧 ANNS 调研
 
 作为一个实习生， 这段时间我在看浏览器端 ANNS。 虽然感觉有各种乱七八糟的方案， 但是看起来**量化似乎已经足够了**。
 

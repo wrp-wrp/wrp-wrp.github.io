@@ -1,17 +1,32 @@
 (function () {
     function initTOC() {
-        const tocLinks = document.querySelectorAll('.side-toc nav a');
+        const toc = document.querySelector('.side-toc');
+        if (!toc) return;
+        const desktop = window.matchMedia('(min-width: 1140px)');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const syncLayout = () => { toc.open = desktop.matches; };
+        syncLayout();
+        desktop.addEventListener('change', syncLayout);
+        const tocLinks = toc.querySelectorAll('nav a');
         if (!tocLinks.length) return;
 
         const sections = [];
         tocLinks.forEach(link => {
             const href = link.getAttribute('href');
             if (href && href.startsWith('#')) {
-                const id = href.slice(1);
+                let id = href.slice(1);
+                try { id = decodeURIComponent(id); } catch (e) {}
                 // Try to find the element by raw ID or decoded ID
-                const element = document.getElementById(id) || document.getElementById(decodeURIComponent(id));
+                const element = document.getElementById(id);
                 if (element) {
                     sections.push({ link, element });
+                    // Close before the native anchor jump recalculates the
+                    // heading position with the mobile directory collapsed.
+                    link.addEventListener('click', e => {
+                        if (!desktop.matches && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+                            toc.open = false;
+                        }
+                    });
                 }
             }
         });
@@ -19,14 +34,15 @@
         if (!sections.length) return;
 
         let activeIndex = -1;
+        let scheduled = false;
 
         function update() {
-            const scrollPos = window.scrollY + 150; // Offset for better detection
+            scheduled = false;
 
             // Find the current active section
             let newIndex = -1;
             for (let i = 0; i < sections.length; i++) {
-                if (sections[i].element.offsetTop <= scrollPos) {
+                if (sections[i].element.getBoundingClientRect().top <= 150) {
                     newIndex = i;
                 } else {
                     break;
@@ -35,38 +51,46 @@
 
             if (newIndex !== activeIndex) {
                 activeIndex = newIndex;
-                tocLinks.forEach(link => link.classList.remove('active'));
+                tocLinks.forEach(link => {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                });
 
                 if (activeIndex !== -1) {
                     const activeLink = sections[activeIndex].link;
                     activeLink.classList.add('active');
+                    activeLink.setAttribute('aria-current', 'location');
 
                     // Smoothly scroll the TOC as well
-                    const tocParent = document.querySelector('.side-toc');
-                    if (tocParent) {
-                        const linkTop = activeLink.offsetTop;
-                        const parentHeight = tocParent.clientHeight;
-                        if (linkTop > parentHeight - 50 || linkTop < 50) {
-                            tocParent.scrollTo({ top: linkTop - 100, behavior: 'smooth' });
+                    if (desktop.matches && toc.open) {
+                        const bounds = toc.getBoundingClientRect();
+                        const linkBounds = activeLink.getBoundingClientRect();
+                        if (linkBounds.top < bounds.top || linkBounds.bottom > bounds.bottom) {
+                            toc.scrollTo({
+                                top: toc.scrollTop + linkBounds.top - bounds.top - 60,
+                                behavior: reducedMotion.matches ? 'auto' : 'smooth',
+                            });
                         }
                     }
                 }
             }
         }
 
-        window.addEventListener('scroll', update, { passive: true });
+        function scheduleUpdate() {
+            if (scheduled) return;
+            scheduled = true;
+            window.requestAnimationFrame(update);
+        }
+        window.addEventListener('scroll', scheduleUpdate, { passive: true });
+        window.addEventListener('resize', scheduleUpdate);
+        window.addEventListener('load', scheduleUpdate, { once: true });
         update();
-
-        // Final recalibration after images/math are likely loaded
-        setTimeout(update, 2000);
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTOC);
+        document.addEventListener('DOMContentLoaded', initTOC, { once: true });
     } else {
         initTOC();
     }
 
-    // Also re-run on full window load to capture KaTeX shifts
-    window.addEventListener('load', initTOC);
 })();

@@ -7,6 +7,10 @@
     <h1>{{ .Title }}</h1>
     {{ .Content }}
 
+    {{ if or (eq .Section "posts") (eq .Section "tags") }}
+    {{ partial "post-navigation.html" . }}
+    {{ end }}
+
     {{ $tagsPage := eq .Title "Tags" }}
 
     {{/* Filter out hidden posts (frontmatter: hidden = true) */}}

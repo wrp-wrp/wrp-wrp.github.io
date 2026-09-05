@@ -6,22 +6,19 @@
 
 {{ $faviconPath := (.Site.Params.faviconPath | default "" | absURL) }}
 
-<link rel="icon" type="image/ico" href="{{ urls.JoinPath $faviconPath " favicon.ico" }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ urls.JoinPath $faviconPath " favicon-16x16.png" }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ urls.JoinPath $faviconPath " favicon-32x32.png" }}">
-<link rel="icon" type="image/png" sizes="192x192" href="{{ urls.JoinPath $faviconPath " android-chrome-192x192.png" }}">
-<link rel="apple-touch-icon" sizes="180x180" href="{{ urls.JoinPath $faviconPath " apple-touch-icon.png" }}">
+<link rel="icon" type="image/x-icon" href="{{ urls.JoinPath $faviconPath "favicon.ico" }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ urls.JoinPath $faviconPath "favicon-16x16.png" }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ urls.JoinPath $faviconPath "favicon-32x32.png" }}">
+<link rel="icon" type="image/png" sizes="192x192" href="{{ urls.JoinPath $faviconPath "android-chrome-192x192.png" }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ urls.JoinPath $faviconPath "apple-touch-icon.png" }}">
 
 {{ with .OutputFormats.Get "rss" -}}
 {{ printf `
 <link rel=%q type=%q href=%q title=%q>` .Rel .MediaType.Type .Permalink site.Title | safeHTML }}
 {{ end }}
 
-{{- if .IsHome -}}
-<meta name="description" content="{{ site.Params.Description }}" />
-{{- else -}}
-<meta name="description" content="{{ .Params.Description }}" />
-{{- end }}
+{{- $description := or .Description .Params.summary .Summary site.Params.description | plainify | htmlUnescape -}}
+<meta name="description" content="{{ $description | replaceRE `\s+` ` ` | strings.TrimSpace | truncate 160 }}">
 
 {{ if .Param "fediverse" }}
 <meta name="fediverse:creator" content="{{ .Params.Fediverse }}">
@@ -38,11 +35,6 @@
 <link rel="canonical" href="{{ .Permalink }}" />
 
 {{ template "partials/opengraph.html" . }}
-
-{{/* CJK web font — Noto Serif SC for Chinese glyphs */}}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap">
 
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}

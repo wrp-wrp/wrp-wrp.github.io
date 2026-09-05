@@ -4,11 +4,11 @@
 
     {{ if or (not (.Param "hideHeader")) .IsHome }}
 
-    <h1 class="header-title">
+    <p class="header-title">
         <a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
-    </h1>
+    </p>
 
-    <div class="header-menu">
+    <nav class="header-menu" aria-label="Main navigation">
         {{ $currentPage := . }}
         {{ with site.Params.menu }}
         {{ range . }}
@@ -16,15 +16,15 @@
         {{ if and (ne .url "/") (hasPrefix $currentPage.RelPermalink .url) }}{{ $active = true }}{{ end }}
         <p class="small {{ if $active }}bold{{ end }}">
             <a href="{{ .url }}" {{ if $active }}aria-current="page"{{ end }} {{ if and (isset . "newTab") .newTab }}target="_blank" rel="noopener noreferrer"{{ end }}>
-                /{{.name }}
+                {{ .name | title }}
             </a>
         </p>
         {{ end }}
         {{ end }}
-    </div>
+    </nav>
 
     <div class="header-tools">
-        <button id="search-trigger" class="search-trigger" aria-label="Search posts">
+        <button id="search-trigger" class="search-trigger" aria-label="Search posts" aria-haspopup="dialog" aria-controls="search-modal">
             <span>search</span>
             <span class="kbd">/</span>
         </button>
@@ -38,13 +38,20 @@
 </div>
 
 {{/* Search modal */}}
-<div id="search-modal" class="search-modal" aria-hidden="true">
+<dialog id="search-modal" class="search-modal" aria-labelledby="search-title" data-pagefind-base="{{ "pagefind/" | relURL }}">
     <div class="search-panel">
+        <div class="search-panel-header">
+            <h2 id="search-title">Search posts</h2>
+            <button id="search-close" class="search-close" type="button" aria-label="Close search">Close <span class="kbd" aria-hidden="true">Esc</span></button>
+        </div>
+        <p id="search-status" class="search-status" role="status" hidden>Loading search…</p>
         <div id="pagefind-search"></div>
-        <div class="search-panel-empty" id="search-fallback" style="display:none;">
-            Search index not built yet. Run <code>scripts/blog-workflow.sh build</code> then
-            <code>npx pagefind --site public</code>, or
-            <code>scripts/blog-workflow.sh build-search</code>.
+        <div class="search-panel-empty" id="search-fallback" role="status" hidden>
+            <p>Search is temporarily unavailable. You can browse all posts or try again.</p>
+            <div class="search-fallback-actions">
+                <a href="{{ "posts/" | relURL }}">Browse all posts</a>
+                <button id="search-retry" type="button">Try again</button>
+            </div>
         </div>
     </div>
-</div>
+</dialog>

@@ -58,30 +58,42 @@
     // ---------- 3. Pagefind search ----------
     const searchTrigger = document.getElementById('search-trigger');
     const searchModal = document.getElementById('search-modal');
+    const searchClose = document.getElementById('search-close');
+    const searchRetry = document.getElementById('search-retry');
+    const searchStatus = document.getElementById('search-status');
     const searchFallback = document.getElementById('search-fallback');
-    let pagefindLoaded = false;
+    let pagefindUI = null;
+    let pagefindLoading = null;
+    let searchReturnFocus = null;
 
-    async function loadPagefind() {
-        if (pagefindLoaded) return;
-        pagefindLoaded = true;
-        try {
-            // Inject pagefind UI css
-            const css = document.createElement('link');
-            css.rel = 'stylesheet';
-            css.href = '/pagefind/pagefind-ui.css';
-            document.head.appendChild(css);
+    function loadPagefind() {
+        if (pagefindUI) return Promise.resolve();
+        if (pagefindLoading) return pagefindLoading;
 
-            // Inject pagefind UI script
-            await new Promise((resolve, reject) => {
-                const s = document.createElement('script');
-                s.src = '/pagefind/pagefind-ui.js';
-                s.onload = resolve;
-                s.onerror = reject;
-                document.head.appendChild(s);
-            });
+        pagefindLoading = (async () => {
+            const base = searchModal.dataset.pagefindBase;
+            if (!document.getElementById('pagefind-ui-styles')) {
+                const css = document.createElement('link');
+                css.id = 'pagefind-ui-styles';
+                css.rel = 'stylesheet';
+                css.href = base + 'pagefind-ui.css';
+                document.head.appendChild(css);
+            }
 
-            // Initialize PagefindUI
-            new window.PagefindUI({
+            if (!window.PagefindUI) {
+                await new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = base + 'pagefind-ui.js';
+                    script.onload = resolve;
+                    script.onerror = () => {
+                        script.remove();
+                        reject(new Error('Search could not be loaded'));
+                    };
+                    document.head.appendChild(script);
+                });
+            }
+
+            pagefindUI = new window.PagefindUI({
                 element: '#pagefind-search',
                 showSubResults: true,
                 showImages: false,
@@ -92,27 +104,47 @@
                     zero_results: 'No results for "[SEARCH_TERM]"',
                 },
             });
+        })().finally(() => { pagefindLoading = null; });
+        return pagefindLoading;
+    }
+
+    async function openSearch() {
+        if (!searchModal) return;
+        if (!searchModal.open) {
+            searchReturnFocus = document.activeElement === document.body
+                ? searchTrigger : document.activeElement;
+            searchModal.showModal();
+            document.documentElement.classList.add('search-open');
+        }
+        searchFallback.hidden = true;
+        searchStatus.hidden = !!pagefindUI;
+        try {
+            await loadPagefind();
+            if (searchModal.open) {
+                const input = searchModal.querySelector('input');
+                if (input) input.focus();
+            }
         } catch (err) {
-            pagefindLoaded = false;
-            if (searchFallback) searchFallback.style.display = 'block';
-            console.warn('[search] pagefind not available — run: npx pagefind --site public');
+            searchFallback.hidden = false;
+            console.warn('[search]', err);
+        } finally {
+            searchStatus.hidden = true;
         }
     }
 
-    function openSearch() {
-        if (!searchModal) return;
-        searchModal.classList.add('open');
-        searchModal.setAttribute('aria-hidden', 'false');
-        loadPagefind().then(() => {
-            const input = document.querySelector('#pagefind-search input');
-            if (input) input.focus();
-        });
+    function closeSearch() {
+        if (!searchModal || !searchModal.open) return;
+        searchModal.close();
+        finishSearchClose();
     }
 
-    function closeSearch() {
-        if (!searchModal) return;
-        searchModal.classList.remove('open');
-        searchModal.setAttribute('aria-hidden', 'true');
+    function finishSearchClose() {
+        // A queued close event must not affect a dialog that was reopened.
+        if (searchModal.open) return;
+        document.documentElement.classList.remove('search-open');
+        const target = searchReturnFocus && searchReturnFocus.isConnected
+            ? searchReturnFocus : searchTrigger;
+        if (target) target.focus({ preventScroll: true });
     }
 
     if (searchTrigger) {
@@ -120,6 +152,28 @@
     }
 
     if (searchModal) {
+        searchClose.addEventListener('click', closeSearch);
+        searchRetry.addEventListener('click', openSearch);
+        searchModal.addEventListener('keydown', e => {
+            if (e.key !== 'Tab') return;
+            const controls = Array.from(searchModal.querySelectorAll(
+                'a[href], button, input, select, textarea, [tabindex]'
+            )).filter(el => el.tabIndex >= 0 && !el.disabled && el.getClientRects().length > 0);
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+        searchModal.addEventListener('cancel', e => {
+            e.preventDefault();
+            closeSearch();
+        });
+        searchModal.addEventListener('close', finishSearchClose);
         searchModal.addEventListener('click', (e) => {
             if (e.target === searchModal) closeSearch();
         });
@@ -127,6 +181,7 @@
 
     // keyboard shortcut: "/" to open, Esc to close
     document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.isComposing) return;
         const target = e.target;
         const tag = target && target.tagName;
         const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || (target && target.isContentEditable);
@@ -134,8 +189,6 @@
         if (e.key === '/' && !isInput) {
             e.preventDefault();
             openSearch();
-        } else if (e.key === 'Escape' && searchModal && searchModal.classList.contains('open')) {
-            closeSearch();
         } else if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
             e.preventDefault();
             openSearch();

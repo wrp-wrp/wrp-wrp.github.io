@@ -6,6 +6,7 @@
 {{ $pages = sort $pages "Date" "desc" }}
 {{ $recent := first 3 $pages }}
 
+<div class="home-layout">
 <section class="home-hero" aria-labelledby="home-title">
     <div class="home-hero-main">
         <h1 class="home-hero-title" id="home-title">{{ .Site.Params.homeIntroTitle | default "rprp" }}</h1>
@@ -31,29 +32,6 @@
         {{ end }}
     </div>
 
-    <aside class="home-focus-panel" aria-label="Research focus">
-        {{ range $index, $item := site.Params.homeFocus }}
-        <article class="home-focus-item">
-            <p class="home-focus-index">{{ printf "%02d" (add $index 1) }}</p>
-            <div>
-                <h2>{{ $item.title }}</h2>
-                <p>{{ $item.description }}</p>
-            </div>
-        </article>
-        {{ end }}
-
-        <dl class="home-profile-meta">
-            {{ with site.Params.homeLocation }}
-            <div><dt>Location</dt><dd>{{ . }}</dd></div>
-            {{ end }}
-            {{ with site.Params.homeAffiliation }}
-            <div><dt>Affiliation</dt><dd>{{ . }}</dd></div>
-            {{ end }}
-            {{ with site.Params.homeEmail }}
-            <div><dt>Email</dt><dd><a href="mailto:{{ . }}">{{ . }}</a></dd></div>
-            {{ end }}
-        </dl>
-    </aside>
 </section>
 
 {{ if gt (len $recent) 0 }}
@@ -84,5 +62,30 @@
     </div>
 </section>
 {{ end }}
+
+<aside class="home-focus-panel" aria-label="Research focus">
+    {{ range $index, $item := site.Params.homeFocus }}
+    <article class="home-focus-item">
+        <p class="home-focus-index">{{ printf "%02d" (add $index 1) }}</p>
+        <div>
+            <h2>{{ $item.title }}</h2>
+            <p>{{ $item.description }}</p>
+        </div>
+    </article>
+    {{ end }}
+
+    <dl class="home-profile-meta">
+        {{ with site.Params.homeLocation }}
+        <div><dt>Location</dt><dd>{{ . }}</dd></div>
+        {{ end }}
+        {{ with site.Params.homeAffiliation }}
+        <div><dt>Affiliation</dt><dd>{{ . }}</dd></div>
+        {{ end }}
+        {{ with site.Params.homeEmail }}
+        <div><dt>Email</dt><dd><a href="mailto:{{ . }}">{{ . }}</a></dd></div>
+        {{ end }}
+    </dl>
+</aside>
+</div>
 
 {{ end }}

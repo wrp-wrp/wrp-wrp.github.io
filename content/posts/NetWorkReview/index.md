@@ -2,12 +2,14 @@
 date = '2025-11-20T12:01:45+08:00'
 draft = false
 math = true
-title = 'NetWork Review Notes'
+title = 'Network Review Notes'
+summary = '从网络分层到协议与性能指标，整理计算机网络的核心概念、公式和易混淆点。'
+summary_en = 'A layer-by-layer guide to network protocols, performance formulas, and common pitfalls, with diagrams and worked examples.'
+contentLanguage = 'zh-CN'
+tags = ['计算机网络', '课程笔记']
 +++
 
 
-
-# 按层整理的计算机网络复习笔记
 
 本文按网络分层（物理层、链路层、网络层、传输层、应用层）整理要点，并在物理层补充常见线路编码与带通调制的简介，便于复习与查阅。
 

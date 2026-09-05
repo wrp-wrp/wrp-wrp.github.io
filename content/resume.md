@@ -1,5 +1,6 @@
 +++
 title = "Resume"
+description = "rprp's education, database research, systems projects, competitive programming awards, and teaching experience."
 date = 2025-11-27
 draft = false
 +++

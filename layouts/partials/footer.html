@@ -1,6 +1,13 @@
 {{ $showFooter := default true .Site.Params.showFooter }}
 {{ if $showFooter }}
 <div class="footer-rule" aria-hidden="true"><span>01</span></div>
+{{ with .Site.Params.footerMenu }}
+<nav class="footer-links" aria-label="More pages">
+    {{ range . }}
+    <a href="{{ .url | relURL }}">{{ .name | title }}</a>
+    {{ end }}
+</nav>
+{{ end }}
 <div class="footer-content">
     <p>&copy; {{ now.Year }} rprp · wrp-wrp</p>
     {{ if not .Site.Params.footerContent }}

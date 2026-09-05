@@ -4,6 +4,7 @@
        throwOnError:false mirrors the old client-side auto-render: a malformed
        formula renders in red instead of failing the whole build.
        Needs Hugo ≥ 0.141 for `try` (CI pinned to 0.152.2 in hugo.yml). */ -}}
+{{- .Page.Store.Set "hasMath" true -}}
 {{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") "throwOnError" false -}}
 {{- with try (transform.ToMath .Inner $opts) -}}
   {{- with .Err -}}

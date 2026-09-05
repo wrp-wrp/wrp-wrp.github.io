@@ -4,15 +4,15 @@ title = "rprp's blog"
 theme = 'typo'
 math = true
 
-# Google analytics code
-googleAnalytics = "G-xxxxxxxxx"
+# Set a real measurement ID here to enable analytics.
+googleAnalytics = ""
 
 [taxonomies]
 tag = 'tags'
 
 [params]
 # Meta description
-description = "rprp's Blog"
+description = "Research notes on vector search, cloud storage, and database systems, alongside algorithms and course notes by rprp, a computer science student at HUST."
 toc = true
 
 # Appearance settings
@@ -23,9 +23,7 @@ hideHeader = false
 # Intro on main page, content is markdown
 homeIntroTitle = 'rprp'
 homeIntroContent = """
-wrp-wrp · he/him — A student from Huazhong University of Science and Technology, ACM competitor, ICPC regional Au.
-
-Currently focused on vector search and cloud storage, while sharing notes from contests, research, and system design.
+HUST computer science student and ICPC regional gold medalist. I write about vector search, cloud storage, and systems research.
 """
 homeAvatarPath = "images/home-avatar.jpg"
 homeAvatarAlt = "rprp avatar"
@@ -76,28 +74,28 @@ name = "posts"
 url = "/posts"
 
 [[params.menu]]
-name = "archive"
-url = "/archive"
-
-[[params.menu]]
 name = "resources"
 url = "/resources"
-
-[[params.menu]]
-name = "tags"
-url = "/tags"
 
 [[params.menu]]
 name = "about"
 url = "/about"
 
-[[params.menu]]
-name = "resume"
-url = "/resume"
+[[params.footerMenu]]
+name = "archive"
+url = "/archive/"
 
-[[params.menu]]
-name = "chat"
-url = "/chat"
+[[params.footerMenu]]
+name = "tags"
+url = "/tags/"
+
+[[params.footerMenu]]
+name = "resume"
+url = "/resume/"
+
+[[params.footerMenu]]
+name = "message board"
+url = "/chat/"
 
 # Syntax highlight on code blocks
 [markup]

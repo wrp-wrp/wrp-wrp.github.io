@@ -1,5 +1,6 @@
 +++
 title = "About"
+description = "About rprp, a HUST computer science student researching vector search and cloud storage, with experience in systems and competitive programming."
 date = 2025-11-19T00:00:00+08:00
 draft = false
 math = true
