@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+KIT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REMOTE_KIT="/root/jp-node-migration"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  ./migrate export SOURCE_SSH [LOCAL_ARCHIVE.enc]
+  ./migrate preflight TARGET_SSH
+  ./migrate restore TARGET_SSH LOCAL_ARCHIVE.enc
+  ./migrate verify TARGET_SSH [DOMAIN]
+
+Examples:
+  ./migrate export jp
+  ./migrate preflight root@203.0.113.10
+  ./migrate restore root@203.0.113.10 backups/jp-node-20260726-150000.enc
+  ./migrate verify root@203.0.113.10 jp.ppmister.com
+EOF
+}
+
+deploy_kit() {
+  local target="$1"
+  ssh "$target" "mkdir -p '$REMOTE_KIT'"
+  rsync -a --delete \
+    --exclude backups \
+    --exclude '*.enc' \
+    --exclude '*.enc.sha256' \
+    "$KIT_DIR/" "$target:$REMOTE_KIT/"
+  ssh "$target" \
+    "chmod 0755 '$REMOTE_KIT/migrate' '$REMOTE_KIT/bin/'*"
+}
+
+verify_local_checksum() {
+  local archive="$1"
+  local checksum_file="$archive.sha256"
+  local expected actual
+  expected="$(awk 'NR==1 {print $1}' "$checksum_file")"
+  if command -v sha256sum >/dev/null; then
+    actual="$(sha256sum "$archive" | awk '{print $1}')"
+  else
+    actual="$(shasum -a 256 "$archive" | awk '{print $1}')"
+  fi
+  [[ "$actual" == "$expected" ]] || {
+    printf 'Downloaded archive checksum mismatch.\n' >&2
+    return 1
+  }
+  printf '%s: OK\n' "$(basename -- "$archive")"
+}
+
+command_name="${1:-}"
+case "$command_name" in
+  export)
+    source_ssh="${2:?missing SOURCE_SSH}"
+    timestamp="$(date -u +%Y%m%d-%H%M%S)"
+    local_archive="${3:-$KIT_DIR/backups/jp-node-$timestamp.enc}"
+    mkdir -p "$(dirname -- "$local_archive")"
+    archive_name="$(basename -- "$local_archive")"
+    remote_archive="/root/$archive_name"
+    deploy_kit "$source_ssh"
+    ssh -t "$source_ssh" \
+      "'$REMOTE_KIT/bin/export-node' --output '$remote_archive'"
+    scp "$source_ssh:$remote_archive" "$local_archive"
+    scp "$source_ssh:$remote_archive.sha256" "$local_archive.sha256"
+    ssh "$source_ssh" "rm -f '$remote_archive' '$remote_archive.sha256'"
+    verify_local_checksum "$local_archive"
+    printf 'Local encrypted backup: %s\n' "$local_archive"
+    ;;
+  preflight)
+    target_ssh="${2:?missing TARGET_SSH}"
+    deploy_kit "$target_ssh"
+    ssh "$target_ssh" "'$REMOTE_KIT/bin/preflight-node'"
+    ;;
+  restore)
+    target_ssh="${2:?missing TARGET_SSH}"
+    local_archive="${3:?missing LOCAL_ARCHIVE.enc}"
+    [[ -r "$local_archive" ]] || {
+      printf 'Cannot read archive: %s\n' "$local_archive" >&2
+      exit 1
+    }
+    deploy_kit "$target_ssh"
+    archive_name="$(basename -- "$local_archive")"
+    remote_archive="/root/$archive_name"
+    scp "$local_archive" "$target_ssh:$remote_archive"
+    if [[ -r "$local_archive.sha256" ]]; then
+      scp "$local_archive.sha256" "$target_ssh:$remote_archive.sha256"
+    fi
+    ssh -t "$target_ssh" \
+      "'$REMOTE_KIT/bin/restore-node' '$remote_archive' --stage-only"
+    printf 'Type APPLY to restore and start the node on %s: ' "$target_ssh"
+    read -r confirmation
+    [[ "$confirmation" == APPLY ]] || {
+      printf 'Restore cancelled after successful stage-only validation.\n'
+      ssh "$target_ssh" "rm -f '$remote_archive' '$remote_archive.sha256'"
+      exit 0
+    }
+    ssh -t "$target_ssh" \
+      "'$REMOTE_KIT/bin/restore-node' '$remote_archive' --apply"
+    ssh "$target_ssh" "rm -f '$remote_archive' '$remote_archive.sha256'"
+    ;;
+  verify)
+    target_ssh="${2:?missing TARGET_SSH}"
+    domain="${3:-jp.ppmister.com}"
+    deploy_kit "$target_ssh"
+    ssh "$target_ssh" "'$REMOTE_KIT/bin/verify-node' '$domain'"
+    ;;
+  -h|--help|"")
+    usage
+    ;;
+  *)
+    printf 'Unknown command: %s\n' "$command_name" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

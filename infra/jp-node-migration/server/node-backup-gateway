@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BACKUP_DIR="/var/lib/node-migration/backups"
+RUNNER="/usr/local/sbin/node-migration-backup"
+requested_command="${SSH_ORIGINAL_COMMAND:-status}"
+
+latest_archive() {
+  local resolved
+  resolved="$(readlink -f "$BACKUP_DIR/latest.enc" 2>/dev/null || true)"
+  [[ -n "$resolved" && "$resolved" == "$BACKUP_DIR/"* && -f "$resolved" ]] || {
+    printf 'No verified backup is available.\n' >&2
+    exit 1
+  }
+  printf '%s\n' "$resolved"
+}
+
+case "$requested_command" in
+  export)
+    exec "$RUNNER"
+    ;;
+  latest)
+    archive="$(latest_archive)"
+    exec cat "$archive"
+    ;;
+  latest-sha256)
+    archive="$(latest_archive)"
+    sha256sum "$archive" | awk '{print $1}'
+    ;;
+  status)
+    archive="$(latest_archive)"
+    printf 'latest=%s\n' "$(basename -- "$archive")"
+    printf 'bytes=%s\n' "$(stat -c '%s' "$archive")"
+    printf 'modified=%s\n' "$(date -u -r "$archive" +%Y-%m-%dT%H:%M:%SZ)"
+    ;;
+  *)
+    printf 'Command is not allowed by the backup gateway.\n' >&2
+    exit 64
+    ;;
+esac

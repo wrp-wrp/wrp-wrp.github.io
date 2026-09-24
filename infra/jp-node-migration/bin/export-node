@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+umask 077
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+KIT_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+PATHS_FILE="$KIT_DIR/config/paths.txt"
+OUTPUT=""
+DRY_RUN=false
+
+usage() {
+  cat <<'EOF'
+Usage:
+  sudo ./bin/export-node --output /root/jp-node-YYYYMMDD-HHMMSS.enc
+  sudo ./bin/export-node --dry-run
+
+Optional environment:
+  NODE_MIGRATION_PASSPHRASE_FILE=/root/private/passphrase
+
+Without a passphrase file, OpenSSL asks for the archive password interactively.
+The passphrase is never written into the archive or migration kit.
+EOF
+}
+
+while (($#)); do
+  case "$1" in
+    --output)
+      OUTPUT="${2:?missing value for --output}"
+      shift 2
+      ;;
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      printf 'Unknown argument: %s\n' "$1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+if ((EUID != 0)); then
+  printf 'Run as root so private keys and service state can be exported safely.\n' >&2
+  exit 1
+fi
+
+for command_name in rsync sqlite3 tar openssl sha256sum ip; do
+  command -v "$command_name" >/dev/null || {
+    printf 'Missing required command: %s\n' "$command_name" >&2
+    exit 1
+  }
+done
+
+[[ -r "$PATHS_FILE" ]] || {
+  printf 'Missing path manifest: %s\n' "$PATHS_FILE" >&2
+  exit 1
+}
+
+declare -a sources=()
+declare -a missing=()
+
+add_source() {
+  local candidate="$1"
+  if [[ -e "$candidate" || -L "$candidate" ]]; then
+    sources+=("$candidate")
+  else
+    missing+=("$candidate")
+  fi
+}
+
+while IFS= read -r spec || [[ -n "$spec" ]]; do
+  [[ -z "$spec" || "$spec" == \#* ]] && continue
+  if [[ "$spec" == glob:* ]]; then
+    pattern="${spec#glob:}"
+    matched=false
+    while IFS= read -r candidate; do
+      [[ -n "$candidate" ]] || continue
+      add_source "$candidate"
+      matched=true
+    done < <(compgen -G "$pattern" || true)
+    "$matched" || missing+=("$pattern")
+  else
+    add_source "$spec"
+  fi
+done < "$PATHS_FILE"
+
+printf 'Exportable paths: %s\n' "${#sources[@]}"
+printf 'Optional missing paths: %s\n' "${#missing[@]}"
+printf 'Estimated source size: '
+du -sch "${sources[@]}" 2>/dev/null | tail -n 1 | awk '{print $1}'
+
+if "$DRY_RUN"; then
+  printf '\nIncluded:\n'
+  printf '  %s\n' "${sources[@]}"
+  if ((${#missing[@]})); then
+    printf '\nNot present on this node:\n'
+    printf '  %s\n' "${missing[@]}"
+  fi
+  exit 0
+fi
+
+[[ -n "$OUTPUT" ]] || {
+  printf '%s\n' '--output is required unless --dry-run is used.' >&2
+  exit 2
+}
+[[ ! -e "$OUTPUT" && ! -e "$OUTPUT.sha256" ]] || {
+  printf 'Refusing to overwrite an existing archive or checksum.\n' >&2
+  exit 1
+}
+
+if [[ -n "${NODE_MIGRATION_PASSPHRASE_FILE:-}" ]]; then
+  [[ -r "$NODE_MIGRATION_PASSPHRASE_FILE" ]] || {
+    printf 'Cannot read NODE_MIGRATION_PASSPHRASE_FILE.\n' >&2
+    exit 1
+  }
+  passphrase_permissions="$(stat -c '%a' "$NODE_MIGRATION_PASSPHRASE_FILE")"
+  if ((8#$passphrase_permissions & 077)); then
+    printf 'Passphrase file must not be readable by group or others.\n' >&2
+    exit 1
+  fi
+  passphrase_mode=(-pass "file:$NODE_MIGRATION_PASSPHRASE_FILE")
+else
+  passphrase_mode=()
+fi
+
+work_dir="$(mktemp -d /root/node-export.XXXXXX)"
+trap 'rm -rf -- "$work_dir"' EXIT
+mkdir -p "$work_dir/rootfs" "$work_dir/metadata" "$(dirname -- "$OUTPUT")"
+
+for source_path in "${sources[@]}"; do
+  if [[ "$source_path" == "/var/lib/wg-traffic" ]]; then
+    rsync -aR --numeric-ids --exclude '/wg_traffic.db' \
+      "$source_path" "$work_dir/rootfs/"
+  else
+    rsync -aR --numeric-ids "$source_path" "$work_dir/rootfs/"
+  fi
+done
+
+if [[ -f /var/lib/wg-traffic/wg_traffic.db ]]; then
+  mkdir -p "$work_dir/rootfs/var/lib/wg-traffic"
+  sqlite3 /var/lib/wg-traffic/wg_traffic.db \
+    ".backup '$work_dir/rootfs/var/lib/wg-traffic/wg_traffic.db'"
+  chown --reference=/var/lib/wg-traffic/wg_traffic.db \
+    "$work_dir/rootfs/var/lib/wg-traffic/wg_traffic.db"
+  chmod --reference=/var/lib/wg-traffic/wg_traffic.db \
+    "$work_dir/rootfs/var/lib/wg-traffic/wg_traffic.db"
+fi
+
+printf '1\n' > "$work_dir/metadata/format-version"
+date -u +%Y-%m-%dT%H:%M:%SZ > "$work_dir/metadata/exported-at"
+hostname -f > "$work_dir/metadata/source-hostname"
+ip -4 route get 1.1.1.1 |
+  awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}' \
+  > "$work_dir/metadata/source-ipv4"
+printf '%s\n' "${sources[@]}" > "$work_dir/metadata/path-list.txt"
+printf '%s\n' "${missing[@]}" > "$work_dir/metadata/missing-paths.txt"
+cp /etc/os-release "$work_dir/metadata/os-release"
+uname -a > "$work_dir/metadata/uname.txt"
+
+dpkg-query -W -f='${binary:Package}\t${Version}\n' \
+  2>/dev/null > "$work_dir/metadata/packages.tsv" || true
+
+{
+  for binary_path in /usr/local/bin/xray /usr/local/bin/hysteria; do
+    [[ -f "$binary_path" ]] && sha256sum "$binary_path"
+  done
+} > "$work_dir/metadata/binary-sha256.txt"
+
+tar --acls --xattrs --numeric-owner \
+  -C "$work_dir" -czf "$work_dir/payload.tar.gz" metadata rootfs
+
+openssl enc -aes-256-cbc -salt -pbkdf2 -iter 310000 -md sha256 \
+  "${passphrase_mode[@]}" \
+  -in "$work_dir/payload.tar.gz" \
+  -out "$OUTPUT"
+
+(
+  cd -- "$(dirname -- "$OUTPUT")"
+  sha256sum "$(basename -- "$OUTPUT")" \
+    > "$(basename -- "$OUTPUT").sha256"
+)
+
+printf 'Encrypted archive: %s\n' "$OUTPUT"
+printf 'Checksum: %s.sha256\n' "$OUTPUT"
+printf 'Source IP recorded for restore-time replacement: %s\n' \
+  "$(cat "$work_dir/metadata/source-ipv4")"
