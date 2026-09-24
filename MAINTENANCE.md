@@ -10,15 +10,19 @@
 | 仓库 | `git@github.com:wrp-wrp/wrp-wrp.github.io.git` |
 | 部署分支 | `master`（push 即触发部署） |
 | 部署方式 | GitHub Actions → GitHub Pages（`.github/workflows/hugo.yml`） |
-| 构建器 | Hugo Extended `0.134.0`（CI 中固定，见 workflow `HUGO_VERSION`） |
+| 构建器 | Hugo Extended `0.152.2`（CI 中固定，见 workflow `HUGO_VERSION`） |
 | 主题 | `themes/typo`（git submodule） |
 | 评论 | giscus（仓库 Discussions） |
 
 构建产物 `public/` 已 gitignore — CI 会重新生成，不要手工 commit。
+`docs/` 是文档目录（设计稿、维护笔记），不是构建输出。
+
+以下内容刻意不进这个公开仓库（见 `.gitignore`）：`infra/`（VPS 运维，另存私有仓库）、`.claude/`（本地权限配置）、`bin/b` 之外的本地杂物。
+`publish` 只提交白名单路径（`PUBLISH_PATHS`，见 `scripts/blog-workflow.sh`），不要再改回 `git add -A`。
 
 ## 2. 本地环境要求
 
-- Hugo Extended（≥ 0.134.0 即可）
+- Hugo Extended（与 CI 对齐：`0.152.2`）
   - macOS: `brew install hugo`
 - Git，且初始化过子模块
 - Node（仅在本地需要预先生成搜索索引时）
@@ -41,7 +45,7 @@ git push origin master
    │
    ▼
 GitHub Actions: Deploy Hugo site to Pages
-   ├─ Install Hugo 0.134.0
+   ├─ Install Hugo 0.152.2
    ├─ checkout (含 submodules)
    ├─ hugo --minify --baseURL https://wrp-wrp.github.io/
    ├─ npx pagefind --site public            ← 生成站内搜索索引

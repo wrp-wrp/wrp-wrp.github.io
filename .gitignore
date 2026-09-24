@@ -3,6 +3,9 @@ public/
 resources/_gen/
 .hugo_build.lock
 
+# VPS ops live in a separate private repo — never in this public one
+infra/
+
 # macOS
 .DS_Store
 .AppleDouble
@@ -19,3 +22,14 @@ node_modules/
 
 # Dashboard data is regenerated on demand — don't commit
 tools/data.js
+
+# Agent / editor scratch (holds local hostnames and permissions)
+.claude/
+
+# Throwaway scratch files
+/a
+/a.cpp
+/.cpp
+/Untitled
+.nvimlog
+.codex-*.png

@@ -1,0 +1,1249 @@
+{
+  "source": "https://www.cnblogs.com/clover4",
+  "pages": [
+    "https://www.cnblogs.com/clover4/",
+    "https://www.cnblogs.com/clover4?page=2",
+    "https://www.cnblogs.com/clover4?page=3",
+    "https://www.cnblogs.com/clover4?page=4",
+    "https://www.cnblogs.com/clover4?page=5",
+    "https://www.cnblogs.com/clover4?page=6",
+    "https://www.cnblogs.com/clover4?page=7",
+    "https://www.cnblogs.com/clover4?page=8",
+    "https://www.cnblogs.com/clover4?page=9",
+    "https://www.cnblogs.com/clover4?page=10",
+    "https://www.cnblogs.com/clover4?page=11",
+    "https://www.cnblogs.com/clover4?page=12",
+    "https://www.cnblogs.com/clover4?page=13",
+    "https://www.cnblogs.com/clover4?page=14",
+    "https://www.cnblogs.com/clover4?page=15",
+    "https://www.cnblogs.com/clover4?page=16"
+  ],
+  "posts": [
+    {
+      "title": "牛客多校 Day3",
+      "date": "2023-07-24 22:45",
+      "url": "https://www.cnblogs.com/clover4/p/17578574.html",
+      "password_protected": false,
+      "summary": "摘要：        \n## H 哥德巴赫 ## J 诈骗 ## A 签到 ## D 要么全 $0$， 要么全 $1$ ## B 不得不说我真的纯纯 SB 真的。 考场做法是先转成概率， 然后就是计算长度大于等于 $i$ 概率之和。 $f(i, j, 0/1)$ 前 $i + j$ 个位置填 $i$ 个小于等于 $n$ 的 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "2023 杭电多校 Day1",
+      "date": "2023-07-18 23:01",
+      "url": "https://www.cnblogs.com/clover4/p/17564377.html",
+      "password_protected": false,
+      "summary": "摘要：        \n### 1009 签到， 队友哥切的， 没看 ### 1002 $f(x, 0/1/2)$ 表示当前点没有覆盖/覆盖/放置观察点 子树内最小代价， 简单转移即可。 ```cpp f[x][1] = 1e18; f[x][2] = a[x]; f[x][0] = 0; for (int y : e[x 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "2023牛客暑假多校 Day1",
+      "date": "2023-07-18 11:19",
+      "url": "https://www.cnblogs.com/clover4/p/17562406.html",
+      "password_protected": false,
+      "summary": "摘要：        \n### D SB题 ### J 麻， 自己看了快十分钟还不会做就离谱， 队友哥写的。 观察到每次赢都是增加 $1$ 的钱， 那直接按照钱从小往大 DP， 转移本质不同的只有 $\\log$ 段， 快速幂转移一下就完了。 ### K 直接搞 bfs 树， 每个点数一下返祖边， 讨论一下叶子结点要不要伸长 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "XXI Opencup, Grand Prix of Korea",
+      "date": "2023-07-08 17:29",
+      "url": "https://www.cnblogs.com/clover4/p/17537553.html",
+      "password_protected": false,
+      "summary": "摘要：        \n[TOC] ## XXI Opencup, Grand Prix of Korea OpenCup强度这么大吗（ ### A 根据 Hall 定理， 把 $a$ 从大到小排序对于 $\\forall x \\in [1, n]$ 如果有 $\\sum_{i = 1} ^ xa_i \\leq \\sum_{i 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "2",
+      "date": "2022-06-14 13:41",
+      "url": "https://www.cnblogs.com/clover4/p/16374357.html",
+      "password_protected": false,
+      "summary": "摘要：        \nYour body language is equally important, since it reveals a lot about your thoughts and attitudes. Make sure it clearly supports the message you want 阅读全文",
+      "suggested_category": "英语学习"
+    },
+    {
+      "title": "1",
+      "date": "2022-06-14 13:36",
+      "url": "https://www.cnblogs.com/clover4/p/16374345.html",
+      "password_protected": false,
+      "summary": "摘要：        \nAt school, you have gradually understood the importance of a well-developed sense of responsibility. You accept that you are responsible for your succ 阅读全文",
+      "suggested_category": "英语学习"
+    },
+    {
+      "title": "[补档] 2020 北京邮寄",
+      "date": "2022-03-23 20:56",
+      "url": "https://www.cnblogs.com/clover4/p/16046775.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "比赛游记与总结"
+    },
+    {
+      "title": "。",
+      "date": "2022-02-24 21:23",
+      "url": "https://www.cnblogs.com/clover4/p/15933637.html",
+      "password_protected": false,
+      "summary": "摘要：        \n4 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "[复习笔记] 模板整理",
+      "date": "2022-01-30 20:57",
+      "url": "https://www.cnblogs.com/clover4/p/15857594.html",
+      "password_protected": false,
+      "summary": "摘要：        \n一晚上写了17KB代码... 最大公约数 i64 gcd(i64 x, i64 y) { return y ? gcd(y, x % y) : x; } 快速幂 int power(int x, int k) { int res = 1; while(k) { if(k & 1) res = 1ll 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[复习笔记] 字符串相关",
+      "date": "2022-01-29 13:13",
+      "url": "https://www.cnblogs.com/clover4/p/15854866.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[复习笔记] 简单数论算法复健",
+      "date": "2022-01-29 12:59",
+      "url": "https://www.cnblogs.com/clover4/p/15854832.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[复习笔记] 斯特林数",
+      "date": "2022-01-29 12:09",
+      "url": "https://www.cnblogs.com/clover4/p/15854702.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录] ZJOI2019 开关 题解",
+      "date": "2022-01-23 23:58",
+      "url": "https://www.cnblogs.com/clover4/p/15837930.html",
+      "password_protected": false,
+      "summary": "摘要：        \nZJOI2019 开关 题意 有 \\(n\\) 个开关， 初始的时候都是 \\(0\\), 给出一个状态 \\(s\\) ， 每次以 \\(\\frac{p_i}{\\sum_{j = 1}^np_j}\\) 的概率按下一个开关 \\(i\\) 期望多少次以后可以第一次达到这个状态。 \\(n \\leq 100, \\sum 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[学习笔记] 保序回归问题",
+      "date": "2022-01-20 16:47",
+      "url": "https://www.cnblogs.com/clover4/p/15769821.html",
+      "password_protected": false,
+      "summary": "摘要：        \n这结论会了20年省选不是乱杀（） 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录] 2022年1月开始的刷题记录 (一)",
+      "date": "2022-01-20 16:46",
+      "url": "https://www.cnblogs.com/clover4/p/15798578.html",
+      "password_protected": false,
+      "summary": "摘要：        \n我好菜啊 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录] 比赛题记录",
+      "date": "2022-01-12 18:37",
+      "url": "https://www.cnblogs.com/clover4/p/15794683.html",
+      "password_protected": false,
+      "summary": "摘要：        \n算了还是搞个List好了。 咕了qwq. 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[学习笔记] 计算几何板子",
+      "date": "2022-01-12 14:36",
+      "url": "https://www.cnblogs.com/clover4/p/15792556.html",
+      "password_protected": false,
+      "summary": "摘要：        \n计算几何 记录一些东西。 板子丢在这里 凸包 采用求一次上凸包然后求一次下凸包在拼起来实现。 \\(type = 0\\) 是下凸包， 反之是上凸包。 inline void graham(vector<vec2> &vec, int type) { if(vec.size() == 0) { cerr 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[学习笔记] 计算几何模板",
+      "date": "2022-01-11 18:51",
+      "url": "https://www.cnblogs.com/clover4/p/15789624.html",
+      "password_protected": false,
+      "summary": "摘要：        \n存一个跑得快用得爽的板子。 所有vector不多存任何一个点或直线。 #include <bits/stdc++.h> using namespace std; #define lep(i, l, r) for(int i = (l); i <= (r); i ++) #define rep(i, 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录-乱做] 雅礼集训选咕",
+      "date": "2022-01-07 15:24",
+      "url": "https://www.cnblogs.com/clover4/p/15775239.html",
+      "password_protected": false,
+      "summary": "摘要：        \n咕 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[杂技] 关于双折线的实现",
+      "date": "2022-01-07 14:32",
+      "url": "https://www.cnblogs.com/clover4/p/15774948.html",
+      "password_protected": false,
+      "summary": "摘要：        \nwrp 是傻蛋！ 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[笑死人] 笑死人",
+      "date": "2022-01-06 15:44",
+      "url": "https://www.cnblogs.com/clover4/p/15771415.html",
+      "password_protected": false,
+      "summary": "摘要：        \n上午 ZJOI2020 密码 给定 (p) 级别在 (10^{18}) ，有一个未知数 (x) ，会给 (a_ix\\pmod p) ，但有 ([-10^{16}/2,10^{16}/2]) 的误差。误差之间独立且随机。(x,a_i) 随机。 方法 1 一个条件相当于是 (L_i\\le a_ix\\le 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "[做题记录] UR1",
+      "date": "2021-12-29 21:46",
+      "url": "https://www.cnblogs.com/clover4/p/15746872.html",
+      "password_protected": false,
+      "summary": "摘要：        \nA 好， 一眼不会， 很好。 直接枚举长度， 然后枚举下取整以后的值， 直接暴力即可。 B 考虑按照从小到大的顺序 \\(dp\\)， 记录一个 \\(f_i\\) 表示当前值是 \\(i\\) 的方案数， 转移转移就好了。 C 多项式狗都不做。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录] 校内考试题记录",
+      "date": "2021-12-28 19:51",
+      "url": "https://www.cnblogs.com/clover4/p/15742624.html",
+      "password_protected": false,
+      "summary": "摘要：        \n努力罢了 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] CF1392H ZS Shuffles Cards 题解",
+      "date": "2021-12-26 22:09",
+      "url": "https://www.cnblogs.com/clover4/p/15734347.html",
+      "password_protected": false,
+      "summary": "摘要：        \n刷访问量 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[杂技] 恶俗骨疯文字生成器",
+      "date": "2021-12-24 22:37",
+      "url": "https://www.cnblogs.com/clover4/p/15729503.html",
+      "password_protected": false,
+      "summary": "摘要：        \n#include<iostream> #include<cstdio> #include<cstring> #include<string> #include<cstdlib> #include<ctime> #include<unistd.h> using namespace std; const 阅读全文",
+      "suggested_category": "工具与杂技"
+    },
+    {
+      "title": "[做题记录-乱做] 20211223~20211224",
+      "date": "2021-12-24 20:29",
+      "url": "https://www.cnblogs.com/clover4/p/15728856.html",
+      "password_protected": false,
+      "summary": "摘要：        \n努力罢了。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] 20212120~20211222",
+      "date": "2021-12-22 17:46",
+      "url": "https://www.cnblogs.com/clover4/p/15720531.html",
+      "password_protected": false,
+      "summary": "摘要：        \n努力罢了。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[转载] 容斥原理",
+      "date": "2021-12-22 15:11",
+      "url": "https://www.cnblogs.com/clover4/p/15719642.html",
+      "password_protected": false,
+      "summary": "摘要：        \n#### 容斥原理 给定一个 $n$ 个元素的集合 $N$，对于一个函数 $f: 2^N \\to R$，以及子集和函数 $f\\zeta$ $$ f\\zeta(S)=\\sum_{T\\subseteq S}f(T) $$ 我们现在知道 $f\\zeta$，想还原出 $f$，那么有以下公式 $$ f(S)= 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "[转载] 整除偏序的结构、zeta变换、Möbius变换、lcm卷积、gcd卷积",
+      "date": "2021-12-22 15:09",
+      "url": "https://www.cnblogs.com/clover4/p/15719623.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "[学习笔记] CZT 变换",
+      "date": "2021-12-22 08:47",
+      "url": "https://www.cnblogs.com/clover4/p/15717956.html",
+      "password_protected": false,
+      "summary": "摘要：        \n努力罢了。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录-计数] [THUPC2021 初赛] 方格游戏",
+      "date": "2021-12-21 21:19",
+      "url": "https://www.cnblogs.com/clover4/p/15717221.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 小 F 和小 H 在玩游戏。今天，他们在一个 \\(N \\times M\\) 的棋盘上玩游戏。小 H 想考考小 F 的数学能力，但小 F 天生数学就不好，所以想请你帮忙。 为了加大难度，小 H 会在棋盘里面加入 \\(P\\) 个矩形障碍物。每个矩形障碍物用 \\(U\\)、\\(D\\)、\\(L\\)、\\( 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录] CF750G New Year and Binary Tree Paths",
+      "date": "2021-12-21 17:06",
+      "url": "https://www.cnblogs.com/clover4/p/15716165.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 你有一棵无限大的完全二叉树， 编号和线段树的编号一致， 求这棵树上有多少条路径的权值和为 \\(s\\) 。 \\(s \\leq 10^{15}\\) 题解 被教育了.jpg 首先考虑一条链的情况， 也就是 \\(x\\) 作为起点一直往下面都的情况。 不妨假设路径的长度为 \\(h\\) ， 那么如果 \\( 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录] Luogu P4607 [SDOI2018]反回文串 题解",
+      "date": "2021-12-20 22:08",
+      "url": "https://www.cnblogs.com/clover4/p/15713164.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 「回文串什么的最讨厌了……」 小 Q 讨厌任何形式的回文串： 如果一个字符串从左往右读和从右往左读是一样的，那么小 Q 讨厌它；例如 aa 和 aba。 对于一个字符串来说，若将某个前缀子串移除并拼接到字符串的尾部，能得到一个小 Q 讨厌的字符串，那么小 Q 也会讨厌原来的这个字符串；例如 a 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[学习笔记] 原根",
+      "date": "2021-12-20 20:06",
+      "url": "https://www.cnblogs.com/clover4/p/15712693.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[考试题解] 校内考试题解 20211213~",
+      "date": "2021-12-20 19:25",
+      "url": "https://www.cnblogs.com/clover4/p/15712552.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[考试题解]省选计划Week2题解",
+      "date": "2021-12-20 17:08",
+      "url": "https://www.cnblogs.com/clover4/p/15711716.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "颓死了qwq",
+      "date": "2021-12-18 13:15",
+      "url": "https://www.cnblogs.com/clover4/p/15704844.html",
+      "password_protected": false,
+      "summary": "摘要：        \n![avator](http://img.uoj.ac/utility/bear-bomb.gif)\n![avator](https://www.mina.moe/wp-content/uploads/2022/01/谭卡丘.gif) ![avator](https://www.mina.moe/wp-content/uploads/2022/01/谭卡丘.gif) 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "[做题记录-乱做] 20211215 ~ 20211219",
+      "date": "2021-12-15 21:45",
+      "url": "https://www.cnblogs.com/clover4/p/15695426.html",
+      "password_protected": false,
+      "summary": "摘要：        \nCF914F Substrings in a String 操作分块以后块内做AC机， 块间kmp即可。 CF1404D Game of Pairs 偶数的时候选A， 奇数的时候选$B$。 大体就是分 \\(i, i + n\\) 的归属讨论即可。 CF549F Yura and Developers 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[学习笔记] 简单交互题总结",
+      "date": "2021-12-15 21:43",
+      "url": "https://www.cnblogs.com/clover4/p/15695416.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录] GXOI2019",
+      "date": "2021-12-07 20:13",
+      "url": "https://www.cnblogs.com/clover4/p/15658604.html",
+      "password_protected": false,
+      "summary": "摘要：        \nLoj3083 与或和 [Link](#3083. 「GXOI / GZOI2019」与或和 - 题目 - LibreOJ (loj.ac)) 由于每一位独立， 所以每一位分开做。对于每一位的情况， 可以直接单调栈处理。 Loj3084 宝牌一大堆 特判掉七对子和国士无双。 设一个$f_{o, a, 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "随便记录点英语表达",
+      "date": "2021-11-23 22:08",
+      "url": "https://www.cnblogs.com/clover4/p/15595694.html",
+      "password_protected": false,
+      "summary": "摘要：        \nbroaden out horizons 阅读全文",
+      "suggested_category": "英语学习"
+    },
+    {
+      "title": "[做题记录-乱做][APIO2016] 烟火表演 题解",
+      "date": "2021-11-16 21:35",
+      "url": "https://www.cnblogs.com/clover4/p/15563882.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给你一棵有根树， 边有边权， 你可以每次花费 \\(1\\) 个代价让一条边的边权变化 \\(1\\) ，求让所有叶子节点深度相同的最小代价。 \\(n \\leq 3\\times 10^5\\) 。 题解 属于是抄完题解发题解。 首先有一个边权只可以增加的版本是 [ZJOI2017] 时态同步， 但是这题 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录] JOISC2020 完结了！",
+      "date": "2021-11-08 21:00",
+      "url": "https://www.cnblogs.com/clover4/p/15526145.html",
+      "password_protected": false,
+      "summary": "摘要：        \n终于是做抄完了JOISC 2020， 补完了这场当年我只有18分的比赛。 我做到了， 我不再是从前那个我了 下面是简要题解。 Day1T1 考虑$n^2$的dp里面可以发现固定一维另外的是区间， 利用这个性质只维护端点从而去掉一维。 Day1T2 随机或者2-sat分析下。 Day1T3 对插入线段 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "「JOISC 2020 Day3」收获",
+      "date": "2021-11-07 21:44",
+      "url": "https://www.cnblogs.com/clover4/p/15521885.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目大意 Problem Link IOI 农场是一个种植苹果的农场，以位于一个巨大的环形湖周边而闻名。 在 IOI 农场，共有 \\(N\\) 个员工，从 \\(1\\) 到 \\(N\\) 标号。共有 \\(M\\) 棵苹果树，从 \\(1\\) 到 \\(M\\) 标号。湖的周长为 \\(L\\) 米。 在初始时刻，第 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "$\\text{Min25}$筛",
+      "date": "2021-11-04 21:48",
+      "url": "https://www.cnblogs.com/clover4/p/15510684.html",
+      "password_protected": false,
+      "summary": "摘要：        \n用途 求积性函数前缀和。 要求该积性函数在质数点的取值为关于$p$的多项式或者可以用完全积性函数模拟出来。 简介？ $\\text{Min25}$筛还有一个本质上等价的筛法叫洲阁筛， 其本质来源于扩展的线性筛法。 不妨考虑一下线性筛法的复杂度瓶颈， 其统计答案利用的是枚举每个质因子去贡献其倍数的答案， 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录-图论] [NEERC2017]Journey from Petersburg to Moscow [关于处理路径前$k$大的一种方法]",
+      "date": "2021-11-04 08:16",
+      "url": "https://www.cnblogs.com/clover4/p/15506582.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给定一张连通无向简单图 \\(G\\)，每条边有一个边权。 给定正整数 \\(k\\)，你需要找到 \\(G\\) 的一条从 \\(1\\) 到 \\(n\\) 的路径，设该路径的长度为 \\(l\\)，你需要使得这条路径中边权前 \\(\\min \\left\\{ k, l \\right\\}\\) 大的边的边权总和尽可能小 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[复习笔记]一些有意思的解法技巧 （转 Dpair",
+      "date": "2021-10-27 12:12",
+      "url": "https://www.cnblogs.com/clover4/p/15470015.html",
+      "password_protected": false,
+      "summary": "摘要：        \n1、贪心的反悔机制（可撤销贪心） 2、模拟题倒着离线模拟一遍，和添加、删除有关的都可以考虑倒着走。信息不对称的题倒着搜。 3、$C_{x+y}^{x}$可以表示坐标轴上从$(0,0)$走到$(x,y)$ 4、$gcd(x, y)=gcd(x-y,y)=gcd(x~mod~y,y)$ 5、 设 $d( 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "[比赛记录] CSP2021-S 题解",
+      "date": "2021-10-24 17:45",
+      "url": "https://www.cnblogs.com/clover4/p/15452002.html",
+      "password_protected": false,
+      "summary": "摘要：        \n前言 带病上的， 人不太行， 遂爬。 其实本来还行， 但是现场不让取口罩， 然后就一直加重然后人就没了。 403考场的老哥估计咳嗽声被烦死了 找一个考挂了的理由。 不过确实感觉这一场的题目很有意思， 虽然说考试没过就是了。 回来治了半天病以后vp了一下。 个锤子， T4根本写不完。 不过还是很有意思 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数] P3343 [ZJOI2015]地震后的幻想乡",
+      "date": "2021-10-09 20:08",
+      "url": "https://www.cnblogs.com/clover4/p/15387429.html",
+      "password_protected": false,
+      "summary": "摘要：        \n[题目链接]([P3343 ZJOI2015]地震后的幻想乡 - 洛谷 | 计算机科学教育新生态 (luogu.com.cn)) 根据经典的随机数结论， 大概会想先求出一个$f_i$表示从小往大连接了$i$条边以后图恰好联通的方案数。这样答案就是$\\sum f_i \\times \\frac{i}{m 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] BZOJ 3328 PYXFIB",
+      "date": "2021-10-08 20:05",
+      "url": "https://www.cnblogs.com/clover4/p/15382631.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 求 \\[ \\sum_{i = 0}^{n} \\binom{n}{i}f_i[k | i] \\] \\(n \\leq 10^{18}, k \\leq 20000, T \\leq 20\\) $f$是斐波那契数。 题解 单位根反演 \\[ [k|n] = \\frac{1}{k}\\sum_{i = 0}^ 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-数据结构]Luogu P7889 「MCOI-06」Eert Tuc Knil 题解",
+      "date": "2021-10-06 17:50",
+      "url": "https://www.cnblogs.com/clover4/p/15371835.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给定一颗 \\(n\\) 个节点有根树，第 \\(i\\) 节点权值为 \\(a_i\\)。 在这个树上支持一种询问： 给定节点 \\(u\\) 和参数 \\(x\\)，假如 所有节点点权加 \\(x\\)，在这种情况下，求： 对于所有完全在 \\(u\\) 子树内并包含 \\(u\\) 的连通点集，权值之和最大可能为多少？ 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] AGC007C",
+      "date": "2021-10-06 10:11",
+      "url": "https://www.cnblogs.com/clover4/p/15370559.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 直线上有$2n +1$个球， 每次可以把相邻的两个删掉， 答案加上这两个的距离。 初始的时候相邻两球的距离构成等差数列。 \\(n \\leq 10^5\\) 题解 这$tm$谁会啊。 哦原来这个题把tourist莎了， 那没事了 结论是移动一次以后， 这个序列的每段距离的期望仍然构成等差序列。 证 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "FUCK",
+      "date": "2021-10-05 20:58",
+      "url": "https://www.cnblogs.com/clover4/p/15369562.html",
+      "password_protected": false,
+      "summary": "摘要：        \n有的屑题告诉我们 一次写对是不可能的 有的屑题告诉我们 重定义循环是可以让写代码速度起飞的 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "[AGC记录] AGC006题解",
+      "date": "2021-10-03 21:06",
+      "url": "https://www.cnblogs.com/clover4/p/15365087.html",
+      "password_protected": false,
+      "summary": "摘要：        \n好颓啊 神仙场。 BD是孪生题， 一个是告诉你最上面的构造最下面的， 一个是告诉你最下面的求最上面的。 前面的构造很简单， 后面的话要二分答案然后根据构造题那个不变且延伸的结论做做就好。 C题好强。考虑当前的期望$f_i$在一次操作以后变成$f_{i + 1} + f_{i - 1} - f_i$， 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[AGC记录] AGC005题解",
+      "date": "2021-10-03 09:37",
+      "url": "https://www.cnblogs.com/clover4/p/15363512.html",
+      "password_protected": false,
+      "summary": "摘要：        \n我觉得这一场非常神啊。 A, B题还是简单题为什么单调栈板子有400分啊、 C的条件看起来有点像某个集训队作业题， 注意到直径的性质以后就很简单了。这tm有900？ D是经典容斥题 ~K Perm Counting 做法是先把限制容斥成至少的情况， 然后把限制建图， 在链上dp或者用组合数搞搞即可。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[AGC记录] AGC004题解",
+      "date": "2021-10-02 21:28",
+      "url": "https://www.cnblogs.com/clover4/p/15362766.html",
+      "password_protected": false,
+      "summary": "摘要：        \nA简单。 B设计一个dp可以做到$N^2$， 贪心好像可以线性但是懒得搞了。 C的话注意下条件是边缘没有， 那中间奇偶染色， 边上联通就好了。 D简单贪心即可。 E注意到出口只有一个， 可以看成出口带着棋盘跑， 就像NOIP2020微信步数那样。 那做过这个题的人NOIP不是赢麻了吗， T4后面那个 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] [AGC004F] Namori",
+      "date": "2021-10-02 19:11",
+      "url": "https://www.cnblogs.com/clover4/p/15362455.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给定一个 \\(N\\) 个点，\\(M\\) 条边的图，没有自环，没有重边。其中 \\(N-1\\le M\\le N\\)，每个点初始是白色。每次操作可以处理一条边，其两个点如果颜色相同则都变成相反的颜色（黑变白，白变黑）。询问能否将每个点都变为黑色。如果能，输出最少的操作数；如果不能，输出 \\(-1\\) 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[AGC记录] AGC003题解",
+      "date": "2021-10-02 09:09",
+      "url": "https://www.cnblogs.com/clover4/p/15361343.html",
+      "password_protected": false,
+      "summary": "摘要：        \nA, B, C好简单的。 D可以经典的分成$d$, \\(d^2\\), \\(d^3\\)， 也可以直接$PR$带走。 E F看不懂题， 跑了。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] [AGC003E] Sequential operations on Sequence",
+      "date": "2021-10-01 21:49",
+      "url": "https://www.cnblogs.com/clover4/p/15360197.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 一串数，初始为 \\(1\\sim n\\)，现在给 \\(Q\\) 个操作，每次操作把数组长度变为 \\(q_i\\)，新增的数为上一个操作后的数组的重复。问 \\(Q\\) 次操作后 \\(1\\sim n\\) 每个数出现了多少次。 \\(1 \\leq n \\leq 10^5\\) 题解 为什么题解都说这个很简单啊 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[AGC记录] AGC002题解",
+      "date": "2021-10-01 16:46",
+      "url": "https://www.cnblogs.com/clover4/p/15359641.html",
+      "password_protected": false,
+      "summary": "摘要：        \nE, F蛮有意思的。 其实E更好玩一点。如果把操作看成一行或者是一列的删除， 可以建模到网格图上向左向右走的模型， 很有精神。然后发现对角线状态一样， 搞搞就好了。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[AGC记录] AGC001题解",
+      "date": "2021-09-30 07:35",
+      "url": "https://www.cnblogs.com/clover4/p/15355143.html",
+      "password_protected": false,
+      "summary": "摘要：        \nA az。 B 每次看成在平行四边形里面搞一些三角形的划分， 然后可以递归。 C 拿出直径中点贪心就好了。 D 有意思的题。 他的题意其实是给你一个A数组， 让你构造一个B数组， 使得满足条件的字符串每个位置上都相同。 可以发现， 把A, B中限制相同的字符连边， 我们就是要把全图联通。 然后奇偶分 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] [AGC001F] Wide Swap",
+      "date": "2021-09-29 22:31",
+      "url": "https://www.cnblogs.com/clover4/p/15354723.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给出一个元素集合为${1,2,\\dots,N}$ $(1\\leq N\\leq 500,000)$的排列$P$，当有$i,j$ $(1\\leq i<j\\leq N)$满足$j-i\\geq K$ $(1\\leq K\\leq N-1)\\(且\\)|P_{i}-P_{j}|==1$时，可以交换$P_{i 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数] [ARC087D] Squirrel Migration",
+      "date": "2021-09-26 21:44",
+      "url": "https://www.cnblogs.com/clover4/p/15340254.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目描述 给你一个$N$个节点的树，求一个$1\\cdots N$的排列$(p_1,p_2,\\cdots p_N)$ ，使得$\\sum dist(i,p_i)$最大。 求这样的排列的个数。答案对$10^9+7$取模。 \\(N \\leq 5000\\) Solution 笑死了差点又抄题解去了。 真就只会 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数] [九省联考2018]秘密袭击coat",
+      "date": "2021-09-26 20:58",
+      "url": "https://www.cnblogs.com/clover4/p/15340054.html",
+      "password_protected": false,
+      "summary": "摘要：        \n秘密袭击解题报告 远古题解丢一下。 题意 求出树上随机选择的连通块中第$k$大的权值之和。 题解 高级算法综合练习题 吐了 看到第$k$大先$Min-Max$出来， 可以得到一个计算式子。 扩展$Min-Max$容斥 \\(kthmax(S)=\\sum_{T\\subseteq S}(-1)^{|T|- 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数][AGC024E] Sequence Growing Hard",
+      "date": "2021-09-26 19:22",
+      "url": "https://www.cnblogs.com/clover4/p/15339673.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目描述 给定 \\(n\\), \\(k\\), \\(m\\) , 问有多少个序列组 \\((A_0,A_1,…,A_n)\\) 满足：序列 \\(A_i\\) 的元素个数为 \\(i\\) ; 所有元素都在 \\([1,k]\\) 内; \\(\\forall i\\in[0,n)\\) , \\(A_i\\) 是 \\(A_{i+1 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-数据结构] Luogu5210 [ZJOI2017]线段树",
+      "date": "2021-09-26 12:16",
+      "url": "https://www.cnblogs.com/clover4/p/15337501.html",
+      "password_protected": false,
+      "summary": "摘要：        \n很久没有过的对着题解抄的题了。（ 手玩一下之后会发现我们的区间会在第一次向两边递归的时候分开， 然后剩下的就是对是右儿子的左链求和以及对左儿子的右链求和。那么应该可以用倍增之类的东西直接硬维护。 然后点开题解发现这玩意可以直接使用差分维护。具体来说就是把$u$点和$l - 1$以及$r +1$求$l 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-数据结构] P3688 [ZJOI2017] 树状数组",
+      "date": "2021-09-25 11:54",
+      "url": "https://www.cnblogs.com/clover4/p/15333933.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 Problem Link \\(n \\leq 5 \\times 10^5\\) 题解 第一条注意的就是这个是条件概率！ 所以每个位置分开算概率是不对的， 所以这不是sb题。 所以得维护$(x, y)$表示$a_x = a_y$的概率。 然后分类讨论一下就好了。 所以还是sb题 /* QiuQiu 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做]Luogu3687 [ZJOI2017]仙人掌",
+      "date": "2021-09-25 11:51",
+      "url": "https://www.cnblogs.com/clover4/p/15333930.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给你张无自环无重边的无向连通图， 求有多少种方案加边使得这个图是仙人掌。 \\(n \\leq 5 \\times 10^5\\) 题解 牛逼题。 考虑这么搞， 把环上的边断掉因为环上的边肯定没用。然后问题转化到树上， 把所有树的答案乘起来就是答案。 按照套路设$f_x$表示$x$子树内没有向上的边的 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数] Luogu P5333 [JSOI2019]神经网络",
+      "date": "2021-09-24 08:11",
+      "url": "https://www.cnblogs.com/clover4/p/15328385.html",
+      "password_protected": false,
+      "summary": "摘要：        \n设$f_i$表示这棵树拆出$i$条链的方案数。 枚举链的个数为下表构造$EGF$可得： \\(F = \\sum_{i = 1} f_ii!\\sum_{j = 1}^{i}\\binom{i - 1}{j - 1}(-1) ^ {i - j}\\frac{x^j}{j!}\\) 这部分是任意树的$EGF$， 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数] 小C的岛屿",
+      "date": "2021-09-23 15:49",
+      "url": "https://www.cnblogs.com/clover4/p/15324523.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做] Luogu3783 [SDOI2017]天才黑客",
+      "date": "2021-09-23 07:33",
+      "url": "https://www.cnblogs.com/clover4/p/15322571.html",
+      "password_protected": false,
+      "summary": "摘要：        \n边转点，然后前缀优化。 清空的时候要清空倍增数组！ /* QiuQiu /qq ____ _ _ __ / __ \\ (_) | | / / | | | | _ _ _ | | _ _ / / __ _ __ _ | | | | | | | | | | | | | | | | / / / _` | 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-乱做]Luogu 3780 [SDOI2017]苹果树",
+      "date": "2021-09-22 20:48",
+      "url": "https://www.cnblogs.com/clover4/p/15321620.html",
+      "password_protected": false,
+      "summary": "摘要：        \n首先一个很聚的转化是把$t - h \\leq k$转化为先在一条链上不带代价地选择一个， 然后有代价地进行一堆树的dp。 根据贪心的性质， 这个链肯定到底。然后你再去搞出度的dfs序， 也就是出来的时候记录一个点。那么树dp可以转化到这个序列上的一个dp。 具体来说， 转移是$dp_{i, j} = 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数] P6151 [集训队作业2019] 青春猪头少年不会梦到兔女郎学姐",
+      "date": "2021-09-21 21:41",
+      "url": "https://www.cnblogs.com/clover4/p/15317937.html",
+      "password_protected": false,
+      "summary": "摘要：        \nPart1 看到这个题目会想起一个弱化版的问题。 有$n$种不同的球， 每种球有$a_i$个， 求有多少种排列球的方式，使得相邻的球的种类不相同。 \\(\\sum a_i \\leq 2 \\times 10 ^5\\)。 这个问题需要考虑相邻的球构成的限制。考虑直接构造球的$\\text{EGF}$然后进行 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "对仓鼠の提问",
+      "date": "2021-09-20 14:11",
+      "url": "https://www.cnblogs.com/clover4/p/15314216.html",
+      "password_protected": false,
+      "summary": "摘要：        \n1.计数题不知道哪里挂了咋检查。 2.gdb有用没， 我感觉自己用起来速度不如cerr 3.仓老师~ 4.刷题自闭了以后怎么快速复活（。 5.模拟赛不会做题的时候脑子不转了感觉浪费时间咋办。 6.想睡觉咋办。 7.频繁考场降智咋办。 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "仓鼠の听课记录",
+      "date": "2021-09-20 13:08",
+      "url": "https://www.cnblogs.com/clover4/p/15314125.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录-计数][AGC036F] Square Constraints",
+      "date": "2021-09-17 21:55",
+      "url": "https://www.cnblogs.com/clover4/p/15306468.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 给一个整数$n$， 求有多少排列$P$满足对于任意$i\\in [0, 2n - 1]$满足$n2 \\leq i2 +P_i^2\\leq (2n)^2$， 答案对一个数取模。 \\(n \\leq 250\\) 题解 orz QiuQiu 考虑先处理出每个位置的上下界。 设$L_i = \\lceil\\ 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-计数相关] [AGC023E] Inversions",
+      "date": "2021-09-17 14:34",
+      "url": "https://www.cnblogs.com/clover4/p/15304569.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题意 一个长度为$n$的排列数组， 每个位置有上限的限制， 求所有合法的排列的逆序数的和。 \\(n \\leq 10^5\\) 题解 经典套路是先计数一下序列的个数然后考虑每一对数对答案的贡献。 考虑从大往小填数， 记$b_i$表示$a_i \\ge i$的位置个数， 那么合法的排列个数为： \\[ cnt 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[奇怪的东西] 松松鸡排",
+      "date": "2021-09-15 16:37",
+      "url": "https://www.cnblogs.com/clover4/p/15272870.html",
+      "password_protected": false,
+      "summary": "摘要：        \nnamespace Sort { const int BIT = 8; const int U = 256; int b[N], cnt[U]; inline int get(int x, int d) { return (x >> (d * BIT)) & (U - 1); } inline vo 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "[做题记录-数据结构] P7446 [Ynoi2007] rfplca",
+      "date": "2021-09-15 10:33",
+      "url": "https://www.cnblogs.com/clover4/p/15271166.html",
+      "password_protected": false,
+      "summary": "摘要：        \n我觉得是个妙妙题但是好像讲课的时候被Qiuls秒掉了qwq。 对序列分块， 然后维护一个$b_i$表示第一次跳出块的时候会跳到哪个点。由于祖先只会减小， 所以一个块如果被整体打了超过根号次标记， 就不用重构了， 否则重构。那么一个大小为$\\sqrt n$的块会重构$\\sqrt n$次， 每次的操作只 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[知乎选录] 如何解决键盘问题",
+      "date": "2021-09-15 10:29",
+      "url": "https://www.cnblogs.com/clover4/p/15271145.html",
+      "password_protected": false,
+      "summary": "摘要：        \n方法1：买个隔音效果好的耳塞，进口的就行，几十块钱。。。和气生财，亲测基本听不到杂音； 方法2：趁着没人，浇点水到他键盘，送他点精神鼓励； 方法3：自己买个青轴机械键盘，等他烦恼或者休息的时候，使劲捶，效果杠杠滴； 方法4：花1000块钱送个静音键盘给他； 方法5：换个距离他远点的位置； 方法6：辞 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "[做题记录-数据结构] Loj 3523. 「IOI2021」分糖果",
+      "date": "2021-09-14 18:37",
+      "url": "https://www.cnblogs.com/clover4/p/15269051.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题面 Problem Link 有$n$个盒子$m$个操作， 每个盒子有一个上限。每次的操作是区间加减一个数且超过上限的不算低于$0$的不算。求最后的结果。 题解 考虑这样一个搞法， 扫描线扫序列， 然后区间修改变单点， 用一个时间上的线段树维护每个时间的修改的时间后缀和， 那么考虑求答案。 可以在 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[Bilibili视频推荐] 【丞相司徒】三国恋",
+      "date": "2021-09-14 13:49",
+      "url": "https://www.cnblogs.com/clover4/p/15267187.html",
+      "password_protected": false,
+      "summary": "摘要：        \n【丞相司徒】三国恋 爷青回！ 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "[做题记录] [Ynoi2011] 成都七中",
+      "date": "2021-09-13 23:01",
+      "url": "https://www.cnblogs.com/clover4/p/15265388.html",
+      "password_protected": false,
+      "summary": "摘要：        \n本来的做法是点分树上暴力找到最靠上的与$x$相连的点， 实际上可以从上往下点分治。 然后矩形也不用重新表示， 可以扫右端点， 保存每个颜色最大的左端点就好了。 然后直接写。不得不说这样的话写起来简单多了。 #include <bits/stdc++.h> #include <bits/extc++. 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[学习笔记] 静态树分治 -- LXL2021年9月数据结构专题笔记",
+      "date": "2021-09-13 20:44",
+      "url": "https://www.cnblogs.com/clover4/p/15264787.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[做题记录-数据结构] [Ynoi2008] rdCcot",
+      "date": "2021-09-13 17:17",
+      "url": "https://www.cnblogs.com/clover4/p/15263311.html",
+      "password_protected": false,
+      "summary": "摘要：        \n考虑对于每个连通块维护代表元。但是同一深度会有多个代表元， 我们取$bfs$序靠前的一个维护。 那么现在给出的结论是一个点是代表元当且仅当它与$bfs$序比它小的点没有连边。 那么现在就是要求一个$pre_i$表示最大的$i$使得$i < j$且$b_i < b_j$且$dis(i, j) \\leq 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-数据结构] [Ynoi2014] 人人本着正义之名",
+      "date": "2021-09-12 17:09",
+      "url": "https://www.cnblogs.com/clover4/p/15259207.html",
+      "password_protected": false,
+      "summary": "摘要：        \n吐了。 从早上开始写到下午四点一直不知道挂哪里了然后自暴自弃对别人题解改。 结果发现自己删点的时候情况漏了， 平移的时候漏了else， 然后变成别人的代码了。 大概的想法是暴力维护极长的连续段， 然后左移右移都可以打标记实现， 具体来说就是先取出中间的， 然后讨论两边的是否受到影响而决定是否打标记。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-数据结构] [Ynoi2007] rgxsxrs",
+      "date": "2021-09-11 23:14",
+      "url": "https://www.cnblogs.com/clover4/p/15257087.html",
+      "password_protected": false,
+      "summary": "摘要：        \n把值域按照$20, 21, 22,\\cdots2k$分块， 每个块里面维护一个线段树每次对于值分类讨论然后暴力维护， 复杂度均摊正确。 为了常数， 需要线段树底层分块， 需要调参。 这个分块比较妙妙。 #include <bits/stdc++.h> #include <bits/extc++.h> 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "科技记录",
+      "date": "2021-09-10 09:59",
+      "url": "https://www.cnblogs.com/clover4/p/15250138.html",
+      "password_protected": false,
+      "summary": "摘要：        \n如何强制离线。 把答案排序输出 如何保证std不会被线性算法干掉 答案排序输出 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "English Sentence",
+      "date": "2021-09-09 20:23",
+      "url": "https://www.cnblogs.com/clover4/p/15248674.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\\(\\text{The people who laughed as they walked past were taking their health for granted.}\\) 那些边走边笑的人认为他们的健康是理所当然的。 阅读全文",
+      "suggested_category": "英语学习"
+    },
+    {
+      "title": "[Bilibili视频推荐]关于精神内耗",
+      "date": "2021-09-05 21:10",
+      "url": "https://www.cnblogs.com/clover4/p/15230900.html",
+      "password_protected": false,
+      "summary": "摘要：        \n一刀999 精神内耗的表现: 外在: 1.犹豫不决 2.容易被影响（别人的话）3.行动力降低（50%精力）4.注意力分散（想法一个接一个）5.累（挣扎纠结） 内在: 紧张、焦虑、自卑、情绪低落 精神内耗的底层原因: 1.偏向于用右脑思考（艺术思维、感性） 2.威胁识别引起的恐惧（没经历过、陌生、不知 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "[做题记录-数据结构] CF453E Little Pony and Lord Tirek",
+      "date": "2021-09-05 17:32",
+      "url": "https://www.cnblogs.com/clover4/p/15230124.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[做题记录-数据结构][Ynoi 2013 文化课]",
+      "date": "2021-09-05 14:26",
+      "url": "https://www.cnblogs.com/clover4/p/15229354.html",
+      "password_protected": false,
+      "summary": "摘要：        \n赋值操作可以使得把区间视作多项式实现快速求值。 操作符推平使用区间和以及区间乘积实现快速求值。 剩下的注意计算多项式幂次的时候递推计算减少$\\log$， 剩下的是暴力了。 下面是一份由于没有优化新建空间的过不去代码。 #include <bits/stdc++.h> #include <bits/e 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[杂记] 背单词",
+      "date": "2021-09-04 08:00",
+      "url": "https://www.cnblogs.com/clover4/p/15225721.html",
+      "password_protected": false,
+      "summary": "摘要：        \nabort abrupt absolute absorb 阅读全文",
+      "suggested_category": "英语学习"
+    },
+    {
+      "title": "收博客",
+      "date": "2021-09-03 17:29",
+      "url": "https://www.cnblogs.com/clover4/p/15224075.html",
+      "password_protected": false,
+      "summary": "摘要：        \n[duyi 一类图上二选一构造问题](https://www.cnblogs.com/dysyn1314/p/14439056.html#loj3113-%E3%80%8Csdoi2019%E3%80%8D%E7%83%AD%E9%97%B9%E7%9A%84%E8%81%9A%E4%BC%9A%E 阅读全文",
+      "suggested_category": "转载与收藏"
+    },
+    {
+      "title": "不文明用语",
+      "date": "2021-09-03 11:50",
+      "url": "https://www.cnblogs.com/clover4/p/15222488.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "[复习笔记] 生成函数",
+      "date": "2021-09-03 11:34",
+      "url": "https://www.cnblogs.com/clover4/p/15222402.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[复习笔记] 背包相关",
+      "date": "2021-09-03 11:31",
+      "url": "https://www.cnblogs.com/clover4/p/15222386.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[复习笔记] 简单群论",
+      "date": "2021-09-03 11:29",
+      "url": "https://www.cnblogs.com/clover4/p/15222365.html",
+      "password_protected": true,
+      "summary": "该文被密码保护。 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "这个博客复活了",
+      "date": "2021-09-03 11:26",
+      "url": "https://www.cnblogs.com/clover4/p/15222347.html",
+      "password_protected": false,
+      "summary": "摘要：        \n退役是不可能退役的， 这辈子不可能退役的。 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "NOIP2020考试总结",
+      "date": "2020-12-10 15:38",
+      "url": "https://www.cnblogs.com/clover4/p/14115383.html",
+      "password_protected": false,
+      "summary": "摘要：        \nNOIP2020考试总结 比模拟赛还离谱的NOIP 考前： YYL：NOIP要是考字符串和构造题我就数据删除。 老师我看不清网址啊艹 今年正确密码：1Kao2Sheng0Jia5You 老师报密码的方式：1205考生加油。 老师:密码是1205考生加油啊！ 开考 反正是NOIP就不搞格式算了 反正入 阅读全文",
+      "suggested_category": "比赛游记与总结"
+    },
+    {
+      "title": "李超线段树复习笔记",
+      "date": "2020-11-20 10:53",
+      "url": "https://www.cnblogs.com/clover4/p/14009785.html",
+      "password_protected": false,
+      "summary": "摘要：        \n复习笔记就离谱好吧 用途 大概是给你一个序列， 然后插入一条线段， 然后查询某一个位置上与所有线段交点的纵坐标的的最大值或者最小值。 然后就没了。 实现 定义一个区间的\"优势线段\"为在这个区间里面有超过一半的点在这个线段上取到最值。 考虑维护一个线段树， 每个节点上保存了一条线段， 初始的时候没有保 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "Luogu 3748 [六省联考2017]摧毁“树状图”",
+      "date": "2020-11-20 10:52",
+      "url": "https://www.cnblogs.com/clover4/p/14009778.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目大意： 求两条树上边不相交路径， 使得删掉这两条路径上的点以后剩下的连通块数量最多。 做法 两条路径在树上大概会长成两个倒着的‘V’字形， 考虑在某一个'V'的最上面那个点统计答案。 于是统计答案的时候我们发现有几种统计法： 父节点有一个'V'， 子节点有一个'V‘。 父节点上一条链到子节点， 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "[CQOI2017]老C的键盘",
+      "date": "2020-10-15 17:05",
+      "url": "https://www.cnblogs.com/clover4/p/13821616.html",
+      "password_protected": false,
+      "summary": "摘要：        \n发现题目给的很像一棵树。。。 就把这棵树建出来。 发现如果把大于小于号分别看成一条有向边， 发现这个题目就是求这个图有多少个拓扑序。对于每一个拓扑序， 直接$$12345$$这样标号就可以得到满足题目要求的序列。 考虑树$dp$, 设$f(i, j)$为$i$这个点在这个子树所形成的拓扑序列中在第$ 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "题解 [AGC030F] Permutation and Minimum",
+      "date": "2020-10-14 11:06",
+      "url": "https://www.cnblogs.com/clover4/p/13813652.html",
+      "password_protected": false,
+      "summary": "摘要：        \n我们把位置在$(2i - 1, 2i)$的两个点叫做一对点。 显然如果这对点两个都被限定了直接丢掉完事。 如果有一个没有被限定就先留下来。 注意到其他的形如$(-1, -1)$的顺序是可以随便变化的， 所以先不考虑， 最后乘上一个阶乘就可以了。 考虑用$f(i, j, k)$表示当前填第$i$个数， 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "题解 AGC029E Pairing Points",
+      "date": "2020-10-14 10:41",
+      "url": "https://www.cnblogs.com/clover4/p/13813461.html",
+      "password_protected": false,
+      "summary": "摘要：        \n考虑$1$号点向外连出一条边之后， 整个圆被分成两个部分， 每个部分肯定是内部连边然后一个点连一条边出来跨越一号点连出的那一条线。考虑对这种形状的部分进行$dp$。 设$f(i, j, k)\\(表示\\)[i, j]$这个区间内部匹配， $k$点向外连接的方案数， $g(i,j,k)$表示外面一点$k 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "题解 [AGC028D] Chords",
+      "date": "2020-10-14 07:57",
+      "url": "https://www.cnblogs.com/clover4/p/13812681.html",
+      "password_protected": false,
+      "summary": "摘要：        \n首先， 按照boshi巨佬的说法， 考虑每种联通块的出现次数。如果可以求出， 答案就是每种联通块的出现次数和。 再按照boshi巨佬的说法， 一种定义联通块长相的方法是用编号最小的点和编号最大的点表示。 于是设$f[l][r]$为$l, r$连通且外面的点不连接到里面的点， 里面的所有边都任意连接的 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "题解 luoguP5466 【[PKUSC2018]神仙的游戏】",
+      "date": "2020-08-18 20:58",
+      "url": "https://www.cnblogs.com/clover4/p/13525964.html",
+      "password_protected": false,
+      "summary": "摘要：        \n显然要是没有限制那就全都是$1$对吧， 所以考虑这些$0, 1$到底限制了啥。 首先看到$border$, 容易想到当年写$kmp$求最短回文子串的那题。因为$kmp$的$next$数组实际上就是最长$border$。我们也在那题积累一个结论， 就是对于原来的串一个长度为$k$的$border$, 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "题解 P4233 【射命丸文的笔记】 && 考试T3",
+      "date": "2020-08-14 22:44",
+      "url": "https://www.cnblogs.com/clover4/p/13506016.html",
+      "password_protected": false,
+      "summary": "摘要：        \n考虑每一条哈密顿回路在所有竞赛图中的出现次数。 发现如果确定一个环， 其他的边乱选就可以保证出现哈密顿回路。所以对于一条哈密顿回路， 出现次数为$2^{C_n^2-n}$, 减去的$n$为那$n$条边。哈密顿回路是$1-n$的一个排列首尾拼在一起， 共有$n!/n$种。于是总贡献可以直接得出。 总贡 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "图论学习（在更）",
+      "date": "2020-08-11 21:09",
+      "url": "https://www.cnblogs.com/clover4/p/13485170.html",
+      "password_protected": false,
+      "summary": "摘要：        \nnote: 最小环 是枚举已有的最短路和k点连接的两条边， 保证三个点不重合。 for(R int k = 1; k <= n; k ++) { for(R int i = 1; i < k; i ++) for(R int j = i + 1; j < k; j ++) { if(e[i][j] 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "SP5971 【LCMSUM - LCM Sum】",
+      "date": "2020-07-28 17:20",
+      "url": "https://www.cnblogs.com/clover4/p/13392316.html",
+      "password_protected": false,
+      "summary": "摘要：        \nlei/ \\(\\sum^n_{i = 1} lcm(i,n)=\\sum^{n}_{i=1}\\frac{in}{gcd(i, n)}=\\) \\(\\sum^{n}_{d|n}\\sum^{n}_{i=1}\\frac{in}{d}[gcd(i,n)==d]=\\) \\(n \\times \\sum^{n}_{d 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "数学小算法",
+      "date": "2020-07-25 20:14",
+      "url": "https://www.cnblogs.com/clover4/p/13378079.html",
+      "password_protected": false,
+      "summary": "摘要：        \nexgcd $$ x = y \\ \\ y = t - a /b \\times y$$ CRT \\(ans = \\sum_{i = 1}^n{b_i\\times M_i\\times inv(M_i,mod_i)}\\) \\(M_k=(\\prod_{i=1}^n {} mod_i)/mod_k\\) \\(i 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "PAM",
+      "date": "2020-07-23 16:09",
+      "url": "https://www.cnblogs.com/clover4/p/13366902.html",
+      "password_protected": false,
+      "summary": "摘要：        \nstruct PAM { int ch[N][26], fail[N], len[N]; int tot, las; PAM() { len[0] = 0; len[1] = -1; fail[0] = 1; tot = 1; las = 0; } inline int gtfail(int x, 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "SAM模板",
+      "date": "2020-07-22 09:00",
+      "url": "https://www.cnblogs.com/clover4/p/13358627.html",
+      "password_protected": false,
+      "summary": "摘要：        \n#include <cstdio> #include <cstring> #include <algorithm> using namespace std; #define R register #define LL long long const int inf = 0x3f3f3f3f; con 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "一个写得很shabi的differ",
+      "date": "2020-06-17 18:00",
+      "url": "https://www.cnblogs.com/clover4/p/13153908.html",
+      "password_protected": false,
+      "summary": "摘要：        \n#include <cstdio> #include <cstring> #include <algorithm> #include <vector> #include <cstdlib> #include <string> #include <fstream> using namespace st 阅读全文",
+      "suggested_category": "工具与杂技"
+    },
+    {
+      "title": "LCT板子",
+      "date": "2020-06-16 10:16",
+      "url": "https://www.cnblogs.com/clover4/p/13139531.html",
+      "password_protected": false,
+      "summary": "摘要：        \n#define ls(x) ch[x][0] #define rs(x) ch[x][1] int fa[N], ch[N][2], sum[N], val[N], rev[N]; inline void update(int x) { sum[x] = sum[ls(x)] ^ sum[rs(x) 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "[wqs二分模板] CF739E Gosha is hunting",
+      "date": "2020-06-10 17:13",
+      "url": "https://www.cnblogs.com/clover4/p/13086688.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目链接 首先一个很显然的想法就是直接$DP$ 设$f[i][j][k]$表示抓前$i$个神奇宝贝用了$j$个宝贝球和$k$个超级球，有： \\(f[i][j][k] = max (f[i - 1][j - 1][k] + p[i], f[i - 1][j][k - 1] + u[i], f[i - 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "高精度板子",
+      "date": "2020-06-09 18:18",
+      "url": "https://www.cnblogs.com/clover4/p/13079567.html",
+      "password_protected": false,
+      "summary": "摘要：        \n//#include<bits/stdc++.h> #include<iostream> #include<iomanip> #include<cstring> #include<stack> #include<string> #include<map> #include<cstdlib> #inc 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "斜率优化DP刷题单",
+      "date": "2020-06-07 18:41",
+      "url": "https://www.cnblogs.com/clover4/p/13061651.html",
+      "password_protected": false,
+      "summary": "摘要：        \nLuogu P3195 [HNOI2008]玩具装箱 Luogu P2900 [USACO08MAR]Land Acquisition G Luogu P5785 [SDOI2012]任务安排 Luogu P4360 [CEOI2004]锯木厂选址 Luogu P2120 [ZJOI2007]仓库建 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "「JOISC 2016 Day 3」回转寿司",
+      "date": "2020-05-18 20:51",
+      "url": "https://www.cnblogs.com/clover4/p/12912903.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"「JOISC 2016 Day 3」回转寿司\" 这题我无力吐槽了... ~~强烈谴责出题人用脚造数据~~ 解法 其实这题主要还是部分分启发正解吧。看到有个$s_i = 1, t_i= n$的做法就是维护一个堆就可以了，所以扩展下就是分块，然后每个块维护一个堆。散块暴力，大块直接查。但是有个很坑爹的 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "「JOISC 2016 Day 2」三明治",
+      "date": "2020-05-18 20:49",
+      "url": "https://www.cnblogs.com/clover4/p/12912894.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"「JOISC 2016 Day 2」三明治\" 这题真正让我感受了记搜的强大。 ~~我真的没想过搜索可以过$400$的啊喂~~ ~~对，$\\text{NOI}$还可以过$1e5$呢~~ 解法 一个~~并不~~显然的$n^4$的做法是枚举每一个点，然后上下左右记忆化搜索。考试的时候觉得难打，但是~~看 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "JOISC 2016 Day3 电报",
+      "date": "2020-05-18 20:19",
+      "url": "https://www.cnblogs.com/clover4/p/12912741.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"JOISC 2016 Day3 电报\" 前置知识（伪） + 基环树 + 基环外向树 + 基环内向树 此题就是一棵基环外向树。 ~~其实这些都没什么用，跟这题没啥关系~~ 思路 考试的时候不会做，考完才发现自己就差那么一点点... 首先考虑这样一张图： 我们的目的是让整个图成为一个环，但是这显然不是 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "CF1093G Multidimensional Queries",
+      "date": "2020-05-16 17:20",
+      "url": "https://www.cnblogs.com/clover4/p/12901331.html",
+      "password_protected": false,
+      "summary": "摘要：        \n这题妙啊。 学会了一个新$trick$。 题解 $$|x_1 x_2|+|y_1 y_2| = \\\\ max (x_1 x_2+y_1 y_2,x_1 x_2 y_1+y_2, x_1+x_2+y_1 y2, x_1+x_2 y_1+y_2) = \\\\max((x_1+y_1) (x_2+y_2), 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "CF1045G AI robots",
+      "date": "2020-05-15 17:47",
+      "url": "https://www.cnblogs.com/clover4/p/12896291.html",
+      "password_protected": false,
+      "summary": "摘要：        \n$CDQ$分治的妙题。 考虑按视野从大到小排序，那右边的可以看见左边的话左边一定看得见右边的，直接$CDQ$就行了。对于这种$[x K,x+K]$的区间维护可以在统计的时候差分也可以直接在更新的时候差分。本代码使用后者。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "CF149D Coloring Brackets",
+      "date": "2020-05-15 17:43",
+      "url": "https://www.cnblogs.com/clover4/p/12896265.html",
+      "password_protected": false,
+      "summary": "摘要：        \nDP神题。。。 设$dp[i][j][0/1/2][0/1/2]$表示$[i,j]$这个区间内端点取不染色/染红色/染蓝色三个状态然后转移。一个新$trick$就是这里的转移只要考虑这个区间内的串是合法的就可以了 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "CF1175E Minimal Segment Cover",
+      "date": "2020-05-15 17:39",
+      "url": "https://www.cnblogs.com/clover4/p/12896244.html",
+      "password_protected": false,
+      "summary": "摘要：        \n一个很妙的操作，求出每个点通过一条边可以向右边覆盖的最远距离，然后倍增。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "AT1983 [AGC001E] BBQ Hard",
+      "date": "2020-05-14 17:43",
+      "url": "https://www.cnblogs.com/clover4/p/12890252.html",
+      "password_protected": false,
+      "summary": "摘要：        \n前言 学到了一个$trick$。 对于一个组合数 $C_{x+y}^x$可以看成是从$(0,0)$到$(x,y)$的路径条数。 解法 对于这题而言，$C_{a_i+b_i+a_j+b_j}^{a_i+a_j}$就表示从点$(0,0)$到点$(a_i+a_j,b_i+b_j)$的路径条数。 ~~然后你 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P3703 [SDOI2017]树点涂色",
+      "date": "2020-05-13 17:29",
+      "url": "https://www.cnblogs.com/clover4/p/12883696.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"Luogu P3703 [SDOI2017]树点涂色\" 用LCT中每一个Splay维护颜色相同的点集，则从一个点到根节点的轻边的条数就是这个点的到根的权值。至于路径查询的搞个差分就好，用树剖实现。 至于为什么可以直接这样查，是因为LCT里面涉及子树的权值变化只有access函数。在splay中的子 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "NTT板子",
+      "date": "2020-05-11 12:03",
+      "url": "https://www.cnblogs.com/clover4/p/HN-wrp.html",
+      "password_protected": false,
+      "summary": "摘要：        \n```cpp #include #include using namespace std; #define R register #define LL long long const int inf=0x3f3f3f3f; const int MAXN=4e6+10; inline int read() { char a=getchar(); int x=0,f=1; for(;a>'9'||a= 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "FFT板子",
+      "date": "2020-05-11 11:33",
+      "url": "https://www.cnblogs.com/clover4/p/12868027.html",
+      "password_protected": false,
+      "summary": "摘要：        \n```cpp #include #include #include #include #include using namespace std; #define R register #define LL long long const int inf=0x3f3f3f3f; const int MAXN=4e6+10; const double PI=3.14159265358979323846 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "BZOJ2568 比特集合",
+      "date": "2020-05-08 22:54",
+      "url": "https://www.cnblogs.com/clover4/p/12853615.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"题目链接 BZOJ2568 比特集合\" 思路 + 首先考虑不带区间加的情况，显然容易想到对每个数的每一个二进制位维护一个树状数组。设一个树状数组维护的是二进制的第$k$位，那就每次往里面存$num$的时候在这个树状数组的第$num\\ mod \\ 2^k$这个位置$+1$，那么我们最后查询的时候，只 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "ubuntu下c++ Gedit配置",
+      "date": "2020-05-08 10:15",
+      "url": "https://www.cnblogs.com/clover4/p/12848889.html",
+      "password_protected": false,
+      "summary": "摘要：        \n丢个配置。。 编译 #!/bin/sh fullname=$GEDIT_CURRENT_DOCUMENT_NAME name=`echo $fullname | cut -d. -f1` g++ -o $name $fullname -DIN 运行 #!/bin/sh fullname=$GEDIT 阅读全文",
+      "suggested_category": "工具与杂技"
+    },
+    {
+      "title": "P6329 【模板】点分树 | 震波",
+      "date": "2020-05-06 19:11",
+      "url": "https://www.cnblogs.com/clover4/p/12838309.html",
+      "password_protected": false,
+      "summary": "摘要：        \n前言 由于这篇题解思路并没有什么区别，所以这篇题解的意义在于稍稍更细致地讲下思路和卡常方法。~~估计也只有我常数这么大了~~ 思路 第一感 由于题目要查询到一个点距离为$k$以内的所有点的权值和，一个显然的想法就是对每个点开一个线段树维护权值和，下标维护距离，然后暴力查询。显然这是$MLE+TLE$ 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "Luogu P3350 [ZJOI2016]旅行者",
+      "date": "2020-05-06 13:33",
+      "url": "https://www.cnblogs.com/clover4/p/12835841.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"这题正常的题面请看这里\" ~~由大佬之言可知，看见网格图想分治~~ 所以这题考虑分治。 考虑把棋盘分成两半，那所有点就会有两种情况： + 在完整的一半以内 + 跨越两半 考虑在我们分成两半的那条中线的所有点跑最短路来更新所有点的答案。然后对于跨越了两半的点就直接保存答案，在同一块的点就类似整体二分 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu [ZJOI2015]幻想乡战略游戏",
+      "date": "2020-05-05 21:25",
+      "url": "https://www.cnblogs.com/clover4/p/12832861.html",
+      "password_protected": false,
+      "summary": "摘要：        \n显然，一棵树的带权重心最多只有两个，最少会有一个，而且在这两个点的答案一定相等。（都是带权重心当然相等）鉴于点分治的写法貌似并不太需要这样的分析，就不说了。~~我不会~~ 首先建出一颗点分树，然后考虑在点分树上跳儿子来保证复杂度，于是我们就需要快速算出所有点到这个重心的带权距离和。~~由于这题是点分 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "斐波那契数列简单性质",
+      "date": "2020-05-05 16:12",
+      "url": "https://www.cnblogs.com/clover4/p/12831116.html",
+      "password_protected": false,
+      "summary": "摘要：        \n计数性质 \\(F_i=F_{i-1}+F_{i-2}\\) \\(\\sum^{n}_{i=1}F_i=F_{n+2}-F_2\\) 证明： 当$n=1$时，$F_3-F_2=F_1$显然成立。 当$n=2$时，\\(F_4-F_2=F_3+F_2-F_2=F_1+F_2\\),成立。 当$n=k-1$时，由公 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "Luogu P2056 [ZJOI2007]捉迷藏",
+      "date": "2020-05-04 23:04",
+      "url": "https://www.cnblogs.com/clover4/p/12828749.html",
+      "password_protected": false,
+      "summary": "摘要：        \n动态点分治 先建出一颗点分树，然后维护。 对于每一个点维护两个堆，一个堆维护子树内所有点到分治父节点的距离最大值，一个堆维护一个点所有子树的第一个堆的最大值，再全局维护一个堆取所有分治重心的答案的最大值即可。 代码细节感人。。。 一个比较有用的trick就是用两个大根堆实现可删除的堆~~但是要开O2 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P4127 [AHOI2009]同类分布",
+      "date": "2020-05-03 15:11",
+      "url": "https://www.cnblogs.com/clover4/p/12822026.html",
+      "password_protected": false,
+      "summary": "摘要：        \n数位DP 这题最妙的一点在于，由于我们无法存下原来的这个数，我们就考虑存取模之后的值，而这个模数就选择一个可能是最后的每一位数字的和的值。而这个总数只有$9 18=162$种，然后存下每一位的和以及从高位到低位的取模结果，数位DP即可。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "二项式反演学习笔记",
+      "date": "2020-05-03 13:19",
+      "url": "https://www.cnblogs.com/clover4/p/12821634.html",
+      "password_protected": false,
+      "summary": "摘要：        \n前置知识 + 容斥原理 + 组合数 约定 $A'_i$表示集合$A_i$的补集。 反演形式 形式一 $$f(n)=\\sum_{i=0}^{n}( 1)^iC^i_ng(i)\\Leftrightarrow g(n)=\\sum_{i=0}^{n}( 1)^iC^i_nf(i)$$ 证明 设$A_1,A_ 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "Luogu P3292 [SCOI2016]幸运数字",
+      "date": "2020-05-03 09:23",
+      "url": "https://www.cnblogs.com/clover4/p/12820816.html",
+      "password_protected": false,
+      "summary": "摘要：        \n看到异或最值，显然想到线性基。 用树上倍增的方法，维护当前点$x$到倍增父节点$fa[x][i]$这条路径上的线性基，在倍增的时候暴力合并即可。 注意这个线性基的倍增数组是没有包括最后一个点的信息的，需要特殊处理。然后就搞完了。 时间复杂度$O(n log_n log_v+q log_n log_v 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu CF555E 【Case of Computer Network】",
+      "date": "2020-05-02 22:11",
+      "url": "https://www.cnblogs.com/clover4/p/12819924.html",
+      "password_protected": false,
+      "summary": "摘要：        \n其实如果这是一颗树的话很好搞，把$s$到$lca(s,t)$ 向上连，$lca(s,t)$到$t$向下连即可(然而事情并不是这样子的...)。 我们考虑什么样的情况是一定可行的呢？每两个点之间都有两条以上的路径，那就可以一边向前，一边向后，绝对可以。也就是求双联通分量以内是一定可以的，所以考虑缩点。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P4151 [WC2011]最大XOR和路径",
+      "date": "2020-05-02 17:11",
+      "url": "https://www.cnblogs.com/clover4/p/12818708.html",
+      "password_protected": false,
+      "summary": "摘要：        \n\"原题传送门\" 看见异或最值，估计线性基跑不了了。 考虑先随便提出一条从$1$到$n$的路径，这显然不一定是最优的，但是可以让它变强。比如可以让它中间插入一个环来让它变优。比如说有一条路径: $1 A B C N$ 可以补成： $1 A B E F G E B C N$ 注意到权值的变化其实就是多异 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "线性基小结",
+      "date": "2020-05-01 11:45",
+      "url": "https://www.cnblogs.com/clover4/p/12813021.html",
+      "password_protected": false,
+      "summary": "摘要：        \n用处 没用我学这东西干嘛 快速查询一个数是否可以被一堆数异或出来 快速查询一堆数可以异或出来的最大/最小值 快速查询一堆数可以异或出来的第k大值 这么点？ 还有点性质在下面 可能有点用 性质 原数列里的任何一个数都可以通过线性基里的数异或表示出来 线性基里任意一个子集的异或和都不为$0$ 一个数列可 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "HDU 3949 XOR",
+      "date": "2020-05-01 11:44",
+      "url": "https://www.cnblogs.com/clover4/p/12813014.html",
+      "password_protected": false,
+      "summary": "摘要：        \n线性基板子题，注意特判$0$，开$long~long$就好。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P4570 [BJWC2011]元素",
+      "date": "2020-05-01 11:41",
+      "url": "https://www.cnblogs.com/clover4/p/12813004.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目很显然就是要求序号的线性基。我们希望线性基里的权值最大，就按权值从大到小插入就行了。 为什么是对的呢？插入线性基的一个矿石只会和另一些矿石在一个位置上冲突，而那些矿石也只能插入这一位，同时它们价值不如当前的矿石，所以这是最优的。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P4301 [CQOI2013]新Nim游戏",
+      "date": "2020-05-01 11:34",
+      "url": "https://www.cnblogs.com/clover4/p/12812983.html",
+      "password_protected": false,
+      "summary": "摘要：        \nNim游戏的结论就是先手异或和不为0的时候必胜，所以就排个序，留下线性基就行了。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P3857 [TJOI2008]彩灯",
+      "date": "2020-05-01 11:30",
+      "url": "https://www.cnblogs.com/clover4/p/12812964.html",
+      "password_protected": false,
+      "summary": "摘要：        \n把每个对应的序列看成二进制数，能控制就把这一位设为$1$，那么每异或出来一个新的数就对应一种情况。 根据线性基的性质，任意一个子集异或和都不一样，所以直接线性基即可。 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P3812 【模板】线性基",
+      "date": "2020-05-01 11:22",
+      "url": "https://www.cnblogs.com/clover4/p/12812931.html",
+      "password_protected": false,
+      "summary": "摘要：        \n线性基板子题 阅读全文",
+      "suggested_category": "算法笔记与模板"
+    },
+    {
+      "title": "留言板 [自我介绍]",
+      "date": "2020-04-30 17:41",
+      "url": "https://www.cnblogs.com/clover4/p/12810200.html",
+      "password_protected": false,
+      "summary": "摘要：        \n坐标:HN - ZZ QQ: 首字母自己看博客名字， 这都看不出来建议重开 一只被众大佬看不起的咸鱼， 只会自己在坑里划水。 希望不会没学上。 密码找我要就彳亍qwq。 阅读全文",
+      "suggested_category": "日常与待确认"
+    },
+    {
+      "title": "Luogu P3631 【[APIO2011]方格染色】",
+      "date": "2020-04-30 17:37",
+      "url": "https://www.cnblogs.com/clover4/p/12805734.html",
+      "password_protected": false,
+      "summary": "摘要：        \nT15 Apio2011 方格染色 ~~20分算法：暴力枚举每个点~~ ~~抄题解做的还是好好写总结吧~~ 把红色视为0，蓝色视为1 假设有一个表格如下： | A | C | E | G | | | | | | | B | D | F | H | 根据题设有$A\\bigoplus B\\bigoplu 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P6185 【[NOI Online 提高组]序列】",
+      "date": "2020-04-30 17:37",
+      "url": "https://www.cnblogs.com/clover4/p/12805254.html",
+      "password_protected": false,
+      "summary": "摘要：        \n本来考场切了的，结果代码没保存，爆炸成80，自闭了。 考场上我是一个一个部分分做的，所以这里我也一个一个部分分写。 0pts $n=1$ 这个档位是针对样例写的。。。因为不写我就过不了样例。。。 显然如果有一个1操作就输出YES，没有就看相不相等完事。。。 贴一个没有什么用的代码。 60pts $n 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P4116 【Qtree3】",
+      "date": "2020-04-30 17:37",
+      "url": "https://www.cnblogs.com/clover4/p/12804468.html",
+      "password_protected": false,
+      "summary": "摘要：        \n我寻思这题为什么LCT题解这么少啊... 这个题目连换根都不要的话LCT岂不是不用维护翻转操作了嘛？ 然后pushdown,makeroot等等函数都不要写了 然后50行就完事了？？？ 还挺快的，快读都不加就3s了 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu AT2557 【Ball Coloring】",
+      "date": "2020-04-30 17:37",
+      "url": "https://www.cnblogs.com/clover4/p/12805800.html",
+      "password_protected": false,
+      "summary": "摘要：        \n题目大意： 有n对数字，让你将这n对数字染色成红的或蓝的，求$(Rmax Rmin) (Bmax Bmin)$ $n include include using namespace std; define R register define ll long long const ll inf=(1L 阅读全文",
+      "suggested_category": "题解与训练记录"
+    },
+    {
+      "title": "Luogu P4511 CTSC 2015 日程管理",
+      "date": "2020-04-30 17:37",
+      "url": "https://www.cnblogs.com/clover4/p/12804454.html",
+      "password_protected": false,
+      "summary": "摘要：        \n正题 一开始的时候显然第$i$天以前可以放$i$个任务是吧，然后考虑用一棵线段树维护这个数量，设每天的这个值为$lev(i)$ 考虑在$t$这个截止时间位置放了一个任务，那$(t,n)$这个区间的$ lev(i)$ 都要减去$1$。 插入 设插入的终止时间为$t$,这个任务的价值为$p$。那如何插入 阅读全文",
+      "suggested_category": "题解与训练记录"
+    }
+  ],
+  "inventory_date": "2026-09-10",
+  "scope": "公开首页分页所列文章；密码状态依据列表提示；尚未逐篇备份正文或下载图片。分类根据标题与摘要初步判断，非原站分类。"
+}

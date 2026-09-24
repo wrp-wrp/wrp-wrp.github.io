@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Tiny, memorable blog command.
+# Run `b` for the cheat sheet, or use short verbs like `b n my-slug`.
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BLOG="${REPO_ROOT}/bin/blog"
+
+usage() {
+  cat <<'EOF'
+博客快捷入口：只记住 b
+
+常用：
+  b n my-slug             新建文章
+  b s                     本地预览
+  b p "blog: add xxx"     发布上线
+  b i "一个想法"          记到 inbox
+  b d                     查看草稿
+  b o my-slug             打开文章
+  b .                     打开博客目录
+
+更多：
+  b help                  显示这个小抄
+  b full                  查看完整 blog 帮助
+  b dashboard             打开写作面板
+  b doctor                检查环境
+  b build                 构建站点
+EOF
+}
+
+open_path() {
+  local target="$1"
+  if [[ -n "${BLOG_EDITOR:-}" ]]; then
+    eval "${BLOG_EDITOR} \"${target}\""
+  elif command -v open >/dev/null 2>&1; then
+    open "${target}"
+  else
+    printf '[blog] Open manually: %s\n' "${target}"
+  fi
+}
+
+open_post() {
+  local slug="${1:-}"
+  if [[ -z "${slug}" ]]; then
+    printf '[blog][error] Missing slug. Example: b o my-slug\n' >&2
+    exit 1
+  fi
+
+  local target="${REPO_ROOT}/content/posts/${slug}/index.md"
+  if [[ ! -f "${target}" ]]; then
+    printf '[blog][error] No post found: content/posts/%s/index.md\n' "${slug}" >&2
+    exit 1
+  fi
+  open_path "${target}"
+}
+
+cmd="${1:-}"
+if [[ -z "${cmd}" ]]; then
+  usage
+  exit 0
+fi
+shift || true
+
+case "${cmd}" in
+  n|new|写|新建)             exec "${BLOG}" new "$@" ;;
+  s|serve|预览)              exec "${BLOG}" serve "$@" ;;
+  p|pub|发布)
+    if [[ $# -eq 0 ]]; then
+      exec "${BLOG}" publish
+    else
+      exec "${BLOG}" publish -m "$*"
+    fi
+    ;;
+  i|inbox|灵感)              exec "${BLOG}" inbox "$@" ;;
+  d|drafts|草稿)             exec "${BLOG}" drafts "$@" ;;
+  dash|dashboard|面板)       exec "${BLOG}" dashboard "$@" ;;
+  doctor|检查)               exec "${BLOG}" doctor "$@" ;;
+  build|构建)                exec "${BLOG}" build "$@" ;;
+  o|open|打开)               open_post "$@" ;;
+  .|root|目录)               open_path "${REPO_ROOT}" ;;
+  h|help|-h|--help|帮助)     usage ;;
+  full|blog-help|完整)        exec "${BLOG}" help ;;
+  *)                         exec "${BLOG}" "${cmd}" "$@" ;;
+esac

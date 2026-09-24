@@ -48,17 +48,13 @@ scripts/blog-workflow.sh serve
 
 浏览器打开：`http://localhost:1313/`
 
-3. 生产构建（默认输出到 `public/`）：
+3. 生产构建（输出到 `public/`）：
 
 ```bash
 scripts/blog-workflow.sh build
 ```
 
-如果你希望输出到 `docs/`（例如本地检查 Pages 目录结构）：
-
-```bash
-scripts/blog-workflow.sh build --to-docs
-```
+`docs/` 是文档目录（设计稿、维护笔记），不是构建输出。
 
 ## 3. 一键发布上线
 
@@ -73,7 +69,7 @@ scripts/blog-workflow.sh publish -m "blog: add new post"
 `publish` 会自动执行以下步骤：
 
 1. 构建站点（`hugo --minify`）
-2. `git add -A`
+2. `git add`（白名单：`content/ static/ layouts/ assets/ scripts/ bin/ tools/ docs/` 等；本地杂物、`public/`、`infra/` 不会被提交）
 3. `git commit`
 4. `git push origin <当前分支>`
 
@@ -91,7 +87,7 @@ scripts/blog-workflow.sh init
 scripts/blog-workflow.sh doctor
 scripts/blog-workflow.sh new <slug>
 scripts/blog-workflow.sh serve
-scripts/blog-workflow.sh build [--to-docs]
+scripts/blog-workflow.sh build
 scripts/blog-workflow.sh publish [-m "message"] [-b branch] [--skip-build] [--allow-other-branch]
 ```
 

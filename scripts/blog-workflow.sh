@@ -6,6 +6,30 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DEFAULT_BRANCH="master"
 
+# 只有这些路径会进入 publish 的提交。本地杂物、构建产物（public/）、
+# VPS 运维目录（infra/）永不自动提交到公开仓库。
+PUBLISH_PATHS=(
+  .github
+  archives
+  assets
+  bin
+  content
+  docs
+  layouts
+  scripts
+  static
+  themes
+  tools
+  BLOG_WORKFLOW.md
+  GALLERY_WORKFLOW.md
+  MAINTENANCE.md
+  QUICKSTART.md
+  README.md
+  WRITING_WORKFLOW.md
+  hugo.toml
+  inbox.md
+)
+
 log() {
   printf '[blog] %s\n' "$*"
 }
@@ -26,7 +50,7 @@ Usage:
   scripts/blog-workflow.sh doctor
   scripts/blog-workflow.sh new <slug>
   scripts/blog-workflow.sh serve
-  scripts/blog-workflow.sh build [--to-docs]
+  scripts/blog-workflow.sh build
   scripts/blog-workflow.sh build-search
   scripts/blog-workflow.sh publish [-m "commit message"] [-b branch] [--skip-build] [--allow-other-branch]
   scripts/blog-workflow.sh stats
@@ -150,27 +174,9 @@ run_serve() {
 run_build() {
   need_cmd hugo
   to_repo_root
-  local to_docs=0
-
-  while (($#)); do
-    case "$1" in
-      --to-docs)
-        to_docs=1
-        ;;
-      *)
-        die "Unknown build option: $1"
-        ;;
-    esac
-    shift
-  done
-
-  if [[ "${to_docs}" -eq 1 ]]; then
-    hugo --minify -d docs
-    log "Build output: docs/"
-  else
-    hugo --minify
-    log "Build output: public/"
-  fi
+  (($# == 0)) || die "Unknown build option: $1. Build output is always public/."
+  hugo --minify
+  log "Build output: public/"
 }
 
 run_publish() {
@@ -219,7 +225,14 @@ run_publish() {
     run_build
   fi
 
-  git add -A
+  local -a present=()
+  local path
+  for path in "${PUBLISH_PATHS[@]}"; do
+    [[ -e "${path}" ]] && present+=("${path}")
+  done
+  ((${#present[@]})) || die "None of the publish paths exist. Repo layout changed?"
+
+  git add -A -- "${present[@]}"
   if git diff --cached --quiet; then
     log "No changes to commit."
     return 0
