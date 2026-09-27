@@ -1,0 +1,5 @@
+{{- $columns := printf "%v" (default "2" (.Get "columns")) -}}
+{{- if not (in (slice "2" "3") $columns) -}}{{- $columns = "2" -}}{{- end -}}
+<div class="image-row image-row-{{ $columns }}">
+  {{ .Inner | .Page.RenderString (dict "display" "block") }}
+</div>

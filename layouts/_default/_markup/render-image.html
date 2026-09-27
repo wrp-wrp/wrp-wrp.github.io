@@ -1,0 +1,67 @@
+{{- /* Keep image descriptions visible as captions, unless an explicit title is supplied. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $url := .Destination -}}
+{{- $resource := false -}}
+{{- if and (not $u.IsAbs) (not $u.Host) -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- $resource = .PageInner.Resources.Get $path -}}
+  {{- if not $resource -}}
+    {{- with .PageInner.Parent -}}
+      {{- $resource = .Resources.Get $path -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $resource = or $resource (resources.Get $path) -}}
+  {{- with $resource -}}
+    {{- $url = .RelPermalink -}}
+    {{- with $u.RawQuery -}}{{- $url = printf "%s?%s" $url . -}}{{- end -}}
+    {{- with $u.Fragment -}}{{- $url = printf "%s#%s" $url . -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $classes := slice "article-image" -}}
+{{- $tags := split $u.Fragment "#" -}}
+{{- range $tags -}}
+  {{- if . -}}{{- $classes = $classes | append (printf "img-%s" .) -}}{{- end -}}
+{{- end -}}
+{{- $caption := .Text -}}
+{{- with .Title -}}{{- $caption = . | markdownify -}}{{- end -}}
+{{- if in $tags "nocaption" -}}{{- $caption = "" -}}{{- end -}}
+
+{{- $width := "" -}}
+{{- if in $tags "small" -}}{{- $width = "240px" -}}{{- end -}}
+{{- if in $tags "medium" -}}{{- $width = "480px" -}}{{- end -}}
+{{- if in $tags "full" -}}{{- $width = "100%" -}}{{- end -}}
+{{- with .Attributes.width -}}
+  {{- $requested := lower (printf "%v" .) -}}
+  {{- if in (slice "small" "medium" "full") $requested -}}
+    {{- $width = index (dict "small" "240px" "medium" "480px" "full" "100%") $requested -}}
+  {{- else if findRE `^[1-9][0-9]*(px|%)?$` $requested -}}
+    {{- $width = $requested -}}
+    {{- if findRE `^[0-9]+$` $width -}}{{- $width = printf "%spx" $width -}}{{- end -}}
+  {{- else -}}
+    {{- warnf "Invalid image width %q in %s; use a positive pixel width, percentage, small, medium, or full." $requested $.Page.RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+{{- $align := lower (printf "%v" (default "center" .Attributes.align)) -}}
+{{- if not (in (slice "left" "center" "right") $align) -}}{{- $align = "center" -}}{{- end -}}
+{{- $classes = $classes | append (printf "article-image-align-%s" $align) -}}
+{{- if $width -}}{{- $classes = $classes | append "article-image-sized" -}}{{- end -}}
+{{- if eq (printf "%v" .Attributes.frame) "false" -}}{{- $classes = $classes | append "article-image-plain" -}}{{- end -}}
+
+{{- if .IsBlock -}}
+<figure class="{{ delimit $classes " " }}"{{ with $width }} style="{{ printf "--image-width: %s;" . | safeCSS }}"{{ end }}>
+  <div class="article-image-frame">
+{{- end -}}
+<img src="{{ $url | safeURL }}" alt="{{ .PlainText }}" loading="lazy" decoding="async"
+  {{- with $resource -}}
+    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") }} width="{{ .Width }}" height="{{ .Height }}"{{ end -}}
+  {{- end -}}
+  {{- if not .IsBlock -}}{{- with .Title }} title="{{ . }}"{{ end -}}{{- end -}}
+>
+{{- if .IsBlock -}}
+  </div>
+  {{- with $caption }}
+  <figcaption class="article-image-caption">{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end -}}

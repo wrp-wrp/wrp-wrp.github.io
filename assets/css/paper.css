@@ -817,12 +817,172 @@ pre {
 }
 
 .single-content figcaption {
-    margin: 0.7rem 0 1.1rem;
+    margin: 0.65rem auto 0;
+    max-width: 65ch;
+    padding: 0;
     color: var(--ink-soft);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    line-height: 1.5;
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    line-height: 1.65;
+    font-style: normal;
     text-align: center;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+/* Let the actual image set the height; small images must not reserve a full-width box. */
+.single-content .article-image {
+    margin: 1.8rem auto 2rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.single-content .article-image-frame {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    padding: 0.35rem;
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+    box-shadow: 0 2px 8px rgba(40, 32, 22, 0.06);
+}
+
+.single-content .article-image img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: var(--figure-img-max-height);
+    margin-inline: auto;
+    object-fit: contain;
+    border: 0;
+}
+
+.single-content .article-image.img-small {
+    width: 80%;
+}
+
+/* Override the theme's div-based sizing: the frame follows the image itself. */
+.single-content .article-image.img-small .article-image-frame {
+    display: block;
+    width: fit-content;
+    height: auto;
+}
+
+.single-content .article-image.img-full .article-image-frame {
+    display: block;
+    width: 100%;
+}
+
+.single-content .article-image.img-full img {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none;
+}
+
+.single-content .article-image-caption {
+    max-width: 56ch;
+    margin-top: 0.55rem;
+    padding-inline: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    letter-spacing: 0.025em;
+    text-wrap: pretty;
+}
+
+.single-content .article-image-caption p {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* Markdown image attributes: width, align, and frame. */
+.single-content .article-image.article-image-sized {
+    width: min(100%, var(--image-width));
+    max-width: 100%;
+}
+
+.single-content .article-image.article-image-sized .article-image-frame {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.single-content .article-image.article-image-sized img {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none;
+    height: auto;
+}
+
+.single-content .article-image.article-image-align-left {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.single-content .article-image.article-image-align-center {
+    margin-inline: auto;
+}
+
+.single-content .article-image.article-image-align-right {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.single-content .article-image-align-left .article-image-frame {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.single-content .article-image-align-right .article-image-frame {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.single-content .article-image-align-left .article-image-caption {
+    margin-left: 0;
+    text-align: left;
+}
+
+.single-content .article-image-align-right .article-image-caption {
+    margin-right: 0;
+    text-align: right;
+}
+
+.single-content .article-image-plain .article-image-frame {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.single-content .image-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    align-items: start;
+    margin: 1.8rem 0 2rem;
+}
+
+.single-content .image-row.image-row-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.single-content .image-row > .article-image {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+@media (max-width: 560px) {
+    .single-content .image-row,
+    .single-content .image-row.image-row-3 {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.6rem;
+    }
+}
+
+.single-content .gallery-item {
+    min-width: 0;
 }
 
 .single-content h4 {
