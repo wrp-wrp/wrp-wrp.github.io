@@ -1,0 +1,12 @@
+{{- /* Body language is independent of the site's English navigation. */ -}}
+{{- $tag := replace (or (.Param "contentLanguage") .Site.Language.LanguageCode .Site.Language.Lang) "_" "-" -}}
+{{- $code := index (split (lower $tag) "-") 0 -}}
+{{- $label := upper $code -}}
+{{- $name := $tag -}}
+{{- if eq $code "zh" -}}
+    {{- $label = "中文" -}}
+    {{- $name = "Chinese" -}}
+{{- else if eq $code "en" -}}
+    {{- $name = "English" -}}
+{{- end -}}
+{{- return (dict "tag" $tag "code" $code "label" $label "name" $name) -}}

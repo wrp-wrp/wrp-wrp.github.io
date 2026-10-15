@@ -1,0 +1,15 @@
+{{ $page := .page }}
+{{ $active := $page.Param "postLanguage" | default "all" }}
+{{ $counts := dict "all" (len .pages) "zh" 0 "en" 0 }}
+{{ range .pages }}
+    {{ $language := partial "post-language.html" . }}
+    {{ $counts = merge $counts (dict $language.code (add (index $counts $language.code | default 0) 1)) }}
+{{ end }}
+<nav class="post-language-filter" aria-label="Filter posts by language">
+    {{ range slice (dict "code" "all" "label" "All" "path" "/posts") (dict "code" "zh" "label" "中文" "path" "/posts/zh" "lang" "zh-CN") (dict "code" "en" "label" "English" "path" "/posts/en" "lang" "en") }}
+    {{ $target := $page.Site.GetPage .path }}
+    <a href="{{ $target.RelPermalink }}" {{ with .lang }}lang="{{ . }}"{{ end }} {{ if eq $active .code }}aria-current="page"{{ end }}>
+        {{ .label }} <span class="language-filter-count">{{ index $counts .code | default 0 }}</span>
+    </a>
+    {{ end }}
+</nav>

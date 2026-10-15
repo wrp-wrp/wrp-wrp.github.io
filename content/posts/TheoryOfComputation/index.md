@@ -3,6 +3,7 @@ date = '2025-11-26T10:00:00+08:00'
 draft = true
 math = true
 title = '计算理论学习笔记'
+contentLanguage = 'zh-CN'
 summary = "计算理论核心概念复习，涵盖自动机、可计算性与计算复杂性理论。"
 tags = ["计算理论", "自动机", "图灵机", "复杂性"]
 categories = ["学习笔记"]

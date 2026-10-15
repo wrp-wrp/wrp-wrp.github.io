@@ -4,7 +4,8 @@
 
     {{ partial "breadcrumbs.html" . }}
 
-    <h1>{{ .Title }}</h1>
+    {{ $language := partial "post-language.html" . }}
+    <h1 lang="{{ $language.tag }}">{{ .Title }}</h1>
     {{ .Content }}
 
     {{ if or (eq .Section "posts") (eq .Section "tags") }}
@@ -13,8 +14,25 @@
 
     {{ $tagsPage := eq .Title "Tags" }}
 
-    {{/* Filter out hidden posts (frontmatter: hidden = true) */}}
+    {{/* Language views use the full collection before pagination. */}}
     {{ $pages := where .Pages "Params.hidden" "ne" true }}
+    {{ if eq .Section "posts" }}
+        {{ $pages = where .Site.RegularPages "Section" "posts" }}
+        {{ $pages = where $pages "Params.hidden" "ne" true }}
+        {{ $pages = sort $pages "Date" "desc" }}
+        {{ partial "post-language-filter.html" (dict "page" . "pages" $pages) }}
+        {{ with .Param "postLanguage" }}
+            {{ $selected := . }}
+            {{ $filtered := slice }}
+            {{ range $pages }}
+                {{ $language := partial "post-language.html" . }}
+                {{ if eq $language.code $selected }}
+                    {{ $filtered = $filtered | append . }}
+                {{ end }}
+            {{ end }}
+            {{ $pages = $filtered }}
+        {{ end }}
+    {{ end }}
 
     {{ $paginationSize := 1 }}
     {{ if (gt .Site.Params.paginationSize 0) }}
@@ -29,6 +47,10 @@
         {{ else }}
             {{ partial "post-entry.html" $page }}
         {{ end }}
+    {{ end }}
+
+    {{ if and (eq .Section "posts") (eq (len $pages) 0) }}
+    <p class="language-filter-empty">No posts in this language yet. <a href="{{ (.Site.GetPage "/posts").RelPermalink }}">Browse all posts</a>.</p>
     {{ end }}
 
     {{ partial "pagination-controls.html" $paginator }}

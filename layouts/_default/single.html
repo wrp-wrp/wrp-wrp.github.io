@@ -6,11 +6,12 @@
 {{ end }}
 
 {{ $hasTOC := and (.Param "toc") (gt (len .Fragments.Headings) 0) }}
-{{ $contentLanguage := .Param "contentLanguage" | default site.Language.LanguageCode }}
+{{ $language := partial "post-language.html" . }}
+{{ $contentLanguage := $language.tag }}
 <div class="post-layout {{ if $hasTOC }}has-toc{{ end }} {{ if .Param "autonumber" }}autonumber{{ end }}">
 
     <div class="post-main-column">
-        <article class="post-article" data-pagefind-body>
+        <article class="post-article" lang="{{ $contentLanguage }}" data-pagefind-body>
             <header class="single-intro-container">
                 <h1 class="single-title" data-pagefind-meta="title">{{ .Title }}</h1>
                 {{- with .Param "summary" }}
@@ -28,7 +29,7 @@
                         {{ with .Param "author" }}
                         <p class="author"> {{- .}} </p>
                         {{ end }}
-                        <p class="single-date">
+                        <p class="single-date" lang="en">
                             {{- if $showPublicationDate }}
                             {{- with .Date }}
                             <time datetime="{{ . | time.Format " 2006-01-02T15:04:05-07:00" }}">{{ . | time.Format
@@ -39,6 +40,7 @@
                             {{- if .Param "readTime" }}
                             {{ if $showPublicationDate }} · {{ end }} {{ .ReadingTime }} min read
                             {{- end }}
+                            {{ if eq .Section "posts" }} · {{ partial "language-badge.html" . }}{{ end }}
                         </p>
                     </div>
                 </div>

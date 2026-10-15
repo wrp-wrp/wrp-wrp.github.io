@@ -1,6 +1,8 @@
 {{ $current := .RelPermalink }}
 <nav class="post-navigation" aria-label="Browse posts">
     {{ range slice (dict "title" "Posts" "url" "/posts/") (dict "title" "Archive" "url" "/archive/") (dict "title" "Tags" "url" "/tags/") }}
-    <a href="{{ .url | relURL }}" {{ if eq $current (.url | relURL) }}aria-current="page"{{ end }}>{{ .title }}</a>
+    {{ $active := eq $current (.url | relURL) }}
+    {{ if and (eq .url "/posts/") (hasPrefix $current (.url | relURL)) }}{{ $active = true }}{{ end }}
+    <a href="{{ .url | relURL }}" {{ if $active }}aria-current="page"{{ end }}>{{ .title }}</a>
     {{ end }}
 </nav>

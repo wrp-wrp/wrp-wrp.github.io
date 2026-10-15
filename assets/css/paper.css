@@ -540,6 +540,67 @@ hr {
     line-height: 1.6;
 }
 
+.post-language {
+    display: inline-block;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
+    vertical-align: 0.12em;
+    white-space: nowrap;
+}
+
+.home-note-copy h3 .post-language,
+.line-title .post-language {
+    margin-inline-start: 0.4rem;
+}
+
+.post-language-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin: -0.5rem 0 1rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+}
+
+.post-language-filter a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.45rem 0;
+    border-bottom: 2px solid transparent;
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.post-language-filter a[aria-current="page"] {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+}
+
+.post-language-filter a:hover {
+    color: var(--accent);
+}
+
+.language-filter-count {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+}
+
+.language-filter-empty {
+    padding: 1rem 0;
+    color: var(--ink-soft);
+}
+
 .post-navigation {
     display: flex;
     flex-wrap: wrap;

@@ -46,12 +46,13 @@
 
     <div class="home-notes-list">
         {{ range $recent }}
-        {{ $displayTitle := or .Params.title_en .Title }}
-        {{ $displaySummary := or .Params.summary_en .Params.summary .Summary }}
+        {{ $language := partial "post-language.html" . }}
+        {{ $displayTitle := .Title }}
+        {{ $displaySummary := or .Params.summary .Summary }}
         <article class="home-note-row">
             <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (.Site.Params.listDateFormat | default "2 Jan 2006") }}</time>
-            <div class="home-note-copy">
-                <h3><a href="{{ .RelPermalink }}">{{ $displayTitle }}</a></h3>
+            <div class="home-note-copy" lang="{{ $language.tag }}">
+                <h3><a href="{{ .RelPermalink }}">{{ $displayTitle }}</a> {{ partial "language-badge.html" . }}</h3>
                 {{ with $displaySummary }}
                 <p>{{ . | plainify | truncate 145 }}</p>
                 {{ end }}

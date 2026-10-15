@@ -57,13 +57,15 @@
     {{ $items := index $byYear $year }}
     <h2 class="archive-year">{{ $year }} <span class="tag-count">· {{ len $items }}</span></h2>
     {{ range $items }}
+    {{ $language := partial "post-language.html" . }}
     <div class="post-line">
         <p class="line-date">{{ .Date | time.Format "Jan 2" }}</p>
-        <div>
+        <div lang="{{ $language.tag }}">
             <p class="line-title">
-                <a href="{{ .RelPermalink }}">{{ or .Params.title_en .Title }}</a>
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                {{ partial "language-badge.html" . }}
             </p>
-            {{ with or .Params.summary_en .Summary }}
+            {{ with or .Params.summary .Summary }}
             <p class="line-summary">{{ . | plainify | truncate 120 }}</p>
             {{ end }}
         </div>

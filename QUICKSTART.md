@@ -33,6 +33,7 @@ date = '2026-05-09T22:00:00+08:00'
 draft = false
 math = true
 title = 'My Slug'
+contentLanguage = 'zh-CN'
 +++
 ```
 
@@ -41,11 +42,14 @@ title = 'My Slug'
 | 字段 | 作用 |
 |---|---|
 | `tags = ["ANNS", "DB"]` | 标签，会出现在首页 Topics |
-| `summary = "一句话摘要"` | 列表页/卡片摘要（中文） |
-| `summary_en = "..."` | 英文摘要（覆盖 `summary`） |
-| `title_en = "..."` | 英文标题（覆盖 `title`） |
+| `contentLanguage = 'zh-CN'` | 中文正文（新文章默认）；英文正文改为 `'en'` |
+| `summary = "一句话摘要"` | 与正文同语言的摘要，用于首页和归档 |
+| `summary_en = "..."` | 备用英文摘要，不覆盖 `summary` |
+| `title_en = "..."` | 备用英文标题，不覆盖 `title` |
 | `hidden = true` | 不在首页/列表显示，但 URL 可访问 |
 | `draft = true` | 完全不构建，本地 `serve --drafts` 才能看到 |
+
+标题和摘要使用正文的语言。首页混排中英文文章，`/posts/` 的 `All / 中文 / English` 可以筛选正文语言；英文标题或摘要不代表有英文全文。现有文章链接不变。
 
 ## 2. 本地预览
 
@@ -116,6 +120,7 @@ Sveltia CMS 用 GitHub 直连，第一次打开会要求授权：
 ### 字段说明（CMS 面板里能看到的）
 
 - 标题 / 英文标题（可选）
+- 正文语言 — 默认中文，写英文时选 English
 - 日期（默认当前时间）
 - 摘要 / 英文摘要
 - 标签、分类

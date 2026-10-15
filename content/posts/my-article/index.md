@@ -3,6 +3,7 @@ date = '2026-09-27T17:38:53+08:00'
 draft = false
 math = true
 title = '明十三陵旅游杂谈'
+contentLanguage = 'zh-CN'
 +++
 ## 怎么突然这么闲开始写东西了
 

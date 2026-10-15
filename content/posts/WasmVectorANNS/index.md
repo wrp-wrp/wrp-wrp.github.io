@@ -2,7 +2,7 @@
 date = '2025-12-22T15:41:00+08:00'
 draft = false
 math = true
-title = 'WebAssembly and Vector Index for On-Device ANNS: Quantization Appears Sufficient'
+title = 'WebAssembly 与端侧向量检索：量化似乎已足够'
 summary = "在端侧 ANNS 的内存约束下，量化索引 + 图搜索 + 小规模精排，走 diskann 路线看起来足够了。"
 title_en = "WebAssembly and Vector Index for On-Device ANNS: Quantization Appears Sufficient"
 summary_en = "Under strict on-device ANNS memory limits, a quantized index with graph search and lightweight reranking appears to be a practical path."

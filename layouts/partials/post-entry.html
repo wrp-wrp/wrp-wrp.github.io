@@ -1,0 +1,16 @@
+{{ $language := partial "post-language.html" . }}
+<div class="post-line">
+    {{ if .Parent.Param "showListDate" | default true }}
+    <p class="line-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (.Site.Params.listDateFormat | default "2 Jan 2006") }}</time></p>
+    {{ end }}
+
+    <div lang="{{ $language.tag }}">
+        <p class="line-title">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ if eq .Section "posts" }}{{ partial "language-badge.html" . }}{{ end }}
+        </p>
+        {{ if .Site.Params.listSummaries }}
+        <p class="line-summary">{{ or .Params.summary .Summary | plainify }}</p>
+        {{ end }}
+    </div>
+</div>

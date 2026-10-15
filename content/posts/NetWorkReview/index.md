@@ -2,7 +2,7 @@
 date = '2025-11-20T12:01:45+08:00'
 draft = false
 math = true
-title = 'Network Review Notes'
+title = '计算机网络复习笔记'
 summary = '从网络分层到协议与性能指标，整理计算机网络的核心概念、公式和易混淆点。'
 summary_en = 'A layer-by-layer guide to network protocols, performance formulas, and common pitfalls, with diagrams and worked examples.'
 contentLanguage = 'zh-CN'

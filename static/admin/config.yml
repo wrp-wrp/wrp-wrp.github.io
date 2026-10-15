@@ -37,10 +37,18 @@ collections:
         pattern: false
     fields:
       - { name: title, label: 标题, widget: string }
-      - { name: title_en, label: 英文标题 (可选), widget: string, required: false }
+      - name: contentLanguage
+        label: 正文语言
+        widget: select
+        default: zh-CN
+        options:
+          - { label: 中文, value: zh-CN }
+          - { label: English, value: en }
+        hint: 按正文选择语言；英文标题或摘要不代表有英文全文。
+      - { name: title_en, label: 英文标题 (可选), widget: string, required: false, hint: 备用信息，不会覆盖文章标题。 }
       - { name: date, label: 日期, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
-      - { name: summary, label: 摘要, widget: text, required: false }
-      - { name: summary_en, label: 英文摘要 (可选), widget: text, required: false }
+      - { name: summary, label: 摘要（与正文同语言）, widget: text, required: false }
+      - { name: summary_en, label: 英文摘要 (可选), widget: text, required: false, hint: 备用信息，不会覆盖正文语言的摘要。 }
       - { name: tags, label: 标签, widget: list, required: false, default: [] }
       - { name: categories, label: 分类, widget: list, required: false, default: [] }
       - { name: math, label: 启用数学公式 (KaTeX), widget: boolean, default: true, required: false }

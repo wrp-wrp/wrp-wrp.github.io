@@ -11,6 +11,7 @@ DEFAULT_BRANCH="master"
 PUBLISH_PATHS=(
   .github
   archives
+  archetypes
   assets
   bin
   content

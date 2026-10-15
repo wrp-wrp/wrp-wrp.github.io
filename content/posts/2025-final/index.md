@@ -4,6 +4,7 @@ draft = false
 hidden = false
 math = true
 title = '2025 Summary'
+contentLanguage = 'en'
 summary = "Summary for rp's 2025 "
 +++
 
