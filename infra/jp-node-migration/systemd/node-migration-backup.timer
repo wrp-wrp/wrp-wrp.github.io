@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily encrypted JP node migration backup
+
+[Timer]
+OnCalendar=*-*-* 20:15:00 UTC
+RandomizedDelaySec=15m
+Persistent=true
+Unit=node-migration-backup.service
+
+[Install]
+WantedBy=timers.target

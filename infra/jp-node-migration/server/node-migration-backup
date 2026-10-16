@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+umask 077
+
+KIT_DIR="/root/jp-node-migration"
+STATE_DIR="/var/lib/node-migration"
+BACKUP_DIR="$STATE_DIR/backups"
+PASSPHRASE_FILE="/etc/node-migration/archive.passphrase"
+LOCK_FILE="/run/lock/node-migration-backup.lock"
+
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  printf 'A node migration backup is already running.\n' >&2
+  exit 75
+fi
+
+[[ -x "$KIT_DIR/bin/export-node" ]] || {
+  printf 'Migration kit is missing from %s\n' "$KIT_DIR" >&2
+  exit 1
+}
+[[ -r "$PASSPHRASE_FILE" ]] || {
+  printf 'Archive passphrase is missing.\n' >&2
+  exit 1
+}
+
+mkdir -p "$BACKUP_DIR"
+chmod 0700 "$STATE_DIR" "$BACKUP_DIR"
+
+timestamp="$(date -u +%Y%m%d-%H%M%S)"
+archive="$BACKUP_DIR/jp-node-$timestamp.enc"
+
+export NODE_MIGRATION_PASSPHRASE_FILE="$PASSPHRASE_FILE"
+"$KIT_DIR/bin/export-node" --output "$archive"
+"$KIT_DIR/bin/restore-node" "$archive" --stage-only
+
+ln -sfn "$(basename -- "$archive")" "$BACKUP_DIR/latest.enc"
+ln -sfn "$(basename -- "$archive").sha256" \
+  "$BACKUP_DIR/latest.enc.sha256"
+
+find "$BACKUP_DIR" -maxdepth 1 -type f \
+  \( -name 'jp-node-*.enc' -o -name 'jp-node-*.enc.sha256' \) \
+  -mtime +14 -delete
+
+logger -t node-migration \
+  "encrypted backup verified: $(basename -- "$archive")"
+printf 'Latest verified backup: %s\n' "$archive"
