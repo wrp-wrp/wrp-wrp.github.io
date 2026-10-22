@@ -1,0 +1,19 @@
+# Display order is intentional. Add a paper_url when a public paper is available.
+# Sources checked 2026-10-22:
+# https://github.com/wrp-wrp/WaRP/blob/main/README.md
+# https://arxiv.org/abs/2610.29689
+# https://github.com/DataSysResearch/CANDOR-Bench/blob/main/README.md
+[[papers]]
+title = "WaRP: Workload-Aware Request Planning for Vector Retrieval on Object Storage"
+authors = ["Ruipeng Wan", "Xinyu Zeng", "Yiming Qiao", "Huanchen Zhang"]
+venue = "VLDB 2027"
+status = "Under shepherding"
+paper_url = "https://arxiv.org/abs/2610.29689"
+code_url = "https://github.com/wrp-wrp/WaRP"
+
+[[papers]]
+title = "CANDOR-Bench: Benchmarking In-Memory Continuous ANNS under Dynamic Open-World Streams"
+authors = ["Mingqi Wang", "Junyao Dong", "Zhuoyan Wu", "Jun Liu", "Ruicheng Zhang", "Jianjun Zhao", "Ruipeng Wan", "Xinyan Lei", "Shuhao Zhang", "Bolong Zheng", "Haikun Liu", "Xiaofei Liao", "Hai Jin"]
+venue = "SIGMOD 2026"
+paper_url = "https://doi.org/10.1145/3786630"
+code_url = "https://github.com/DataSysResearch/CANDOR-Bench"

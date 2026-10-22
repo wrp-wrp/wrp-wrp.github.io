@@ -22,8 +22,10 @@ hideHeader = false
 
 # Intro on main page, content is markdown
 homeIntroTitle = 'rprp'
+homeAuthorName = 'Ruipeng Wan'
+homeIntroLanguage = 'zh-CN'
 homeIntroContent = """
-HUST computer science student and ICPC regional gold medalist. I write about vector search, cloud storage, and systems research.
+摆烂主页随缘更新
 """
 homeAvatarPath = "images/home-avatar.jpg"
 homeAvatarAlt = "rprp avatar"
@@ -40,14 +42,6 @@ homeCollection = 'posts'
 paginationSize = 100
 listSummaries = false
 listDateFormat = '2 Jan 2006'
-
-[[params.homeFocus]]
-title = "Vector Search"
-description = "Exploring approximate nearest-neighbor search, vector indexes, quantization, and practical engineering trade-offs."
-
-[[params.homeFocus]]
-title = "Cloud Storage"
-description = "Notes on storage systems, data formats, retrieval pipelines, and building reliable services at scale."
 
 # Breadcrumbs
 [params.breadcrumbs]

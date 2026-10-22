@@ -12,10 +12,8 @@
         <h1 class="home-hero-title" id="home-title">{{ .Site.Params.homeIntroTitle | default "rprp" }}</h1>
         <span class="home-title-rule" aria-hidden="true"></span>
 
-        <h2 class="home-hero-subtitle">Research Notes &amp; Technical Reports</h2>
-
         {{ with .Site.Params.homeIntroContent }}
-        <div class="home-hero-description">
+        <div class="home-hero-description" lang="{{ site.Params.homeIntroLanguage | default site.Language.LanguageCode }}">
             {{ . | markdownify }}
         </div>
         {{ end }}
@@ -30,9 +28,56 @@
             {{ end }}
         </nav>
         {{ end }}
+
+        <dl class="home-profile-meta">
+            {{ with site.Params.homeAffiliation }}
+            <div><dt>Affiliation</dt><dd>{{ . }}</dd></div>
+            {{ end }}
+            {{ with site.Params.homeLocation }}
+            <div><dt>Location</dt><dd>{{ . }}</dd></div>
+            {{ end }}
+        </dl>
+
+        {{ with site.GetPage "/resume" }}
+        <a class="home-profile-link" href="{{ .RelPermalink }}">About &amp; CV <span aria-hidden="true">&rarr;</span></a>
+        {{ end }}
     </div>
 
 </section>
+
+<div class="home-main-column">
+{{ with site.Data.publications.papers }}
+<section class="home-publications" aria-labelledby="publications-title">
+    <div class="home-section-head">
+        <div>
+            <h2 id="publications-title">Publications</h2>
+            <span class="home-section-rule" aria-hidden="true"></span>
+        </div>
+    </div>
+
+    <div class="home-publication-list">
+        {{ range . }}
+        {{ $paper := . }}
+        <article class="home-publication">
+            <p class="home-publication-meta">
+                <span class="home-publication-venue">{{ .venue }}</span>
+                {{ with .status }}<span class="home-publication-status">{{ . }}</span>{{ end }}
+            </p>
+            <h3>{{ with .paper_url }}<a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer">{{ $paper.title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
+            <p class="home-publication-authors">{{ range $index, $author := .authors }}{{ if $index }}, {{ end }}{{ if eq $author site.Params.homeAuthorName }}<strong>{{ $author }}</strong>{{ else }}{{ $author }}{{ end }}{{ end }}</p>
+            <div class="home-publication-links">
+                {{ with .paper_url }}
+                <a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer" aria-label="Read {{ $paper.title }}">Paper <span aria-hidden="true">&nearr;</span></a>
+                {{ end }}
+                {{ with .code_url }}
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Code for {{ $paper.title }}">Code <span aria-hidden="true">&nearr;</span></a>
+                {{ end }}
+            </div>
+        </article>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
 
 {{ if gt (len $recent) 0 }}
 <section class="home-notes" aria-labelledby="recent-notes-title">
@@ -41,7 +86,7 @@
             <h2 id="recent-notes-title">Recent Notes</h2>
             <span class="home-section-rule" aria-hidden="true"></span>
         </div>
-        <a class="home-view-all" href="{{ "/posts/" | relURL }}">View all notes</a>
+        {{ with site.GetPage "/posts" }}<a class="home-view-all" href="{{ .RelPermalink }}">All notes <span aria-hidden="true">&rarr;</span></a>{{ end }}
     </div>
 
     <div class="home-notes-list">
@@ -54,39 +99,16 @@
             <div class="home-note-copy" lang="{{ $language.tag }}">
                 <h3><a href="{{ .RelPermalink }}">{{ $displayTitle }}</a> {{ partial "language-badge.html" . }}</h3>
                 {{ with $displaySummary }}
-                <p>{{ . | plainify | truncate 145 }}</p>
+                <p>{{ . | plainify | truncate 100 }}</p>
                 {{ end }}
             </div>
-            <a class="home-note-action" href="{{ .RelPermalink }}" aria-label="Read {{ $displayTitle }}">Read</a>
         </article>
         {{ end }}
     </div>
 </section>
 {{ end }}
 
-<aside class="home-focus-panel" aria-label="Research focus">
-    {{ range $index, $item := site.Params.homeFocus }}
-    <article class="home-focus-item">
-        <p class="home-focus-index">{{ printf "%02d" (add $index 1) }}</p>
-        <div>
-            <h2>{{ $item.title }}</h2>
-            <p>{{ $item.description }}</p>
-        </div>
-    </article>
-    {{ end }}
-
-    <dl class="home-profile-meta">
-        {{ with site.Params.homeLocation }}
-        <div><dt>Location</dt><dd>{{ . }}</dd></div>
-        {{ end }}
-        {{ with site.Params.homeAffiliation }}
-        <div><dt>Affiliation</dt><dd>{{ . }}</dd></div>
-        {{ end }}
-        {{ with site.Params.homeEmail }}
-        <div><dt>Email</dt><dd><a href="mailto:{{ . }}">{{ . }}</a></dd></div>
-        {{ end }}
-    </dl>
-</aside>
+</div>
 </div>
 
 {{ end }}

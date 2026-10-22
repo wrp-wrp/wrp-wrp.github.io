@@ -15,6 +15,7 @@ PUBLISH_PATHS=(
   assets
   bin
   content
+  data
   docs
   layouts
   scripts

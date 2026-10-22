@@ -162,6 +162,7 @@ hugo --minify --baseURL "https://wrp-wrp.github.io/"
 
 - 站点元信息（标题 / 个人简介 / 社交链接 / 菜单）：`hugo.toml`
 - 首页布局：`layouts/_default/home.html`
+- 首页论文：`data/publications.toml`（按文件顺序展示；维护标题、作者、会议、状态及 Paper / Code 链接）
 - 列表/详情/部分组件：`layouts/`、`themes/typo/layouts/`
 - 自定义 shortcode（如 `gallery`）：`layouts/shortcodes/`
 - 静态资源（直接拷贝到根的文件，例如 `favicon.ico`、`images/`）：`static/`
