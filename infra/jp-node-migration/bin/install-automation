@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+KIT_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+PASSPHRASE_FILE="/etc/node-migration/archive.passphrase"
+RUN_NOW=false
+
+usage() {
+  cat <<'EOF'
+Usage:
+  sudo ./bin/install-automation [--run-now]
+
+Prerequisite:
+  /etc/node-migration/archive.passphrase must exist with mode 0600.
+EOF
+}
+
+while (($#)); do
+  case "$1" in
+    --run-now)
+      RUN_NOW=true
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      printf 'Unknown argument: %s\n' "$1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+if ((EUID != 0)); then
+  printf 'Run as root.\n' >&2
+  exit 1
+fi
+
+[[ -r "$PASSPHRASE_FILE" ]] || {
+  printf 'Missing %s\n' "$PASSPHRASE_FILE" >&2
+  exit 1
+}
+passphrase_permissions="$(stat -c '%a' "$PASSPHRASE_FILE")"
+if ((8#$passphrase_permissions & 077)); then
+  printf 'Archive passphrase must have mode 0600 or stricter.\n' >&2
+  exit 1
+fi
+
+install -d -m 0700 /var/lib/node-migration/backups
+install -m 0755 "$KIT_DIR/server/node-migration-backup" \
+  /usr/local/sbin/node-migration-backup
+install -m 0755 "$KIT_DIR/server/node-backup-gateway" \
+  /usr/local/sbin/node-backup-gateway
+install -m 0644 "$KIT_DIR/systemd/node-migration-backup.service" \
+  /etc/systemd/system/node-migration-backup.service
+install -m 0644 "$KIT_DIR/systemd/node-migration-backup.timer" \
+  /etc/systemd/system/node-migration-backup.timer
+
+systemctl daemon-reload
+systemctl enable --now node-migration-backup.timer
+
+if "$RUN_NOW"; then
+  systemctl start node-migration-backup.service
+fi
+
+systemctl --no-pager status node-migration-backup.timer | sed -n '1,12p'
