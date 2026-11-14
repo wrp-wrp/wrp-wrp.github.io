@@ -5,7 +5,7 @@ date = 2025-11-27
 draft = false
 +++
 
-# wrp-wrp
+## Ruipeng Wan (rprp)
 
 **Undergraduate Student, CS (Turing Class) @ HUST**  
 [GitHub](https://github.com/wrp-wrp) | [Email](mailto:rprp@hust.edu.cn)
@@ -22,12 +22,17 @@ draft = false
 
 Vector Search, Cloud Storage, Database Systems.
 
+## Selected Publications
+
+- **WaRP** — Workload-Aware Request Planning for Vector Retrieval on Object Storage. [arXiv](https://arxiv.org/abs/2610.29689) · [Code](https://github.com/wrp-wrp/WaRP)
+- **CANDOR-Bench** — Benchmarking In-Memory Continuous ANNS under Dynamic Open-World Streams. SIGMOD 2026. [Paper](https://doi.org/10.1145/3786630) · [Code](https://github.com/DataSysResearch/CANDOR-Bench)
+
 ## Research Experience
 
 **Research Intern** | *Database Group (Prof. Shuhao Zhang), HUST*  
 *Nov. 2024 – Present*
 - Investigating **ANNS in streaming scenarios**, including recall degradation caused by data distribution shifts.
-- Contributed to **CandorBench**, a benchmark paper on streaming vector search (5th Author, accepted to **SIGMOD**).
+- Co-authored **CANDOR-Bench**, a benchmark for streaming vector search.
 - Worked on graph-based ANNS optimization to address high update overhead and connectivity issues.
 - Developed high-performance C++ systems for vector stream processing.
 
