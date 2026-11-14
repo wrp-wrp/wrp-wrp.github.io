@@ -9,7 +9,12 @@
 <div class="home-layout">
 <section class="home-hero" aria-labelledby="home-title">
     <div class="home-hero-main">
-        <h1 class="home-hero-title" id="home-title">{{ .Site.Params.homeIntroTitle | default "rprp" }}</h1>
+        <div class="home-hero-heading">
+            <h1 class="home-hero-title" id="home-title">{{ .Site.Params.homeIntroTitle | default "rprp" }}</h1>
+            {{ with site.Params.homeAvatarPath }}
+            <img class="home-avatar" src="{{ . | relURL }}" alt="{{ site.Params.homeAvatarAlt }}" width="64" height="64">
+            {{ end }}
+        </div>
         <span class="home-title-rule" aria-hidden="true"></span>
 
         {{ with .Site.Params.homeIntroContent }}
@@ -39,7 +44,7 @@
         </dl>
 
         {{ with site.GetPage "/resume" }}
-        <a class="home-profile-link" href="{{ .RelPermalink }}">About &amp; CV <span aria-hidden="true">&rarr;</span></a>
+        <a class="home-profile-link" href="{{ .RelPermalink }}">Resume <span aria-hidden="true">&rarr;</span></a>
         {{ end }}
     </div>
 
