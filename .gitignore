@@ -19,6 +19,8 @@ infra/
 
 # Local state
 node_modules/
+.hugo-cache/
+.qa/
 
 # Dashboard data is regenerated on demand — don't commit
 tools/data.js
@@ -33,3 +35,4 @@ tools/data.js
 /Untitled
 .nvimlog
 .codex-*.png
+

@@ -1,7 +1,7 @@
 baseURL = 'https://wrp-wrp.github.io/'
-languageCode = 'en-us'
-title = "rprp's blog"
-theme = 'typo'
+languageCode = 'zh-CN'
+title = "Ruipeng Wan · 万睿朋"
+hasCJKLanguage = true
 math = true
 
 # Set a real measurement ID here to enable analytics.
@@ -16,7 +16,7 @@ description = "Research notes on vector search, cloud storage, and database syst
 toc = true
 
 # Appearance settings
-theme = 'auto'
+theme = 'light'
 colorPalette = 'default'
 hideHeader = false
 
@@ -120,3 +120,4 @@ category = "General"
 categoryid = "DIC_kwDOQY3FSM4CzTKb"
 mapping = "pathname"
 theme = "preferred_color_scheme"
+

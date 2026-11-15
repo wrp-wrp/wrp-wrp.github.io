@@ -1,0 +1,8 @@
+{{ $kind := "life" }}{{ $tags := delimit (.Params.tags | default slice) " " }}
+{{ if findRE "课程|计算机网络|计算理论|学习" (printf "%s %s" $tags .Title) }}{{ $kind = "course" }}{{ else if findRE "ANNS|向量|WASM|量化|数据库|存储|研究|技术|系统" (printf "%s %s" $tags .Title) }}{{ $kind = "research" }}{{ end }}
+{{ with .Params.journalCategory }}{{ $kind = . }}{{ end }}
+<article class="journal-entry" data-category="{{ $kind }}" data-search="{{ printf "%s %s %s" .Title $tags (.Plain | truncate 100000) | lower }}">
+<div class="entry-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><span class="meta-dot">·</span><span>{{ if eq $kind "research" }}研究与技术{{ else if eq $kind "course" }}学习笔记{{ else }}生活随笔{{ end }}</span></div>
+<h3><a href="{{ .RelPermalink }}">{{ .Title }}<span aria-hidden="true">↗</span></a></h3>
+<p>{{ or .Params.summary .Summary | plainify | truncate 115 }}</p><div class="entry-bottom"><div>{{ range first 3 (.Params.tags | default slice) }}<a class="tag" href="{{ printf "tags/%s/" (. | urlize) | relURL }}">{{ . }}</a>{{ end }}</div><span>{{ .ReadingTime }} 分钟阅读</span></div>
+</article>

@@ -1,114 +1,35 @@
 {{ define "main" }}
-
-{{ $homeCollection := .Site.Params.homeCollection | default "posts" }}
-{{ $pages := where .Site.RegularPages "Section" $homeCollection }}
-{{ $pages = where $pages "Params.hidden" "ne" true }}
-{{ $pages = sort $pages "Date" "desc" }}
-{{ $recent := first 3 $pages }}
-
-<div class="home-layout">
-<section class="home-hero" aria-labelledby="home-title">
-    <div class="home-hero-main">
-        <h1 class="home-hero-title" id="home-title">{{ .Site.Params.homeIntroTitle | default "rprp" }}</h1>
-        <span class="home-title-rule" aria-hidden="true"></span>
-
-        {{ with .Site.Params.homeIntroContent }}
-        <div class="home-hero-description" lang="{{ site.Params.homeIntroLanguage | default site.Language.LanguageCode }}">
-            {{ . | markdownify }}
-        </div>
-        {{ end }}
-
-        {{ with site.Params.social }}
-        <nav class="home-contact" aria-label="Social links">
-            {{ range . }}
-            <a href="{{ trim .url " " | safeURL }}" {{ if hasPrefix .url "http" }}target="_blank" rel="noopener noreferrer me"{{ end }}>
-                <span class="home-contact-icon">{{ partial "svg.html" (dict "name" .name) }}</span>
-                <span>{{ (.title | default .name) | title }}</span>
-            </a>
-            {{ end }}
-        </nav>
-        {{ end }}
-
-        <dl class="home-profile-meta">
-            {{ with site.Params.homeAffiliation }}
-            <div><dt>Affiliation</dt><dd>{{ . }}</dd></div>
-            {{ end }}
-            {{ with site.Params.homeLocation }}
-            <div><dt>Location</dt><dd>{{ . }}</dd></div>
-            {{ end }}
-        </dl>
-
-        {{ with site.GetPage "/resume" }}
-        <a class="home-profile-link" href="{{ .RelPermalink }}">About &amp; CV <span aria-hidden="true">&rarr;</span></a>
-        {{ end }}
-    </div>
-
-</section>
-
-<div class="home-main-column">
-{{ with site.Data.publications.papers }}
-<section class="home-publications" aria-labelledby="publications-title">
-    <div class="home-section-head">
-        <div>
-            <h2 id="publications-title">Publications</h2>
-            <span class="home-section-rule" aria-hidden="true"></span>
-        </div>
-    </div>
-
-    <div class="home-publication-list">
-        {{ range . }}
-        {{ $paper := . }}
-        <article class="home-publication">
-            <p class="home-publication-meta">
-                <span class="home-publication-venue">{{ .venue }}</span>
-                {{ with .status }}<span class="home-publication-status">{{ . }}</span>{{ end }}
-            </p>
-            <h3>{{ with .paper_url }}<a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer">{{ $paper.title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
-            <p class="home-publication-authors">{{ range $index, $author := .authors }}{{ if $index }}, {{ end }}{{ if eq $author site.Params.homeAuthorName }}<strong>{{ $author }}</strong>{{ else }}{{ $author }}{{ end }}{{ end }}</p>
-            <div class="home-publication-links">
-                {{ with .paper_url }}
-                <a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer" aria-label="Read {{ $paper.title }}">Paper <span aria-hidden="true">&nearr;</span></a>
-                {{ end }}
-                {{ with .code_url }}
-                <a href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Code for {{ $paper.title }}">Code <span aria-hidden="true">&nearr;</span></a>
-                {{ end }}
-            </div>
-        </article>
-        {{ end }}
-    </div>
-</section>
-{{ end }}
-
-{{ if gt (len $recent) 0 }}
-<section class="home-notes" aria-labelledby="recent-notes-title">
-    <div class="home-section-head">
-        <div>
-            <h2 id="recent-notes-title">Recent Notes</h2>
-            <span class="home-section-rule" aria-hidden="true"></span>
-        </div>
-        {{ with site.GetPage "/posts" }}<a class="home-view-all" href="{{ .RelPermalink }}">All notes <span aria-hidden="true">&rarr;</span></a>{{ end }}
-    </div>
-
-    <div class="home-notes-list">
-        {{ range $recent }}
-        {{ $language := partial "post-language.html" . }}
-        {{ $displayTitle := .Title }}
-        {{ $displaySummary := or .Params.summary .Summary }}
-        <article class="home-note-row">
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (.Site.Params.listDateFormat | default "2 Jan 2006") }}</time>
-            <div class="home-note-copy" lang="{{ $language.tag }}">
-                <h3><a href="{{ .RelPermalink }}">{{ $displayTitle }}</a> {{ partial "language-badge.html" . }}</h3>
-                {{ with $displaySummary }}
-                <p>{{ . | plainify | truncate 100 }}</p>
-                {{ end }}
-            </div>
-        </article>
-        {{ end }}
-    </div>
-</section>
-{{ end }}
-
+<section class="profile-hero" aria-labelledby="profile-name">
+<div class="profile-intro">
+<p class="eyebrow"><span class="status-dot"></span> COMPUTER SCIENCE · HUST</p>
+<h1 id="profile-name">Ruipeng Wan<span class="chinese-name">万睿朋</span></h1>
+<p class="profile-lead">研究向量检索，构建高效的数据系统。</p>
+<p class="profile-description">我是华中科技大学计算机专业图灵班的本科生，也可以叫我 <strong>rprp</strong>。我的兴趣是向量检索、对象存储和数据库系统，尤其关注真实工作负载下，算法与系统设计之间的取舍。</p>
+<div class="text-links"><a href="mailto:{{ site.Params.homeEmail }}">Email <span>↗</span></a><a href="https://github.com/wrp-wrp">GitHub <span>↗</span></a><a href="{{ "resume/" | relURL }}">完整简历 <span>↗</span></a></div>
 </div>
-</div>
-
+<figure class="profile-portrait"><img src="{{ site.Params.homeAvatarPath | relURL }}" alt="夕阳下的少年与猫，rprp 的头像" width="640" height="640"><figcaption>Somewhere between code &amp; curiosity.</figcaption></figure>
+</section>
+<nav class="section-nav" aria-label="主页目录"><a href="#publications">论文</a><a href="#experience">研究经历</a><a href="#education">教育</a><a href="#awards">荣誉</a><a href="{{ "blog/" | relURL }}">去读博客 <span>↗</span></a></nav>
+<section id="publications" class="academic-section">
+<div class="section-heading"><h2>Selected publications<span>论文</span></h2><span class="section-number">01</span></div>
+{{ range site.Data.publications.papers }}
+<article class="publication"><div class="venue">{{ .venue }}{{ with .status }}<small>{{ . }}</small>{{ end }}</div><div><h3><a href="{{ .paper_url }}">{{ .title }}</a></h3><p class="authors">{{ range $i, $a := .authors }}{{ if $i }}, {{ end }}{{ if eq $a "Ruipeng Wan" }}<strong>{{ $a }}</strong>{{ else }}{{ $a }}{{ end }}{{ end }}</p><div class="paper-links">{{ with .paper_url }}<a href="{{ . }}">Paper ↗</a>{{ end }}{{ with .code_url }}<a href="{{ . }}">Code ↗</a>{{ end }}</div></div></article>
+{{ end }}</section>
+<section id="experience" class="academic-section">
+<div class="section-heading"><h2>Research experience<span>研究经历</span></h2><span class="section-number">02</span></div>
+<div class="timeline-row"><span class="time-label">2024.11 — 至今</span><div><h3>华中科技大学 · 数据库研究组</h3><p>研究实习生 · 张书豪老师</p><p class="muted">研究流式场景下的近似最近邻检索，关注分布漂移、召回稳定性和索引更新开销；参与 CANDOR-Bench 的实验与分析。</p></div></div>
+<div class="timeline-row"><span class="time-label">2024.01 — 2024.03</span><div><h3>华中科技大学 · 万尧老师课题组</h3><p>研究实习生</p><p class="muted">学习 AI 与 Transformer 基础，从算法竞赛逐步转向系统研究。</p></div></div>
+</section>
+<section id="education" class="academic-section">
+<div class="section-heading"><h2>Education<span>教育经历</span></h2><span class="section-number">03</span></div>
+<div class="timeline-row"><span class="time-label">2023.09 — 至今</span><div><h3>华中科技大学 <span class="school-short">HUST</span></h3><p>计算机科学与技术 · 图灵班 · 本科</p></div></div>
+</section>
+<section id="awards" class="academic-section">
+<div class="section-heading"><h2>Selected honors<span>部分荣誉</span></h2><span class="section-number">04</span></div>
+<div class="honor-row"><span>ICPC 亚洲区域赛 · 金牌</span><span>2023 / 2025</span></div>
+<div class="honor-row"><span>CCF CCSP 全国大学生计算机系统能力大赛 · 金奖</span><span>2025</span></div>
+<div class="honor-row"><span>CCF CSP 认证 · 500 分</span><span>2023</span></div>
+</section>
+<aside class="blog-invitation"><div><p class="eyebrow">BEYOND THE PAPERS</p><h2>研究之外，也写一点别的。</h2><p>技术笔记、学习过程，还有生活里的零星想法。</p></div><a class="button button-outline" href="{{ "blog/" | relURL }}">进入博客 <span>→</span></a></aside>
 {{ end }}
+
