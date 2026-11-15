@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOMAIN="${1:-jp.ppmister.com}"
+failed=0
+
+check_service() {
+  local service_name="$1"
+  if systemctl is-active --quiet "$service_name"; then
+    printf 'PASS service %-22s active\n' "$service_name"
+  else
+    printf 'FAIL service %-22s inactive\n' "$service_name"
+    failed=1
+  fi
+}
+
+for service_name in \
+  nginx panel-api xray hysteria-server wg-quick@wg0 fail2ban; do
+  check_service "$service_name"
+done
+
+if nginx -t >/dev/null 2>&1; then
+  printf 'PASS nginx configuration\n'
+else
+  printf 'FAIL nginx configuration\n'
+  failed=1
+fi
+
+if /usr/local/bin/xray run -test -config /usr/local/etc/xray/config.json \
+  >/dev/null 2>&1; then
+  printf 'PASS xray configuration\n'
+else
+  printf 'FAIL xray configuration\n'
+  failed=1
+fi
+
+for port_spec in tcp:22 tcp:80 tcp:443 udp:443 udp:51820; do
+  protocol="${port_spec%%:*}"
+  port="${port_spec##*:}"
+  if ss "-ln${protocol:0:1}" "sport = :$port" 2>/dev/null |
+    tail -n +2 | grep -q .; then
+    printf 'PASS listener %-10s\n' "$port_spec"
+  else
+    printf 'FAIL listener %-10s\n' "$port_spec"
+    failed=1
+  fi
+done
+
+public_ip="$(
+  ip -4 route get 1.1.1.1 2>/dev/null |
+    awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}'
+)"
+dns_ips="$(getent ahostsv4 "$DOMAIN" 2>/dev/null | awk '{print $1}' | sort -u)"
+
+if grep -qx "$public_ip" <<<"$dns_ips"; then
+  printf 'PASS DNS %s -> %s\n' "$DOMAIN" "$public_ip"
+else
+  printf 'WARN DNS %s does not yet resolve to %s\n' "$DOMAIN" "$public_ip"
+fi
+
+if curl -fsS --max-time 10 "https://$DOMAIN/login/" |
+  grep -q 'Node Journal'; then
+  printf 'PASS public login page\n'
+else
+  printf 'WARN public login page is not ready; DNS cutover may still be pending\n'
+fi
+
+exit "$failed"
