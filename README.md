@@ -1,5 +1,7 @@
 # wrp-wrp.github.io
 
+> **自动部署已暂停（2026-11-15）**：博客工作流已移至 `.github/disabled-workflows/`，推送文章和 CMS 提交只会保存到仓库，不会更新线上网站。现有网站保留上一次成功部署的版本。恢复说明见 [停用工作流说明](.github/disabled-workflows/README.md)。
+
 Personal blog based on Hugo. Live at <https://wrp-wrp.github.io/>.
 
 ## 文档导航

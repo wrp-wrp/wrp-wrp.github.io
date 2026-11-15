@@ -1,5 +1,7 @@
 # 写作速查（QUICKSTART）
 
+> **自动部署已暂停（2026-11-15）**：博客工作流已移至 `.github/disabled-workflows/`，推送文章和 CMS 提交只会保存到仓库，不会更新线上网站。现有网站保留上一次成功部署的版本。恢复说明见 [停用工作流说明](.github/disabled-workflows/README.md)。
+
 最常用的 4 条命令，按顺序就够用。所有命令在仓库根目录执行。
 
 > 推荐先把 `bin/` 加到 PATH，这样可以直接 `blog new ...`：
