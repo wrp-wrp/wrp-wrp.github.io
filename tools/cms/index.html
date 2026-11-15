@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="robots" content="noindex">
+    <title>rprp 的博客 · 写作</title>
+    <link rel="preconnect" href="https://api.github.com" crossorigin>
+    <style>
+      #boot { max-width: 32rem; margin: 20vh auto; padding: 0 1.5rem; color: #242424; font: 16px/1.7 system-ui, sans-serif; }
+      #boot h1 { font-size: 24px; }
+      #boot a { color: #245ec4; }
+      #boot button { margin-right: 1rem; padding: .5rem 1rem; cursor: pointer; font: inherit; }
+    </style>
+  </head>
+  <body data-pagefind-ignore>
+    <section id="boot" aria-labelledby="boot-title">
+      <h1 id="boot-title">正在打开写作后台</h1>
+      <p id="boot-status" role="status" aria-live="polite">正在加载编辑器，首次打开可能需要稍等片刻。</p>
+      <button id="boot-retry" type="button" hidden>重新加载</button>
+      <a href="../../">返回博客</a>
+      <noscript><p>请开启浏览器的 JavaScript 后使用写作后台。</p></noscript>
+    </section>
+    <div id="nc-root"></div>
+    <script type="module">
+      const boot = document.getElementById('boot');
+      const status = document.getElementById('boot-status');
+      const retry = document.getElementById('boot-retry');
+      retry.addEventListener('click', () => location.reload());
+      const slow = setTimeout(() => {
+        status.textContent = '编辑器还在加载。可以继续等待，或重新加载页面。';
+        retry.hidden = false;
+      }, 12000);
+      try {
+        const { start } = await import('./main.js');
+        status.textContent = '正在初始化编辑器…';
+        await start();
+        boot.remove();
+      } catch (error) {
+        status.textContent = '编辑器加载失败，请检查网络后重试。';
+        retry.hidden = false;
+        console.error('Writing admin failed to start:', error);
+      } finally {
+        clearTimeout(slow);
+      }
+    </script>
+  </body>
+</html>
