@@ -6,6 +6,12 @@ on:
   push:
     branches: ["master"]
 
+  pull_request:
+    paths:
+      - "tools/cms/**"
+      - "static/admin/**"
+      - ".github/workflows/hugo.yml"
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -18,7 +24,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.event_name }}-${{ github.ref }}"
   cancel-in-progress: false
 
 # Default to bash
@@ -50,6 +56,14 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install writing admin dependencies
+        run: npm --prefix tools/cms install --no-audit --no-fund
+
       - name: Build with Hugo
         env:
           # For maximum backward compatibility with older Hugo versions
@@ -59,6 +73,9 @@ jobs:
           hugo \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Build writing admin with local assets
+        run: npm --prefix tools/cms run build
 
       - name: Build Pagefind search index
         run: |
@@ -71,6 +88,7 @@ jobs:
 
   # Deployment job
   deploy:
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
