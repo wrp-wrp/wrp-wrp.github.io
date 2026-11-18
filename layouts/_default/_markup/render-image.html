@@ -54,7 +54,23 @@
 {{- end -}}
 <img src="{{ $url | safeURL }}" alt="{{ .PlainText }}" loading="lazy" decoding="async"
   {{- with $resource -}}
-    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") }} width="{{ .Width }}" height="{{ .Height }}"{{ end -}}
+    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") -}}
+      {{- $image := . -}}
+      {{- if and (eq .MediaType.SubType "jpeg") (ge (math.Max .Width .Height) 1600) (not $u.RawQuery) -}}
+        {{- with .Exif -}}
+          {{- if gt (int (default 1 .Tags.Orientation)) 1 -}}
+            {{- $image = $image.Filter images.AutoOrient -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $candidates := slice -}}
+        {{- range slice 480 800 1200 1600 -}}
+          {{- $width := int (math.Min . $image.Width) -}}
+          {{- $preview := $image.Resize (printf "%dx jpg q80" $width) -}}
+          {{- $candidates = $candidates | append (printf "%s %dw" $preview.RelPermalink $width) -}}
+          {{- if eq $width $image.Width -}}{{- break -}}{{- end -}}
+        {{- end }} srcset="{{ delimit $candidates ", " }}" sizes="(max-width: 48rem) 100vw, 48rem"
+      {{- end }} width="{{ $image.Width }}" height="{{ $image.Height }}"
+    {{- end -}}
   {{- end -}}
   {{- if not .IsBlock -}}{{- with .Title }} title="{{ . }}"{{ end -}}{{- end -}}
 >

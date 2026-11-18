@@ -7,7 +7,7 @@
 title = "WaRP: Workload-Aware Request Planning for Vector Retrieval on Object Storage"
 authors = ["Ruipeng Wan", "Xinyu Zeng", "Yiming Qiao", "Huanchen Zhang"]
 venue = "VLDB 2027"
-status = "Under shepherding"
+status = "Accepted"
 paper_url = "https://arxiv.org/abs/2610.29689"
 code_url = "https://github.com/wrp-wrp/WaRP"
 
