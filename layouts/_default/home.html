@@ -1,64 +1,42 @@
 {{ define "main" }}
 {{ $posts := where (where site.RegularPages "Section" "posts") "Params.hidden" "ne" true }}
 <div class="home-layout">
-  <section class="home-intro" aria-labelledby="profile-name">
-    <div class="intro-copy">
-      <h1 id="profile-name">万睿朋<span lang="en">Ruipeng Wan</span></h1>
-      <p>我研究向量检索和数据库系统。<br>这里写技术笔记，也记一些路上的见闻。</p>
+  <section class="profile-intro" aria-labelledby="profile-name">
+    <div class="profile-avatar wordmark">
+      <img src="{{ site.Params.homeAvatarPath | relURL }}" width="148" height="148" alt="万睿朋的头像">
     </div>
-    {{ with site.GetPage "/posts/my-article" }}
-    <a class="field-note" href="{{ .RelPermalink }}" aria-label="阅读《{{ .Title }}》">
-      <div class="field-print">
-        <div class="trip-lettering" aria-hidden="true">
-          <span>明十三陵</span>
-          <small>神路　·　定陵　·　长陵</small>
-        </div>
-        {{ with .Resources.GetMatch "IMG_2859.JPG" }}
-          {{ $image := .Filter images.AutoOrient }}
-          {{ $photo := $image.Fill "640x330 Center webp q82" }}
-          <img class="trip-photo" src="{{ $photo.RelPermalink }}" width="{{ $photo.Width }}" height="{{ $photo.Height }}" alt="">
-        {{ end }}
-      </div>
-      <span class="field-caption">北京 · 十三陵神路 <time datetime="{{ .Date.Format "2006-01" }}">{{ .Date.Format "2006.01" }}</time></span>
-    </a>
-    {{ end }}
+    <h1 id="profile-name"><span lang="en">Ruipeng Wan</span> <span lang="zh-CN">万睿朋</span></h1>
+    <p>我研究向量检索与数据库系统，关注对象存储的读取成本，也关心索引更新后的召回率。</p>
+    {{ partial "site-nav.html" . }}
   </section>
 
+  {{ with site.Data.publications.papers }}
   <section class="home-section" aria-labelledby="publications">
-    <div class="home-section-label">
-      <h2 id="publications">论文</h2>
-      <span lang="en">Publications</span>
-    </div>
+    <h2 id="publications" lang="en">Publications</h2>
     <ul class="paper-list">
-      {{ range site.Data.publications.papers }}
-      {{ $parts := split .title ": " }}
+      {{ range . }}
       <li class="paper-row" lang="en">
-        <div class="paper-line">
-          <a class="paper-name" href="{{ .paper_url }}" aria-label="{{ .title }}">{{ index $parts 0 }}</a>
-          <span class="paper-venue">{{ .venue }}</span>
-        </div>
-        <div class="paper-detail">
-          {{ if gt (len $parts) 1 }}<span>{{ delimit (after 1 $parts) ": " }}</span>{{ end }}
-          {{ with .code_url }}<a class="paper-code" href="{{ . }}" aria-label="Source code for {{ index $parts 0 }}">Code <span aria-hidden="true">↗</span></a>{{ end }}
-        </div>
+        <h3>{{ if .paper_url }}<a href="{{ .paper_url }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
+        {{ with .authors }}
+        <p class="paper-authors">{{ range $index, $author := . }}{{ if $index }}, {{ end }}<span>{{ if eq $author site.Params.profileAuthor }}<strong>{{ $author }}</strong>{{ else }}{{ $author }}{{ end }}</span>{{ end }}</p>
+        {{ end }}
+        <p class="paper-meta"><span>{{ .venue }}</span>{{ with .code_url }} <span aria-hidden="true">·</span> <a href="{{ . }}">Code</a>{{ end }}</p>
       </li>
       {{ end }}
     </ul>
   </section>
+  {{ end }}
 
   <section class="home-section" aria-labelledby="recent-notes">
-    <div class="home-section-label">
-      <h2 id="recent-notes">最近笔记</h2>
-      <span lang="en">Recent Notes</span>
-    </div>
-    <div>
-      <ul class="post-list compact">
-        {{ range first 3 $posts.ByDate.Reverse }}
-          {{ partial "journal-entry.html" (dict "post" . "compact" true) }}
-        {{ end }}
-      </ul>
+    <div class="notes-heading">
+      <h2 id="recent-notes" lang="en">Recent Notes</h2>
       <a class="all-notes" href="{{ "posts/" | relURL }}">全部文章 <span aria-hidden="true">→</span></a>
     </div>
+    <ul class="post-list compact">
+      {{ range first 3 $posts.ByDate.Reverse }}
+        {{ partial "journal-entry.html" (dict "post" . "compact" true) }}
+      {{ end }}
+    </ul>
   </section>
 </div>
 {{ end }}

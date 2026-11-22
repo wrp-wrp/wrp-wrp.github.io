@@ -24,7 +24,7 @@ test('generated site keeps original routes, hides drafts and renders math', () =
   assert.ok(blog.includes('post-tag') && blog.includes('向量检索'));
   assert.ok(/class="?katex\b/.test(article));
   assert.ok(article.includes('katex.min.css'));
-  assert.ok(studio.includes('noindex,nofollow') && studio.includes('data-slug=NetWorkReview'));
+  assert.ok(studio.includes('noindex,nofollow') && /\bdata-slug=(?:"NetWorkReview"|NetWorkReview(?=[\s>]))/.test(studio));
   assert.ok(about.includes('Problem Setting') && about.includes('/resume/'));
   for (const route of ['archive', 'blog', 'tags']) {
     assert.ok(/url=([^"]+)?\/posts\//.test(page(route + '/index.html')), route);

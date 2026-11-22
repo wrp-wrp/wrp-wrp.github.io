@@ -1,13 +1,9 @@
 <header class="site-header">
   <div class="header-inner">
     <a class="wordmark" href="{{ site.Home.RelPermalink }}" aria-label="rprp 首页">
-      <img src="{{ site.Params.homeAvatarPath | relURL }}" alt="" width="38" height="38">
+      <img src="{{ site.Params.homeAvatarPath | relURL }}" alt="" width="34" height="34">
       <span>rprp</span>
     </a>
-    <nav aria-label="主导航">
-      <a href="{{ "posts/" | relURL }}" {{ if in (slice "posts" "tags") .Section }}aria-current="page"{{ end }}>博客</a>
-      <a href="{{ "about/" | relURL }}" {{ if eq .RelPermalink ("about/" | relURL) }}aria-current="page"{{ end }}>关于</a>
-      <a href="{{ "studio/" | relURL }}" {{ if eq .Layout "studio" }}aria-current="page"{{ end }}>写作</a>
-    </nav>
+    {{ partial "site-nav.html" . }}
   </div>
 </header>

@@ -14,6 +14,7 @@ tag = 'tags'
 description = "万睿朋的个人主页和技术博客，关注向量检索、对象存储与数据库系统。"
 toc = true
 homeAvatarPath = "images/home-avatar.jpg"
+profileAuthor = "Ruipeng Wan"
 
 # Syntax highlight on code blocks
 [markup]
