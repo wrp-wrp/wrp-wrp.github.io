@@ -1,34 +1,64 @@
 {{ define "main" }}
 {{ $posts := where (where site.RegularPages "Section" "posts") "Params.hidden" "ne" true }}
-<section class="home-intro" aria-labelledby="profile-name">
-  <h1 id="profile-name">万睿朋 <span lang="en">Ruipeng Wan</span></h1>
-  <p>研究向量检索、对象存储和数据库系统。</p>
-</section>
-
-<section class="home-section" aria-labelledby="publications">
-  <h2 id="publications">论文 <span lang="en">Publications</span></h2>
-  <ul class="paper-list">
-    {{ range site.Data.publications.papers }}
-    <li class="paper-row">
-      <div class="paper-detail">
-        <a href="{{ .paper_url }}">{{ .title }}</a>
-        {{ with .code_url }}<a class="paper-code" href="{{ . }}" aria-label="代码">Code</a>{{ end }}
+<div class="home-layout">
+  <section class="home-intro" aria-labelledby="profile-name">
+    <div class="intro-copy">
+      <h1 id="profile-name">万睿朋<span lang="en">Ruipeng Wan</span></h1>
+      <p>我研究向量检索和数据库系统。<br>这里写技术笔记，也记一些路上的见闻。</p>
+    </div>
+    {{ with site.GetPage "/posts/my-article" }}
+    <a class="field-note" href="{{ .RelPermalink }}" aria-label="阅读《{{ .Title }}》">
+      <div class="field-print">
+        <div class="trip-lettering" aria-hidden="true">
+          <span>明十三陵</span>
+          <small>神路　·　定陵　·　长陵</small>
+        </div>
+        {{ with .Resources.GetMatch "IMG_2859.JPG" }}
+          {{ $image := .Filter images.AutoOrient }}
+          {{ $photo := $image.Fill "640x330 Center webp q82" }}
+          <img class="trip-photo" src="{{ $photo.RelPermalink }}" width="{{ $photo.Width }}" height="{{ $photo.Height }}" alt="">
+        {{ end }}
       </div>
-      <span class="paper-venue">{{ .venue }}</span>
-    </li>
+      <span class="field-caption">北京 · 十三陵神路 <time datetime="{{ .Date.Format "2006-01" }}">{{ .Date.Format "2006.01" }}</time></span>
+    </a>
     {{ end }}
-  </ul>
-</section>
+  </section>
 
-<section class="home-section" aria-labelledby="recent-notes">
-  <div class="section-heading">
-    <h2 id="recent-notes">最近笔记 <span lang="en">Recent Notes</span></h2>
-    <a href="{{ "posts/" | relURL }}">全部文章 →</a>
-  </div>
-  <ul class="post-list compact">
-    {{ range first 3 $posts.ByDate.Reverse }}
-    {{ partial "journal-entry.html" (dict "post" . "compact" true) }}
-    {{ end }}
-  </ul>
-</section>
+  <section class="home-section" aria-labelledby="publications">
+    <div class="home-section-label">
+      <h2 id="publications">论文</h2>
+      <span lang="en">Publications</span>
+    </div>
+    <ul class="paper-list">
+      {{ range site.Data.publications.papers }}
+      {{ $parts := split .title ": " }}
+      <li class="paper-row" lang="en">
+        <div class="paper-line">
+          <a class="paper-name" href="{{ .paper_url }}" aria-label="{{ .title }}">{{ index $parts 0 }}</a>
+          <span class="paper-venue">{{ .venue }}</span>
+        </div>
+        <div class="paper-detail">
+          {{ if gt (len $parts) 1 }}<span>{{ delimit (after 1 $parts) ": " }}</span>{{ end }}
+          {{ with .code_url }}<a class="paper-code" href="{{ . }}" aria-label="Source code for {{ index $parts 0 }}">Code <span aria-hidden="true">↗</span></a>{{ end }}
+        </div>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+
+  <section class="home-section" aria-labelledby="recent-notes">
+    <div class="home-section-label">
+      <h2 id="recent-notes">最近笔记</h2>
+      <span lang="en">Recent Notes</span>
+    </div>
+    <div>
+      <ul class="post-list compact">
+        {{ range first 3 $posts.ByDate.Reverse }}
+          {{ partial "journal-entry.html" (dict "post" . "compact" true) }}
+        {{ end }}
+      </ul>
+      <a class="all-notes" href="{{ "posts/" | relURL }}">全部文章 <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</div>
 {{ end }}
