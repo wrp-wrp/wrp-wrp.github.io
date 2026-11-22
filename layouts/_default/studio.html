@@ -1,0 +1,136 @@
+{{ define "main" }}
+{{ $posts := where (where site.RegularPages "Section" "posts") "Params.hidden" "ne" true }}
+<div class="page-heading studio-heading">
+  <h1>写作</h1>
+  <button id="github-open" class="button button-outline" type="button">连接 GitHub</button>
+</div>
+<div class="studio-layout">
+  <aside class="draft-sidebar" aria-label="草稿与文章">
+    <button id="new-draft" class="button new-draft" type="button">新建文章</button>
+    <button id="existing-open" class="button button-outline" type="button">编辑仓库文章</button>
+    <div class="draft-list-heading"><h2>本地草稿</h2><span id="draft-count"></span></div>
+    <div id="draft-list"></div>
+    <details class="draft-tools">
+      <summary>导入和备份</summary>
+      <button id="import-md" type="button">导入 Markdown</button>
+      <button id="backup-drafts" type="button">备份全部草稿</button>
+      <button id="restore-drafts" type="button">恢复备份</button>
+    </details>
+  </aside>
+
+  <section class="writing-panel" aria-label="文章编辑器">
+    <div class="editor-top">
+      <span id="save-status" role="status">准备就绪</span>
+      <div class="editor-actions">
+        <button id="export-md" class="button button-outline" type="button">导出 Markdown</button>
+        <button id="publish-open" class="button" type="button">提交</button>
+      </div>
+    </div>
+    <div class="editor-fields">
+      <label for="article-title">标题</label>
+      <input id="article-title" class="title-input" maxlength="200" placeholder="文章标题">
+
+      <label for="article-tags">标签</label>
+      <div id="selected-tags" class="selected-tags" aria-label="已添加的标签"></div>
+      <div class="tag-entry">
+        <input id="article-tags" list="suggested-tags" placeholder="输入或选择已有标签" aria-describedby="tag-help" autocomplete="off">
+        <button id="add-tag" type="button" class="button button-outline">添加</button>
+      </div>
+      <datalist id="suggested-tags">
+        {{ range site.Taxonomies.tags.Alphabetical }}
+          {{ if len (intersect .Pages $posts) }}<option value="{{ .Page.LinkTitle }}">{{ end }}
+        {{ end }}
+      </datalist>
+      <p id="tag-help" class="small muted">按回车添加，用逗号分隔多个标签。点 × 移除。</p>
+
+      <details class="advanced-fields">
+        <summary>摘要、日期与文章地址</summary>
+        <label for="article-summary">摘要</label>
+        <textarea id="article-summary" rows="2" maxlength="1000"></textarea>
+        <div class="metadata-row">
+          <label>日期<input type="date" id="article-date"></label>
+          <label>正文语言<select id="article-language"><option value="zh-CN">中文</option><option value="en">English</option></select></label>
+          <label>文章目录<input id="article-slug" placeholder="my-first-note"></label>
+          <label class="checkbox-field"><input type="checkbox" id="article-hidden">从文章列表隐藏</label>
+        </div>
+      </details>
+    </div>
+    <div class="editor-toolbar">
+      <div class="format-tools" aria-label="Markdown 格式">
+        <button type="button" data-format="heading">标题</button>
+        <button type="button" data-format="bold">加粗</button>
+        <button type="button" data-format="code">代码</button>
+        <button type="button" data-format="link">链接</button>
+        <button type="button" data-format="image">图片</button>
+      </div>
+      <div class="editor-tabs" aria-label="编辑视图">
+        <button type="button" data-view="write" aria-pressed="true">编辑</button>
+        <button type="button" data-view="preview" aria-pressed="false">预览</button>
+      </div>
+    </div>
+    <div class="editor-body" data-mode="write">
+      <div class="source-pane"><label for="article-body" class="sr-only">Markdown 正文</label><textarea id="article-body" spellcheck="false" placeholder="使用 Markdown 写正文"></textarea></div>
+      <div class="preview-pane"><article id="article-preview" class="prose"></article></div>
+    </div>
+    <div class="editor-bottom">
+      <span id="word-count"></span>
+      <button id="delete-draft" class="button-quiet" type="button">删除本地草稿</button>
+    </div>
+  </section>
+</div>
+<input type="file" id="md-file" accept=".md,.markdown,text/markdown,text/plain" hidden>
+<input type="file" id="backup-file" accept=".json,application/json" hidden>
+
+<dialog id="github-dialog" class="studio-dialog" aria-labelledby="github-title">
+  <form method="dialog"><button class="dialog-close" aria-label="关闭">×</button></form>
+  <h2 id="github-title">连接 GitHub</h2>
+  <p class="small muted">用此仓库的 Contents 读写令牌连接。令牌只在本页保留。</p>
+  <form id="github-form">
+    <label>访问令牌<input id="github-token" type="password" autocomplete="off" required></label>
+    <label>分支<input id="github-branch" value="master" required pattern="[A-Za-z0-9_/-]+"></label>
+    <div class="dialog-buttons">
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">创建令牌</a>
+      <button class="button" type="submit">验证连接</button>
+    </div>
+  </form>
+  <p id="github-status" class="form-status" role="status"></p>
+  <button id="disconnect-github" class="button-quiet" type="button" hidden>断开连接</button>
+</dialog>
+<dialog id="existing-dialog" class="studio-dialog" aria-labelledby="existing-title">
+  <form method="dialog"><button class="dialog-close" aria-label="关闭">×</button></form>
+  <h2 id="existing-title">编辑仓库文章</h2>
+  <template id="published-titles">
+    {{ range $posts }}
+      {{ $post := . }}{{ with .File }}<span data-slug="{{ strings.TrimSuffix "/" (strings.TrimPrefix "posts/" (replace .Dir "\\" "/")) }}">{{ $post.Title }}</span>{{ end }}
+    {{ end }}
+  </template>
+  <form id="existing-form">
+    <label>文章<select id="existing-post" required></select></label>
+    <label class="remote-choice"><input id="existing-fresh" type="checkbox"> 另开一份仓库版本</label>
+    <div class="dialog-buttons"><button id="existing-load" class="button" type="submit">打开文章</button></div>
+  </form>
+  <p id="existing-status" class="form-status" role="status"></p>
+</dialog>
+<dialog id="publish-dialog" class="studio-dialog" aria-labelledby="publish-title">
+  <form method="dialog"><button class="dialog-close" aria-label="关闭">×</button></form>
+  <h2 id="publish-title">提交文章</h2>
+  <p id="publish-target" class="small muted"></p>
+  <label class="checkbox-field"><input id="publish-live" type="checkbox">设为公开文章（draft = false）</label>
+  <div class="dialog-buttons"><button id="publish-confirm" class="button" type="button">确认提交</button></div>
+  <p id="publish-status" class="form-status" role="status"></p>
+  <a id="commit-link" target="_blank" rel="noopener noreferrer" hidden>查看 GitHub 提交</a>
+</dialog>
+<dialog id="delete-dialog" class="studio-dialog" aria-labelledby="delete-title">
+  <h2 id="delete-title">删除这篇本地草稿？</h2>
+  <p class="small muted">如需保留这份编辑，可以先导出 Markdown。</p>
+  <div class="dialog-buttons">
+    <button class="button button-outline" id="delete-cancel" type="button">取消</button>
+    <button class="button" id="delete-confirm" type="button">删除</button>
+  </div>
+</dialog>
+<div id="studio-toast" class="studio-toast" role="status" hidden></div>
+<script src="{{ "vendor/showdown.min.js" | relURL }}" defer></script>
+<script src="{{ "vendor/purify.min.js" | relURL }}" defer></script>
+<script src="{{ "js/studio-core.js" | relURL }}" defer></script>
+<script src="{{ "js/studio.js" | relURL }}" defer></script>
+{{ end }}

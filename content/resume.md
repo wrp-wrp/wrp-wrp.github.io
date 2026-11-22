@@ -5,13 +5,6 @@ date = 2025-11-27
 draft = false
 +++
 
-# wrp-wrp
-
-**Undergraduate Student, CS (Turing Class) @ HUST**  
-[GitHub](https://github.com/wrp-wrp) | [Email](mailto:rprp@hust.edu.cn)
-
----
-
 ## Education
 
 **Huazhong University of Science and Technology (HUST)**  

@@ -1,93 +1,29 @@
 {{ define "main" }}
-
-{{/* Breadcrumbs */}}
-{{ if not .IsHome }}
-{{ partial "breadcrumbs.html" . }}
-{{ end }}
-
-{{ $hasTOC := and (.Param "toc") (gt (len .Fragments.Headings) 0) }}
 {{ $language := partial "post-language.html" . }}
-{{ $contentLanguage := $language.tag }}
-<div class="post-layout {{ if $hasTOC }}has-toc{{ end }} {{ if .Param "autonumber" }}autonumber{{ end }}">
-
-    <div class="post-main-column">
-        <article class="post-article" lang="{{ $contentLanguage }}" data-pagefind-body>
-            <header class="single-intro-container">
-                <h1 class="single-title" data-pagefind-meta="title">{{ .Title }}</h1>
-                {{- with .Param "summary" }}
-                <p class="single-summary" lang="{{ $contentLanguage }}">{{ . | markdownify }}</p>
-                {{- end }}
-
-                {{- /* Publication metadata belongs to posts, not evergreen pages such as About or Resume. */}}
-                {{ $showPublicationDate := or (eq .Section "posts") (.Param "showDate") }}
-                {{ if or (or (.Param "author") (.Param "authorAvatarPath")) (or $showPublicationDate (.Param "readTime")) }}
-                <div class="single-subsummary">
-                    {{ with $.Param "authorAvatarPath" }}
-                    <img src="{{ . }}" alt="Author Avatar" />
-                    {{ end }}
-                    <div>
-                        {{ with .Param "author" }}
-                        <p class="author"> {{- .}} </p>
-                        {{ end }}
-                        <p class="single-date" lang="en">
-                            {{- if $showPublicationDate }}
-                            {{- with .Date }}
-                            <time datetime="{{ . | time.Format " 2006-01-02T15:04:05-07:00" }}">{{ . | time.Format
-                                (default
-                                ":date_long" $.Site.Params.singleDateFormat) }}</time>
-                            {{- end }}
-                            {{- end }}
-                            {{- if .Param "readTime" }}
-                            {{ if $showPublicationDate }} · {{ end }} {{ .ReadingTime }} min read
-                            {{- end }}
-                            {{ if eq .Section "posts" }} · {{ partial "language-badge.html" . }}{{ end }}
-                        </p>
-                    </div>
-                </div>
-                {{- end}}
-            </header>
-
-            {{ if $hasTOC }}
-            <details class="side-toc" lang="{{ $contentLanguage }}" data-pagefind-ignore>
-                <summary class="side-toc-title">{{ if hasPrefix $contentLanguage "zh" }}目录{{ else }}On this page{{ end }}</summary>
-                <div class="toc-content" lang="{{ $contentLanguage }}">{{ .TableOfContents }}</div>
-            </details>
-            {{ end }}
-
-            {{- if .Param "showTags" }}
-            <div class="single-tags">
-                {{- range $tag := .Params.tags }}
-                {{- with $.Site.GetPage (printf "/tags/%s" $tag) -}}
-                <span><a href="{{ .Permalink }}">#{{ .LinkTitle }}</a></span>
-                {{- end }}
-                {{- end }}
-            </div>
-            {{- end }}
-
-            <div class="single-content" id="post-content" lang="{{ $contentLanguage }}">
-                {{ .Content }}
-            </div>
-        </article>
-
-        {{- if and .Site.Params.giscus.enable (not .Params.disableComment) }}
-        <div class="single-comments">
-            {{ partial "comments.html" . }}
-        </div>
-        {{- end }}
-
-        {{ if .Store.Get "hasMermaid" }}
-        <script defer type="module" src='{{ "js/mermaid.js" | relURL }}'></script>
-        {{ end }}
-
-        {{ if not (.Param "hideBackToTop") }}
-        <div class="back-to-top"><a href="#top">back to top</a></div>
-        {{ end }}
-
-        {{/* Integration with ScrollSpy */}}
-        {{ if $hasTOC }}
-        <script defer src="{{ "js/toc.js" | relURL }}"></script>
-        {{ end }}
+{{ $isPost := eq .Section "posts" }}
+{{ $hasTOC := and $isPost (.Param "toc") (gt (len .Fragments.Headings) 0) }}
+<article class="post-article" lang="{{ $language.tag }}"{{ if $isPost }} data-pagefind-body{{ end }}>
+  {{ if $isPost }}<a class="back-link" href="{{ "posts/" | relURL }}">← 博客</a>{{ end }}
+  <header class="article-header">
+    <h1>{{ .Title }}</h1>
+    {{ if $isPost }}
+    <div class="article-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+      {{ with .GetTerms "tags" }}
+      <ul class="post-tags" aria-label="标签">
+        {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}
+      </ul>
+      {{ end }}
     </div>
-</div>
-
+    {{ with .Params.summary }}<p class="article-summary">{{ . | markdownify }}</p>{{ end }}
+    {{ end }}
+  </header>
+  {{ if $hasTOC }}
+  <details class="article-toc" data-pagefind-ignore><summary>{{ if eq $language.code "zh" }}目录{{ else }}On this page{{ end }}</summary>{{ .TableOfContents }}</details>
+  {{ end }}
+  <div class="prose" id="post-content">{{ .Content }}</div>
+  {{ if and (or $isPost (eq .RelPermalink ("chat/" | relURL))) site.Params.giscus.enable (not .Params.disableComment) }}
+  <details class="comments-box"><summary>讨论与留言</summary>{{ partial "comments.html" . }}</details>
+  {{ end }}
+</article>
 {{ end }}

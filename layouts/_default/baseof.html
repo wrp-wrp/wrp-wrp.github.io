@@ -1,43 +1,17 @@
-<!DOCTYPE html>
-<html lang="{{ or site.Language.LanguageCode site.Language.Lang }}"
-  dir="{{ or site.Language.LanguageDirection `ltr` }}">
-
+<!doctype html>
+<html lang="{{ site.Language.LanguageCode }}">
 <head>
   {{ partial "head.html" . }}
+  {{ block "head-extra" . }}{{ end }}
 </head>
-
-{{ $theme := "auto"}}
-
-{{ with .Param "theme" }}
-{{ $theme = .}}
-{{ end }}
-
-<body class="{{ $theme }} {{ if .IsPage }}single-page{{ end }}">
-
-  <div class="content">
-    <header>
-      {{ partial "header.html" . }}
-    </header>
-
-    <main class="main">
-      {{ block "main" . }}{{ end }}
-    </main>
-  </div>
-
-  {{/* Body end hook */}}
-  {{ partial "functions/get_hook.html" (dict "hook" "body_end" "context" .) }}
-
-  <footer>
-    {{ partial "footer.html" . }}
-  </footer>
-
-  {{ if .Store.Get "hasMath" }}
-  {{ partialCached "math.html" . }}
-  {{ end }}
+<body id="top"{{ if eq .Layout "studio" }} class="studio-page"{{ end }}>
+  <a class="skip-link" href="#main">跳到正文</a>
+  {{ partial "header.html" . }}
+  <main id="main" class="page-shell">{{ block "main" . }}{{ end }}</main>
+  {{ partial "footer.html" . }}
+  {{ if .Store.Get "hasMath" }}{{ partial "math.html" . }}{{ end }}
+  {{ if .Store.Get "hasMermaid" }}<script id="mermaid_script" data-light-theme="default" data-dark-theme="default" type="module" src="{{ "js/mermaid.js" | relURL }}"></script>{{ end }}
+  <script src="{{ "js/journal.js" | relURL }}" defer></script>
+  <script src="{{ "js/gallery-lightbox.js" | relURL }}" defer></script>
 </body>
-
-<script src="{{ "js/theme-switch.js" | relURL }}"></script>
-<script defer src="{{ "js/copy-code.js" | relURL }}"></script>
-<script defer src="{{ "js/cjk-typography.js" | relURL }}"></script>
-
 </html>
