@@ -1,114 +1,42 @@
 {{ define "main" }}
-
-{{ $homeCollection := .Site.Params.homeCollection | default "posts" }}
-{{ $pages := where .Site.RegularPages "Section" $homeCollection }}
-{{ $pages = where $pages "Params.hidden" "ne" true }}
-{{ $pages = sort $pages "Date" "desc" }}
-{{ $recent := first 3 $pages }}
-
+{{ $posts := where (where site.RegularPages "Section" "posts") "Params.hidden" "ne" true }}
 <div class="home-layout">
-<section class="home-hero" aria-labelledby="home-title">
-    <div class="home-hero-main">
-        <h1 class="home-hero-title" id="home-title">{{ .Site.Params.homeIntroTitle | default "rprp" }}</h1>
-        <span class="home-title-rule" aria-hidden="true"></span>
-
-        {{ with .Site.Params.homeIntroContent }}
-        <div class="home-hero-description" lang="{{ site.Params.homeIntroLanguage | default site.Language.LanguageCode }}">
-            {{ . | markdownify }}
-        </div>
-        {{ end }}
-
-        {{ with site.Params.social }}
-        <nav class="home-contact" aria-label="Social links">
-            {{ range . }}
-            <a href="{{ trim .url " " | safeURL }}" {{ if hasPrefix .url "http" }}target="_blank" rel="noopener noreferrer me"{{ end }}>
-                <span class="home-contact-icon">{{ partial "svg.html" (dict "name" .name) }}</span>
-                <span>{{ (.title | default .name) | title }}</span>
-            </a>
-            {{ end }}
-        </nav>
-        {{ end }}
-
-        <dl class="home-profile-meta">
-            {{ with site.Params.homeAffiliation }}
-            <div><dt>Affiliation</dt><dd>{{ . }}</dd></div>
-            {{ end }}
-            {{ with site.Params.homeLocation }}
-            <div><dt>Location</dt><dd>{{ . }}</dd></div>
-            {{ end }}
-        </dl>
-
-        {{ with site.GetPage "/resume" }}
-        <a class="home-profile-link" href="{{ .RelPermalink }}">About &amp; CV <span aria-hidden="true">&rarr;</span></a>
-        {{ end }}
+  <section class="profile-intro" aria-labelledby="profile-name">
+    <div class="profile-avatar wordmark">
+      <img src="{{ site.Params.homeAvatarPath | relURL }}" width="148" height="148" alt="万睿朋的头像">
     </div>
+    <h1 id="profile-name"><span lang="en">Ruipeng Wan</span> <span lang="zh-CN">万睿朋</span></h1>
+    <p>我研究向量检索与数据库系统，关注对象存储的读取成本，也关心索引更新后的召回率。</p>
+    {{ partial "site-nav.html" . }}
+  </section>
 
-</section>
-
-<div class="home-main-column">
-{{ with site.Data.publications.papers }}
-<section class="home-publications" aria-labelledby="publications-title">
-    <div class="home-section-head">
-        <div>
-            <h2 id="publications-title">Publications</h2>
-            <span class="home-section-rule" aria-hidden="true"></span>
-        </div>
-    </div>
-
-    <div class="home-publication-list">
-        {{ range . }}
-        {{ $paper := . }}
-        <article class="home-publication">
-            <p class="home-publication-meta">
-                <span class="home-publication-venue">{{ .venue }}</span>
-                {{ with .status }}<span class="home-publication-status">{{ . }}</span>{{ end }}
-            </p>
-            <h3>{{ with .paper_url }}<a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer">{{ $paper.title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
-            <p class="home-publication-authors">{{ range $index, $author := .authors }}{{ if $index }}, {{ end }}{{ if eq $author site.Params.homeAuthorName }}<strong>{{ $author }}</strong>{{ else }}{{ $author }}{{ end }}{{ end }}</p>
-            <div class="home-publication-links">
-                {{ with .paper_url }}
-                <a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer" aria-label="Read {{ $paper.title }}">Paper <span aria-hidden="true">&nearr;</span></a>
-                {{ end }}
-                {{ with .code_url }}
-                <a href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Code for {{ $paper.title }}">Code <span aria-hidden="true">&nearr;</span></a>
-                {{ end }}
-            </div>
-        </article>
+  {{ with site.Data.publications.papers }}
+  <section class="home-section" aria-labelledby="publications">
+    <h2 id="publications" lang="en">Publications</h2>
+    <ul class="paper-list">
+      {{ range . }}
+      <li class="paper-row" lang="en">
+        <h3>{{ if .paper_url }}<a href="{{ .paper_url }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
+        {{ with .authors }}
+        <p class="paper-authors">{{ range $index, $author := . }}{{ if $index }}, {{ end }}<span>{{ if eq $author site.Params.profileAuthor }}<strong>{{ $author }}</strong>{{ else }}{{ $author }}{{ end }}</span>{{ end }}</p>
         {{ end }}
-    </div>
-</section>
-{{ end }}
+        <p class="paper-meta"><span>{{ .venue }}</span>{{ with .code_url }} <span aria-hidden="true">·</span> <a href="{{ . }}">Code</a>{{ end }}</p>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
 
-{{ if gt (len $recent) 0 }}
-<section class="home-notes" aria-labelledby="recent-notes-title">
-    <div class="home-section-head">
-        <div>
-            <h2 id="recent-notes-title">Recent Notes</h2>
-            <span class="home-section-rule" aria-hidden="true"></span>
-        </div>
-        {{ with site.GetPage "/posts" }}<a class="home-view-all" href="{{ .RelPermalink }}">All notes <span aria-hidden="true">&rarr;</span></a>{{ end }}
+  <section class="home-section" aria-labelledby="recent-notes">
+    <div class="notes-heading">
+      <h2 id="recent-notes" lang="en">Recent Notes</h2>
+      <a class="all-notes" href="{{ "posts/" | relURL }}">全部文章 <span aria-hidden="true">→</span></a>
     </div>
-
-    <div class="home-notes-list">
-        {{ range $recent }}
-        {{ $language := partial "post-language.html" . }}
-        {{ $displayTitle := .Title }}
-        {{ $displaySummary := or .Params.summary .Summary }}
-        <article class="home-note-row">
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (.Site.Params.listDateFormat | default "2 Jan 2006") }}</time>
-            <div class="home-note-copy" lang="{{ $language.tag }}">
-                <h3><a href="{{ .RelPermalink }}">{{ $displayTitle }}</a> {{ partial "language-badge.html" . }}</h3>
-                {{ with $displaySummary }}
-                <p>{{ . | plainify | truncate 100 }}</p>
-                {{ end }}
-            </div>
-        </article>
-        {{ end }}
-    </div>
-</section>
-{{ end }}
-
+    <ul class="post-list compact">
+      {{ range first 3 $posts.ByDate.Reverse }}
+        {{ partial "journal-entry.html" (dict "post" . "compact" true) }}
+      {{ end }}
+    </ul>
+  </section>
 </div>
-</div>
-
 {{ end }}

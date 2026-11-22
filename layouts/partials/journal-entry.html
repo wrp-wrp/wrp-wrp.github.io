@@ -1,0 +1,17 @@
+{{ $post := .post }}
+{{ $language := partial "post-language.html" $post }}
+{{ $tags := $post.GetTerms "tags" }}
+<li class="post-row"{{ if not .compact }} data-tags="{{ $post.Params.tags | default slice | jsonify }}"{{ end }}>
+  <div class="post-row-copy" lang="{{ $language.tag }}">
+    <a class="post-title" href="{{ $post.RelPermalink }}">{{ $post.Title }}</a>
+    {{ if not .compact }}
+      {{ with $post.Params.summary }}<p class="post-summary">{{ . | markdownify | plainify }}</p>{{ end }}
+      {{ with $tags }}
+      <ul class="post-tags" aria-label="标签">
+        {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}
+      </ul>
+      {{ end }}
+    {{ end }}
+  </div>
+  <time datetime="{{ $post.Date.Format "2006-01-02" }}">{{ $post.Date.Format "2006-01-02" }}</time>
+</li>

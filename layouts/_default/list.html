@@ -1,59 +1,8 @@
 {{ define "main" }}
-
-<div class="list-container">
-
-    {{ partial "breadcrumbs.html" . }}
-
-    {{ $language := partial "post-language.html" . }}
-    <h1 lang="{{ $language.tag }}">{{ .Title }}</h1>
-    {{ .Content }}
-
-    {{ if or (eq .Section "posts") (eq .Section "tags") }}
-    {{ partial "post-navigation.html" . }}
-    {{ end }}
-
-    {{ $tagsPage := eq .Title "Tags" }}
-
-    {{/* Language views use the full collection before pagination. */}}
-    {{ $pages := where .Pages "Params.hidden" "ne" true }}
-    {{ if eq .Section "posts" }}
-        {{ $pages = where .Site.RegularPages "Section" "posts" }}
-        {{ $pages = where $pages "Params.hidden" "ne" true }}
-        {{ $pages = sort $pages "Date" "desc" }}
-        {{ partial "post-language-filter.html" (dict "page" . "pages" $pages) }}
-        {{ with .Param "postLanguage" }}
-            {{ $selected := . }}
-            {{ $filtered := slice }}
-            {{ range $pages }}
-                {{ $language := partial "post-language.html" . }}
-                {{ if eq $language.code $selected }}
-                    {{ $filtered = $filtered | append . }}
-                {{ end }}
-            {{ end }}
-            {{ $pages = $filtered }}
-        {{ end }}
-    {{ end }}
-
-    {{ $paginationSize := 1 }}
-    {{ if (gt .Site.Params.paginationSize 0) }}
-    {{ $paginationSize = .Site.Params.paginationSize }}
-    {{ end }}
-
-    {{ $paginator := .Paginate $pages $paginationSize }}
-
-    {{ range $index, $page := $paginator.Pages }}
-        {{ if $tagsPage }}
-            {{ partial "tag-entry.html" $page }}
-        {{ else }}
-            {{ partial "post-entry.html" $page }}
-        {{ end }}
-    {{ end }}
-
-    {{ if and (eq .Section "posts") (eq (len $pages) 0) }}
-    <p class="language-filter-empty">No posts in this language yet. <a href="{{ (.Site.GetPage "/posts").RelPermalink }}">Browse all posts</a>.</p>
-    {{ end }}
-
-    {{ partial "pagination-controls.html" $paginator }}
-
-</div>
+  {{ if in (slice "posts" "tags") .Section }}
+    {{ partial "blog-index.html" . }}
+  {{ else }}
+    <h1>{{ .Title }}</h1>
+    <div class="prose">{{ .Content }}</div>
+  {{ end }}
 {{ end }}

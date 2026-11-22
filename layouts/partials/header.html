@@ -1,57 +1,9 @@
-{{/* Editorial masthead — keeps search and theme controls compact. */}}
-
-<div class="header">
-
-    {{ if or (not (.Param "hideHeader")) .IsHome }}
-
-    <p class="header-title">
-        <a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
-    </p>
-
-    <nav class="header-menu" aria-label="Main navigation">
-        {{ $currentPage := . }}
-        {{ with site.Params.menu }}
-        {{ range . }}
-        {{ $active := eq $currentPage.RelPermalink (.url | relURL) }}
-        {{ if and (ne .url "/") (hasPrefix $currentPage.RelPermalink .url) }}{{ $active = true }}{{ end }}
-        <p class="small {{ if $active }}bold{{ end }}">
-            <a href="{{ .url }}" {{ if $active }}aria-current="page"{{ end }} {{ if and (isset . "newTab") .newTab }}target="_blank" rel="noopener noreferrer"{{ end }}>
-                {{ .name | title }}
-            </a>
-        </p>
-        {{ end }}
-        {{ end }}
-    </nav>
-
-    <div class="header-tools">
-        <button id="search-trigger" class="search-trigger" aria-label="Search posts" aria-haspopup="dialog" aria-controls="search-modal">
-            <span>search</span>
-            <span class="kbd">/</span>
-        </button>
-        <button id="theme-toggle" class="theme-switch-btn" aria-label="Switch theme" title="Switch theme">
-            <span id="theme-toggle-icon">paper</span>
-        </button>
-    </div>
-
-    {{ end }}
-
-</div>
-
-{{/* Search modal */}}
-<dialog id="search-modal" class="search-modal" aria-labelledby="search-title" data-pagefind-base="{{ "pagefind/" | relURL }}">
-    <div class="search-panel">
-        <div class="search-panel-header">
-            <h2 id="search-title">Search posts</h2>
-            <button id="search-close" class="search-close" type="button" aria-label="Close search">Close <span class="kbd" aria-hidden="true">Esc</span></button>
-        </div>
-        <p id="search-status" class="search-status" role="status" hidden>Loading search…</p>
-        <div id="pagefind-search"></div>
-        <div class="search-panel-empty" id="search-fallback" role="status" hidden>
-            <p>Search is temporarily unavailable. You can browse all posts or try again.</p>
-            <div class="search-fallback-actions">
-                <a href="{{ "posts/" | relURL }}">Browse all posts</a>
-                <button id="search-retry" type="button">Try again</button>
-            </div>
-        </div>
-    </div>
-</dialog>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href="{{ site.Home.RelPermalink }}" aria-label="rprp 首页">
+      <img src="{{ site.Params.homeAvatarPath | relURL }}" alt="" width="34" height="34">
+      <span>rprp</span>
+    </a>
+    {{ partial "site-nav.html" . }}
+  </div>
+</header>

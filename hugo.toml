@@ -1,7 +1,7 @@
 baseURL = 'https://wrp-wrp.github.io/'
-languageCode = 'en-us'
-title = "rprp's blog"
-theme = 'typo'
+languageCode = 'zh-CN'
+hasCJKLanguage = true
+title = '万睿朋 · rprp'
 math = true
 
 # Set a real measurement ID here to enable analytics.
@@ -11,85 +11,10 @@ googleAnalytics = ""
 tag = 'tags'
 
 [params]
-# Meta description
-description = "Research notes on vector search, cloud storage, and database systems, alongside algorithms and course notes by rprp, a computer science student at HUST."
+description = "万睿朋的个人主页和技术博客，关注向量检索、对象存储与数据库系统。"
 toc = true
-
-# Appearance settings
-theme = 'auto'
-colorPalette = 'default'
-hideHeader = false
-
-# Intro on main page, content is markdown
-homeIntroTitle = 'rprp'
-homeAuthorName = 'Ruipeng Wan'
-homeIntroLanguage = 'zh-CN'
-homeIntroContent = """
-摆烂主页随缘更新
-"""
 homeAvatarPath = "images/home-avatar.jpg"
-homeAvatarAlt = "rprp avatar"
-homeResearchAreas = ["Vector Search", "Cloud Storage"]
-homeLocation = "Wuhan, China"
-homeAffiliation = "HUST"
-homeEmail = "rprp@hust.edu.cn"
-
-# Collection to display on home
-homeCollectionTitle = 'Posts'
-homeCollection = 'posts'
-
-# Lists parameters
-paginationSize = 100
-listSummaries = false
-listDateFormat = '2 Jan 2006'
-
-# Breadcrumbs
-[params.breadcrumbs]
-enabled = true
-showCurrentPage = true
-home = "Home"
-
-# Social icons
-[[params.social]]
-name = "github"
-url = "https://github.com/wrp-wrp"
-
-[[params.social]]
-name = "email"
-url = "mailto:rprp@hust.edu.cn"
-
-# Main menu pages
-[[params.menu]]
-name = "home"
-url = "/"
-
-[[params.menu]]
-name = "posts"
-url = "/posts"
-
-[[params.menu]]
-name = "resources"
-url = "/resources"
-
-[[params.menu]]
-name = "about"
-url = "/about"
-
-[[params.footerMenu]]
-name = "archive"
-url = "/archive/"
-
-[[params.footerMenu]]
-name = "tags"
-url = "/tags/"
-
-[[params.footerMenu]]
-name = "resume"
-url = "/resume/"
-
-[[params.footerMenu]]
-name = "message board"
-url = "/chat/"
+profileAuthor = "Ruipeng Wan"
 
 # Syntax highlight on code blocks
 [markup]
@@ -119,4 +44,4 @@ repoid = "R_kgDOQY3FSA"
 category = "General"
 categoryid = "DIC_kwDOQY3FSM4CzTKb"
 mapping = "pathname"
-theme = "preferred_color_scheme"
+theme = "light"
