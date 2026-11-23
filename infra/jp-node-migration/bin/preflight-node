@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ((EUID != 0)); then
+  printf 'Run as root on the destination VPS.\n' >&2
+  exit 1
+fi
+
+printf 'Host: %s\n' "$(hostname -f 2>/dev/null || hostname)"
+printf 'Kernel: %s\n' "$(uname -srmo)"
+
+if [[ -r /etc/os-release ]]; then
+  . /etc/os-release
+  printf 'OS: %s %s\n' "${ID:-unknown}" "${VERSION_ID:-unknown}"
+  if [[ "${ID:-}" != debian ]]; then
+    printf 'WARN: the restore path is tested on Debian 12/13.\n'
+  fi
+fi
+
+printf 'Architecture: %s\n' "$(dpkg --print-architecture 2>/dev/null || uname -m)"
+printf 'Root free space: %s\n' "$(df -hP / | awk 'NR==2 {print $4}')"
+printf 'Memory: %s\n' "$(free -h | awk '/^Mem:/ {print $2}')"
+printf 'Default IPv4: %s\n' "$(
+  ip -4 route get 1.1.1.1 2>/dev/null |
+    awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}'
+)"
+
+printf '\nPort occupancy before restore:\n'
+for port_spec in tcp:22 tcp:80 tcp:443 udp:443 udp:51820; do
+  protocol="${port_spec%%:*}"
+  port="${port_spec##*:}"
+  if ss "-ln${protocol:0:1}" "sport = :$port" 2>/dev/null | tail -n +2 | grep -q .; then
+    printf '  %-10s in use\n' "$port_spec"
+  else
+    printf '  %-10s free\n' "$port_spec"
+  fi
+done
+
+printf '\nRequired outbound checks:\n'
+for url in https://deb.debian.org https://letsencrypt.org; do
+  if curl -fsSI --max-time 8 "$url" >/dev/null; then
+    printf '  reachable %s\n' "$url"
+  else
+    printf '  WARN unreachable %s\n' "$url"
+  fi
+done
+
+printf '\nPreflight completed. Existing files are not modified.\n'

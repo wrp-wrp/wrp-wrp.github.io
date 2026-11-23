@@ -1,0 +1,129 @@
+name: Node migration backup
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "infra/jp-node-migration/**"
+      - ".github/workflows/node-migration.yml"
+  pull_request:
+    paths:
+      - "infra/jp-node-migration/**"
+      - ".github/workflows/node-migration.yml"
+  schedule:
+    - cron: "15 21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: node-migration-backup
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install validation tools
+        run: sudo apt-get update && sudo apt-get install -y shellcheck ripgrep
+
+      - name: Validate shell scripts
+        run: |
+          find infra/jp-node-migration -type f \
+            \( -path "*/bin/*" -o -path "*/server/*" -o -name migrate \) \
+            -print0 |
+            xargs -0 bash -n
+          shellcheck -S warning \
+            infra/jp-node-migration/migrate \
+            infra/jp-node-migration/bin/* \
+            infra/jp-node-migration/server/*
+
+      - name: Reject committed secrets
+        run: |
+          if rg -n --hidden \
+            -g '!README.md' \
+            -g '!MIGRATION-QA.md' \
+            -g '!paths.txt' \
+            -e 'BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY' \
+            -e 'ssh-(rsa|ed25519) [A-Za-z0-9+/]{80,}.*@' \
+            -e '(PASSWORD|TOKEN|SECRET|PRIVATE_KEY)[[:space:]]*=[[:space:]]*[^$<{[:space:]]' \
+            infra/jp-node-migration; then
+            echo "Potential secret detected."
+            exit 1
+          fi
+
+  backup-and-drill:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: migration-backup
+    env:
+      BACKUP_HOST: ${{ vars.JP_BACKUP_HOST }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure restricted backup SSH key
+        env:
+          BACKUP_SSH_KEY: ${{ secrets.JP_BACKUP_SSH_KEY }}
+        run: |
+          test -n "$BACKUP_HOST"
+          test -n "$BACKUP_SSH_KEY"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$BACKUP_SSH_KEY" > "$HOME/.ssh/jp_backup_ci"
+          chmod 0600 "$HOME/.ssh/jp_backup_ci"
+          cp infra/jp-node-migration/config/known_hosts "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+
+      - name: Create and download encrypted backup
+        run: |
+          mkdir -p backup
+          ssh -i "$HOME/.ssh/jp_backup_ci" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "root@$BACKUP_HOST" export
+          ssh -i "$HOME/.ssh/jp_backup_ci" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "root@$BACKUP_HOST" latest > backup/jp-node.enc
+          ssh -i "$HOME/.ssh/jp_backup_ci" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "root@$BACKUP_HOST" latest-sha256 > backup/expected.sha256
+          actual="$(sha256sum backup/jp-node.enc | awk '{print $1}')"
+          expected="$(tr -d '[:space:]' < backup/expected.sha256)"
+          test "$actual" = "$expected"
+          printf '%s  %s\n' "$actual" jp-node.enc > backup/jp-node.enc.sha256
+
+      - name: Run off-site restore drill
+        env:
+          ARCHIVE_PASSPHRASE: ${{ secrets.JP_ARCHIVE_PASSPHRASE }}
+        run: |
+          test -n "$ARCHIVE_PASSPHRASE"
+          passphrase_file="$(mktemp)"
+          trap 'rm -f "$passphrase_file"' EXIT
+          printf '%s' "$ARCHIVE_PASSPHRASE" > "$passphrase_file"
+          chmod 0600 "$passphrase_file"
+          sudo NODE_MIGRATION_PASSPHRASE_FILE="$passphrase_file" \
+            infra/jp-node-migration/bin/restore-node \
+            backup/jp-node.enc --stage-only
+
+      - name: Upload encrypted recovery artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jp-node-encrypted-${{ github.run_id }}
+          path: |
+            backup/jp-node.enc
+            backup/jp-node.enc.sha256
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

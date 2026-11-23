@@ -1,0 +1,258 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+umask 077
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+KIT_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+PACKAGES_FILE="$KIT_DIR/config/packages.txt"
+ARCHIVE=""
+MODE="stage"
+NEW_IP=""
+
+usage() {
+  cat <<'EOF'
+Usage:
+  sudo ./bin/restore-node ARCHIVE.enc --stage-only
+  sudo ./bin/restore-node ARCHIVE.enc --apply [--new-ip 203.0.113.10]
+
+Optional environment:
+  NODE_MIGRATION_PASSPHRASE_FILE=/root/private/passphrase
+
+--stage-only decrypts and validates without changing the machine.
+--apply backs up conflicting files, installs packages, restores the node,
+rewrites the old public IPv4 to the destination IPv4, and starts services.
+EOF
+}
+
+while (($#)); do
+  case "$1" in
+    --stage-only)
+      MODE="stage"
+      shift
+      ;;
+    --apply)
+      MODE="apply"
+      shift
+      ;;
+    --new-ip)
+      NEW_IP="${2:?missing value for --new-ip}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -*)
+      printf 'Unknown argument: %s\n' "$1" >&2
+      exit 2
+      ;;
+    *)
+      if [[ -n "$ARCHIVE" ]]; then
+        printf 'Only one archive may be restored.\n' >&2
+        exit 2
+      fi
+      ARCHIVE="$1"
+      shift
+      ;;
+  esac
+done
+
+[[ -n "$ARCHIVE" && -r "$ARCHIVE" ]] || {
+  usage >&2
+  exit 2
+}
+
+if ((EUID != 0)); then
+  printf 'Run as root on the destination VPS.\n' >&2
+  exit 1
+fi
+
+for command_name in openssl sha256sum tar rsync ip; do
+  command -v "$command_name" >/dev/null || {
+    printf 'Missing required command: %s\n' "$command_name" >&2
+    exit 1
+  }
+done
+
+if [[ -f "$ARCHIVE.sha256" ]]; then
+  (
+    cd -- "$(dirname -- "$ARCHIVE")"
+    sha256sum -c "$(basename -- "$ARCHIVE").sha256"
+  )
+fi
+
+if [[ -n "${NODE_MIGRATION_PASSPHRASE_FILE:-}" ]]; then
+  [[ -r "$NODE_MIGRATION_PASSPHRASE_FILE" ]] || {
+    printf 'Cannot read NODE_MIGRATION_PASSPHRASE_FILE.\n' >&2
+    exit 1
+  }
+  passphrase_permissions="$(stat -c '%a' "$NODE_MIGRATION_PASSPHRASE_FILE")"
+  if ((8#$passphrase_permissions & 077)); then
+    printf 'Passphrase file must not be readable by group or others.\n' >&2
+    exit 1
+  fi
+  passphrase_mode=(-pass "file:$NODE_MIGRATION_PASSPHRASE_FILE")
+else
+  passphrase_mode=()
+fi
+
+work_dir="$(mktemp -d /root/node-restore.XXXXXX)"
+trap 'rm -rf -- "$work_dir"' EXIT
+
+openssl enc -d -aes-256-cbc -pbkdf2 -iter 310000 -md sha256 \
+  "${passphrase_mode[@]}" \
+  -in "$ARCHIVE" \
+  -out "$work_dir/payload.tar.gz"
+
+tar -tzf "$work_dir/payload.tar.gz" > "$work_dir/archive.list"
+if grep -Eq '(^/|(^|/)\.\.(/|$))' "$work_dir/archive.list"; then
+  printf 'Unsafe archive path detected; refusing to extract.\n' >&2
+  exit 1
+fi
+
+tar --acls --xattrs --numeric-owner \
+  -C "$work_dir" -xzf "$work_dir/payload.tar.gz"
+
+[[ "$(cat "$work_dir/metadata/format-version")" == 1 ]] || {
+  printf 'Unsupported migration archive format.\n' >&2
+  exit 1
+}
+
+for required_path in \
+  etc/nginx \
+  etc/wireguard/wg0.conf \
+  etc/hysteria/config.yaml \
+  usr/local/etc/xray/config.json \
+  usr/local/bin/panel-api \
+  var/www/dashboard; do
+  [[ -e "$work_dir/rootfs/$required_path" ]] || {
+    printf 'Archive is missing required path: /%s\n' "$required_path" >&2
+    exit 1
+  }
+done
+
+source_ip="$(cat "$work_dir/metadata/source-ipv4")"
+if [[ -z "$NEW_IP" ]]; then
+  NEW_IP="$(
+    ip -4 route get 1.1.1.1 2>/dev/null |
+      awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}'
+  )"
+fi
+
+printf 'Archive exported: %s\n' "$(cat "$work_dir/metadata/exported-at")"
+printf 'Source host: %s\n' "$(cat "$work_dir/metadata/source-hostname")"
+printf 'Source IPv4: %s\n' "$source_ip"
+printf 'Destination IPv4: %s\n' "$NEW_IP"
+printf 'Payload size: %s\n' "$(du -sh "$work_dir/rootfs" | awk '{print $1}')"
+
+if [[ "$MODE" == stage ]]; then
+  printf 'Stage-only validation passed; no destination files were changed.\n'
+  exit 0
+fi
+
+[[ -r "$PACKAGES_FILE" ]] || {
+  printf 'Missing package manifest: %s\n' "$PACKAGES_FILE" >&2
+  exit 1
+}
+
+if [[ -r /etc/os-release ]]; then
+  . /etc/os-release
+  [[ "${ID:-}" == debian ]] || {
+    printf 'Automatic apply is supported only on Debian.\n' >&2
+    exit 1
+  }
+fi
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+mapfile -t packages < <(grep -Ev '^[[:space:]]*(#|$)' "$PACKAGES_FILE")
+apt-get install -y --no-install-recommends "${packages[@]}"
+
+if ! getent group hysteria >/dev/null; then
+  groupadd --system hysteria
+fi
+if ! id hysteria >/dev/null 2>&1; then
+  useradd --system --gid hysteria --home-dir /var/lib/hysteria \
+    --create-home --shell /usr/sbin/nologin hysteria
+fi
+
+for service_name in \
+  wg-quick@wg0 hysteria-server xray panel-api nginx fail2ban; do
+  systemctl stop "$service_name" 2>/dev/null || true
+done
+
+backup_dir="/root/node-migration-pre-restore-$(date -u +%Y%m%d-%H%M%S)"
+mkdir -p "$backup_dir/rootfs"
+while IFS= read -r destination_path; do
+  [[ -n "$destination_path" ]] || continue
+  if [[ -e "$destination_path" || -L "$destination_path" ]]; then
+    rsync -aR --numeric-ids "$destination_path" "$backup_dir/rootfs/"
+  fi
+done < "$work_dir/metadata/path-list.txt"
+
+if [[ -n "$source_ip" && -n "$NEW_IP" && "$source_ip" != "$NEW_IP" ]]; then
+  declare -a rewrite_roots=(
+    "$work_dir/rootfs/etc/wireguard"
+    "$work_dir/rootfs/etc/wg-server"
+    "$work_dir/rootfs/usr/local/bin"
+    "$work_dir/rootfs/var/www/landing"
+    "$work_dir/rootfs/var/www/html/sub"
+  )
+  while IFS= read -r text_file; do
+    sed -i "s/${source_ip//./\\.}/$NEW_IP/g" "$text_file"
+  done < <(
+    grep -RIl --binary-files=without-match --exclude='*.bak*' \
+      -- "$source_ip" "${rewrite_roots[@]}" 2>/dev/null || true
+  )
+fi
+
+rsync -aHAX --numeric-ids "$work_dir/rootfs/" /
+mkdir -p /var/www/_acme/.well-known/acme-challenge
+chown -R root:root /var/www/_acme
+chmod 0755 /var/www/_acme /var/www/_acme/.well-known \
+  /var/www/_acme/.well-known/acme-challenge
+
+while IFS= read -r restored_path; do
+  [[ "$restored_path" == /usr/local/bin/* ]] || continue
+  [[ -f "$restored_path" ]] || continue
+  chown root:root "$restored_path"
+  chmod 0755 "$restored_path"
+done < "$work_dir/metadata/path-list.txt"
+chown root:hysteria /etc/hysteria/config.yaml /etc/hysteria/server.crt \
+  /etc/hysteria/server.key 2>/dev/null || true
+chmod 0750 /etc/hysteria
+chmod 0640 /etc/hysteria/config.yaml /etc/hysteria/server.crt \
+  /etc/hysteria/server.key 2>/dev/null || true
+chmod 0700 /etc/wireguard /etc/wg-server
+find /etc/wireguard -type f -exec chmod 0600 {} +
+find /etc/wg-server -type f -name '*.conf' -exec chmod 0600 {} +
+chmod 0600 /etc/panel-api/session.key /etc/nginx/.admin_htpasswd \
+  2>/dev/null || true
+
+systemctl daemon-reload
+sysctl --system >/dev/null
+
+ufw allow 22/tcp
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw allow 443/udp
+ufw allow 51820/udp
+ufw --force enable
+
+nginx -t
+/usr/local/bin/xray run -test -config /usr/local/etc/xray/config.json
+python3 -m py_compile /usr/local/bin/panel-api
+
+systemctl enable --now nginx fail2ban panel-api xray hysteria-server wg-quick@wg0
+
+for generator in \
+  wg-regen-yamls wg-regen-vless-config update-landing-pages dashboard-collect; do
+  if [[ -x "/usr/local/bin/$generator" ]]; then
+    "/usr/local/bin/$generator"
+  fi
+done
+
+printf 'Restore completed.\n'
+printf 'Pre-restore backup: %s\n' "$backup_dir"
+printf 'Next: point the domain A record to %s, then run verify-node.\n' "$NEW_IP"

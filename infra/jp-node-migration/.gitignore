@@ -1,0 +1,5 @@
+backups/
+*.enc
+*.enc.sha256
+*.passphrase
+*.log
